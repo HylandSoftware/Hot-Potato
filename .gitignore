@@ -1,0 +1,10 @@
+# Build
+[Bb]in/
+[Oo]bj/
+
+# Visual Studio
+.vs/
+*.suo
+*.user
+*.[Cc]ache
+*.[Cc]overage

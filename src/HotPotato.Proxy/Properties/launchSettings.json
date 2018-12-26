@@ -1,0 +1,10 @@
+{
+  "profiles": {
+    "HotPotato": {
+      "commandName": "Project",
+      "environmentVariables": {
+        "ASPNETCORE_ENVIRONMENT": "Development"
+      }
+    }
+  }
+}
