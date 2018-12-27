@@ -6,7 +6,7 @@ namespace HotPotato.Models
 {
     public class Fixture
     {
+        public Guid ID { get; }
         public string SpecLocation { get; }
-
     }
 }

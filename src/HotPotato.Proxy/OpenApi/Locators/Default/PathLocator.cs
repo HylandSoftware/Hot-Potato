@@ -10,6 +10,9 @@ namespace HotPotato.OpenApi.Locators.Default
     {
         public SwaggerPathItem Locate(HttpPair pair, SwaggerDocument swaggerDocument)
         {
+            string path = pair.Request.Uri.AbsolutePath;
+            //swaggerDocument.Paths.Keys;
+
             throw new NotImplementedException();
         }
     }
