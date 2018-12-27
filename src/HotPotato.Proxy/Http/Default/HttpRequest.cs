@@ -12,6 +12,7 @@ namespace HotPotato.Http.Default
         private readonly string DefaultMediaType = "application/json";
         private HttpRequestMessage requestContent { get; }
 
+        public string Method { get; }
         public Uri Uri { get; set; }
         public HttpHeaders HttpHeaders { get; set; }
         public MediaTypeHeaderValue ContentType { get; set; }
@@ -27,6 +28,12 @@ namespace HotPotato.Http.Default
             : this()
         {
             this.Uri = uri;
+        }
+
+        public HttpRequest(string method, Uri uri)
+            : this(uri)
+        {
+            Method = method;
         }
 
         public HttpRequest(string uri)

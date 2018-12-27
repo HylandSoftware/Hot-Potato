@@ -12,12 +12,7 @@ namespace HotPotato.Proxy.Default
 {
     public class Proxy : IProxy
     {
-        private const string DELETE = "DELETE";
-        private const string GET = "GET";
-        private const string OPTIONS = "OPTIONS";
-        private const string POST = "POST";
-        private const string PUT = "PUT";
-        private const string PATCH = "PATCH";
+
         private IHttpClient Client { get; }
         private ILogger Logger { get; }
 
@@ -37,22 +32,22 @@ namespace HotPotato.Proxy.Default
             IHttpResponse response;
             switch (method)
             {
-                case DELETE:
+                case HttpVerbs.DELETE:
                     response = await this.Client.Delete(request);
                     break;
-                case GET:
+                case HttpVerbs.GET:
                     response = await this.Client.Get(request);
                     break;
-                case OPTIONS:
+                case HttpVerbs.OPTIONS:
                     response = await this.Client.Options(request);
                     break;
-                case PATCH:
+                case HttpVerbs.PATCH:
                     response = await this.Client.Patch(request);
                     break;
-                case POST:
+                case HttpVerbs.POST:
                     response = await this.Client.Post(request);
                     break;
-                case PUT:
+                case HttpVerbs.PUT:
                     response = await this.Client.Put(request);
                     break;
                 default:
