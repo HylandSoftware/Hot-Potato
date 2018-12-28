@@ -16,7 +16,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\src\HotPotato.Proxy\HotPotato.csproj" />
+    <ProjectReference Include="..\..\src\HotPotato\HotPotato.csproj" />
   </ItemGroup>
 
 </Project>
