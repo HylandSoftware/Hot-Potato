@@ -53,7 +53,7 @@ namespace HotPotato.Proxy.Default
                 default:
                     throw new InvalidHttpVerbException();
             }
-            responseOut = response.BuildResponse(responseOut);
+            await response.BuildResponse(responseOut);
         }
     }
 }

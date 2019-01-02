@@ -51,10 +51,13 @@ namespace HotPotato.Http
 
         public static Uri BuildUri(this MSHTTP.HttpRequest @this, string remoteEndpoint)
         {
+            _ = @this ?? throw new ArgumentNullException(nameof(@this));
+            _ = remoteEndpoint ?? throw new ArgumentNullException(nameof(remoteEndpoint));
+
             return new Uri($"{remoteEndpoint}{@this.Path.Value}{@this.QueryString}");
         }
 
-        public static MSHTTP.HttpResponse BuildResponse(this IHttpResponse @this, MSHTTP.HttpResponse response)
+        public static async Task BuildResponse(this IHttpResponse @this, MSHTTP.HttpResponse response)
         {
             _ = @this ?? throw new ArgumentNullException(nameof(@this));
             _ = response ?? throw new ArgumentNullException(nameof(response));
@@ -69,7 +72,10 @@ namespace HotPotato.Http
                 }
             }
 
-            return response;
+            if (@this.Content.Length > 0)
+            {
+                await response.Body.WriteAsync(@this.Content);
+            }
         }
     }
 }

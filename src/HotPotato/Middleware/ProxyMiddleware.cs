@@ -16,15 +16,15 @@ namespace HotPotato.Middleware
         private readonly IProxy proxy;
         private readonly ILogger log;
         private readonly string remoteEndpoint;
-        public ProxyMiddleware(RequestDelegate next, IProxy proxy, IConfiguration config, ILogger<ProxyMiddleware> log)
+        public ProxyMiddleware(RequestDelegate next, IProxy proxy, IConfiguration configuration, ILogger<ProxyMiddleware> log)
         {
             _ = proxy ?? throw new ArgumentNullException(nameof(proxy));
-            _ = config ?? throw new ArgumentNullException(nameof(config));
+            _ = configuration ?? throw new ArgumentNullException(nameof(configuration));
             _ = log ?? throw new ArgumentNullException(nameof(log));
 
             this.proxy = proxy;
             this.log = log;
-            this.remoteEndpoint = config[RemoteEndpointKey];
+            this.remoteEndpoint = configuration[RemoteEndpointKey];
             log.LogInformation($"Forwarding to {remoteEndpoint}");
         }
 
