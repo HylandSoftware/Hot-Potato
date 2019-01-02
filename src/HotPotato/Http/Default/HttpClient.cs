@@ -8,39 +8,9 @@ namespace HotPotato.Http.Default
 {
     internal class HttpClient : IHttpClient
     {
-        public Task<IHttpResponse> Delete(IHttpRequest request)
+        public async Task<IHttpResponse> SendAsync(IHttpRequest request)
         {
-            return this.SendAsync(request, HttpMethod.Delete);
-        }
-
-        public Task<IHttpResponse> Get(IHttpRequest request)
-        {
-            return this.SendAsync(request, HttpMethod.Get);
-        }
-
-        public Task<IHttpResponse> Options(IHttpRequest request)
-        {
-            return this.SendAsync(request, HttpMethod.Options);
-        }
-
-        public Task<IHttpResponse> Patch(IHttpRequest request)
-        {
-            return this.SendAsync(request, HttpMethod.Patch);
-        }
-
-        public Task<IHttpResponse> Post(IHttpRequest request)
-        {
-            return this.SendAsync(request, HttpMethod.Post);
-        }
-
-        public  Task<IHttpResponse> Put(IHttpRequest request)
-        {
-            return this.SendAsync(request, HttpMethod.Put);
-        }
-
-        private async Task<IHttpResponse> SendAsync(IHttpRequest request, HttpMethod method)
-        {
-            HttpRequestMessage message = new HttpRequestMessage(method, request.Uri);
+            HttpRequestMessage message = new HttpRequestMessage(request.Method, request.Uri);
             message.Content = request.Content;
             foreach (var item in request.HttpHeaders)
             {

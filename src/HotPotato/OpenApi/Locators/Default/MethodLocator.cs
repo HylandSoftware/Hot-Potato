@@ -10,7 +10,7 @@ namespace HotPotato.OpenApi.Locators.Default
     {
         public SwaggerOperation Locate(HttpPair pair, SwaggerPathItem path)
         {
-            string method = pair.Request.Method;
+            string method = pair.Request.Method.ToString();
             SwaggerOperationMethod operationMethod = toOperationMethod(method);
             return path[operationMethod];
         }
