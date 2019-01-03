@@ -36,6 +36,10 @@ namespace HotPotato
         {
             services.AddScoped<IProxy, HotPotato.Proxy.Default.Proxy>();
             services.AddScoped<IHttpClient, HttpClient>();
+            services.AddHttpClient<IHttpClient, HttpClient>(client =>
+            {
+                client.BaseAddress = new Uri(Configuration["RemoteEndpoint"]);
+            });
         }
     }
 }

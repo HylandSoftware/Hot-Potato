@@ -19,16 +19,23 @@ namespace HotPotato.Http
             _ = @this ?? throw new ArgumentNullException(nameof(@this));
 
             HttpHeaders headers = new HttpHeaders();
-            foreach (var item in @this.Headers)
+            if (@this.Headers != null)
             {
-                headers.Add(item.Key, item.Value);
+                foreach (var item in @this?.Headers)
+                {
+                    headers.Add(item.Key, item.Value);
+                }
             }
-            foreach (var item in @this.Content.Headers)
+            if (@this.Content != null)
             {
-                headers.Add(item.Key, item.Value);
+                foreach (var item in @this.Content?.Headers)
+                {
+                    headers.Add(item.Key, item.Value);
+                }
+                byte[] payload = await @this.Content.ReadAsByteArrayAsync();
+                return new HttpResponse(@this.StatusCode, headers, payload);
             }
-            byte[] payload = await @this.Content.ReadAsByteArrayAsync();
-            return new HttpResponse(@this.StatusCode, headers, payload);
+            return new HttpResponse(@this.StatusCode, headers);
         }
 
         public static IHttpRequest ToRequest(this MSHTTP.HttpRequest @this, string remoteEndpoint)
@@ -76,6 +83,25 @@ namespace HotPotato.Http
             {
                 await response.Body.WriteAsync(@this.Content);
             }
+        }
+
+        public static HttpRequestMessage BuildRequest(this IHttpRequest @this)
+        {
+            _ = @this ?? throw new ArgumentNullException(nameof(@this));
+
+            HttpRequestMessage message = new HttpRequestMessage(@this.Method, @this.Uri);
+            if (@this.Content != null)
+            {
+                message.Content = @this.Content; 
+            }
+            foreach (var item in @this.HttpHeaders)
+            {
+                if (!message.Headers.TryAddWithoutValidation(item.Key, item.Value))
+                {
+                    message.Content.Headers.TryAddWithoutValidation(item.Key, item.Value);
+                }
+            }
+            return message;
         }
     }
 }

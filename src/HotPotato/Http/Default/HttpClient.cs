@@ -8,30 +8,19 @@ namespace HotPotato.Http.Default
 {
     internal class HttpClient : IHttpClient
     {
-        public async Task<IHttpResponse> SendAsync(IHttpRequest request)
+        private readonly System.Net.Http.HttpClient client;
+        public HttpClient(System.Net.Http.HttpClient client)
         {
-            HttpRequestMessage message = new HttpRequestMessage(request.Method, request.Uri);
-            message.Content = request.Content;
-            foreach (var item in request.HttpHeaders)
-            {
-                if (!message.Headers.TryAddWithoutValidation(item.Key, item.Value))
-                {
-                    message.Content.Headers.TryAddWithoutValidation(item.Key, item.Value);
-                }
-            }
-
-            using (System.Net.Http.HttpClient client = GetHttpClient())
-            {
-                using (HttpResponseMessage response = await client.SendAsync(message))
-                {
-                    return await response.ConvertResponse();
-                }
-            }
+            _ = client ?? throw new ArgumentNullException(nameof(client));
+            this.client = client;
         }
 
-        private System.Net.Http.HttpClient GetHttpClient()
+        public async Task<IHttpResponse> SendAsync(IHttpRequest request)
         {
-            return new System.Net.Http.HttpClient(new HttpClientHandler());
+            using (HttpResponseMessage response = await client.SendAsync(request.BuildRequest()))
+            {
+                return await response.ConvertResponse();
+            }
         }
     }
 }
