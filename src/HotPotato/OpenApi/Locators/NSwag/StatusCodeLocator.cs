@@ -5,7 +5,7 @@ using NSwag;
 using HotPotato.Models;
 using Microsoft.AspNetCore.Http;
 
-namespace HotPotato.OpenApi.Locators.Default
+namespace HotPotato.OpenApi.Locators.NSwag
 {
     class StatusCodeLocator
     {

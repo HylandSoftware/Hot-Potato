@@ -8,7 +8,7 @@ using NSwag;
 using NJsonSchema;
 using HotPotato.Results;
 
-namespace HotPotato.Validators
+namespace HotPotato.Validators.NJsonSchema
 {
     public class HeaderValidatorTest
     {
@@ -23,9 +23,9 @@ namespace HotPotato.Validators
             HttpHeaders headers = new HttpHeaders();
             SwaggerHeaders schema = new SwaggerHeaders();
             schema.Add(AValidHeaderKey, new JsonSchema4());
-            HeaderValidator subject = new HeaderValidator();
+            HeaderValidator subject = new HeaderValidator(schema);
 
-            ICollection<Result> result = subject.Validate(headers, schema);
+            ICollection<Result> result = subject.Validate(headers);
 
             Assert.NotNull(result);
             Assert.True(result.Count > 0);
@@ -42,9 +42,9 @@ namespace HotPotato.Validators
             JsonSchema4 jsonSchema = JsonSchema4.CreateAnySchema();
             SwaggerHeaders schema = new SwaggerHeaders();
             schema.Add(AValidHeaderKey, jsonSchema);
-            HeaderValidator subject = new HeaderValidator();
+            HeaderValidator subject = new HeaderValidator(schema);
 
-            ICollection<Result> result = subject.Validate(headers, schema);
+            ICollection<Result> result = subject.Validate(headers);
 
             Assert.NotNull(result);
             Assert.True(result.Count > 0);
@@ -61,9 +61,9 @@ namespace HotPotato.Validators
             JsonSchema4 jsonSchema = JsonSchema4.FromJsonAsync(AValidSchema).Result;
             SwaggerHeaders schema = new SwaggerHeaders();
             schema.Add(AValidHeaderKey, jsonSchema);
-            HeaderValidator subject = new HeaderValidator();
+            HeaderValidator subject = new HeaderValidator(schema);
 
-            ICollection<Result> result = subject.Validate(headers, schema);
+            ICollection<Result> result = subject.Validate(headers);
 
             Assert.NotNull(result);
             Assert.True(result.Count > 0);

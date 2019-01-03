@@ -4,7 +4,7 @@ using System.Text;
 using HotPotato.Models;
 using NSwag;
 
-namespace HotPotato.OpenApi.Locators.Default
+namespace HotPotato.OpenApi.Locators.NSwag
 {
     internal class MethodLocator
     {
