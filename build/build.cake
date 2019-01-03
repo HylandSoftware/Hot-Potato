@@ -15,7 +15,7 @@ Task("Build")
 Task("Run-Unit-Tests")
 	.IsDependentOn("Build")
 	.Does(() => {
-		DotNetCoreTest("../test/HotPotato.Test/HotPotato.Test.csproj", new DotNetCoreTestSettings {VSTestReportPath = "results.xml"});	
+		DotNetCoreTest("../test/HotPotato.Test/HotPotato.Test.csproj", new DotNetCoreTestSettings {VSTestReportPath = "results.xml"});
 });
 
 Task("Default")
