@@ -44,7 +44,7 @@ namespace HotPotato.Http
             _ = remoteEndpoint ?? throw new ArgumentNullException(nameof(remoteEndpoint));
 
             HttpRequest request = new HttpRequest(new HttpMethod(@this.Method), @this.BuildUri(remoteEndpoint));
-            if (MethodsWithPayload.Contains(@this.Method.ToUpperInvariant()) && @this?.Body?.Length > 0)
+            if (MethodsWithPayload.Contains(@this.Method.ToUpperInvariant()) && @this.Body != null)
             {
                 using (MemoryStream stream = new MemoryStream())
                 {
