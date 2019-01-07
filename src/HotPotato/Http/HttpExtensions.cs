@@ -12,7 +12,34 @@ namespace HotPotato.Http
 {
     public static class HttpExtensions
     {
-        private static readonly HashSet<string> MethodsWithPayload = new HashSet<string> { "POST", "PATCH", "PUT" };
+        private const string transferEncoding = "transfer-encoding";
+        private static readonly HashSet<string> MethodsWithPayload = new HashSet<string>
+        {
+            "POST",
+            "PATCH",
+            "PUT"
+        };
+
+        private static readonly HashSet<string> ExcludedRequestHeaders =
+            new HashSet<string>
+            {
+                "connection",
+                "content-length",
+                "keep-alive",
+                "host",
+                "upgrade",
+                "upgrade-insecure-requests"
+            };
+
+        private static readonly HashSet<string> ExcludedResponseHeaders = 
+            new HashSet<string>
+            {
+                "connection",
+                "server",
+                "transfer-encoding",
+                "upgrade",
+                "x-powered-by"
+            };
 
         public static async Task<IHttpResponse> ConvertResponse(this HttpResponseMessage @this)
         {
@@ -42,15 +69,19 @@ namespace HotPotato.Http
         {
             _ = @this ?? throw new ArgumentNullException(nameof(@this));
             _ = remoteEndpoint ?? throw new ArgumentNullException(nameof(remoteEndpoint));
-
+            
             HttpRequest request = new HttpRequest(new HttpMethod(@this.Method), @this.BuildUri(remoteEndpoint));
+            foreach (var item in @this?.Headers)
+            {
+                request.HttpHeaders.Add(item.Key, item.Value.ToArray());
+            }
             if (MethodsWithPayload.Contains(@this.Method.ToUpperInvariant()) && @this.Body != null)
             {
                 using (MemoryStream stream = new MemoryStream())
                 {
                     @this.Body.CopyTo(stream);
                     request.SetContent(stream.ToArray(), @this.ContentType);
-                } 
+                }
             }
 
             return request;
@@ -71,17 +102,24 @@ namespace HotPotato.Http
 
             response.StatusCode = (int)@this.StatusCode;
 
+            response.Headers.Clear();
             if (@this.Headers != null)
             {
                 foreach (var header in @this.Headers)
                 {
-                    response.Headers.Add(header.Key, new StringValues(header.Value.ToArray()));
+                    if (!ExcludedResponseHeaders.Contains(header.Key))
+                    {
+                        response.Headers.Add(header.Key, new StringValues(header.Value.ToArray()));
+                    }
                 }
             }
 
+            // HACK - Since calls are async, we don't need chunking.
+            response.Headers.Remove(transferEncoding);
+
             if (@this.Content.Length > 0)
             {
-                await response.Body.WriteAsync(@this.Content);
+                await response.Body.WriteAsync(@this.Content, 0, @this.Content.Length);
             }
         }
 
@@ -96,9 +134,12 @@ namespace HotPotato.Http
             }
             foreach (var item in @this.HttpHeaders)
             {
-                if (!message.Headers.TryAddWithoutValidation(item.Key, item.Value))
+                if (!ExcludedRequestHeaders.Contains(item.Key))
                 {
-                    message.Content.Headers.TryAddWithoutValidation(item.Key, item.Value);
+                    if (!message.Headers.TryAddWithoutValidation(item.Key, item.Value))
+                    {
+                        message.Content.Headers.TryAddWithoutValidation(item.Key, item.Value);
+                    }
                 }
             }
             return message;

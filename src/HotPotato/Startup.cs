@@ -29,6 +29,7 @@ namespace HotPotato
 
         public void Configure(ILoggerFactory loggerFactory, IApplicationBuilder builder, IHostingEnvironment env)
         {
+            builder.UseResponseBuffering();
             builder.UseMiddleware<Middleware.ProxyMiddleware>();
         }
 

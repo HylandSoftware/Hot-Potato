@@ -25,7 +25,10 @@ namespace HotPotato
                         logging.AddDebug();
                     }
                 })
-                .UseKestrel()
+                .UseKestrel((options) =>
+                {
+                    options.AddServerHeader = false;
+                })
                 .UseUrls("http://0.0.0.0:3232")
                 .UseStartup<Startup>()
                 .Build();

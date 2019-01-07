@@ -9,9 +9,9 @@ namespace HotPotato.Http
     public interface IHttpRequest
     {
         HttpMethod Method { get; }
-        Uri Uri { get; set; }
-        HttpHeaders HttpHeaders { get; set; }
-        MediaTypeHeaderValue ContentType { get; set; }
+        Uri Uri { get; }
+        HttpHeaders HttpHeaders { get; }
+        MediaTypeHeaderValue ContentType { get; }
         HttpContent Content { get; }
         IHttpRequest SetContent(string content);
         IHttpRequest SetContent(string content, Encoding encoding);

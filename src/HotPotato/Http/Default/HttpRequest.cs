@@ -13,9 +13,9 @@ namespace HotPotato.Http.Default
         private HttpRequestMessage requestContent { get; }
 
         public HttpMethod Method { get; }
-        public Uri Uri { get; set; }
-        public HttpHeaders HttpHeaders { get; set; }
-        public MediaTypeHeaderValue ContentType { get; set; }
+        public Uri Uri { get; }
+        public HttpHeaders HttpHeaders { get; }
+        public MediaTypeHeaderValue ContentType { get; private set; }
         public HttpContent Content => this.requestContent.Content;
 
         public HttpRequest()
@@ -35,10 +35,6 @@ namespace HotPotato.Http.Default
         {
             Method = method;
         }
-
-        public HttpRequest(string uri)
-            : this(new Uri(uri))
-        { }
 
         public IHttpRequest SetContent(string content)
         {

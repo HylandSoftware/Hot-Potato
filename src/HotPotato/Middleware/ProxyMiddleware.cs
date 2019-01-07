@@ -4,6 +4,8 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
+using System.Net;
+using System.Net.Http;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -16,6 +18,7 @@ namespace HotPotato.Middleware
         private readonly IProxy proxy;
         private readonly ILogger log;
         private readonly string remoteEndpoint;
+        
         public ProxyMiddleware(RequestDelegate next, IProxy proxy, IConfiguration configuration, ILogger<ProxyMiddleware> log)
         {
             _ = proxy ?? throw new ArgumentNullException(nameof(proxy));
@@ -32,13 +35,20 @@ namespace HotPotato.Middleware
         {
             try
             {
+                this.log.LogDebug($"{context.Request.Method} {context.Request.Path}");
                 await this.proxy.ProcessAsync(this.remoteEndpoint, context.Request, context.Response);
+                this.log.LogDebug($"{context.Response.StatusCode} Length: {context.Response.ContentLength}");
                 this.log.LogDebug("--------------- Request End ---------------");
+            }
+            catch (HttpRequestException httpEx)
+            {
+                this.log.LogError(httpEx, "Failed to forward request. Remote endpoint may be down.");
+                context.Response.StatusCode = (int)HttpStatusCode.BadGateway;
             }
             catch (Exception e)
             {
                 this.log.LogError(e, "Failed to forward request");
-                throw;
+                context.Response.StatusCode = (int)HttpStatusCode.InternalServerError;
             }
         }
     }
