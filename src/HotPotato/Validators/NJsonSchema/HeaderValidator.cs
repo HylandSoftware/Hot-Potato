@@ -5,7 +5,6 @@ using NJsonSchema.Validation;
 using NSwag;
 using System;
 using System.Collections.Generic;
-using System.Text;
 
 namespace HotPotato.Validators
 {

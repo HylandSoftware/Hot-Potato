@@ -1,10 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using HotPotato.Models;
+﻿using HotPotato.Models;
 using HotPotato.Validators;
-using NJsonSchema;
-using NSwag;
+using System;
 
 namespace HotPotato.OpenApi.Locators
 {

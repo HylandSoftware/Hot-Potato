@@ -1,5 +1,4 @@
 ﻿using Microsoft.AspNetCore.Hosting;
-using System;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
 

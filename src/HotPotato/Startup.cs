@@ -1,15 +1,12 @@
 ﻿using HotPotato.Http;
 using HotPotato.Http.Default;
 using HotPotato.Proxy;
-using HotPotato.Proxy.Default;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using System;
-using System.Collections.Generic;
-using System.Text;
 
 namespace HotPotato
 {

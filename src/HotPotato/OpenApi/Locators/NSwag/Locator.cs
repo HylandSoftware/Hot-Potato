@@ -1,12 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using HotPotato.Exceptions;
+﻿using HotPotato.Exceptions;
 using HotPotato.Models;
 using HotPotato.Validators;
 using HotPotato.Validators.NJsonSchema;
 using NJsonSchema;
 using NSwag;
+using System;
 
 namespace HotPotato.OpenApi.Locators.NSwag
 {

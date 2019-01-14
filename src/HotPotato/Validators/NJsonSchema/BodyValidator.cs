@@ -3,7 +3,6 @@ using NJsonSchema;
 using NJsonSchema.Validation;
 using System;
 using System.Collections.Generic;
-using System.Text;
 
 namespace HotPotato.Validators.NJsonSchema
 {

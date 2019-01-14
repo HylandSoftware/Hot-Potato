@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace HotPotato.Results
+﻿namespace HotPotato.Results
 {
     public abstract class Result
     {

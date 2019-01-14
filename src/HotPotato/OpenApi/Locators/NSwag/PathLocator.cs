@@ -1,9 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using HotPotato.Matchers;
+﻿using HotPotato.Matchers;
 using HotPotato.Models;
 using NSwag;
+using System;
 
 namespace HotPotato.OpenApi.Locators.NSwag
 {
