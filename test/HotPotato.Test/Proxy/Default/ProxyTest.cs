@@ -1,13 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Text;
-using System.Threading.Tasks;
-using HotPotato.Exceptions;
-using HotPotato.Http;
+﻿using HotPotato.Http;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Logging;
 using Moq;
+using System.Threading.Tasks;
 using Xunit;
 
 namespace HotPotato.Proxy.Default

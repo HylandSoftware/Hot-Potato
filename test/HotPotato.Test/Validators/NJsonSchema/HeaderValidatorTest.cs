@@ -1,12 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using Xunit;
-using Moq;
-using HotPotato.Http;
-using NSwag;
-using NJsonSchema;
+﻿using HotPotato.Http;
 using HotPotato.Results;
+using NJsonSchema;
+using NSwag;
+using System.Collections.Generic;
+using Xunit;
 
 namespace HotPotato.Validators.NJsonSchema
 {

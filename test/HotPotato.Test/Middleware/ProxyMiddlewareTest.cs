@@ -1,14 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Net;
-using System.Net.Http;
-using System.Text;
-using HotPotato.Proxy;
+﻿using HotPotato.Proxy;
 using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Http.Internal;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
 using Moq;
+using System;
+using System.Net;
+using System.Net.Http;
 using Xunit;
 
 namespace HotPotato.Middleware

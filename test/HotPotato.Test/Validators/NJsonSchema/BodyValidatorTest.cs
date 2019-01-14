@@ -1,8 +1,5 @@
 ﻿using HotPotato.Results;
 using NJsonSchema;
-using System;
-using System.Collections.Generic;
-using System.Text;
 using Xunit;
 
 namespace HotPotato.Validators.NJsonSchema
