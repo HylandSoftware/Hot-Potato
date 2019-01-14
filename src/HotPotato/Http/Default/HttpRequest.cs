@@ -16,23 +16,19 @@ namespace HotPotato.Http.Default
         public HttpHeaders HttpHeaders { get; }
         public MediaTypeHeaderValue ContentType { get; private set; }
         public HttpContent Content => this.requestContent.Content;
-
-        public HttpRequest()
-        {
-            this.HttpHeaders = new HttpHeaders();
-            this.requestContent = new HttpRequestMessage();
-        }
-
+        
         public HttpRequest(Uri uri)
-            : this()
+            : this(HttpMethod.Get, uri)
         {
             this.Uri = uri;
         }
 
         public HttpRequest(HttpMethod method, Uri uri)
-            : this(uri)
         {
-            Method = method;
+            this.Method = method;
+            this.Uri = uri;
+            this.HttpHeaders = new HttpHeaders();
+            this.requestContent = new HttpRequestMessage();
         }
 
         public IHttpRequest SetContent(string content)
