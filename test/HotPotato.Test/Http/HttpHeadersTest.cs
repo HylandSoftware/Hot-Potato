@@ -1,7 +1,4 @@
-﻿using HotPotato.Http;
-using System;
-using System.Collections.Generic;
-using System.Text;
+﻿using System.Collections.Generic;
 using Xunit;
 
 namespace HotPotato.Http
