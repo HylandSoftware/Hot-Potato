@@ -8,3 +8,11 @@
 *.user
 *.[Cc]ache
 *.[Cc]overage
+
+# Cake
+**/results.xml
+/build/Cake/Addins
+/build/Cake/Modules
+/build/Cake/Tools/**
+!build/Cake/Tools/packages.config
+
