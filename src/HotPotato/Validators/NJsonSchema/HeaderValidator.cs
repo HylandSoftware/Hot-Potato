@@ -5,19 +5,26 @@ using NJsonSchema.Validation;
 using NSwag;
 using System;
 using System.Collections.Generic;
-using System.Text;
 
 namespace HotPotato.Validators
 {
-    public class HeaderValidator
+    public class HeaderValidator : IHeaderValidator
     {
-        public ICollection<Result> Validate(HttpHeaders headers, SwaggerHeaders schema)
+        private readonly SwaggerHeaders swaggerHeaders;
+
+        public HeaderValidator(SwaggerHeaders schema)
         {
-            _ = headers ?? throw new ArgumentNullException(nameof(headers));
             _ = schema ?? throw new ArgumentNullException(nameof(schema));
 
+            this.swaggerHeaders = schema;
+        }
+
+        public ICollection<Result> Validate(HttpHeaders headers)
+        {
+            _ = headers ?? throw new ArgumentNullException(nameof(headers));
+
             List<Result> results = new List<Result>();
-            foreach (var item in schema)
+            foreach (var item in this.swaggerHeaders)
             {
                 string headerKey = item.Key;
                 if (!headers.ContainsKey(headerKey))
@@ -42,7 +49,8 @@ namespace HotPotato.Validators
                         }
                     }
 
-                }            }
+                }
+            }
             return results;
         }
     }

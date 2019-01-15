@@ -1,12 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using HotPotato.Proxy;
+﻿using HotPotato.Proxy;
 using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Http.Internal;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
 using Moq;
+using System;
+using System.Net;
+using System.Net.Http;
 using Xunit;
 
 namespace HotPotato.Middleware
@@ -58,9 +57,8 @@ namespace HotPotato.Middleware
         }
 
         [Fact]
-        public async void Invoke_Throws_Rethrows()
+        public async void Invoke_Throws_SetsInternalServerError()
         {
-            const string expectedMessage = "Failed to forward request";
             Mock<IProxy> proxyMock = new Mock<IProxy>();
             proxyMock.Setup(x => x.ProcessAsync(It.IsAny<string>(), It.IsAny<HttpRequest>(), It.IsAny<HttpResponse>()))
                 .Throws(new Exception("FAIL"));
@@ -77,7 +75,33 @@ namespace HotPotato.Middleware
                 configMock.Object,
                 loggerMock.Object);
 
-            await Assert.ThrowsAsync<Exception>(() => subject.Invoke(contextMock.Object));
+            await subject.Invoke(contextMock.Object);
+
+            Assert.Equal((int)HttpStatusCode.InternalServerError, contextMock.Object.Response.StatusCode);
+        }
+
+        [Fact]
+        public async void Invoke_ThrowsHttpRequestException_SetsBadGateway()
+        {
+            Mock<IProxy> proxyMock = new Mock<IProxy>();
+            proxyMock.Setup(x => x.ProcessAsync(It.IsAny<string>(), It.IsAny<HttpRequest>(), It.IsAny<HttpResponse>()))
+                .Throws(new HttpRequestException("FAIL"));
+            Mock<IConfiguration> configMock = new Mock<IConfiguration>();
+            configMock.SetupGet(x => x[RemoteEndpointKey]).Returns(AValidEndpoint);
+            Mock<ILogger<ProxyMiddleware>> loggerMock = new Mock<ILogger<ProxyMiddleware>>();
+            Mock<HttpContext> contextMock = new Mock<HttpContext>();
+            contextMock.SetupGet(x => x.Request).Returns(Mock.Of<HttpRequest>());
+            contextMock.SetupGet(x => x.Response).Returns(Mock.Of<HttpResponse>());
+
+            ProxyMiddleware subject = new ProxyMiddleware(
+                null,
+                proxyMock.Object,
+                configMock.Object,
+                loggerMock.Object);
+
+            await subject.Invoke(contextMock.Object);
+
+            Assert.Equal((int)HttpStatusCode.BadGateway, contextMock.Object.Response.StatusCode);
         }
     }
 }

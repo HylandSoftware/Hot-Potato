@@ -1,11 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using NSwag;
-using HotPotato.Models;
+﻿using HotPotato.Models;
 using Microsoft.AspNetCore.Http;
+using NSwag;
+using System;
 
-namespace HotPotato.OpenApi.Locators.Default
+namespace HotPotato.OpenApi.Locators.NSwag
 {
     class StatusCodeLocator
     {

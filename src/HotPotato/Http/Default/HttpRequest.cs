@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Text;
@@ -13,32 +12,24 @@ namespace HotPotato.Http.Default
         private HttpRequestMessage requestContent { get; }
 
         public HttpMethod Method { get; }
-        public Uri Uri { get; set; }
-        public HttpHeaders HttpHeaders { get; set; }
-        public MediaTypeHeaderValue ContentType { get; set; }
+        public Uri Uri { get; }
+        public HttpHeaders HttpHeaders { get; }
+        public MediaTypeHeaderValue ContentType { get; private set; }
         public HttpContent Content => this.requestContent.Content;
-
-        public HttpRequest()
-        {
-            this.HttpHeaders = new HttpHeaders();
-            this.requestContent = new HttpRequestMessage();
-        }
-
+        
         public HttpRequest(Uri uri)
-            : this()
+            : this(HttpMethod.Get, uri)
         {
             this.Uri = uri;
         }
 
         public HttpRequest(HttpMethod method, Uri uri)
-            : this(uri)
         {
-            Method = method;
+            this.Method = method;
+            this.Uri = uri;
+            this.HttpHeaders = new HttpHeaders();
+            this.requestContent = new HttpRequestMessage();
         }
-
-        public HttpRequest(string uri)
-            : this(new Uri(uri))
-        { }
 
         public IHttpRequest SetContent(string content)
         {

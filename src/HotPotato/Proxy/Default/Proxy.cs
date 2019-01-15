@@ -1,12 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Net.Http;
-using System.Text;
-using System.Threading.Tasks;
-using HotPotato.Exceptions;
-using HotPotato.Http;
+﻿using HotPotato.Http;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Logging;
+using System;
+using System.Threading.Tasks;
 
 namespace HotPotato.Proxy.Default
 {

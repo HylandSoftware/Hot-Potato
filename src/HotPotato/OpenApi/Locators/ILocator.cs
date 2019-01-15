@@ -1,14 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using HotPotato.Models;
-using NJsonSchema;
-using NSwag;
+﻿using HotPotato.Models;
+using HotPotato.Validators;
+using System;
 
 namespace HotPotato.OpenApi.Locators
 {
     public interface ILocator
     {
-        JsonSchema4 GetSchema(HttpPair pair, SwaggerDocument document);
+        Tuple<IBodyValidator, IHeaderValidator> GetValidator(HttpPair pair);
     }
 }

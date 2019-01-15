@@ -1,7 +1,5 @@
 ﻿using HotPotato.Http;
 using System;
-using System.Collections.Generic;
-using System.Text;
 
 namespace HotPotato.Models
 {

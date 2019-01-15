@@ -1,13 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Text;
-using System.Threading.Tasks;
-using HotPotato.Exceptions;
-using HotPotato.Http;
+﻿using HotPotato.Http;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Logging;
 using Moq;
+using System.Threading.Tasks;
 using Xunit;
 
 namespace HotPotato.Proxy.Default
@@ -35,11 +30,16 @@ namespace HotPotato.Proxy.Default
         {
             Mock<IHttpResponse> internalResponseMock = new Mock<IHttpResponse>();
             internalResponseMock.SetupGet(x => x.StatusCode).Returns(System.Net.HttpStatusCode.OK);
+            internalResponseMock.SetupGet(x => x.Headers).Returns(new HttpHeaders());
             Mock<IHttpClient> clientMock = new Mock<IHttpClient>();
             clientMock.Setup(x => x.SendAsync(It.IsAny<IHttpRequest>())).Returns(Task.FromResult(internalResponseMock.Object));
+            var requestHeaders = new HeaderDictionary();
             Mock<HttpRequest> requestMock = new Mock<HttpRequest>();
             requestMock.SetupGet(x => x.Method).Returns(method);
+            requestMock.SetupGet(x => x.Headers).Returns(requestHeaders);
+            var responseHeaders = new HeaderDictionary();
             Mock<HttpResponse> responseMock = new Mock<HttpResponse>();
+            responseMock.SetupGet(x => x.Headers).Returns(responseHeaders);
 
             Proxy subject = new Proxy(clientMock.Object, Mock.Of<ILogger<Proxy>>());
 

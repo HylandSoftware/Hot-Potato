@@ -1,11 +1,8 @@
 ﻿using HotPotato.Results;
 using NJsonSchema;
-using System;
-using System.Collections.Generic;
-using System.Text;
 using Xunit;
 
-namespace HotPotato.Validators
+namespace HotPotato.Validators.NJsonSchema
 {
     public class BodyValidatorTest
     {
@@ -17,9 +14,9 @@ namespace HotPotato.Validators
         public void Validate_ValidBody()
         {
             JsonSchema4 schema = JsonSchema4.CreateAnySchema();
-            BodyValidator subject = new BodyValidator();
+            BodyValidator subject = new BodyValidator(schema);
 
-            Result result = subject.Validate(AValidBody, schema);
+            Result result = subject.Validate(AValidBody);
 
             Assert.NotNull(result);
             Assert.IsAssignableFrom<BodyValidResult>(result);
@@ -29,9 +26,9 @@ namespace HotPotato.Validators
         public void Validate_InvalidBody()
         {
             JsonSchema4 schema = JsonSchema4.FromJsonAsync(AValidSchema).Result;
-            BodyValidator subject = new BodyValidator();
+            BodyValidator subject = new BodyValidator(schema);
 
-            Result result = subject.Validate(AnInvalidBody, schema);
+            Result result = subject.Validate(AnInvalidBody);
 
             Assert.NotNull(result);
             Assert.IsAssignableFrom<BodyInvalidResult>(result);
