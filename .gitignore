@@ -11,9 +11,7 @@
 
 # Cake
 **/results.xml
-/build/tools/**
-/build/Cake/Addins
-/build/Cake/Modules
-/build/Cake/tools/**
-!build/Cake/tools/packages.config
+/build/tools/Cake/Addins
+/build/tools/Cake/Modules
+!build/tools/packages.config
 
