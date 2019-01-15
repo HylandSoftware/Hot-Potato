@@ -1,4 +1,4 @@
-
+//Build script for Hot-Potato
 var target = Argument("target", "Default");
 
 Task("NuGet-Restore")
