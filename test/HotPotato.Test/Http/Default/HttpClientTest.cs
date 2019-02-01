@@ -24,5 +24,12 @@ namespace HotPotato.Http.Default
 
             mockHttp.VerifyNoOutstandingRequest();
         }
+
+        [Fact]
+        public void AbsoluteUri_Matches()
+        {
+            HttpRequest testRequest = new HttpRequest(new Uri("http://api.docs.hyland.io/document/custom-queries"));
+            Assert.Equal("/document/custom-queries", testRequest.Uri.AbsolutePath);
+        }
     }
 }

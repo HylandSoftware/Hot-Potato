@@ -22,4 +22,10 @@
     <ProjectReference Include="..\..\src\HotPotato\HotPotato.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Compile Update="Validators\NJsonSchema\BodyValidatorTest.cs">
+      <Generator>21</Generator>
+    </Compile>
+  </ItemGroup>
+
 </Project>
