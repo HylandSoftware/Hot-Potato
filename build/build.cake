@@ -10,13 +10,11 @@ Task("NuGet-Restore")
 	});
 
 Task("Build")
-	.IsDependentOn("NuGet-Restore")
 	.Does(() => {
 		DotNetCoreBuild(HotPotatsln, new DotNetCoreBuildSettings { NoRestore = true });
 	});
 
 Task("Run-Unit-Tests")
-	.IsDependentOn("Build")
 	.Does(() => {
 		DotNetCoreTest(HotPotatoTest, new DotNetCoreTestSettings {
 			VSTestReportPath = "results.xml",
@@ -26,6 +24,8 @@ Task("Run-Unit-Tests")
 	});
 
 Task("Default")
+	.IsDependentOn("NuGet-Restore")
+	.IsDependentOn("Build")
 	.IsDependentOn("Run-Unit-Tests");
 
 RunTarget(target);
