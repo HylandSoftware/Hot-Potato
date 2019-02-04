@@ -29,7 +29,7 @@ namespace HotPotato.Http.Default
 
     public class SpecTest
     {
-        private const string AValidEndpoint = "https://api.hyland.com/life-cycles/";
+        private const string AValidEndpoint = "https://api.hyland.com/document/life-cycles/";
         [Fact]
         public void LocatorReturnsValidSchema()
         {
