@@ -1,7 +1,5 @@
 spec:
   containers:
-  - name: jnlp
-    image: hcr.io/jenkins/jnlp-slave:alpine
   - name: builder
     image: hcr.io/library/dotnet:2.1-sdk-docker
     command: 
