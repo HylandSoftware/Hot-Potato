@@ -9,7 +9,7 @@ namespace HotPotato.OpenApi.Locators.NSwag
     {
         public SwaggerResponse Locate(HttpPair pair, SwaggerOperation operation)
         {
-            string statusCode = Enum.GetName(typeof(StatusCodes), pair.Response.StatusCode);
+            string statusCode = Convert.ToInt32(pair.Response.StatusCode).ToString();
             return operation.Responses[statusCode];
         }
     }

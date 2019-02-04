@@ -22,4 +22,8 @@
     <ProjectReference Include="..\..\src\HotPotato\HotPotato.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Locators\" />
+  </ItemGroup>
+
 </Project>
