@@ -31,7 +31,7 @@ namespace HotPotato.Http.Default
     {
         private const string AValidEndpoint = "https://api.hyland.com/life-cycles/";
         [Fact]
-        public void Test1()
+        public void LocatorReturnsValidSchema()
         {
             //AValidEndpoint = path
             HttpRequest testRequest = new HttpRequest(HttpMethod.Get, new Uri(AValidEndpoint));
@@ -39,9 +39,9 @@ namespace HotPotato.Http.Default
             HttpPair testPair = new HttpPair(testRequest, testResponse);
             string path = "M:\\git\\specifications\\specs\\workflow\\specification.yaml";
             Task<SwaggerDocument> derp = FromFileAsync(path);
-            var bluh = derp.Result;
-            Locator fuck = new Locator(bluh, new PathLocator(), new MethodLocator(), new StatusCodeLocator());
-            Tuple<IBodyValidator, IHeaderValidator> tup = fuck.GetValidator(testPair);
+            var swagDoc = derp.Result;
+            Locator docLoc = new Locator(swagDoc, new PathLocator(), new MethodLocator(), new StatusCodeLocator());
+            Tuple<IBodyValidator, IHeaderValidator> tup = docLoc.GetValidator(testPair);
             Assert.True(tup != null);
             //HttpResponse testResponse = new HttpResponse();
 
