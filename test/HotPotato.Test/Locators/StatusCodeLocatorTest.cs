@@ -10,7 +10,7 @@ namespace HotPotato.OpenApi.Locators.NSwag
 {
     public class StatusCodeLocatorTest
     {
-        private const string AValidEndpoint = "https://api.hyland.com/documents/life-cycles/";
+        private const string AValidEndpoint = "https://api.hyland.com/workflow/life-cycles";
         [Fact]
         public void StatCodeLocator_RespMatchesOp()
         {
