@@ -1,0 +1,20 @@
+spec:
+  containers:
+  - name: builder
+    image: hcr.io/library/dotnet:2.1-sdk-docker
+    command: 
+      - sh   
+    tty: true
+    volumeMounts:
+      - mountPath: /var/run/docker.sock
+        name: docker-sock
+  - name: gitversion
+    image: hcr.io/nlowe/gitversion:master
+    command:
+    - cat
+    tty: true
+  volumes:
+    - name: docker-sock
+      hostPath:
+        path: /var/run/docker.sock
+        type: File
