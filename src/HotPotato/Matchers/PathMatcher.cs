@@ -30,11 +30,7 @@ namespace HotPotato.Matchers
 
                 while (i < specPathPieces.Length & i < reqPathPieces.Length)
                 {
-                    if (isParam(specPathPieces[i]))
-                    {
-                        pathStack.Push(specPathPieces[i]);
-                    }
-                    else if(specPathPieces[i] == reqPathPieces[i])
+                    if (isParam(specPathPieces[i]) | (specPathPieces[i] == reqPathPieces[i]))
                     {
                         pathStack.Push(specPathPieces[i]);
                     }
