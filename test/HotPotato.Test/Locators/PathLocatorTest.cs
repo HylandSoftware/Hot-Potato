@@ -13,6 +13,7 @@ namespace HotPotato.OpenApi.Locators.NSwag
 {
     public class PathLocatorTest
     {
+        private static char s = Path.DirectorySeparatorChar;
         [Fact]
         public void PathLocator_LocatesWithParam()
         {
@@ -21,7 +22,7 @@ namespace HotPotato.OpenApi.Locators.NSwag
             HttpResponse testResponse = new HttpResponse(HttpStatusCode.OK, null);
             HttpPair testPair = new HttpPair(testRequest, testResponse);
 
-            string path = Path.Combine(Environment.CurrentDirectory, @"specs\keyword\", "specification.yaml");
+            string path = Path.Combine(Environment.CurrentDirectory, String.Format("specs{0}keyword{0}", s), "specification.yaml");
             Task<SwaggerDocument> swagTask = FromFileAsync(path);
             SwaggerDocument swagDoc = swagTask.Result;
 
@@ -38,7 +39,7 @@ namespace HotPotato.OpenApi.Locators.NSwag
             HttpResponse testResponse = new HttpResponse(HttpStatusCode.OK, null);
             HttpPair testPair = new HttpPair(testRequest, testResponse);
 
-            string path = Path.Combine(Environment.CurrentDirectory, @"specs\workflow\", "specification.yaml");
+            string path = Path.Combine(Environment.CurrentDirectory, String.Format("specs{0}workflow{0}", s), "specification.yaml");
             Task<SwaggerDocument> swagTask = FromFileAsync(path);
             SwaggerDocument swagDoc = swagTask.Result;
 
