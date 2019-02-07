@@ -3,7 +3,6 @@ using HotPotato.OpenApi.Locators.NSwag;
 using HotPotato.Models;
 using HotPotato.Validators;
 //using Microsoft.AspNetCore.Http;
-using Moq;
 using Newtonsoft.Json;
 using System.IO;
 using NJsonSchema;
@@ -42,7 +41,7 @@ namespace HotPotato.Http.Default
             var swagDoc = derp.Result;
             Locator docLoc = new Locator(swagDoc, new PathLocator(), new MethodLocator(), new StatusCodeLocator());
             Tuple<IBodyValidator, IHeaderValidator> tup = docLoc.GetValidator(testPair);
-            Assert.True(tup != null);
+            Assert.Null(tup);
             //HttpResponse testResponse = new HttpResponse();
 
         }
