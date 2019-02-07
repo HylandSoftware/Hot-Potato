@@ -14,23 +14,19 @@ namespace HotPotato.Matchers
         /// <returns></returns>
         public static string Match(string reqPath, IEnumerable<string> specPaths)
         {
-            string[] reqPathPieces = reqPath.Split('/');
-            reqPathPieces = reqPathPieces.Where(x => !string.IsNullOrEmpty(x)).ToArray();
-            Array.Reverse(reqPathPieces);
+            string[] reqPathPieces = preparePathPieces(reqPath);
 
             foreach (string specPath in specPaths)
             {
-                string[] specPathPieces = specPath.Split('/');
-                specPathPieces = specPathPieces.Where(x => !string.IsNullOrEmpty(x)).ToArray();
-                Array.Reverse(specPathPieces);
+                string[] specPathPieces = preparePathPieces(specPath);
 
                 int i = 0;
                 bool match = true;
                 Stack<string> pathStack = new Stack<string>();
 
-                while (i < specPathPieces.Length & i < reqPathPieces.Length)
+                while (i < specPathPieces.Length && i < reqPathPieces.Length)
                 {
-                    if (isParam(specPathPieces[i]) | (specPathPieces[i] == reqPathPieces[i]))
+                    if (isParam(specPathPieces[i]) || (specPathPieces[i] == reqPathPieces[i]))
                     {
                         pathStack.Push(specPathPieces[i]);
                     }
@@ -54,6 +50,14 @@ namespace HotPotato.Matchers
         private static bool isParam(string s)
         {
             return s.StartsWith('{') && s.EndsWith('}');
+        }
+
+        private static string[] preparePathPieces(string path)
+        {
+            string[] pathPieces = path.Split('/');
+            pathPieces = pathPieces.Where(x => !string.IsNullOrEmpty(x)).ToArray();
+            Array.Reverse(pathPieces);
+            return pathPieces;
         }
     }
 }
