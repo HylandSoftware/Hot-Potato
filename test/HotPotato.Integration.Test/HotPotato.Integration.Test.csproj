@@ -1,4 +1,8 @@
+<<<<<<< HEAD
 ﻿<Project Sdk="Microsoft.NET.Sdk">
+=======
+<Project Sdk="Microsoft.NET.Sdk">
+>>>>>>> bugfix/AUTOTEST-184-correct-identifier-for-path-locator
 
   <PropertyGroup>
     <TargetFramework>netcoreapp2.1</TargetFramework>
@@ -8,9 +12,13 @@
 
   <ItemGroup>
     <PackageReference Include="Microsoft.NET.Test.Sdk" Version="15.9.0" />
+<<<<<<< HEAD
     <PackageReference Include="Moq" Version="4.10.0" />
     <PackageReference Include="NSwag.Core.Yaml" Version="12.0.9" />
     <PackageReference Include="RichardSzalay.MockHttp" Version="3.2.1" />
+=======
+    <PackageReference Include="NSwag.Core.Yaml" Version="12.0.13" />
+>>>>>>> bugfix/AUTOTEST-184-correct-identifier-for-path-locator
     <PackageReference Include="xunit" Version="2.4.0" />
     <PackageReference Include="xunit.runner.visualstudio" Version="2.4.0" />
   </ItemGroup>
@@ -19,4 +27,16 @@
     <ProjectReference Include="..\..\src\HotPotato\HotPotato.csproj" />
   </ItemGroup>
 
+<<<<<<< HEAD
+=======
+  <ItemGroup>
+    <None Update="specs\keyword\specification.yaml">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="specs\workflow\specification.yaml">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
+
+>>>>>>> bugfix/AUTOTEST-184-correct-identifier-for-path-locator
 </Project>

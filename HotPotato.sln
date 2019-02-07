@@ -9,15 +9,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "HotPotato.Test", "test\HotP
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "HotPotato", "src\HotPotato\HotPotato.csproj", "{88DA92FA-4D53-4A87-AC1A-C76374277DBD}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{F613FCB7-9516-4742-9945-3B44841666DF}"
-	ProjectSection(SolutionItems) = preProject
-		build-spec.yml = build-spec.yml
-		build\build.cake = build\build.cake
-		build\build.ps1 = build\build.ps1
-		Jenkinsfile = Jenkinsfile
-	EndProjectSection
-EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "HotPotato.Integration.Test", "test\HotPotato.Integration.Test\HotPotato.Integration.Test.csproj", "{B505D62B-684A-4F79-A945-D07896285D56}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HotPotato.Integration.Test", "test\HotPotato.Integration.Test\HotPotato.Integration.Test.csproj", "{23CDAEF7-947F-463C-9162-3C8692FC103D}"
+
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -33,17 +26,17 @@ Global
 		{88DA92FA-4D53-4A87-AC1A-C76374277DBD}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{88DA92FA-4D53-4A87-AC1A-C76374277DBD}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{88DA92FA-4D53-4A87-AC1A-C76374277DBD}.Release|Any CPU.Build.0 = Release|Any CPU
-		{B505D62B-684A-4F79-A945-D07896285D56}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{B505D62B-684A-4F79-A945-D07896285D56}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{B505D62B-684A-4F79-A945-D07896285D56}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{B505D62B-684A-4F79-A945-D07896285D56}.Release|Any CPU.Build.0 = Release|Any CPU
+		{23CDAEF7-947F-463C-9162-3C8692FC103D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{23CDAEF7-947F-463C-9162-3C8692FC103D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{23CDAEF7-947F-463C-9162-3C8692FC103D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{23CDAEF7-947F-463C-9162-3C8692FC103D}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
 		{74BA99FB-0DAC-4737-8645-D72AAA817520} = {18D73CFF-6ECA-4A0C-8A6A-97F84BC3E1C8}
-		{B505D62B-684A-4F79-A945-D07896285D56} = {18D73CFF-6ECA-4A0C-8A6A-97F84BC3E1C8}
+		{23CDAEF7-947F-463C-9162-3C8692FC103D} = {18D73CFF-6ECA-4A0C-8A6A-97F84BC3E1C8}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {2836D304-9C78-41F8-9A22-517D86241D2C}

@@ -1,0 +1,289 @@
+openapi: 3.0.0
+info:
+  version: 1.0.0-draft1
+  title: OnBase Deficiency API
+  x-api-product:
+    program: Healthcare Clinical
+    name: Deficiency
+  x-releases:
+    - label: Current (1.0.0-draft1)
+      commit: c4d85922ec2791bc0aed85019ac5d4063b6d7b82
+      path: specs/deficiencies/specification.yaml
+security:
+  - Bearer: []
+paths:
+  /deficiencies:
+    get:
+      summary: Get a list of deficiencies.
+      description: >-
+        Get all the deficiencies for a given physician with the associated
+        physician id.
+      tags:
+        - deficiencies
+      parameters:
+        - $ref: '#/components/parameters/physicianId'
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DeficiencyCollection'
+        '401':
+          description: Response when the user does not supply authorization credentials.
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/Problem-Detail'
+        '404':
+          description: |-
+            Response when the resource does not exist or the user does not have
+            rights to the specified deficiencies.
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/Problem-Detail'
+    options:
+      summary: Options for the list of deficiencies.
+      description: The `OPTIONS` method is available to support `CORS` preflight requests.
+      tags:
+        - deficiencies
+      parameters:
+        - $ref: '#/components/parameters/physicianId'
+        - $ref: '#/components/parameters/Origin'
+        - $ref: '#/components/parameters/Access-Control-Request-Method'
+        - $ref: '#/components/parameters/Access-Control-Request-Headers'
+      responses:
+        '200':
+          $ref: '#/components/responses/OPTIONS-CORS-200'
+        '400':
+          $ref: '#/components/responses/OPTIONS-CORS-400'
+components:
+  securitySchemes:
+    Bearer:
+      type: http
+      scheme: bearer
+  schemas:
+    Deficiency:
+      description: Deficiency metadata.
+      properties:
+        id:
+          description: The unique identifier of the deficiency.
+          type: string
+        physicianId:
+          description: The unique identifier of the physician (physicianinfo.physnumber).
+          type: string
+        mpi:
+          description: The Master Patient Index.
+          type: string
+        mpiAssigningAuthority:
+          description: The assigning authority for the Master Patient Index.
+          type: string
+        mrn:
+          description: The Medical Record Number.
+          type: string
+        mrnAssigningAuthority:
+          description: The assigning authority for the Medical Record Number.
+          type: string
+        chartNumber:
+          description: The Chart Number.
+          type: string
+        chartNumberAssigningAuthority:
+          description: The assigning authority for the Chart Number.
+          type: string
+        type:
+          description: The type of deficiency.
+          type: string
+          enum:
+            - MissingSignature
+            - DualSignature
+            - Dictation
+            - DictationDual
+            - EditableTranscription
+            - MissingForm
+            - MissingInformation
+            - MissingDocument
+            - ExternalMissingSignature
+            - ExternalUnsignedOrder
+            - ExternalMissingInfo
+            - Diagnosis
+            - Other
+        patientFirstName:
+          description: The first name of the patient.
+          type: string
+        patientLastName:
+          description: The last name of the patient.
+          type: string
+        documentId:
+          description: The ID of the document (for document deficiency types).
+          type: string
+        created:
+          description: The date when this deficiency was created in OnBase.
+          type: string
+          format: date-time
+        deficiencyMessage:
+          description: The message associated with this deficiency.
+          type: string
+    DeficiencyCollection:
+      description: An array of deficiencies.
+      properties:
+        items:
+          description: An array of deficiencies.
+          type: array
+          items:
+            $ref: '#/components/schemas/Deficiency'
+    Problem-Detail:
+      type: object
+      description: |-
+        The <a href="https://tools.ietf.org/html/rfc7807">Problem Detail</a>
+        format defines a way to carry machine-readable details of errors in a
+        HTTP response to avoid the need to define new error response formats for
+        HTTP APIs.
+
+        Problem details can be extended and defined for specific
+        problem types.
+      properties:
+        type:
+          type: string
+          format: uri
+          description: |-
+            An absolute URI that identifies the problem type.  When
+            dereferenced, it should provide human-readable documentation
+            for the problem type (e.g., using HTML).
+          example: 'https://example.net/validation_error'
+        title:
+          type: string
+          description: |-
+            A short, human-readable summary of the problem type. It should
+            not change from occurrence to occurrence of the problem.
+          example: Your request parameters didn't validate.
+        status:
+          type: integer
+          format: int32
+          description: |-
+            The HTTP status code generated by the origin server for this
+            occurrence of the problem.
+          minimum: 100
+          maximum: 600
+          exclusiveMaximum: true
+          example: 400
+        detail:
+          type: string
+          description: |-
+            A human readable explanation specific to this occurrence of the
+            problem.
+          example: The parameter `count` was not valid for the request.
+        instance:
+          type: string
+          format: uri
+          description: |-
+            A URI reference that identifies the specific occurrence of
+            the problem.  It may or may not yield further information
+            if dereferenced.
+          example: /example-resource
+  parameters:
+    physicianId:
+      name: physicianId
+      in: query
+      description: The unique identifier of a physician.
+      required: true
+      schema:
+        type: string
+    Origin:
+      name: Origin
+      in: header
+      description: |-
+        The <a href="https://tools.ietf.org/html/rfc6454#section-7">Origin</a>
+        request header indicates which origin(s) a request originated from.
+        Origin only includes the server name and no path information.
+      required: false
+      schema:
+        type: string
+      example: 'Origin: https://example.net'
+    Access-Control-Request-Method:
+      name: Access-Control-Request-Method
+      in: header
+      description: >-
+        The <a
+
+        href="https://fetch.spec.whatwg.org/#http-access-control-request-method">Access-Control-Request-Method</a>
+
+        request header is used when issuing a `CORS` preflight request to let
+
+        the server know which HTTP method will be used when the actual request
+
+        is made.
+      required: false
+      schema:
+        type: string
+      example: 'Access-Control-Request-Method: GET'
+    Access-Control-Request-Headers:
+      name: Access-Control-Request-Headers
+      in: header
+      description: >-
+        The <a
+
+        href="https://fetch.spec.whatwg.org/#http-access-control-request-headers">Access-Control-Request-Headers</a>
+
+        request header is used when issuing a `CORS` preflight request to let
+
+        the server know which HTTP headers will be used when the actual request
+
+        is made.
+      required: false
+      schema:
+        type: string
+      example: 'Access-Control-Request-Headers: Range'
+  headers:
+    Location:
+      description: |-
+        The "Location" header field is used in some responses to refer to a
+        specific resource in relation to the response.  The type of
+        relationship is defined by the combination of request method and
+        status code semantics.
+        Reference: https://tools.ietf.org/html/rfc7231#section-7.1.2
+      schema:
+        type: string
+    Access-Control-Allow-Origin:
+      description: >-
+        The Access-Control-Allow-Origin response header is returned after a
+
+        successful `CORS` preflight request to indicate whether the target
+
+        resource can be shared with the given `Origin`.
+
+        Reference:
+        https://fetch.spec.whatwg.org/#http-access-control-allow-origin
+      schema:
+        type: string
+      example: 'Access-Control-Allow-Origin: https://example.net'
+    Access-Control-Max-Age:
+      description: |-
+        The Access-Control-Max-Age response header indicates how long in seconds
+        the results of a `CORS` preflight request can be cached.
+        Reference: https://fetch.spec.whatwg.org/#http-access-control-max-age
+      schema:
+        type: string
+      example: 'Access-Control-Max-Age: 600'
+  responses:
+    OPTIONS-CORS-200:
+      description: The `OPTIONS` supplied in the CORS request is allowed.
+      headers:
+        Access-Control-Allow-Origin:
+          $ref: '#/components/headers/Access-Control-Allow-Origin'
+        Access-Control-Max-Age:
+          $ref: '#/components/headers/Access-Control-Max-Age'
+    OPTIONS-CORS-400:
+      description: The `OPTIONS` supplied in the CORS request is not allowed.
+      content:
+        application/problem+json:
+          schema:
+            $ref: '#/components/schemas/Problem-Detail'
+          example: |-
+            {
+              "type": "https://example.net/bad-request",
+              "title": "Bad Request",
+              "status": 400,
+              "detail": "The method 'POST' is not allowed.",
+              "instance": "/content"
+            }

@@ -1,0 +1,347 @@
+openapi: 3.0.0
+info:
+  title: Configuration Service
+  description: |-
+             The LiveGenic Remote Document Downloader consists of multiple microservices working together. Most of these services use configuration data.
+             These services use Configuration Service to perform store,edit,retrieve and delete configuration operations.
+             This will ensure that the configuration experience is consistent across all microservices.
+             More information in the RFC - [LiveGenic Remote Document Downloader Service](https://gitlab.hylandqa.net/architecture/rfcs/blob/master/rfc/integrations/project-153-livegenic-remote-doc-downloader.md#configuration-and-the-configuration-service)
+  version: 1.0.0-draft
+  x-api-product:
+    program: Integrations and Business Process Applications
+    name: RDDS Configuration
+security:
+  - Bearer: []
+servers:
+  - url: '{server}/ibpaf/rdds'
+    variables:
+      server:
+        default: https://api.hyland.com
+        description: This is the server being used to host the API in the current
+          environment.
+paths:
+  /configurations:
+    get:
+      summary: Gets a list of configurations.
+      description: Get all the existing configurations
+      tags:
+        - Configurations
+      responses:
+        '200':
+          description: Successfully retrieved the existing configurations
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ConfigurationMetadataCollection'
+    post:
+      summary: Saves the posted configuration.
+      description: Accepts configuration metadata in the form of json object
+      tags:
+        - Configurations
+      requestBody:
+        required: true
+        content:
+         application/json:
+           schema:
+              $ref: '#/components/schemas/ConfigurationMetadataPostRequest'
+      responses:
+        '201':
+          description: Configuration created.
+          headers:
+            Location:
+              $ref: '#/components/headers/Location'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ConfigurationMetadataResponse'
+        '400':
+          description: Response for when a request is made without assigning name or category.
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/Problem-Detail'
+  /configurations/{configurationId}:
+    get:
+      summary: Returns the metadata of configuration matching the ID.
+      tags:
+        - Configurations
+      parameters:
+        - $ref: '#/components/parameters/configurationId'
+      responses:
+        '200':
+          description: Successfully retrieved the configuration metadata.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ConfigurationMetadataResponse'
+        '404':
+          description: Response for when the requested configuration is not found.
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/Problem-Detail'
+    patch:
+      summary: Updates the metadata of configuration matching the ID.
+      tags:
+        - Configurations
+      parameters:
+        - $ref: '#/components/parameters/configurationId'
+      requestBody:
+        required: true
+        content:
+         application/json:
+           schema:
+              $ref: '#/components/schemas/ConfigurationMetadataPatchRequest'
+      responses:
+        '204':
+          description: Configuration metadata is updated successfully.
+        '404':
+          description: Response for when the requested configuration is not found.
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/Problem-Detail'
+        '400':
+          description: Response for when a request is made without assigning name or category
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/Problem-Detail'
+    delete:
+      summary: Removes the configuration matching the ID.
+      tags:
+        - Configurations
+      parameters:
+        - $ref: '#/components/parameters/configurationId'
+      responses:
+        '204':
+          description: Successfully deleted the configuration.
+        '404':
+          description: Response for when the requested configuration is not found.
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/Problem-Detail'
+  /configurations/{configurationId}/content:
+    put:
+      summary: Updates the content for the configuration matching the ID.
+      description: |-
+                Accepts a string value and updates the contents of the configuration object which matches the ID in the URI. The content-type of string must be passed in the header.
+                A request which sends empty string or non-string data will produce a 400 Bad Request response.
+      tags:
+        - Configurations
+      parameters:
+        - $ref: '#/components/parameters/configurationId'
+        - $ref: '#/components/parameters/content-type'
+      requestBody:
+        required: true
+        content:
+         'text/*':
+           schema:
+             $ref: '#/components/schemas/ConfigurationContent'
+             example:
+              text/plain:
+                summary: adding string example
+                value: this can be any string
+         'application/*':
+            schema:
+             $ref: '#/components/schemas/ConfigurationContent'
+            example:
+              application/json:
+                summary: json example
+                value: |
+                  {
+                    "MappingConfig":
+                    {
+                      "MapName": "MapToKeywords",
+                      "Replacekeywords": "true"
+                    }
+                  }
+              application/xml:
+                summary: xml sample
+                value: |
+                  <MappingConfig>
+                      <MapName>MapToKeywords</MapName>
+                      <Replacekeywords>true</Replacekeywords>
+                  </MappingConfig>
+      responses:
+        '204':
+          description: Successfully updated the configuration content.
+        '415':
+          description: Response for when the content type is not included in the request header.
+        '404':
+          description: Response for when the requested configuration is not found.
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/Problem-Detail'
+        '400':
+          description: Response for when a request is made with empty content.
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/Problem-Detail'
+    get:
+      summary: Returns the content of configuration matching the ID.
+      tags:
+        - Configurations
+      parameters:
+        - $ref: '#/components/parameters/configurationId'
+      responses:
+        '200':
+          description: Successfully retrieved the configuration content.
+          content:
+            text/plain:
+              schema:
+                $ref: '#/components/schemas/ConfigurationContent'
+        '404':
+          description: Response for when the requested configuration is not found.
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/Problem-Detail'
+
+components:
+  securitySchemes:
+    Bearer:
+      type: http
+      scheme: bearer
+  parameters:
+    configurationId:
+       in: path
+       name: configurationId
+       required: true
+       schema:
+        type: string
+       description: ID of the configuration
+    content-type:
+      name: Content-Type
+      in: header
+      description: |-
+        A standardized <a href="https://tools.ietf.org/html/rfc1049">Content-type</a>
+        field allows mail reading systems to automatically identify the type of a structured message body and to process it for display accordingly.
+      required: true
+      schema:
+        type: string
+      example: 'Content-Type: text/plain'
+  schemas:
+    ConfigurationContent:
+      description: |-
+        Content of the configuration which is stored in text format. It can be in plain text, json, xml or any text based content-type.
+    ConfigurationMetadataCollection:
+      description: |-
+        An array of configurations.
+      properties:
+        configurationCollection:
+          description: |-
+            An array of configurations.
+          type: array
+          items:
+            $ref: '#/components/schemas/ConfigurationMetadataResponse'
+    ConfigurationMetadataPostRequest:
+      description: |-
+        Configuration metadata.
+      properties:
+        name:
+          description: |-
+            The name of the configuration.
+          type: string
+        category:
+          description: |-
+            The type of the configuration.
+          type: string
+      required:
+        - name
+        - category
+    ConfigurationMetadataResponse:
+      description: |-
+        Configuration metadata.
+      properties:
+        configurationId:
+          description: |-
+            The unique identifier of the configuration.
+          type: string
+        name:
+          description: |-
+            The name of the configuration.
+          type: string
+        category:
+          description: |-
+            The type of the configuration.
+          type: string
+      required:
+        - configurationId
+        - name
+        - category
+    ConfigurationMetadataPatchRequest:
+      description: |-
+        Configuration metadata object used to perform PATCH on existing configuration.
+      properties:
+        name:
+          description: |-
+            The name of the configuration.
+          type: string
+        category:
+          description: |-
+            The type of the configuration.
+          type: string
+    Problem-Detail:
+      type: object
+      description: |-
+        The <a href="https://tools.ietf.org/html/rfc7807">Problem Detail</a>
+        format defines a way to carry machine-readable details of errors in a
+        HTTP response to avoid the need to define new error response formats for
+        HTTP APIs.
+
+        Problem details can be extended and defined for specific
+        problem types.
+      properties:
+        type:
+          type: string
+          format: uri
+          description: |-
+            A URI reference that identifies the problem type. It provides human readable documentation about the problem type if dereferenced.
+            The default value for this property, if not set or does not appear on an error response is “about:blank”.
+          example: https://example.net/validation_error
+        title:
+          type: string
+          description: |-
+            A human-readable description of the problem type.
+            The description is written in English or translated to the culture specific language on
+            the client request that produced the problem.
+          example: Your request parameters didn't validate.
+        status:
+          type: integer
+          format: int32
+          description: |-
+            The HTTP status code generated by the origin server for this
+            occurrence of the problem.
+          minimum: 100
+          maximum: 600
+          exclusiveMaximum: true
+          example: 400
+        detail:
+          type: string
+          description: |-
+            A human readable explanation specific to this occurrence of the
+            problem.
+          example: The configuration 'name' field cannot be empty.
+        instance:
+          type: string
+          format: uri
+          description: |-
+            A URI reference that identifies the specific occurrence of the problem.
+            It yields additional information about occurrence of the problem if dereferenced.
+          example: /example-resource
+      required:
+        - title
+        - status
+        - detail
+  headers:
+    Location:
+      description: |-
+        The "Location" header field is used to hold the relative uri of the newly created configuration.
+        example: ibpaf/rdds/configurations/101
+        Reference: https://tools.ietf.org/html/rfc7231#section-7.1.2
+      schema:
+        type: string
