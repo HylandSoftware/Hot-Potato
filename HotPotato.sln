@@ -10,7 +10,6 @@ EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "HotPotato", "src\HotPotato\HotPotato.csproj", "{88DA92FA-4D53-4A87-AC1A-C76374277DBD}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HotPotato.Integration.Test", "test\HotPotato.Integration.Test\HotPotato.Integration.Test.csproj", "{23CDAEF7-947F-463C-9162-3C8692FC103D}"
-
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
