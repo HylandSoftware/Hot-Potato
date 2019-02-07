@@ -26,9 +26,9 @@ namespace HotPotato.OpenApi.Locators.NSwag
             Task<SwaggerDocument> swagTask = FromFileAsync(path);
             SwaggerDocument swagDoc = swagTask.Result;
 
-            PathLocator pathLoc = new PathLocator();
-            SwaggerPathItem subject = pathLoc.Locate(testPair, swagDoc);
-            Assert.NotNull(subject);
+            PathLocator subject = new PathLocator();
+            SwaggerPathItem result = subject.Locate(testPair, swagDoc);
+            Assert.NotNull(result);
         }
 
         [Fact]
@@ -43,9 +43,9 @@ namespace HotPotato.OpenApi.Locators.NSwag
             Task<SwaggerDocument> swagTask = FromFileAsync(path);
             SwaggerDocument swagDoc = swagTask.Result;
 
-            PathLocator pathLoc = new PathLocator();
-            SwaggerPathItem subject = pathLoc.Locate(testPair, swagDoc);
-            Assert.NotNull(subject);
+            PathLocator subject = new PathLocator();
+            SwaggerPathItem result = subject.Locate(testPair, swagDoc);
+            Assert.NotNull(result);
         }
 
     }
