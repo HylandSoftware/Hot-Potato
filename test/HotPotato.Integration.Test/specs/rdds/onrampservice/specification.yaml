@@ -1,0 +1,138 @@
+openapi: 3.0.0
+info:
+  title: On-Ramp Service
+  description: |-
+    The RDDS OnRamp is a REST web service that functions as a webhook (or callback) for 3rd party systems to send notification messages. It provides a base URL (endpoint) to accept these notification messages. This service receives notification messages from the caller and stores them to be processed in the background by [worker processes](https://gitlab.hylandqa.net/architecture/rfcs/blob/master/rfc/integrations/project-153-livegenic-remote-doc-downloader.md#worker-process-and-customization). Therefore this service only returns a result code indicating the notification message is queued for background processing. More details about this service can be found in the RDDS RFC:
+        [Livegenic Remote Document Downloader Service](https://gitlab.hylandqa.net/architecture/rfcs/blob/master/rfc/integrations/project-153-livegenic-remote-doc-downloader.md#onramp-service)
+  version: 1.0.0-draft1
+  x-api-product:
+    program: Integrations and Business Process Applications
+    name: RDDS On-Ramp
+servers:
+  - url: '{server}/ibpaf/rdds'
+    variables:
+      server:
+        default: https://api.hyland.com
+        description: This is the server being used to host the API in the current
+          environment.
+paths:
+  /notifications:
+    post:
+      summary: An entry point for new notifications.
+      description: Accepts a webhook notification message from a 3rd party system, optionally validates it, stores it in the RDDS Message Storage Service and queues for background processing.
+      tags:
+        - Onramp
+      parameters:
+          - $ref: '#/components/parameters/content-type'
+      requestBody:
+        required: true
+        content:
+          'text/*':
+            schema:
+              $ref: '#/components/schemas/NotificationContent'
+            example: this can be just a string
+          'application/*':
+            schema:
+              $ref: '#/components/schemas/NotificationContent'
+            examples:
+              application/json:
+                summary: json example
+                value: |
+                  {
+                    "LGNotification":
+                    {
+                      "URL": "http://domain.com/program/app?clienttype=htmlamp;id=49977",
+                      "StatusFlag": "new",
+                      "MediaType": "video"
+                    }
+                  }
+              application/xml:
+                summary: xml sample
+                value: |
+                  <LGNotification>
+                      <MediaType>video</MediaType>
+                      <StatusFlag>new</StatusFlag>
+                      <URL>http://domain.com/program/app?clienttype=htmlamp;id=49977</URL>
+                  </LGNotification>
+      responses:
+        '204':
+          description: The notification message has been saved in the Message Storage Service for processing.
+        '400':
+          description: Bad request, the message failed validation.
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/Problem-Detail'
+components:
+  parameters:
+    content-type:
+      name: Content-Type
+      in: header
+      description: |-
+        A standardized <a href="https://tools.ietf.org/html/rfc1049">Content-type</a>
+        field allows the receiver to automatically identify the type of a structured message body and to process it for display accordingly.
+      required: true
+      schema:
+        type: string
+      example: 'Content-Type: application/json'
+  headers:
+    location:
+      description: |-
+        The location header will contain the URI of the newly created resource.
+        Reference: https://tools.ietf.org/html/rfc7231#section-7.1.2
+      example: ibpaf/rdds/messages/1
+      schema:
+        type: string
+  schemas:
+    NotificationContent:
+      description: |-
+        Notifications are sent to the message storage service in text format. It can be in plain text, json, xml or any text-based content-type.
+    Problem-Detail:
+      type: object
+      description: |-
+        This schema is taken from <a href="https://tools.ietf.org/html/rfc7807">Problem Detail</a>
+        This format defines a way to carry machine-readable details of errors in a
+        HTTP response to avoid the need to define new error response formats for
+        HTTP APIs.
+
+        Problem details can be extended and defined for specific
+        problem types.
+      properties:
+        type:
+          type: string
+          format: uri
+          description: |-
+            An absolute URI that identifies the problem type.  When
+            dereferenced, it should provide human-readable documentation
+            for the problem type (e.g., using HTML).
+          example: https://example.net/validation_error
+        title:
+          type: string
+          description: |-
+            A short, human-readable summary of the problem type. It should
+            not change from occurrence to occurrence of the problem.
+          example: Your request parameters didn't validate.
+        status:
+          type: integer
+          format: int32
+          description: |-
+            The HTTP status code generated by the origin server for this
+            occurrence of the problem.
+          minimum: 100
+          maximum: 600
+          exclusiveMaximum: true
+          example: 400
+        detail:
+          type: string
+          description: |-
+            A human readable explanation specific to this occurrence of the
+            problem.
+          example: The parameter `count` was not valid for the request.
+        instance:
+          type: string
+          format: uri
+          description: |-
+            A URI reference that identifies the specific occurrence of
+            the problem.  It may or may not yield further information
+            if dereferenced.
+          example: /example-resource
