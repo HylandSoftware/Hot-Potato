@@ -28,22 +28,22 @@ namespace HotPotato.Http.Default
 
     public class SpecTest
     {
-        private const string AValidEndpoint = "https://api.hyland.com/workflow/life-cycles";
-        [Fact]
-        public void LocatorReturnsValidSchema()
-        {
-            //AValidEndpoint = path
-            HttpRequest testRequest = new HttpRequest(HttpMethod.Get, new Uri(AValidEndpoint));
-            HttpResponse testResponse = new HttpResponse(HttpStatusCode.OK, null);
-            HttpPair testPair = new HttpPair(testRequest, testResponse);
-            string path = "M:\\git\\specifications\\specs\\workflow\\specification.yaml";
-            Task<SwaggerDocument> derp = FromFileAsync(path);
-            var swagDoc = derp.Result;
-            Locator docLoc = new Locator(swagDoc, new PathLocator(), new MethodLocator(), new StatusCodeLocator());
-            Tuple<IBodyValidator, IHeaderValidator> tup = docLoc.GetValidator(testPair);
-            Assert.Null(tup);
-            //HttpResponse testResponse = new HttpResponse();
+        //private const string AValidEndpoint = "https://api.hyland.com/workflow/life-cycles";
+        //[Fact]
+        //public void LocatorReturnsValidSchema()
+        //{
+        //    //AValidEndpoint = path
+        //    HttpRequest testRequest = new HttpRequest(HttpMethod.Get, new Uri(AValidEndpoint));
+        //    HttpResponse testResponse = new HttpResponse(HttpStatusCode.OK, null);
+        //    HttpPair testPair = new HttpPair(testRequest, testResponse);
+        //    string path = "M:\\git\\specifications\\specs\\workflow\\specification.yaml";
+        //    Task<SwaggerDocument> derp = FromFileAsync(path);
+        //    var swagDoc = derp.Result;
+        //    Locator docLoc = new Locator(swagDoc, new PathLocator(), new MethodLocator(), new StatusCodeLocator());
+        //    Tuple<IBodyValidator, IHeaderValidator> tup = docLoc.GetValidator(testPair);
+        //    Assert.Null(tup);
+        //    //HttpResponse testResponse = new HttpResponse();
 
-        }
+        //}
     }
 }
