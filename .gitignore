@@ -10,8 +10,7 @@
 *.[Cc]overage
 
 # Cake
-**/unit-test-results.xml
-**/integration-test-results.xml
+**/*results.xml
 **/tools/
 **/build/tools/
 !build/tools/packages.config
