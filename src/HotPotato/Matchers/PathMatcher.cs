@@ -1,4 +1,6 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
+using System;
 
 namespace HotPotato.Matchers
 {
@@ -7,46 +9,39 @@ namespace HotPotato.Matchers
         /// <summary>
         /// Finds the path in <paramref name="paths"/> that matches the <paramref name="path"/> provided.
         /// </summary>
-        /// <param name="path"></param>
-        /// <param name="paths"></param>
+        /// <param name="reqPath"></param>
+        /// <param name="specPaths"></param>
         /// <returns></returns>
-        public static string Match(string path, IEnumerable<string> paths)
+        public static string Match(string reqPath, IEnumerable<string> specPaths)
         {
-            string[] pathPieces = path.Split('/');
-            //var filteredPaths = paths.Where((p) => p.Split('/').Length == pathPieces.Length);
-            foreach (var item in paths)
+            string[] reqPathPieces = preparePathPieces(reqPath);
+
+            foreach (string specPath in specPaths)
             {
-                string[] checkPath = item.Split('/');
-                if (checkPath.Length != pathPieces.Length)
+                string[] specPathPieces = preparePathPieces(specPath);
+
+                int i = 0;
+                bool match = true;
+                Stack<string> pathStack = new Stack<string>();
+
+                while (i < specPathPieces.Length && i < reqPathPieces.Length)
                 {
-                    continue;
-                }
-                bool match = false;
-                for (int i = 0; i < pathPieces.Length; i++)
-                {
-                    if (checkPath[i] != pathPieces[i])
+                    if (isParam(specPathPieces[i]) || (specPathPieces[i] == reqPathPieces[i]))
                     {
-                        if (isParam(checkPath[i]))
-                        {
-                            if (i == pathPieces.Length - 1)
-                            {
-                                match = true;
-                            }
-                            continue;
-                        }
-                        break;
+                        pathStack.Push(specPathPieces[i]);
                     }
                     else
                     {
-                        if (i == pathPieces.Length - 1)
-                        {
-                            match = true;
-                        }
+                        match = false;
+                        break;
                     }
+                    i++;
                 }
-                if (match)
+
+                if (match == true)
                 {
-                    return item;
+                    string retString = "/" + string.Join('/', pathStack);
+                    return retString;
                 }
             }
             return string.Empty;
@@ -55,6 +50,14 @@ namespace HotPotato.Matchers
         private static bool isParam(string s)
         {
             return s.StartsWith('{') && s.EndsWith('}');
+        }
+
+        private static string[] preparePathPieces(string path)
+        {
+            string[] pathPieces = path.Split('/');
+            pathPieces = pathPieces.Where(x => !string.IsNullOrEmpty(x)).ToArray();
+            Array.Reverse(pathPieces);
+            return pathPieces;
         }
     }
 }

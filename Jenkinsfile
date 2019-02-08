@@ -31,6 +31,14 @@ pipeline {
                 }
             }
         }
+		
+		stage("Run-Integration-Tests") {
+            steps {
+                container("builder") {
+                    sh './build.sh -t Run-Integration-Tests'
+                }
+            }
+        }
 
     }
 }

@@ -10,7 +10,7 @@
 *.[Cc]overage
 
 # Cake
-**/results.xml
+**/*results.xml
 **/tools/
 **/build/tools/
 !build/tools/packages.config

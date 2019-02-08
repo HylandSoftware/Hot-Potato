@@ -1,0 +1,977 @@
+openapi: '3.0.0'
+info:
+  version: 1.0.0-draft3
+  title: OnBase Keyword API
+  x-api-product:
+    program: Content Services Features
+    name: Keywords
+  x-releases:
+    - label: Current (1.0.0-draft3)
+      commit: 4debd03da0adb0c27055168ff8e1f60aaecdf55a
+      path: specs/keyword/specification.yaml
+    - label: Implemented (1.0.0-draft3)
+      commit: 4debd03da0adb0c27055168ff8e1f60aaecdf55a
+      path: specs/keyword/specification.yaml
+security:
+  - Bearer: []
+paths:
+  /keyword-types:
+    get:
+      summary: |-
+        Get keyword type metadata for all keyword types.
+      description: |-
+        Get the keyword type metadata for all keyword types in
+        the system.
+      tags:
+        - keyword-types
+      parameters:
+        - in: query
+          name: id
+          schema:
+            type: array
+            items:
+              type: string
+          description: The unique identifiers of keyword types.
+        - in: query
+          name: systemName
+          schema:
+            type: array
+            items:
+              type: string
+          description: The unique configured system names of keyword types.
+        - $ref: '#/components/parameters/Accept-Language'
+      responses:
+        200:
+          description: |-
+            OK
+          headers:
+            Content-Language:
+              $ref: '#/components/headers/Content-Language'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/KeywordTypeCollection'
+        400:
+          description: |-
+            Response when the user tries to combine id and systemName query parameters
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/Problem-Detail'
+        401:
+          description: |-
+            Response when the user does not supply authorization credentials.
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/Problem-Detail'
+    options:
+      summary: |-
+        Options for keyword type metadata.
+      description: |-
+        The `OPTIONS` method is available to support `CORS` preflight requests.
+      tags:
+        - keyword-types
+      parameters:
+        - $ref: '#/components/parameters/Origin'
+        - $ref: '#/components/parameters/Access-Control-Request-Method'
+        - $ref: '#/components/parameters/Access-Control-Request-Headers'
+      responses:
+        200:
+          $ref: '#/components/responses/OPTIONS-CORS-200'
+        400:
+          $ref: '#/components/responses/OPTIONS-CORS-400'
+  /keyword-types/{keywordTypeId}:
+    get:
+      summary: |-
+        Get keyword type metadata.
+      description: |-
+        Get keyword type metadata for the specified keyword type id.
+      tags:
+        - keyword-types
+      parameters:
+        - $ref: '#/components/parameters/keywordTypeId'
+        - $ref: '#/components/parameters/Accept-Language'
+      responses:
+        200:
+          description: |-
+            OK
+          headers:
+            Content-Language:
+              $ref: '#/components/headers/Content-Language'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/KeywordType'
+        401:
+          description: |-
+            Response when the user does not supply authorization credentials.
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/Problem-Detail'
+        404:
+          description: |-
+            Response when the resource does not exist.
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/Problem-Detail'
+    options:
+      summary: |-
+        Options for keyword type metadata.
+      description: |-
+        The `OPTIONS` method is available to support `CORS` preflight requests.
+      tags:
+        - keyword-types
+      parameters:
+        - $ref: '#/components/parameters/keywordTypeId'
+        - $ref: '#/components/parameters/Origin'
+        - $ref: '#/components/parameters/Access-Control-Request-Method'
+        - $ref: '#/components/parameters/Access-Control-Request-Headers'
+      responses:
+        200:
+          $ref: '#/components/responses/OPTIONS-CORS-200'
+        400:
+          $ref: '#/components/responses/OPTIONS-CORS-400'
+  /keyword-type-groups:
+    get:
+      summary: |-
+        Get keyword type group metadata for all keyword type groups.
+      description: |-
+        Get the keyword type group metadata for all keyword type groups in
+        the system.
+      tags:
+        - keyword-type-groups
+      parameters:
+        - in: query
+          name: id
+          schema:
+            type: array
+            items:
+              type: string
+          description: The unique identifiers of keyword type groups.
+        - in: query
+          name: systemName
+          schema:
+            type: array
+            items:
+              type: string
+          description: The unique configured system names of keyword type groups.
+        - $ref: '#/components/parameters/Accept-Language'
+      responses:
+        200:
+          description: |-
+            OK
+          headers:
+            Content-Language:
+              $ref: '#/components/headers/Content-Language'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/KeywordTypeGroupCollection'
+        400:
+          description: |-
+            Response when the user tries to combine id and systemName query parameters
+        401:
+          description: |-
+            Response when the user does not supply authorization credentials.
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/Problem-Detail'
+    options:
+      summary: |-
+        Options for keyword type group metadata.
+      description: |-
+        The `OPTIONS` method is available to support `CORS` preflight requests.
+      tags:
+        - keyword-type-groups
+      parameters:
+        - $ref: '#/components/parameters/Origin'
+        - $ref: '#/components/parameters/Access-Control-Request-Method'
+        - $ref: '#/components/parameters/Access-Control-Request-Headers'
+      responses:
+        200:
+          $ref: '#/components/responses/OPTIONS-CORS-200'
+        400:
+          $ref: '#/components/responses/OPTIONS-CORS-400'
+  /keyword-type-groups/{keywordTypeGroupId}:
+    get:
+      summary: |-
+        Get keyword type group metadata.
+      description: |-
+        Get keyword type group metadata for the specified keyword type group id.
+      tags:
+        - keyword-type-groups
+      parameters:
+        - $ref: '#/components/parameters/keywordTypeGroupId'
+        - $ref: '#/components/parameters/Accept-Language'
+      responses:
+        200:
+          description: |-
+            OK
+          headers:
+            Content-Language:
+              $ref: '#/components/headers/Content-Language'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/KeywordTypeGroup'
+        401:
+          description: |-
+            Response when the user does not supply authorization credentials.
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/Problem-Detail'
+        404:
+          description: |-
+            Response when the resource does not exist.
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/Problem-Detail'
+    options:
+      summary: |-
+        Options for keyword type group metadata.
+      description: |-
+        The `OPTIONS` method is available to support `CORS` preflight requests.
+      tags:
+        - keyword-type-groups
+      parameters:
+        - $ref: '#/components/parameters/keywordTypeGroupId'
+        - $ref: '#/components/parameters/Origin'
+        - $ref: '#/components/parameters/Access-Control-Request-Method'
+        - $ref: '#/components/parameters/Access-Control-Request-Headers'
+      responses:
+        200:
+          $ref: '#/components/responses/OPTIONS-CORS-200'
+        400:
+          $ref: '#/components/responses/OPTIONS-CORS-400'
+  /keyword-type-groups/{keywordTypeGroupId}/keyword-types:
+    get:
+      summary: |-
+        Get a list of keyword types in the keyword type group.
+      description: |-
+        Get a list of keyword types in the keyword type group with the specified id.
+      tags:
+        - keyword-type-groups
+      parameters:
+        - $ref: '#/components/parameters/keywordTypeGroupId'
+        - $ref: '#/components/parameters/Accept-Language'
+      responses:
+        200:
+          description: |-
+            OK
+          headers:
+            Content-Language:
+              $ref: '#/components/headers/Content-Language'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/KeywordTypeGroupKeywordTypeCollection'
+        401:
+          description: |-
+            Response when the user does not supply authorization credentials.
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/Problem-Detail'
+        404:
+          description: |-
+            Response when the resource does not exist.
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/Problem-Detail'
+    options:
+      summary: |-
+        Options for a list of keyword types in the keyword type group.
+      description: |-
+        The `OPTIONS` method is available to support `CORS` preflight requests.
+      tags:
+        - keyword-type-groups
+      parameters:
+        - $ref: '#/components/parameters/keywordTypeGroupId'
+        - $ref: '#/components/parameters/Origin'
+        - $ref: '#/components/parameters/Access-Control-Request-Method'
+        - $ref: '#/components/parameters/Access-Control-Request-Headers'
+      responses:
+        200:
+          $ref: '#/components/responses/OPTIONS-CORS-200'
+        400:
+          $ref: '#/components/responses/OPTIONS-CORS-400'     
+  /autofill-keyword-sets:
+    get:
+      summary: |-
+        Get autofill keyword set metadata for all autofill keyword sets.
+      description: |-
+        Get the autofill keyword set metadata for all autofill keyword sets in
+        the system.
+      tags:
+        - autofills
+      parameters:
+        - in: query
+          name: id
+          schema: 
+            type: array
+            items:
+              type: string
+          description: The unique identifiers of autofill keyword sets.
+        - in: query
+          name: systemName
+          schema:
+            type: array
+            items:
+              type: string
+          description: The unique configured system names of autofill keyword sets.
+        - $ref: '#/components/parameters/Accept-Language'
+      responses:
+        200:
+          description: |-
+            OK
+          headers:
+            Content-Language:
+              $ref: '#/components/headers/Content-Language'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AutoFillKeywordSetCollection'
+        400:
+          description: |-
+            Response when the user tries to combine id and systemName query parameters
+        401:
+          description: |-
+            Response when the user does not supply authorization credentials.
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/Problem-Detail'
+    options:
+      summary: |-
+        Options for autofill keyword set metadata.
+      description: |-
+        The `OPTIONS` method is available to support `CORS` preflight requests.
+      tags:
+        - autofills
+      parameters:
+        - $ref: '#/components/parameters/Origin'
+        - $ref: '#/components/parameters/Access-Control-Request-Method'
+        - $ref: '#/components/parameters/Access-Control-Request-Headers'
+      responses:
+        200:
+          $ref: '#/components/responses/OPTIONS-CORS-200'
+        400:
+          $ref: '#/components/responses/OPTIONS-CORS-400'    
+  /autofill-keyword-sets/{autoFillKeywordSetId}:
+    get:
+      summary: |-
+        Get autofill keyword set metadata.
+      description: |-
+        Get autofill keyword set metadata for the specified autofill keyword set id.
+      tags: 
+        - autofills
+      parameters:
+        - $ref: '#/components/parameters/autoFillKeywordSetId'
+        - $ref: '#/components/parameters/Accept-Language'
+      responses:
+        200:
+          description: |-
+            OK
+          headers:
+            Content-Language:
+              $ref: '#/components/headers/Content-Language'
+          content: 
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AutoFillKeywordSet'
+        401:
+          description: |-
+            Response when the user does not supply authorization credentials.
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/Problem-Detail'
+        404:
+          description: |-
+            Response when the resource does not exist or the user does not have rights to the specified autofill keyword set.
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/Problem-Detail'
+    options:
+      summary: |-
+        Options for autofill keyword set metadata.
+      description: |-
+        The `OPTIONS` method is available to support `CORS` preflight requests.
+      tags:
+        - autofills
+      parameters:
+        - $ref: '#/components/parameters/autoFillKeywordSetId'
+        - $ref: '#/components/parameters/Origin'
+        - $ref: '#/components/parameters/Access-Control-Request-Method'
+        - $ref: '#/components/parameters/Access-Control-Request-Headers'
+      responses:
+        200:
+          $ref: '#/components/responses/OPTIONS-CORS-200'
+        400:
+          $ref: '#/components/responses/OPTIONS-CORS-400'
+  /autofill-keyword-sets/{autoFillKeywordSetId}/keyword-types:
+    get:
+      summary: |-
+        Get keyword metadata for a autofill type.
+      description: |-
+        Gets the associated keyword types.
+      tags: 
+        - autofills
+      parameters:
+        - $ref: '#/components/parameters/autoFillKeywordSetId'
+      responses:
+        200:
+          description: |-
+            OK
+          content: 
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AutoFillKeywordSetKeywordTypeCollection'
+        401:
+          description: |-
+            Response when the user does not supply authorization credentials.
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/Problem-Detail'
+        404:
+          description: |-
+            Response when the resource does not exist or the user does not have rights to the specified autofill keyword set.
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/Problem-Detail'
+    options:
+      summary: |-
+        Options for autofill keyword set metadata.
+      description: |-
+        The `OPTIONS` method is available to support `CORS` preflight requests.
+      tags:
+        - autofills
+      parameters:
+        - $ref: '#/components/parameters/autoFillKeywordSetId'
+        - $ref: '#/components/parameters/Origin'
+        - $ref: '#/components/parameters/Access-Control-Request-Method'
+        - $ref: '#/components/parameters/Access-Control-Request-Headers'
+      responses:
+        200:
+          $ref: '#/components/responses/OPTIONS-CORS-200'
+        400:
+          $ref: '#/components/responses/OPTIONS-CORS-400'
+  /autofill-keyword-sets/{autoFillKeywordSetId}/keyword-set-data:
+    get:
+      summary: |-
+        Get the keyword set data.
+      description: |-
+        Get the keyword set data instances based on query parameters.
+      tags:
+        - autofills
+      parameters:
+        - $ref: '#/components/parameters/autoFillKeywordSetId'
+        - in: query
+          name: primaryValue
+          schema: 
+            type: string
+          description: The primary keyword value associated with the particular autofill keyword set.
+      responses:
+        200:
+          description: |-
+            OK
+          headers:
+            Content-Language:
+              $ref: '#/components/headers/Content-Language'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/KeywordSetDataCollection'
+        401:
+          description: |-
+            Response when the user does not supply authorization credentials.
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/Problem-Detail'
+        404:
+          description: |-
+            Response when the resource does not exist or the user does not have rights to the specified autofill keyword set.
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/Problem-Detail'
+    options:
+      summary: |-
+        Options for keyword set data.
+      description: |-
+        The `OPTIONS` method is available to support `CORS` preflight requests.
+      tags:
+        - autofills
+      parameters:
+        - $ref: '#/components/parameters/autoFillKeywordSetId'
+        - $ref: '#/components/parameters/Origin'
+        - $ref: '#/components/parameters/Access-Control-Request-Method'
+        - $ref: '#/components/parameters/Access-Control-Request-Headers'
+      responses:
+        200:
+          $ref: '#/components/responses/OPTIONS-CORS-200'
+        400:
+          $ref: '#/components/responses/OPTIONS-CORS-400'  
+components:
+  securitySchemes:
+    Bearer:
+      type: http
+      scheme: bearer
+  schemas:
+    KeywordTypeCollection:
+      description: |-
+        An array of keyword types.
+      properties:
+        keywordTypeCollection:
+          description: |-
+            An array of keyword types.
+          type: array
+          items:
+            $ref: '#/components/schemas/KeywordType'
+    KeywordType:
+      description: |-
+        Keyword type metadata.
+      properties:
+        id:
+          description: |-
+            The unique identifier of the keyword type.
+          type: string
+        systemName:
+          description: |-
+            The untranslated name of the keyword type.
+            Localization is controlled by the Accept-Language header and
+            the language of the response is represented by the Content-Language
+            header.
+          type: string
+        name:
+          description: |-
+            The name of the keyword type. This value is localized.
+          type: string
+        dataType:
+          description: |-
+            Describes the type of data represented by the keyword type.
+
+            `Numeric9` represents a number up to 9 digits in length.
+
+            `Numeric20` represents a number up to 20 digits in length.
+
+            `Alphanumeric` represents any value with uppercase letters and/or numbers.
+
+            `Currency` represents a monetary value. The currency format used is
+            'built-in' to the keyword type.
+
+            `SpecificCurrency` represents a monetary value and allows multiple
+             currency formats to be used with the same keyword type.
+
+            `Date` represents a date.
+
+            `DateTime` represents both a date and a time.
+
+            `FloatingPoint` represents numeric values that have variable decimal
+             point locations.
+          type: string
+          enum:
+            - Numeric9
+            - Numeric20
+            - Alphanumeric
+            - Currency
+            - SpecificCurrency
+            - Date
+            - DateTime
+            - FloatingPoint
+        usedForRetrieval:
+          description: |-
+            Classification to determine if the keyword type is used for document retrieval.
+          type: boolean
+        invisible:
+          description: |-
+            Indicates if the keyword type should be made invisible in UI contexts.
+          type: boolean
+        alphanumericSettings:
+          $ref: '#/components/schemas/AlphanumericSettings'
+    AlphanumericSettings:
+      description: |-
+        Configuration settings for alphanumeric keyword types.
+      properties:
+        caseOptions:
+          description: |-
+            The character case option for keyword values of this keyword type.
+
+            `Uppercase` keyword values are stored using only uppercase characters.
+
+            `MixedCase` keyword values are stored using upper and lower case characters.
+          type: string
+          enum:
+            - Uppercase
+            - MixedCase
+        maximumLength:
+          description: |-
+            The maximum number of characters allowed by the keyword type.
+          type: integer
+          format: int64
+        storageOptions:
+          description: |-
+            The database storage method used for keyword values of this keyword type.
+
+            `SingleTable` indicates keyword values are stored in a single database table.
+
+            `DualTable` indicates keyword values are stored in two database tables.
+          type: string
+          enum:
+            - SingleTable
+            - DualTable
+    KeywordTypeGroupCollection:
+      description: |-
+        An array of keyword type groups.
+      properties:
+        KeywordTypeGroupCollection:
+          description: |-
+            An array of keyword type groups.
+          type: array
+          items:
+            $ref: '#/components/schemas/KeywordTypeGroup'
+    KeywordTypeGroup:
+      description: |-
+        Keyword type group metadata.
+      properties:
+        id:
+          description: |-
+            The unique identifier of the keyword type group.
+          type: string
+        systemName:
+          description: |-
+            The untranslated name of the keyword type group.
+            Localization is controlled by the Accept-Language header and
+            the language of the response is represented by the Content-Language
+            header.
+          type: string
+        name:
+          description: |-
+            The name of the keyword type group. This value is localized.
+          type: string
+        storageType:
+          description: |-
+            The type of storage for the keyword type group.
+
+            `SingleInstance` represents a set of keyword types that will appear
+            only once and are associated with a specific group type. Each single
+            instance keyword type may have only one value instance.
+
+            `MultiInstance` represents a set of keyword types that can appear
+            multiple times as a related instance. Each multiple instance keyword
+            type may have only one value instance within a particular group.
+
+          type: string
+          enum:
+            - SingleInstance
+            - MultiInstance
+    KeywordTypeGroupKeywordTypeCollection:
+      description: |-
+        A list of keyword types grouped by the keyword type group they belong to.
+      properties:
+        keywordTypeCollection:
+          description: |-
+            An array of keyword types.
+          type: array
+          items:
+            $ref: '#/components/schemas/KeywordTypeGroupKeywordType'
+    KeywordTypeGroupKeywordType:
+      description: |-
+        Keyword type metadata.
+      properties:
+        id:
+          description: |-
+            The unique identifier of the keyword type.
+          type: string
+      required:
+        - id
+    AutoFillKeywordSetCollection:
+      description: |-
+        An array of autofill keyword sets.
+      properties:
+        items:
+          description: |-
+            An array of autofill keyword sets.
+          type: array
+          items:
+            $ref: '#/components/schemas/AutoFillKeywordSet'
+    AutoFillKeywordSet:
+      description: |-
+        Autofill keyword set metadata.
+      properties:
+        id:
+          description: |-
+            The unique identifier of the autofill keyword set.
+          type: string
+        systemName: 
+          description: |-
+            The untranslated name of the autofill keyword set. 
+            Localization is controlled by the Accept-Language header and 
+            the language of the response is represented by the Content-Language
+            header.
+          type: string
+        name: 
+          description: |-
+            The name of the autofill keyword set. This value is localized.
+          type: string
+        primaryKeywordTypeId:
+          description: |-
+            The keyword type id of the autofill keyword set's primary key.
+          type: string
+        external:
+          description: |-
+            Indicates that the autofill keyword set is external.
+          type: boolean
+    AutoFillKeywordSetKeywordTypeCollection:
+      description: |-
+        A representation of keyword type information for a autofill type.
+      properties:
+        items:
+          description: |-
+            A lightweight array of keyword types associated with an auto fill keyword set.
+          type: array
+          items: 
+            $ref: '#/components/schemas/AutoFillKeywordSetKeywordType'
+    AutoFillKeywordSetKeywordType:
+      description: |-
+        Keyword type identifier
+      properties:
+        id:
+          description: |-
+            The unique identifier of the keyword type.
+          type: string
+    KeywordSetDataCollection:
+      description: |-
+        An array of autofill keyword set data.
+      properties:
+        items:
+          description: |-
+            An array of autofill keyword set data.
+          type: array
+          items:
+            $ref: '#/components/schemas/KeywordSetData'
+    KeywordSetData:
+      description: |-
+        A collection of autofill keyword set keyword data.
+      properties:
+        id:
+          description: |-
+            The unique identifier of the autofill keyword set data.
+          type: string
+        keywords:
+          description: |-
+            An array of keyword values associated with an auto fill keyword set data object.
+          type: array
+          items:
+            $ref: '#/components/schemas/AutoFillKeywordSetKeyword'
+    AutoFillKeywordSetKeyword:
+      description: |-
+        Autofill keyword set keyword data.
+      properties:
+        typeId:
+          description: |-
+            The keyword type id.
+          type: string
+        value:
+          description: |-
+            The keyword value.
+          type: string
+    Problem-Detail:
+      type: object
+      description: |-
+        The <a href="https://tools.ietf.org/html/rfc7807">Problem Detail</a>
+        format defines a way to carry machine-readable details of errors in a
+        HTTP response to avoid the need to define new error response formats for
+        HTTP APIs.
+
+        Problem details can be extended and defined for specific
+        problem types.
+      properties:
+        type:
+          type: string
+          format: uri
+          description: |-
+            An absolute URI that identifies the problem type.  When
+            dereferenced, it should provide human-readable documentation
+            for the problem type (e.g., using HTML).
+          example: https://example.net/validation_error
+        title:
+          type: string
+          description: |-
+            A short, human-readable summary of the problem type. It should
+            not change from occurrence to occurrence of the problem.
+          example: Your request parameters didn't validate.
+        status:
+          type: integer
+          format: int32
+          description: |-
+            The HTTP status code generated by the origin server for this
+            occurrence of the problem.
+          minimum: 100
+          maximum: 600
+          exclusiveMaximum: true
+          example: 400
+        detail:
+          type: string
+          description: |-
+            A human readable explanation specific to this occurrence of the
+            problem.
+          example: The parameter `count` was not valid for the request.
+        instance:
+          type: string
+          format: uri
+          description: |-
+            A URI reference that identifies the specific occurrence of
+            the problem.  It may or may not yield further information
+            if dereferenced.
+          example: /example-resource
+  parameters:
+    keywordTypeId:
+      description: |-
+        The unique identifier of a keyword type.
+      name: keywordTypeId
+      in: path
+      required: true
+      schema:
+        type: string
+    keywordTypeGroupId:
+      description: |-
+        The unique identifier of a keyword type group.
+      name: keywordTypeGroupId
+      in: path
+      required: true
+      schema:
+        type: string
+    autoFillKeywordSetId:
+      description: |-
+        The unique identifier of a autofill keyword set.
+      name: autoFillKeywordSetId
+      in: path
+      required: true
+      schema:
+        type: string
+    Accept-Language:
+      name: Accept-Language
+      in: header
+      description: |-
+        The <a href="https://tools.ietf.org/html/rfc7231#section-5.3.5">Accept-Language</a>
+        header field can be used by user agents to
+        indicate the set of natural languages that are preferred in the
+        response.  Language tags are defined in RFC 5646. If none of the 
+        languages given are supported, a default language will be returned.
+      required: false
+      schema:
+        type: string
+      example: 'Accept-Language: en-US'
+    Origin:
+      name: Origin
+      in: header
+      description: |-
+        The <a href="https://tools.ietf.org/html/rfc6454#section-7">Origin</a>
+        request header indicates which origin(s) a request originated from.
+        Origin only includes the server name and no path information.
+      required: false
+      schema:
+        type: string
+      example: 'Origin: https://example.net'
+    Access-Control-Request-Method:
+      name: Access-Control-Request-Method
+      in: header
+      description: |-
+        The <a
+        href="https://fetch.spec.whatwg.org/#http-access-control-request-method">Access-Control-Request-Method</a>
+        request header is used when issuing a `CORS` preflight request to let
+        the server know which HTTP method will be used when the actual request
+        is made.
+      required: false
+      schema:
+        type: string
+      example: 'Access-Control-Request-Method: GET'
+    Access-Control-Request-Headers:
+      name: Access-Control-Request-Headers
+      in: header
+      description: |-
+        The <a
+        href="https://fetch.spec.whatwg.org/#http-access-control-request-headers">Access-Control-Request-Headers</a>
+        request header is used when issuing a `CORS` preflight request to let
+        the server know which HTTP headers will be used when the actual request
+        is made.
+      required: false
+      schema:
+        type: string
+      example: 'Access-Control-Request-Headers: Range'
+  headers:
+    Access-Control-Expose-Headers:
+      description: |-
+        The Access-Control-Expose-Headers
+        response header indicates which headers can be exposed as part of the
+        response by listing their names.
+
+        Browsers and libraries that participate in the CORS standards will
+        restrict access to non-simple headers.
+
+        Reference: https://fetch.spec.whatwg.org/#http-access-control-expose-headers
+      schema:
+        type: string
+    Access-Control-Allow-Origin:
+      description: |-
+        The Access-Control-Allow-Origin response header is returned after a
+        successful `CORS` preflight request to indicate whether the target
+        resource can be shared with the given `Origin`.
+        Reference: https://fetch.spec.whatwg.org/#http-access-control-allow-origin
+      schema:
+        type: string
+      example: 'Access-Control-Allow-Origin: https://example.net'
+    Access-Control-Max-Age:
+      description: |-
+        The Access-Control-Max-Age response header indicates how long in seconds
+        the results of a `CORS` preflight request can be cached.
+        Reference: https://fetch.spec.whatwg.org/#http-access-control-max-age
+      schema:
+        type: string
+      example: 'Access-Control-Max-Age: 600'
+    Content-Language:
+      description: |-
+        The Content-Language header field describes the natural language(s)
+        of the intended audience for the representation.  Note that this
+        might not be equivalent to all the languages used within the
+        representation.
+
+        Reference: https://tools.ietf.org/html/rfc7231#section-3.1.3.2
+      schema:
+        type: string
+  responses:
+    OPTIONS-CORS-200:
+      description: |-
+        The `OPTIONS` supplied in the CORS request is allowed.
+      headers:
+        Access-Control-Allow-Origin:
+          $ref: '#/components/headers/Access-Control-Allow-Origin'
+        Access-Control-Max-Age:
+          $ref: '#/components/headers/Access-Control-Max-Age'
+    OPTIONS-CORS-400:
+      description: |-
+        The `OPTIONS` supplied in the CORS request is not allowed.
+      content:
+        application/problem+json:
+          schema:
+            $ref: '#/components/schemas/Problem-Detail'
+          example: |-
+            {
+              "type": "https://example.net/bad-request",
+              "title": "Bad Request",
+              "status": 400,
+              "detail": "The method 'POST' is not allowed.",
+              "instance": "/content"
+            }
