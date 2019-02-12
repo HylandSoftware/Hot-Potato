@@ -12,7 +12,9 @@ using Xunit;
 using System;
 using System.Net;
 using System.Net.Http;
+using System.Text;
 using System.Threading.Tasks;
+using System.Runtime.Serialization.Formatters.Binary;
 
 namespace HotPotato.Http.Default
 {
@@ -28,21 +30,36 @@ namespace HotPotato.Http.Default
 
     public class SpecTest
     {
-        private const string AValidEndpoint = "https://api.hyland.com/workflow/life-cycles";
+        private const string AValidEndpoint = "https://api.hyland.com/workflow/life-cycles/48/";
         [Fact]
-        public void LocatorReturnsValidSchema()
+        public async void Locator_ReturnsValidBody()
         {
-            //AValidEndpoint = path
+            object jsonData = new
+            {
+                id = "string",
+                name = "string",
+                smallIconId = "string"
+            };
+
+            string jsonString = JsonConvert.SerializeObject(jsonData);
+            HttpContent content = new StringContent(jsonString, Encoding.UTF8, "application/json");
+
             HttpRequest testRequest = new HttpRequest(HttpMethod.Get, new Uri(AValidEndpoint));
-            HttpResponse testResponse = new HttpResponse(HttpStatusCode.OK, null);
+
+            HttpResponseMessage testRespMsg = new HttpResponseMessage();
+            testRespMsg.StatusCode = HttpStatusCode.OK;
+            testRespMsg.Content = content;
+            var testResponse = await testRespMsg.ConvertResponse();
+
             HttpPair testPair = new HttpPair(testRequest, testResponse);
             string path = "M:\\git\\specifications\\specs\\workflow\\specification.yaml";
             Task<SwaggerDocument> swagTask = FromFileAsync(path);
-            var swagDoc = swagTask.Result;
-            Locator docLoc = new Locator(swagDoc, new PathLocator(), new MethodLocator(), new StatusCodeLocator());
-            Tuple<IBodyValidator, IHeaderValidator> tup = docLoc.GetValidator(testPair);
-            Assert.Null(tup);
-            //HttpResponse testResponse = new HttpResponse();
+            SwaggerDocument swagDoc = swagTask.Result;
+
+            Locator subject = new Locator(swagDoc, new PathLocator(), new MethodLocator(), new StatusCodeLocator());
+            Tuple<IBodyValidator, IHeaderValidator> valTup = subject.GetValidator(testPair);
+            Results.Result result = valTup.Item1.Validate(jsonString);
+            Assert.Contains("is valid", result.Message);
 
         }
     }
