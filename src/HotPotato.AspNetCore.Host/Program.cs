@@ -2,7 +2,7 @@
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
 
-namespace HotPotato
+namespace HotPotato.AspNetCore.Host
 {
     class Program
     {
