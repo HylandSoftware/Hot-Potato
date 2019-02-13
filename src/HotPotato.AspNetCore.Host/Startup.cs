@@ -8,7 +8,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using System;
 
-namespace HotPotato
+namespace HotPotato.AspNetCore.Host
 {
     public class Startup
     {

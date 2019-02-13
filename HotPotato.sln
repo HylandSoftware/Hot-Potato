@@ -9,7 +9,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "HotPotato.Test", "test\HotP
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "HotPotato", "src\HotPotato\HotPotato.csproj", "{88DA92FA-4D53-4A87-AC1A-C76374277DBD}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HotPotato.Integration.Test", "test\HotPotato.Integration.Test\HotPotato.Integration.Test.csproj", "{23CDAEF7-947F-463C-9162-3C8692FC103D}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "HotPotato.Integration.Test", "test\HotPotato.Integration.Test\HotPotato.Integration.Test.csproj", "{23CDAEF7-947F-463C-9162-3C8692FC103D}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "HotPotato.AspNetCore.Host", "src\HotPotato.AspNetCore.Host\HotPotato.AspNetCore.Host.csproj", "{A6AAD43D-5B48-4A7B-964B-84F4AE64CF37}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -29,6 +31,10 @@ Global
 		{23CDAEF7-947F-463C-9162-3C8692FC103D}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{23CDAEF7-947F-463C-9162-3C8692FC103D}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{23CDAEF7-947F-463C-9162-3C8692FC103D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A6AAD43D-5B48-4A7B-964B-84F4AE64CF37}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A6AAD43D-5B48-4A7B-964B-84F4AE64CF37}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A6AAD43D-5B48-4A7B-964B-84F4AE64CF37}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A6AAD43D-5B48-4A7B-964B-84F4AE64CF37}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

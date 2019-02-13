@@ -4,7 +4,7 @@ using System.Threading.Tasks;
 
 namespace HotPotato.Http.Default
 {
-    internal class HttpClient : IHttpClient
+    public class HttpClient : IHttpClient
     {
         private readonly System.Net.Http.HttpClient client;
         public HttpClient(System.Net.Http.HttpClient client)
