@@ -1,4 +1,5 @@
 ﻿using System.Net;
+using System.Net.Http.Headers;
 
 namespace HotPotato.Http.Default
 {
@@ -19,5 +20,6 @@ namespace HotPotato.Http.Default
         public HttpHeaders Headers { get; }
 
         public byte[] Content { get; }
+        public MediaTypeHeaderValue ContentType { get; }
     }
 }

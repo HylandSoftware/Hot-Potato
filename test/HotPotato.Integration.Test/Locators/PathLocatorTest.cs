@@ -1,4 +1,5 @@
 ﻿using HotPotato.Http.Default;
+using static HotPotato.IntegrationTestConstants;
 using HotPotato.Models;
 using NSwag;
 using static NSwag.SwaggerYamlDocument;
@@ -13,7 +14,6 @@ namespace HotPotato.OpenApi.Locators.NSwag
 {
     public class PathLocatorTest
     {
-        private static char s = Path.DirectorySeparatorChar;
         [Fact]
         public void PathLocator_LocatesWithParam()
         {

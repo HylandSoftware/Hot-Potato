@@ -1,20 +1,213 @@
 openapi: '3.0.0'
 info:
-  version: 1.0.0-draft9
+  version: 1.0.0-latest
   title: OnBase Document API
   x-api-product:
     program: Content Services Platform
     name: Document
   x-releases:
-    - label: Current (1.0.0-draft9)
-      commit: b5a92d02740294860fa16a4cbb7ed4159cab6747
+    - label: Current Spec (1.0.0-draft10)
+      commit: 5475b88fa6d683582c1c65a0e954a914db20cd50
       path: specs/document/specification.yaml
-    - label: Implemented (1.0.0-draft9)
-      commit: b5a92d02740294860fa16a4cbb7ed4159cab6747
+    - label: Implemented Spec (1.0.0-draft10)
+      commit: 5475b88fa6d683582c1c65a0e954a914db20cd50
       path: specs/document/specification.yaml
 security:
   - Bearer: []
+tags:
+  - name: custom-queries
+    description: Configuration items related to custom queries.
+  - name: document-types
+    description: Configuration items related to document types.
+  - name: document-type-groups
+    description: Configuration items related to document type groups.
+  - name: file-types
+    description: Configuration items related to file types.
+  - name: document
+    description: Document archival and metadata retrieval.
+  - name: document keywords
+    description: Document keywords.
+  - name: document revisions
+    description: Document revisions.
+  - name: document renditions
+    description: Document renditions.
+  - name: document content
+    description: Document content retrieval.
+  - name: document retrieval
+    description: Document search.
+  - name: file upload
+    description: File upload for document archival.
+  
+
 paths:
+  /custom-queries:
+    get:
+      summary: |-
+        Get the custom query metadata for all custom queries for the user.
+      description: |-
+        Get all the custom queries the logged in user has permissions to view.
+      tags:
+        - custom-queries
+      parameters:
+        - in: query
+          name: id
+          schema:
+            type: array
+            items:
+              type: string
+          description: The unique identifiers of custom queries. This parameter cannot be used in conjunction with the `systemName` parameter. Multiple values are supported and in a URL should be joined using the "&" character.  Ex:?item=12&item=13
+        - in: query
+          name: systemName
+          schema:
+            type: array
+            items:
+              type: string
+          description: The unique configured system names of custom queries. This parameter cannot be used in conjunction with the `id` parameter. Multiple values are supported and in a URL should be joined using the "&" character.  Ex:?item=12&item=13
+        - $ref: '#/components/parameters/Accept-Language'
+      responses:
+        200:
+          description: |-
+            OK
+          headers:
+            Content-Language:
+              $ref: '#/components/headers/Content-Language'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CustomQueryCollection'
+        400:
+          description: |-
+            Response when the user tries to combine id and systemName query parameters
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/Problem-Detail'
+        401:
+          description: |-
+            Response when the user does not supply valid authorization credentials.
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/Problem-Detail'
+    options:
+      summary: |-
+        Options for custom query metadata.
+      description: |-
+        The `OPTIONS` method is available to support `CORS` preflight requests.
+      tags:
+        - custom-queries
+      parameters:
+        - $ref: '#/components/parameters/Origin'
+        - $ref: '#/components/parameters/Access-Control-Request-Method'
+        - $ref: '#/components/parameters/Access-Control-Request-Headers'
+      responses:
+        200:
+          $ref: '#/components/responses/OPTIONS-CORS-200'
+        400:
+          $ref: '#/components/responses/OPTIONS-CORS-400'
+  /custom-queries/{customQueryId}:
+    get:
+      summary: |-
+        Gets custom query metadata
+      description: |-
+        Gets custom query metadata
+      tags:
+        - custom-queries
+      parameters:
+        - $ref: '#/components/parameters/customQueryId'
+        - $ref: '#/components/parameters/Accept-Language'
+      responses:
+        200:
+          description: |-
+            OK
+          headers:
+            Content-Language:
+              $ref: '#/components/headers/Content-Language'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CustomQuery'
+        401:
+          description: |-
+            Response when the user does not supply valid authorization credentials.
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/Problem-Detail'
+        404:
+          description: |-
+            Response when the resource does not exist or the user does not have rights to the resource.
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/Problem-Detail'
+    options:
+      summary: |-
+        Options for custom query metadata.
+      description: |-
+        The 'OPTIONS' method is available to support `CORS` preflight requests.
+      tags:
+        - custom-queries
+      parameters:
+        - $ref: '#/components/parameters/customQueryId'
+        - $ref: '#/components/parameters/Origin'
+        - $ref: '#/components/parameters/Access-Control-Request-Method'
+        - $ref: '#/components/parameters/Access-Control-Request-Headers'
+      responses:
+        200:
+          $ref: '#/components/responses/OPTIONS-CORS-200'
+        400:
+          $ref: '#/components/responses/OPTIONS-CORS-400'
+  /custom-queries/{customQueryId}/keyword-types:
+    get:
+      summary: |-
+        Gets keyword types for a custom query
+      description: |-
+        Gets a keyword type collection for the custom query
+      tags:
+        - custom-queries
+      parameters:
+        - $ref: '#/components/parameters/customQueryId'
+      responses:
+        200:
+          description: |-
+            OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CustomQueryKeywordTypeCollection'
+        401:
+          description: |-
+            Response when the user does not supply valid authorization credentials.
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/Problem-Detail'
+        404:
+          description: |-
+            Response when the resource does not exist or the user does not have
+            rights to the resource.
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/Problem-Detail'
+    options:
+      summary: |-
+        Options for keyword-types for a custom query
+      description: |-
+        The 'OPTIONS' method is available to support `CORS` preflight requests.
+      tags:
+        - custom-queries
+      parameters:
+        - $ref: '#/components/parameters/customQueryId'
+        - $ref: '#/components/parameters/Origin'
+        - $ref: '#/components/parameters/Access-Control-Request-Method'
+        - $ref: '#/components/parameters/Access-Control-Request-Headers'
+      responses:
+        200:
+          $ref: '#/components/responses/OPTIONS-CORS-200'
+        400:
+          $ref: '#/components/responses/OPTIONS-CORS-400'
   /document-types:
     get:
       summary: |-
@@ -30,14 +223,14 @@ paths:
             type: array
             items:
               type: string
-          description: The unique identifiers of document types.
+          description: The unique identifiers of document types.This parameter cannot be used in conjunction with the `systemName` parameter. Multiple values are supported and in a URL should be joined using the "&" character.  Ex:?item=12&item=13
         - in: query
           name: systemName
           schema:
             type: array
             items:
               type: string
-          description: The unique configured system names of document types.
+          description: The unique configured system names of document types. This parameter cannot be used in conjunction with the `id` parameter. Multiple values are supported and in a URL should be joined using the "&" character.  Ex:?item=12&item=13
         - $ref: '#/components/parameters/Accept-Language'
       responses:
         200:
@@ -53,9 +246,13 @@ paths:
         400:
           description: |-
             Response when the user tries to combine id and systemName query parameters
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/Problem-Detail'
         401:
           description: |-
-            Response when the user does not supply authorization credentials.
+            Response when the user does not supply valid authorization credentials.
           content:
             application/problem+json:
               schema:
@@ -100,7 +297,7 @@ paths:
                 $ref: '#/components/schemas/DocumentType'
         401:
           description: |-
-            Response when the user does not supply authorization credentials.
+            Response when the user does not supply valid authorization credentials.
           content:
             application/problem+json:
               schema:
@@ -130,18 +327,17 @@ paths:
           $ref: '#/components/responses/OPTIONS-CORS-200'
         400:
           $ref: '#/components/responses/OPTIONS-CORS-400'
-  /document-types/{documentTypeId}/keyword-types:
+  /document-types/{documentTypeId}/keyword-type-groups:
     get:
       summary: |-
-        Get keyword metadata for a document type.
+        Get keyword type group metadata for a document type.
       description: |-
-        Gets the associated keyword type groups and their respective keyword
-        types in a structured format.
+        Gets the associated keyword type groups or associated list of keyword types for standalone keywords. 
 
-        The keyword metadata will be returned in the display order as it has
+        The keyword type group metadata will be returned in the display order as it has
         been configured on the document type.
       tags:
-        - keywords
+        - document-types
       parameters:
         - $ref: '#/components/parameters/documentTypeId'
         - $ref: '#/components/parameters/Accept-Language'
@@ -164,7 +360,7 @@ paths:
                 $ref: '#/components/schemas/KeywordTypeGroupCollectionModel'
         401:
           description: |-
-            Response when the user does not supply authorization credentials.
+            Response when the user does not supply valid authorization credentials.
           content:
             application/problem+json:
               schema:
@@ -183,7 +379,7 @@ paths:
       description: |-
         The `OPTIONS` method is available to support `CORS` preflight requests.
       tags:
-        - keywords
+        - document-types
       parameters:
         - $ref: '#/components/parameters/documentTypeId'
         - $ref: '#/components/parameters/Origin'
@@ -209,14 +405,14 @@ paths:
             type: array
             items:
               type: string
-          description: The unique identifiers of document type groups
+          description: The unique identifiers of document type groups. This parameter cannot be used in conjunction with the `systemName` parameter. Multiple values are supported and in a URL should be joined using the "&" character.  Ex:?item=12&item=13
         - in: query
           name: systemName
           schema:
             type: array
             items:
               type: string
-          description: The unique system names of document type groups
+          description: The unique system names of document type groups. This parameter cannot be used in conjunction with the `id` parameter. Multiple values are supported and in a URL should be joined using the "&" character.  Ex:?item=12&item=13
         - $ref: '#/components/parameters/Accept-Language'
       responses:
         200:
@@ -232,9 +428,13 @@ paths:
         400:
           description: |-
             Response when the user tries to combine id and systemName query parameters
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/Problem-Detail'
         401:
           description: |-
-            Response when the user does not supply authorization credentials.
+            Response when the user does not supply valid authorization credentials.
           content:
             application/problem+json:
               schema:
@@ -279,7 +479,7 @@ paths:
                 $ref: '#/components/schemas/DocumentTypeGroup'
         401:
           description: |-
-            Response when the user does not supply authorization credentials.
+            Response when the user does not supply valid authorization credentials.
           content:
             application/problem+json:
               schema:
@@ -329,7 +529,7 @@ paths:
                 $ref: '#/components/schemas/DocumentTypeGroupDocumentTypeCollection'
         401:
           description: |-
-            Response when the user does not supply authorization credentials.
+            Response when the user does not supply valid authorization credentials.
           content:
             application/problem+json:
               schema:
@@ -359,788 +559,6 @@ paths:
           $ref: '#/components/responses/OPTIONS-CORS-200'
         400:
           $ref: '#/components/responses/OPTIONS-CORS-400'
-  /documents/queries:
-    post:
-      summary: |-
-        Submits a document query, with the provided search constraints.
-      description: |-
-        Submits a document query, with the provided search constraints.
-      tags:
-        - retrieval
-      requestBody:
-        required: true
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/QueryInformation'
-      responses:
-        201:
-          description: |-
-            Query created. The location of the results of the query results
-            is given in the Location header.
-          headers:
-            Location:
-              $ref: '#/components/headers/Location'
-        400:
-          description: |-
-            Response for when a bad request is provided.
-          content:
-            application/problem+json:
-              schema:
-                $ref: '#/components/schemas/Problem-Detail'
-        401:
-          description: |-
-            Response for content when the user does not supply
-            authorization credentials.
-          content:
-            application/problem+json:
-              schema:
-                $ref: '#/components/schemas/Problem-Detail'
-    options:
-      summary: |-
-        Options for querying for documents.
-      description: |-
-        The `OPTIONS` method is available to support `CORS` preflight requests.
-      tags:
-        - retrieval
-      parameters:
-        - $ref: '#/components/parameters/Origin'
-        - $ref: '#/components/parameters/Access-Control-Request-Method'
-        - $ref: '#/components/parameters/Access-Control-Request-Headers'
-      responses:
-        200:
-          $ref: '#/components/responses/OPTIONS-CORS-200'
-        400:
-          $ref: '#/components/responses/OPTIONS-CORS-400'
-  /documents/queries/{queryId}/results:
-    get:
-      summary: |-
-        Returns the documents results of a query.
-      description: |-
-        Returns the documents results of a query.
-      tags:
-        - retrieval
-      parameters:
-        - $ref: '#/components/parameters/queryId'
-      responses:
-        200:
-          description: |-
-            OK
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/QueryResults'
-        401:
-          description: |-
-            Response for content when the user does not supply
-            authorization credentials.
-          content:
-            application/problem+json:
-              schema:
-                $ref: '#/components/schemas/Problem-Detail'
-        404:
-          description: |-
-            Response for when the requested query results are not found.
-          content:
-            application/problem+json:
-              schema:
-                $ref: '#/components/schemas/Problem-Detail'
-    options:
-      summary: |-
-        Options for returning the results of a query.
-      description: |-
-        The `OPTIONS` method is available to support `CORS` preflight requests.
-      tags:
-        - retrieval
-      parameters:
-        - $ref: '#/components/parameters/queryId'
-        - $ref: '#/components/parameters/Origin'
-        - $ref: '#/components/parameters/Access-Control-Request-Method'
-        - $ref: '#/components/parameters/Access-Control-Request-Headers'
-      responses:
-        200:
-          $ref: '#/components/responses/OPTIONS-CORS-200'
-        400:
-          $ref: '#/components/responses/OPTIONS-CORS-400'
-  /documents/queries/{queryId}/columns:
-    get:
-      summary: |-
-        Returns the display column configuration of a query.
-      description: |-
-        Returns the display column configuration of a query.
-      tags:
-        - retrieval
-      parameters:
-        - $ref: '#/components/parameters/queryId'
-      responses:
-        200:
-          description: |-
-            OK
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/DisplayColumnConfigurationCollection'
-        401:
-          description: |-
-            Response for content when the user does not supply
-            authorization credentials.
-          content:
-            application/problem+json:
-              schema:
-                $ref: '#/components/schemas/Problem-Detail'
-        404:
-          description: |-
-            Response for when the query display column
-            configurations are not found.
-          content:
-            application/problem+json:
-              schema:
-                $ref: '#/components/schemas/Problem-Detail'
-    options:
-      summary: |-
-        Options for returning the display column configurations of a query.
-      description: |-
-        The `OPTIONS` method is available to support `CORS` preflight requests.
-      tags:
-        - retrieval
-      parameters:
-        - $ref: '#/components/parameters/queryId'
-        - $ref: '#/components/parameters/Origin'
-        - $ref: '#/components/parameters/Access-Control-Request-Method'
-        - $ref: '#/components/parameters/Access-Control-Request-Headers'
-      responses:
-        200:
-          $ref: '#/components/responses/OPTIONS-CORS-200'
-        400:
-          $ref: '#/components/responses/OPTIONS-CORS-400'
-  /documents/{documentId}:
-    get:
-      summary: |-
-        Gets document metadata.
-      description: |-
-        Gets document metadata.
-      tags:
-        - document
-      parameters:
-        - $ref: '#/components/parameters/documentId'
-      responses:
-        200:
-          description: |-
-            OK
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Document'
-    options:
-      summary: |-
-        Options for document metadata.
-      description: |-
-        The `OPTIONS` method is available to support `CORS` preflight requests.
-      tags:
-        - document
-      parameters:
-        - $ref: '#/components/parameters/documentId'
-        - $ref: '#/components/parameters/Origin'
-        - $ref: '#/components/parameters/Access-Control-Request-Method'
-        - $ref: '#/components/parameters/Access-Control-Request-Headers'
-      responses:
-        200:
-          $ref: '#/components/responses/OPTIONS-CORS-200'
-        400:
-          $ref: '#/components/responses/OPTIONS-CORS-400'
-    delete:
-      summary: |-
-        Deletes a document.
-      description: |-
-        Deletes a document.
-      tags:
-        - document
-      parameters:
-        - $ref: '#/components/parameters/documentId'
-      responses:
-        204:
-          description: |-
-            No Content
-        401:
-          description: |-
-            Response for content when the user does not supply
-            authorization credentials.
-          content:
-            application/problem+json:
-              schema:
-                $ref: '#/components/schemas/Problem-Detail'
-        403:
-          description: |-
-            Response when the user does not have rights to the specified document, 
-            retention criteria has not been met, or the resource is checked out.
-          content:
-            application/problem+json:
-              schema:
-                $ref: '#/components/schemas/Problem-Detail'
-        404:
-          description: |-
-            Response when the resource does not exist or the user does not have rights to the specified document.
-          content:
-            application/problem+json:
-              schema:
-                $ref: '#/components/schemas/Problem-Detail'         
-  /documents/{documentId}/revisions:
-    get:
-      summary: |-
-        Gets a collection of document revisions.
-      description: |-
-        Gets collection of document revisions.
-      tags:
-        - document
-      parameters:
-        - $ref: '#/components/parameters/documentId'
-      responses:
-        200:
-          description: |-
-            OK
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/RevisionCollection'
-        401:
-          description: |-
-            Response when the user does not supply authorization credentials.
-          content:
-            application/problem+json:
-              schema:
-                $ref: '#/components/schemas/Problem-Detail'
-        403:
-          description: |-
-            Response when the user does not have the document privilege `View
-            Revisions`
-          content:
-            application/problem+json:
-              schema:
-                $ref: '#/components/schemas/Problem-Detail'
-        404:
-          description: |-
-            Response when the resource does not exist or the user does not have
-            rights to the specified document type.
-          content:
-            application/problem+json:
-              schema:
-                $ref: '#/components/schemas/Problem-Detail'
-    options:
-      summary: |-
-        Options for revisions metadata.
-      description: |-
-        The `OPTIONS` method is available to support `CORS` preflight requests.
-      tags:
-        - document
-      parameters:
-        - $ref: '#/components/parameters/documentId'
-        - $ref: '#/components/parameters/Origin'
-        - $ref: '#/components/parameters/Access-Control-Request-Method'
-        - $ref: '#/components/parameters/Access-Control-Request-Headers'
-      responses:
-        200:
-          $ref: '#/components/responses/OPTIONS-CORS-200'
-        400:
-          $ref: '#/components/responses/OPTIONS-CORS-400'
-  /documents/{documentId}/revisions/{revisionId}:
-    get:
-      summary: |-
-        Gets the metadata for a revision.
-      description: |-
-        Gets the metadata for a revision.
-        Use 'latest' to retrieve the most recent revision.
-      tags:
-        - document
-      parameters:
-        - $ref: '#/components/parameters/documentId'
-        - $ref: '#/components/parameters/revisionId'
-      responses:
-        200:
-          description: |-
-            OK
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Revision'
-        401:
-          description: |-
-            Response when the user does not supply authorization credentials.
-          content:
-            application/problem+json:
-              schema:
-                $ref: '#/components/schemas/Problem-Detail'
-        404:
-          description: |-
-            Response when the resource does not exist or the user does not have
-            rights to the specified document type.
-          content:
-            application/problem+json:
-              schema:
-                $ref: '#/components/schemas/Problem-Detail'
-    options:
-      summary: |-
-        Options for revisions metadata.
-      description: |-
-        The `OPTIONS` method is available to support `CORS` preflight requests.
-      tags:
-        - document
-      parameters:
-        - $ref: '#/components/parameters/documentId'
-        - $ref: '#/components/parameters/revisionId'
-        - $ref: '#/components/parameters/Origin'
-        - $ref: '#/components/parameters/Access-Control-Request-Method'
-        - $ref: '#/components/parameters/Access-Control-Request-Headers'
-      responses:
-        200:
-          $ref: '#/components/responses/OPTIONS-CORS-200'
-        400:
-          $ref: '#/components/responses/OPTIONS-CORS-400'
-  /documents/{documentId}/revisions/{revisionId}/renditions:
-    get:
-      summary: |-
-        Gets a collection of document renditions.
-      description: |-
-        Gets a collection of document renditions.
-        Use 'latest' to retrieve the most recent revision.
-      tags:
-        - document
-      parameters:
-        - $ref: '#/components/parameters/documentId'
-        - $ref: '#/components/parameters/revisionId'
-      responses:
-        200:
-          description: |-
-            OK
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/RenditionCollection'
-        400:
-          description: |-
-            Response for when a bad request is provided.
-          content:
-            application/problem+json:
-              schema:
-                $ref: '#/components/schemas/Problem-Detail'
-        401:
-          description: |-
-            Response when the user does not supply authorization credentials.
-          content:
-            application/problem+json:
-              schema:
-                $ref: '#/components/schemas/Problem-Detail'
-        404:
-          description: |-
-            Response when the resource does not exist or the user does not have
-            rights to the specified document type.
-          content:
-            application/problem+json:
-              schema:
-                $ref: '#/components/schemas/Problem-Detail'
-    options:
-      summary: |-
-        Options for revisions metadata.
-      description: |-
-        The `OPTIONS` method is available to support `CORS` preflight requests.
-      tags:
-        - document
-      parameters:
-        - $ref: '#/components/parameters/documentId'
-        - $ref: '#/components/parameters/revisionId'
-        - $ref: '#/components/parameters/Origin'
-        - $ref: '#/components/parameters/Access-Control-Request-Method'
-        - $ref: '#/components/parameters/Access-Control-Request-Headers'
-      responses:
-        200:
-          $ref: '#/components/responses/OPTIONS-CORS-200'
-        400:
-          $ref: '#/components/responses/OPTIONS-CORS-400'
-  /documents/{documentId}/revisions/{revisionId}/renditions/{fileTypeId}:
-    get:
-      summary: |-
-        Gets the metadata for a rendition of a revision.
-      description: |-
-        Gets the metadata for a rendition of a revision.
-        Use 'latest' to retrieve the most recent revision.
-        Use 'default' to retrieve the default rendition.
-      tags:
-        - document
-      parameters:
-        - $ref: '#/components/parameters/documentId'
-        - $ref: '#/components/parameters/revisionId'
-        - $ref: '#/components/parameters/fileTypeId'
-      responses:
-        200:
-          description: |-
-            OK
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Rendition'
-        400:
-          description: |-
-            Response for when a bad request is provided.
-          content:
-            application/problem+json:
-              schema:
-                $ref: '#/components/schemas/Problem-Detail'
-        401:
-          description: |-
-            Response when the user does not supply authorization credentials.
-          content:
-            application/problem+json:
-              schema:
-                $ref: '#/components/schemas/Problem-Detail'
-        404:
-          description: |-
-            Response when the revision or rendition does not exist or the user does not have
-            rights to the specified document type.
-          content:
-            application/problem+json:
-              schema:
-                $ref: '#/components/schemas/Problem-Detail'
-    options:
-      summary: |-
-        Options for revisions metadata.
-      description: |-
-        The `OPTIONS` method is available to support `CORS` preflight requests.
-      tags:
-        - document
-      parameters:
-        - $ref: '#/components/parameters/documentId'
-        - $ref: '#/components/parameters/revisionId'
-        - $ref: '#/components/parameters/fileTypeId'
-        - $ref: '#/components/parameters/Origin'
-        - $ref: '#/components/parameters/Access-Control-Request-Method'
-        - $ref: '#/components/parameters/Access-Control-Request-Headers'
-      responses:
-        200:
-          $ref: '#/components/responses/OPTIONS-CORS-200'
-        400:
-          $ref: '#/components/responses/OPTIONS-CORS-400'
-  /documents/{documentId}/revisions/{revisionId}/renditions/{fileTypeId}/content:
-    get:
-      summary: |-
-        Get document content for a rendition of a revision.
-      description: |-
-        To retrieve the default rendition of the latest revisions, 
-        use 'default' for the fileTypeId and 'latest' for the revisionId.
-
-        Consumers can `GET` the content resource by supplying the required
-        parameters and optional headers.  A response will be returned
-        based on the result of Content Negotiation.
-
-        Entire document content is returned as a single file with a 
-        200 OK Status code if the Range header is omitted. 
-        The Range header can be used to retrieve a single page of the document.
-
-        Content will be returned at it's natural size.
-        Content that consists of a single part will have a 200 OK status code.
-        Content that consists of multiple parts will have a 206 Partial
-        Content status code as well as a Content-Range response header
-        to indicate the current range returned and total parts available.
-
-      operationId: GetContentForDocumentAndRevisionAndRendition
-      tags:
-        - content
-      parameters:
-        - $ref: '#/components/parameters/documentId'
-        - $ref: '#/components/parameters/revisionId'
-        - $ref: '#/components/parameters/fileTypeId'
-        - $ref: '#/components/parameters/Accept'
-        - $ref: '#/components/parameters/Range'
-      responses:
-        200:
-          description: |-
-            Response for content that consists of a single part.
-          content:
-            '*/*':
-              schema:
-                $ref: '#/components/schemas/Binary-Content'
-              examples:
-                GetImagePngSinglePartContent:
-                  $ref: '#/components/examples/GetImagePngSinglePartContent'
-        206:
-          description: |-
-            Response for content that consists of multiple parts.
-          headers:
-            Content-Range:
-              $ref: '#/components/headers/Content-Range'
-            Accept-Ranges:
-              $ref: '#/components/headers/Accept-Ranges'
-            Access-Control-Expose-Headers:
-              $ref: '#/components/headers/Access-Control-Expose-Headers'
-          content:
-            '*/*':
-              schema:
-                $ref: '#/components/schemas/Binary-Content'
-              examples:
-                GetImagePngMultiplePartContentPart1of2:
-                  $ref: '#/components/examples/GetImagePngMultiplePartContentPart1of2'
-                GetImagePngMultiplePartContentPart2of2:
-                  $ref: '#/components/examples/GetImagePngMultiplePartContentPart2of2'
-        401:
-          description: |-
-            Response for content when the user does not supply
-            authorization credentials.
-          content:
-            application/problem+json:
-              schema:
-                $ref: '#/components/schemas/Problem-Detail'
-              example: |-
-                {
-                  "type": "https://example.net/unauthorized",
-                  "title": "Unauthorized",
-                  "status": 401,
-                  "detail": "The requested resource requires authorization.",
-                  "instance": "/content"
-                }
-        404:
-          description: |-
-            Response for content when the document does not exist,
-            or the user does not have rights to access.
-          content:
-            application/problem+json:
-              schema:
-                $ref: '#/components/schemas/Problem-Detail'
-              example: |-
-                {
-                  "type": "https://example.net/notfound",
-                  "title": "Resource not found",
-                  "status": 404,
-                  "detail": "The requested resource does not exist.",
-                  "instance": "/content"
-                }
-        406:
-          description: |-
-            Response for when a response matching the list of acceptable values
-            defined in `Accept` cannot be served.
-          content:
-            application/problem+json:
-              schema:
-                $ref: '#/components/schemas/Problem-Detail'
-              example: |-
-                {
-                  "type": "https://example.net/notacceptable",
-                  "title": "Not Acceptable",
-                  "status": 406,
-                  "detail": "The content cannot be returned as 'image/png'.",
-                  "instance": "/content"
-                }
-        416:
-          description: |-
-            Response for content when the specified range is not valid for the
-            content or when the specified range requested is for more than one
-            part.
-          content:
-            application/problem+json:
-              schema:
-                $ref: '#/components/schemas/Problem-Detail'
-              example: |-
-                {
-                  "type": "https://example.net/range-not-satisfiable",
-                  "title": "Range not satisfiable",
-                  "status": 416,
-                  "detail": "The request Range 'parts=3-3' is not valid.",
-                  "instance": "/content"
-                }
-    head:
-      summary: |-
-        Preview document content.
-      description: |-
-        Consumers can make a `HEAD` request to see the response
-        headers without the response body. This allows previewing
-        the result of Content Negotiation with Content-Type,
-        Accept-Ranges, and Content-Range headers.
-      operationId: HeadContentForDocumentAndRevisionAndRendition
-      tags:
-        - content
-      parameters:
-        - $ref: '#/components/parameters/documentId'
-        - $ref: '#/components/parameters/revisionId'
-        - $ref: '#/components/parameters/fileTypeId'
-        - $ref: '#/components/parameters/Accept'
-        - $ref: '#/components/parameters/Range'
-      responses:
-        '200':
-          description: |-
-            Preview the result of content negotiation when the underlying
-            content consists of a single part.
-          content:
-            image/png:
-              examples:
-                HeadImagePngSinglePartContent:
-                  $ref: '#/components/examples/HeadImagePngSinglePartContent'
-        '206':
-          description: |-
-            Preview the result of content negotiation when the underlying
-            content consists of multiple parts.
-          headers:
-            Content-Range:
-              $ref: '#/components/headers/Content-Range'
-            Accept-Ranges:
-              $ref: '#/components/headers/Accept-Ranges'
-            Access-Control-Expose-Headers:
-              $ref: '#/components/headers/Access-Control-Expose-Headers'
-          content:
-            image/png:
-              examples:
-                HeadImagePngMultiplePartContentPart1of2:
-                  $ref: '#/components/examples/HeadImagePngMultiplePartContentPart1of2'
-                HeadImagePngMultiplePartContentPart2of2:
-                  $ref: '#/components/examples/HeadImagePngMultiplePartContentPart2of2'
-        '401':
-          description: |-
-            Response for content when the user does not supply
-            authorization credentials.
-        '404':
-          description: |-
-            Response for content when the document does not exist,
-            or the user does not have rights to access.
-        '406':
-          description: |-
-            Response for when a response matching the list of acceptable values
-            defined in `Accept` cannot be served.
-        '416':
-          description: |-
-            Response for content when the specified range is not valid.
-    options:
-      summary: |-
-        Options for content.
-      description: |-
-        The `OPTIONS` method is available to support `CORS` preflight requests.
-      operationId: OptionsContentForDocumentAndRevisionAndRendition
-      tags:
-        - content
-      parameters:
-        - $ref: '#/components/parameters/documentId'
-        - $ref: '#/components/parameters/revisionId'
-        - $ref: '#/components/parameters/fileTypeId'
-        - $ref: '#/components/parameters/Origin'
-        - $ref: '#/components/parameters/Access-Control-Request-Method'
-        - $ref: '#/components/parameters/Access-Control-Request-Headers'
-      responses:
-        200:
-          $ref: '#/components/responses/OPTIONS-CORS-200'
-        400:
-          $ref: '#/components/responses/OPTIONS-CORS-400'
-  /documents/{documentId}/keywords:
-    get:
-      summary: |-
-        Gets keywords for a document.
-      description: |-
-        Gets the keyword values for a document grouped by keyword type group and
-        keyword type.
-      tags:
-        - keywords
-      parameters:
-        - $ref: '#/components/parameters/documentId'
-      responses:
-        200:
-          description: |-
-            OK
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/KeywordCollection'
-        401:
-          description: |-
-            Response when the user does not supply authorization credentials.
-          content:
-            application/problem+json:
-              schema:
-                $ref: '#/components/schemas/Problem-Detail'
-        403:
-          description: |-
-            Response when the user does not have the document privilege `View
-            Keywords`
-          content:
-            application/problem+json:
-              schema:
-                $ref: '#/components/schemas/Problem-Detail'
-        404:
-          description: |-
-            Response when the resource does not exist or the user does not have
-            rights to the document type of the document.
-          content:
-            application/problem+json:
-              schema:
-                $ref: '#/components/schemas/Problem-Detail'
-    put:
-      summary: |-
-        Sets all keyword values for an indexed document.
-      description: |-
-        Sets all keyword values for an indexed document. Existing values will be
-        replaced with the supplied list of keyword values grouped by keyword type
-        group and keyword type.
-      tags:
-        - keywords
-      parameters:
-        - $ref: '#/components/parameters/documentId'
-      requestBody:
-        required: true
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/KeywordCollection'
-      responses:
-        204:
-          description: |-
-            No Content
-        400:
-          description: |-
-            Response when the user sends a empty request body, invalid keyword syntax,
-            invalid keyword data, or missing restricted keyword hash.
-        401:
-          description: |-
-            Response when the user does not supply authorization credentials.
-          content:
-            application/problem+json:
-              schema:
-                $ref: '#/components/schemas/Problem-Detail'
-        403:
-          description: |-
-            Response when the user does not have the document privilege `Modify
-            Keywords`
-          content:
-            application/problem+json:
-              schema:
-                $ref: '#/components/schemas/Problem-Detail'
-        404:
-          description: |-
-            Response when the resource does not exist or or the user does not
-            have rights to the document.
-          content:
-            application/problem+json:
-              schema:
-                $ref: '#/components/schemas/Problem-Detail'
-        409:
-          description: |-
-            Response when the request could not be processed because of conflict
-            caused by editing restricted keywords, resource locked by another process
-            or invalid keyword data.
-          content:
-            application/problem+json:
-              schema:
-                $ref: '#/components/schemas/Problem-Detail'
-    options:
-      summary: |-
-        Options for keyword groups for a document.
-      description: |-
-        The `OPTIONS` method is available to support `CORS` preflight requests.
-      tags:
-        - keywords
-      parameters:
-        - $ref: '#/components/parameters/documentId'
-        - $ref: '#/components/parameters/Origin'
-        - $ref: '#/components/parameters/Access-Control-Request-Method'
-        - $ref: '#/components/parameters/Access-Control-Request-Headers'
-        - $ref: '#/components/parameters/Accept-Language'
-      responses:
-        200:
-          $ref: '#/components/responses/OPTIONS-CORS-200'
-        400:
-          $ref: '#/components/responses/OPTIONS-CORS-400'
   /file-types:
     get:
       summary: |-
@@ -1157,14 +575,14 @@ paths:
             type: array
             items:
               type: string
-          description: The unique identifiers of file types.
+          description: The unique identifiers of file types. This parameter cannot be used in conjunction with the `systemName` parameter. Multiple values are supported and in a URL should be joined using the "&" character.  Ex:?item=12&item=13
         - in: query
           name: systemName
           schema:
             type: array
             items:
               type: string
-          description: The unique configured system names of file types.
+          description: The unique configured system names of file types. This parameter cannot be used in conjunction with the `id` parameter. Multiple values are supported and in a URL should be joined using the "&" character.  Ex:?item=12&item=13
         - $ref: '#/components/parameters/Accept-Language'
       responses:
         200:
@@ -1180,9 +598,13 @@ paths:
         400:
           description: |-
             Response when the user tries to combine id and systemName query parameters
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/Problem-Detail'
         401:
           description: |-
-            Response when the user does not supply authorization credentials.
+            Response when the user does not supply valid authorization credentials.
           content:
             application/problem+json:
               schema:
@@ -1227,7 +649,7 @@ paths:
                 $ref: '#/components/schemas/FileType'
         401:
           description: |-
-            Response when the user does not supply authorization credentials.
+            Response when the user does not supply valid authorization credentials.
           content:
             application/problem+json:
               schema:
@@ -1256,296 +678,7 @@ paths:
           $ref: '#/components/responses/OPTIONS-CORS-200'
         400:
           $ref: '#/components/responses/OPTIONS-CORS-400'
-  /custom-queries:
-    get:
-      summary: |-
-        Get the custom query metadata for all custom queries for the user.
-      description: |-
-        Get all the custom queries the logged in user has permissions to view.
-      tags:
-        - custom-queries
-      parameters:
-        - in: query
-          name: id
-          schema:
-            type: array
-            items:
-              type: string
-          description: The unique identifiers of custom queries.
-        - in: query
-          name: systemName
-          schema:
-            type: array
-            items:
-              type: string
-          description: The unique configured system names of custom queries.
-        - $ref: '#/components/parameters/Accept-Language'
-      responses:
-        200:
-          description: |-
-            OK
-          headers:
-            Content-Language:
-              $ref: '#/components/headers/Content-Language'
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/CustomQueryCollection'
-        400:
-          description: |-
-            Response when the user tries to combine id and systemName query parameters
-        401:
-          description: |-
-            Response when the user does not supply authorization credentials.
-          content:
-            application/problem+json:
-              schema:
-                $ref: '#/components/schemas/Problem-Detail'
-    options:
-      summary: |-
-        Options for custom query metadata.
-      description: |-
-        The `OPTIONS` method is available to support `CORS` preflight requests.
-      tags:
-        - custom-queries
-      parameters:
-        - $ref: '#/components/parameters/Origin'
-        - $ref: '#/components/parameters/Access-Control-Request-Method'
-        - $ref: '#/components/parameters/Access-Control-Request-Headers'
-      responses:
-        200:
-          $ref: '#/components/responses/OPTIONS-CORS-200'
-        400:
-          $ref: '#/components/responses/OPTIONS-CORS-400'
-  /custom-queries/{customQueryId}:
-    get:
-      summary: |-
-        Gets custom query metadata
-      description: |-
-        Gets custom query metadata
-      tags:
-        - custom-queries
-      parameters:
-        - $ref: '#/components/parameters/customQueryId'
-        - $ref: '#/components/parameters/Accept-Language'
-      responses:
-        200:
-          description: |-
-            OK
-          headers:
-            Content-Language:
-              $ref: '#/components/headers/Content-Language'
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/CustomQuery'
-        401:
-          description: |-
-            Response when the user does not supply authorization credentials
-          content:
-            application/problem+json:
-              schema:
-                $ref: '#/components/schemas/Problem-Detail'
-        404:
-          description: |-
-            Response when the resource does not exist or the user does not have rights to the resource.
-          content:
-            application/problem+json:
-              schema:
-                $ref: '#/components/schemas/Problem-Detail'
-    options:
-      summary: |-
-        Options for custom query metadata.
-      description: |-
-        The 'OPTIONS' method is available to support `CORS` preflight requests.
-      tags:
-        - custom-queries
-      parameters:
-        - $ref: '#/components/parameters/customQueryId'
-        - $ref: '#/components/parameters/Origin'
-        - $ref: '#/components/parameters/Access-Control-Request-Method'
-        - $ref: '#/components/parameters/Access-Control-Request-Headers'
-      responses:
-        200:
-          $ref: '#/components/responses/OPTIONS-CORS-200'
-        400:
-          $ref: '#/components/responses/OPTIONS-CORS-400'
-  /custom-queries/{customQueryId}/keyword-types:
-    get:
-      summary: |-
-        Gets keyword types for a custom query
-      description: |-
-        Gets a keyword type collection for the custom query
-      tags:
-        - custom-queries
-      parameters:
-        - $ref: '#/components/parameters/customQueryId'
-      responses:
-        200:
-          description: |-
-            OK
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/CustomQueryKeywordTypeCollection'
-        401:
-          description: |-
-            Response when the user does not supply authorization credentials.
-          content:
-            application/problem+json:
-              schema:
-                $ref: '#/components/schemas/Problem-Detail'
-        404:
-          description: |-
-            Response when the resource does not exist or the user does not have
-            rights to the resource.
-          content:
-            application/problem+json:
-              schema:
-                $ref: '#/components/schemas/Problem-Detail'
-    options:
-      summary: |-
-        Options for keyword-types for a custom query
-      description: |-
-        The 'OPTIONS' method is available to support `CORS` preflight requests.
-      tags:
-        - custom-queries
-      parameters:
-        - $ref: '#/components/parameters/customQueryId'
-        - $ref: '#/components/parameters/Origin'
-        - $ref: '#/components/parameters/Access-Control-Request-Method'
-        - $ref: '#/components/parameters/Access-Control-Request-Headers'
-      responses:
-        200:
-          $ref: '#/components/responses/OPTIONS-CORS-200'
-        400:
-          $ref: '#/components/responses/OPTIONS-CORS-400'
 
-  /documents/uploads:
-    post:
-      summary: |-
-        Prepare the staging area to start the upload process.
-      description: |-
-        Prepares the staging area to start the upload.
-        Returns a unique handle that will be used to upload a file.
-      tags:
-        - upload
-      requestBody:
-        required: true
-        content:
-          application/json:
-            schema:
-              type: object
-              $ref: '#/components/schemas/UploadFileMetaData'
-      responses:
-        201:
-          description: |-
-            Upload staging area created.
-          headers:
-            location:
-              $ref: '#/components/headers/location'
-        401:
-          description: |-
-            Request does not contain valid access token or the session expired.
-          content:
-           application/problem+json:
-            schema:
-              $ref: '#/components/schemas/Problem-Detail'
-    options:
-      summary: |-
-        Options for staging the upload process.
-      description: |-
-        The `OPTIONS` method is available to support `CORS` preflight requests.
-      tags:
-        - upload
-      parameters:
-        - $ref: '#/components/parameters/Origin'
-        - $ref: '#/components/parameters/Access-Control-Request-Method'
-        - $ref: '#/components/parameters/Access-Control-Request-Headers'
-      responses:
-        200:
-          $ref: '#/components/responses/OPTIONS-CORS-200'
-        400:
-          $ref: '#/components/responses/OPTIONS-CORS-400'
-  /documents/uploads/{uploadId}:
-    put:
-      summary: |-
-        Upload file data.
-      description: |-
-        Upload file to a location identified by the unique handle.
-        This end-point can be called multiple times, to upload multiple files.
-        Each file will have it's own unique handle.
-        When uploading a single file as chunks, upload it to the same upload handle.
-      tags:
-        - upload
-      parameters:
-        - $ref: '#/components/parameters/uploadId'
-        - $ref: '#/components/parameters/filePart'
-      requestBody:
-        required: true
-        content:
-          application/octet-stream:
-            schema:
-              required: true
-              $ref: '#/components/schemas/Binary-Content'
-      responses:
-        204:
-          description: Uploaded part has been successfully stored.
-        401:
-          description: Request does not contain valid access token or the session expired.
-          content:
-           application/problem+json:
-            schema:
-              $ref: '#/components/schemas/Problem-Detail'
-        404:
-          description: If the upload handle could not be found
-          content:
-            application/problem+json:
-              schema:
-                $ref: '#/components/schemas/Problem-Detail'
-        400:
-          description: file part number is provided in incorrect format
-          content:
-            application/problem+json:
-              schema:
-                $ref: '#/components/schemas/Problem-Detail'
-    delete:
-      summary: |-
-        Delete file corresponding to the given uploadId
-      description: |-
-        Deletes an uploaded file corresponding to the given uploadId.
-        This can be used to cancel the upload.
-      tags:
-        - upload
-      parameters:
-        - $ref: '#/components/parameters/uploadId'
-      responses:
-        204:
-          description: File has been deleted.
-        401:
-          description: Request does not contain valid access token or the session expired.
-          content:
-            application/problem+json:
-              schema:
-                $ref: '#/components/schemas/Problem-Detail'
-    options:
-      summary: |-
-        Options for uploading file data.
-      description:
-        The `OPTIONS` method is available to support `CORS` preflight requests.
-      tags:
-        - upload
-      parameters:
-        - $ref: '#/components/parameters/Origin'
-        - $ref: '#/components/parameters/Access-Control-Request-Method'
-        - $ref: '#/components/parameters/Access-Control-Request-Headers'
-        - $ref: '#/components/parameters/uploadId'
-        - $ref: '#/components/parameters/filePart'
-      responses:
-        200:
-          $ref: '#/components/responses/OPTIONS-CORS-200'
-        400:
-          $ref: '#/components/responses/OPTIONS-CORS-400'
   /documents:
     post:
       summary: |-
@@ -1554,30 +687,26 @@ paths:
         Finishes the document upload by archiving the document into the given document type.
         Can also optionally specify the document date and keywords for the document.
         If fileTypeId is not specified, then the default file type for the document type will be used.
-        Takes in a list of upload handles each corresponding to the file uploaded.
+        Takes a list of references to uploaded file resources.
       tags:
-        - upload
+        - document
       requestBody:
         required: true
         content:
           application/json:
             schema:
-              type: object
               $ref: '#/components/schemas/DocumentArchiveProperties'
       responses:
         201:
           description:
             Document successfully archived.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DocumentsPostResponse'
           headers:
             location:
               $ref: '#/components/headers/location'
-        401:
-          description:
-            Request does not contain valid access token or the session expired.
-          content:
-           application/problem+json:
-            schema:
-              $ref: '#/components/schemas/Problem-Detail'
         400:
           description:
             Invalid document type or a unique handle is not found.
@@ -1585,6 +714,13 @@ paths:
             application/problem+json:
               schema:
                 $ref: '#/components/schemas/Problem-Detail'
+        401:
+          description: |-
+            Response when the user does not supply valid authorization credentials.
+          content:
+           application/problem+json:
+            schema:
+              $ref: '#/components/schemas/Problem-Detail'
         403:
           description:
             User does not have rights to create document.
@@ -1599,11 +735,1029 @@ paths:
         The `OPTIONS` method is available to support `CORS` preflight requests.
       tags:
         - document
-        - upload
       parameters:
         - $ref: '#/components/parameters/Origin'
         - $ref: '#/components/parameters/Access-Control-Request-Method'
         - $ref: '#/components/parameters/Access-Control-Request-Headers'
+      responses:
+        200:
+          $ref: '#/components/responses/OPTIONS-CORS-200'
+        400:
+          $ref: '#/components/responses/OPTIONS-CORS-400'
+  /documents/{documentId}:
+    get:
+      summary: |-
+        Gets document metadata.
+      description: |-
+        Gets document metadata.
+      tags:
+        - document
+      parameters:
+        - $ref: '#/components/parameters/documentId'
+      responses:
+        200:
+          description: |-
+            OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Document'
+        401:
+          description: |-
+            Response when the user does not supply valid authorization credentials.
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/Problem-Detail'
+        404:
+          description: |-
+            Response for when the document cannot be found.
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/Problem-Detail'
+    options:
+      summary: |-
+        Options for document metadata.
+      description: |-
+        The `OPTIONS` method is available to support `CORS` preflight requests.
+      tags:
+        - document
+      parameters:
+        - $ref: '#/components/parameters/documentId'
+        - $ref: '#/components/parameters/Origin'
+        - $ref: '#/components/parameters/Access-Control-Request-Method'
+        - $ref: '#/components/parameters/Access-Control-Request-Headers'
+      responses:
+        200:
+          $ref: '#/components/responses/OPTIONS-CORS-200'
+        400:
+          $ref: '#/components/responses/OPTIONS-CORS-400'
+    delete:
+      summary: |-
+        Deletes a document.
+      description: |-
+        Deletes a document.
+      tags:
+        - document
+      parameters:
+        - $ref: '#/components/parameters/documentId'
+      responses:
+        204:
+          description: |-
+            No Content
+        401:
+          description: |-
+            Response when the user does not supply valid authorization credentials.
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/Problem-Detail'
+        403:
+          description: |-
+            Response when the user does not have rights to the specified document, 
+            retention criteria has not been met, or the resource is checked out.
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/Problem-Detail'
+        404:
+          description: |-
+            Response when the resource does not exist or the user does not have rights to the specified document.
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/Problem-Detail'
+  /documents/{documentId}/keywords:
+    get:
+      summary: |-
+        Gets keywords for a document.
+      description: |-
+        Gets the keyword values for a document grouped by keyword type group and
+        keyword type.
+      tags:
+        - document keywords
+      parameters:
+        - $ref: '#/components/parameters/documentId'
+      responses:
+        200:
+          description: |-
+            OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/KeywordCollection'
+        401:
+          description: |-
+            Response when the user does not supply valid authorization credentials.
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/Problem-Detail'
+        403:
+          description: |-
+            Response when the user does not have the document privilege `View
+            Keywords`
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/Problem-Detail'
+        404:
+          description: |-
+            Response when the resource does not exist or the user does not have
+            rights to the document type of the document.
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/Problem-Detail'
+    put:
+      summary: |-
+        Sets all keyword values for an indexed document.
+      description: |-
+        Sets all keyword values for an indexed document. Existing values will be
+        replaced with the supplied list of keyword values grouped by keyword type
+        group and keyword type.
+      tags:
+        - document keywords
+      parameters:
+        - $ref: '#/components/parameters/documentId'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/KeywordCollectionPutRequest'
+      responses:
+        204:
+          description: |-
+            No Content
+        400:
+          description: |-
+            Response when the user sends a empty request body, invalid keyword syntax,
+            invalid keyword data, or missing restricted keyword hash.
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/Problem-Detail'
+        401:
+          description: |-
+            Response when the user does not supply valid authorization credentials.
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/Problem-Detail'
+        403:
+          description: |-
+            Response when the user does not have the document privilege `Modify
+            Keywords', the document is locked by Records Management or Medical records, 
+            or the Database is not licensed for EDM Services.
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/Problem-Detail'
+        404:
+          description: |-
+            Response when the resource does not exist or or the user does not
+            have rights to the document.
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/Problem-Detail'
+    options:
+      summary: |-
+        Options for keyword groups for a document.
+      description: |-
+        The `OPTIONS` method is available to support `CORS` preflight requests.
+      tags:
+        - document keywords
+      parameters:
+        - $ref: '#/components/parameters/documentId'
+        - $ref: '#/components/parameters/Origin'
+        - $ref: '#/components/parameters/Access-Control-Request-Method'
+        - $ref: '#/components/parameters/Access-Control-Request-Headers'
+        - $ref: '#/components/parameters/Accept-Language'
+      responses:
+        200:
+          $ref: '#/components/responses/OPTIONS-CORS-200'
+        400:
+          $ref: '#/components/responses/OPTIONS-CORS-400'
+  /documents/{documentId}/revisions:
+    get:
+      summary: |-
+        Gets a collection of document revisions.
+      description: |-
+        Gets collection of document revisions.
+      tags:
+        - document revisions
+      parameters:
+        - $ref: '#/components/parameters/documentId'
+      responses:
+        200:
+          description: |-
+            OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RevisionCollection'
+        401:
+          description: |-
+            Response when the user does not supply valid authorization credentials.
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/Problem-Detail'
+        403:
+          description: |-
+            Response when the user does not have the document privilege `View
+            Revisions`
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/Problem-Detail'
+        404:
+          description: |-
+            Response when the resource does not exist or the user does not have
+            rights to the specified document type.
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/Problem-Detail'
+    post:
+      summary: Upload revision
+      description: |-
+        Archives the document as a latest revision to the current document.
+      tags:
+        - document revisions
+      parameters:
+        - $ref: '#/components/parameters/documentId'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/RevisionArchiveProperties'
+      responses:
+        201:
+          description: |-
+            Revision successfully archived.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RevisionsPostResponse'
+          headers:
+             location:
+              $ref: '#/components/headers/location'
+        400:
+          description: |-
+            A reference to an uploaded file resource is not found,
+            invalid File Type Id is provided, 
+            or the document type is not revisable
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/Problem-Detail'
+        401:
+          description: |-
+            Response when the user does not supply valid authorization credentials.
+          content:
+           application/problem+json:
+            schema:
+              $ref: '#/components/schemas/Problem-Detail'
+        403:
+          description: |-
+            User does not have rights to create revisions, 
+            the document is locked by Records Management or Medical records, 
+            or the Database is not licensed for EDM Services.
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/Problem-Detail'
+        404:
+          description:
+            Could not find the document.
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/Problem-Detail'
+    options:
+      summary: |-
+        Options for revisions metadata.
+      description: |-
+        The `OPTIONS` method is available to support `CORS` preflight requests.
+      tags:
+        - document revisions
+      parameters:
+        - $ref: '#/components/parameters/documentId'
+        - $ref: '#/components/parameters/Origin'
+        - $ref: '#/components/parameters/Access-Control-Request-Method'
+        - $ref: '#/components/parameters/Access-Control-Request-Headers'
+      responses:
+        200:
+          $ref: '#/components/responses/OPTIONS-CORS-200'
+        400:
+          $ref: '#/components/responses/OPTIONS-CORS-400'
+  /documents/{documentId}/revisions/{revisionId}:
+    get:
+      summary: |-
+        Gets the metadata for a revision.
+      description: |-
+        Gets the metadata for a revision.
+        Use 'latest' to retrieve the most recent revision.
+      tags:
+        - document revisions
+      parameters:
+        - $ref: '#/components/parameters/documentId'
+        - $ref: '#/components/parameters/revisionId'
+      responses:
+        200:
+          description: |-
+            OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Revision'
+        401:
+          description: |-
+            Response when the user does not supply valid authorization credentials.
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/Problem-Detail'
+        404:
+          description: |-
+            Response when the resource does not exist or the user does not have
+            rights to the specified document type.
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/Problem-Detail'
+    options:
+      summary: |-
+        Options for revisions metadata.
+      description: |-
+        The `OPTIONS` method is available to support `CORS` preflight requests.
+      tags:
+        - document revisions
+      parameters:
+        - $ref: '#/components/parameters/documentId'
+        - $ref: '#/components/parameters/revisionId'
+        - $ref: '#/components/parameters/Origin'
+        - $ref: '#/components/parameters/Access-Control-Request-Method'
+        - $ref: '#/components/parameters/Access-Control-Request-Headers'
+      responses:
+        200:
+          $ref: '#/components/responses/OPTIONS-CORS-200'
+        400:
+          $ref: '#/components/responses/OPTIONS-CORS-400'
+  /documents/{documentId}/revisions/{revisionId}/renditions:
+    get:
+      summary: |-
+        Gets a collection of document renditions.
+      description: |-
+        Gets a collection of document renditions.
+        Use 'latest' to retrieve the most recent revision.
+      tags:
+        - document renditions
+      parameters:
+        - $ref: '#/components/parameters/documentId'
+        - $ref: '#/components/parameters/revisionId'
+      responses:
+        200:
+          description: |-
+            OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RenditionCollection'
+        400:
+          description: |-
+            Response for when a bad request is provided.
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/Problem-Detail'
+        401:
+          description: |-
+            Response when the user does not supply valid authorization credentials.
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/Problem-Detail'
+        404:
+          description: |-
+            Response when the resource does not exist or the user does not have
+            rights to the specified document type.
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/Problem-Detail'
+    options:
+      summary: |-
+        Options for revisions metadata.
+      description: |-
+        The `OPTIONS` method is available to support `CORS` preflight requests.
+      tags:
+        - document renditions
+      parameters:
+        - $ref: '#/components/parameters/documentId'
+        - $ref: '#/components/parameters/revisionId'
+        - $ref: '#/components/parameters/Origin'
+        - $ref: '#/components/parameters/Access-Control-Request-Method'
+        - $ref: '#/components/parameters/Access-Control-Request-Headers'
+      responses:
+        200:
+          $ref: '#/components/responses/OPTIONS-CORS-200'
+        400:
+          $ref: '#/components/responses/OPTIONS-CORS-400'
+  /documents/{documentId}/revisions/latest/renditions:
+    post:
+      summary: Upload rendition to the latest revision
+      description: |-
+        Archives the document as a rendition to the latest revision. 
+      tags:
+        - document renditions
+      parameters:
+        - $ref: '#/components/parameters/documentId'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/RenditionArchiveProperties'
+      responses:
+        201:
+          description: |-
+            Document successfully archived as rendition to the given revision.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RenditionsPostResponse'
+          headers:
+             location:
+              $ref: '#/components/headers/location'
+        400:
+          description: |-
+            A reference to the uploaded file resource is not found,
+            an invalid File Type Id is provided, 
+            the document already contains a rendition of the given File Type Id, 
+            or the document type is not renditionable.
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/Problem-Detail'
+        401:
+          description: |-
+            Response when the user does not supply valid authorization credentials.
+          content:
+           application/problem+json:
+            schema:
+              $ref: '#/components/schemas/Problem-Detail'
+        403:
+          description: |-
+            User does not have rights to create document, 
+            or the document is locked by Records Management or Medical Records.
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/Problem-Detail'  
+        404:
+          description:
+            Could not find the document or the revision.
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/Problem-Detail'
+    options:
+      summary: |-
+        Options for uploading renditions.
+      description: |-
+        The `OPTIONS` method is available to support `CORS` preflight requests.
+      tags:
+        - document renditions
+      parameters:
+        - $ref: '#/components/parameters/documentId'
+        - $ref: '#/components/parameters/Origin'
+        - $ref: '#/components/parameters/Access-Control-Request-Method'
+        - $ref: '#/components/parameters/Access-Control-Request-Headers'
+      responses:
+        200:
+          $ref: '#/components/responses/OPTIONS-CORS-200'
+        400:
+          $ref: '#/components/responses/OPTIONS-CORS-400'
+  /documents/{documentId}/revisions/{revisionId}/renditions/{fileTypeId}:
+    get:
+      summary: |-
+        Gets the metadata for a rendition of a revision.
+      description: |-
+        Gets the metadata for a rendition of a revision.
+        Use 'latest' to retrieve the most recent revision.
+        Use 'default' to retrieve the default rendition.
+      tags:
+        - document renditions
+      parameters:
+        - $ref: '#/components/parameters/documentId'
+        - $ref: '#/components/parameters/revisionId'
+        - $ref: '#/components/parameters/fileTypeId'
+      responses:
+        200:
+          description: |-
+            OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Rendition'
+        400:
+          description: |-
+            Response for when a bad request is provided.
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/Problem-Detail'
+        401:
+          description: |-
+            Response when the user does not supply valid authorization credentials.
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/Problem-Detail'
+        404:
+          description: |-
+            Response when the revision or rendition does not exist or the user does not have
+            rights to the specified document type.
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/Problem-Detail'
+    options:
+      summary: |-
+        Options for revisions metadata.
+      description: |-
+        The `OPTIONS` method is available to support `CORS` preflight requests.
+      tags:
+        - document renditions
+      parameters:
+        - $ref: '#/components/parameters/documentId'
+        - $ref: '#/components/parameters/revisionId'
+        - $ref: '#/components/parameters/fileTypeId'
+        - $ref: '#/components/parameters/Origin'
+        - $ref: '#/components/parameters/Access-Control-Request-Method'
+        - $ref: '#/components/parameters/Access-Control-Request-Headers'
+      responses:
+        200:
+          $ref: '#/components/responses/OPTIONS-CORS-200'
+        400:
+          $ref: '#/components/responses/OPTIONS-CORS-400'
+  /documents/{documentId}/revisions/{revisionId}/renditions/{fileTypeId}/content:
+    get:
+      summary: |-
+        Get document content for a rendition of a revision.
+      description: |-
+        To retrieve the default rendition of the latest revisions, 
+        use 'default' for the fileTypeId and 'latest' for the revisionId.
+
+        Consumers can `GET` the content resource by supplying the required
+        parameters.  A response will be returned
+        based on the result of Content Negotiation.
+
+        Entire document content is returned as a single file with a 
+        200 OK Status code if the `pages` query parameter is omitted. 
+        The `pages` query parameter can be used to retrieve a single page of the document.
+
+        Content will be returned at it's natural size.
+
+      operationId: GetContentForDocumentAndRevisionAndRendition
+      tags:
+        - document content
+      parameters:
+        - $ref: '#/components/parameters/documentId'
+        - $ref: '#/components/parameters/revisionId'
+        - $ref: '#/components/parameters/fileTypeId'
+        - $ref: '#/components/parameters/pages'
+        - $ref: '#/components/parameters/Accept'
+      responses:
+        200:
+          description: |-
+            Response containing document content.
+          headers:
+            Hyland-Item-Count:
+              $ref: '#/components/headers/Hyland-Item-Count'
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/Binary-Content'
+        401:
+          description: |-
+            Response when the user does not supply valid authorization credentials.
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/Problem-Detail'
+              example: |-
+                {
+                  "type": "https://example.net/unauthorized",
+                  "title": "Unauthorized",
+                  "status": 401,
+                  "detail": "The requested resource requires authorization.",
+                  "instance": "/content"
+                }
+        404:
+          description: |-
+            Response for content when the document does not exist,
+            a requested page does not exist,
+            or the user does not have rights to access.
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/Problem-Detail'
+              example: |-
+                {
+                  "type": "https://example.net/notfound",
+                  "title": "Resource not found",
+                  "status": 404,
+                  "detail": "The requested resource does not exist.",
+                  "instance": "/content"
+                }
+        406:
+          description: |-
+            Response for when a response matching the list of acceptable values
+            defined in `Accept` cannot be served.
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/Problem-Detail'
+              example: |-
+                {
+                  "type": "https://example.net/notacceptable",
+                  "title": "Not Acceptable",
+                  "status": 406,
+                  "detail": "The content cannot be returned as 'image/png'.",
+                  "instance": "/content"
+                }
+    head:
+      summary: |-
+        Preview document content.
+      description: |-
+        Consumers can make a `HEAD` request to see the response
+        headers without the response body. This allows previewing
+        the result of Content Negotiation with Content-Type,
+        and Hyland-Item-Count headers.
+      operationId: HeadContentForDocumentAndRevisionAndRendition
+      tags:
+        - document content
+      parameters:
+        - $ref: '#/components/parameters/documentId'
+        - $ref: '#/components/parameters/revisionId'
+        - $ref: '#/components/parameters/fileTypeId'
+        - $ref: '#/components/parameters/pages'
+        - $ref: '#/components/parameters/Accept'
+      responses:
+        200:
+          description: |-
+            Preview the result of the document content.
+          headers:
+            Hyland-Item-Count:
+              $ref: '#/components/headers/Hyland-Item-Count'
+        401:
+          description: |-
+            Response when the user does not supply valid authorization credentials.
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/Problem-Detail'
+        404:
+          description: |-
+            Response for content when the document does not exist,
+            a requested page does not exist,
+            or the user does not have rights to access.
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/Problem-Detail'
+        406:
+          description: |-
+            Response for when a response matching the list of acceptable values
+            defined in `Accept` cannot be served.
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/Problem-Detail'
+    options:
+      summary: |-
+        Options for content.
+      description: |-
+        The `OPTIONS` method is available to support `CORS` preflight requests.
+      operationId: OptionsContentForDocumentAndRevisionAndRendition
+      tags:
+        - document content
+      parameters:
+        - $ref: '#/components/parameters/documentId'
+        - $ref: '#/components/parameters/revisionId'
+        - $ref: '#/components/parameters/fileTypeId'
+        - $ref: '#/components/parameters/Origin'
+        - $ref: '#/components/parameters/Access-Control-Request-Method'
+        - $ref: '#/components/parameters/Access-Control-Request-Headers'
+      responses:
+        200:
+          $ref: '#/components/responses/OPTIONS-CORS-200'
+        400:
+          $ref: '#/components/responses/OPTIONS-CORS-400'
+  /documents/queries:
+    post:
+      summary: |-
+        Submits a document query, with the provided search constraints.
+      description: |-
+        Submits a document query, with the provided search constraints.
+
+        If `Hyland-Include-Item-Count` header is set to true, the estimated number
+        of documents that will be returned by the query will be included on the
+        response in the `Hyland-Item-Count` header. 
+        Estimated because the number may vary in accuracy based on how the
+        query is formed, any filtering that takes places after the query is run, and
+        if there are any external constraints.
+      parameters:
+        - $ref: '#/components/parameters/Hyland-Include-Item-Count'
+      tags:
+        - document retrieval
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/QueryInformation'
+      responses:
+        201:
+          description: |-
+            Query created. The location of the results of the query results
+            is given in the Location header.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/QueriesPostResponse'
+          headers:
+            Location:
+              $ref: '#/components/headers/Location'
+            Hyland-Item-Count:
+              $ref: '#/components/headers/Hyland-Item-Count'
+        400:
+          description: |-
+            Response for when a bad request is provided.
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/Problem-Detail'
+        401:
+          description: |-
+            Response when the user does not supply valid authorization credentials.
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/Problem-Detail'
+    options:
+      summary: |-
+        Options for querying for documents.
+      description: |-
+        The `OPTIONS` method is available to support `CORS` preflight requests.
+      tags:
+        - document retrieval
+      parameters:
+        - $ref: '#/components/parameters/Origin'
+        - $ref: '#/components/parameters/Access-Control-Request-Method'
+        - $ref: '#/components/parameters/Access-Control-Request-Headers'
+      responses:
+        200:
+          $ref: '#/components/responses/OPTIONS-CORS-200'
+        400:
+          $ref: '#/components/responses/OPTIONS-CORS-400'
+  /documents/queries/{queryId}/results:
+    get:
+      summary: |-
+        Returns the documents results of a query.
+      description: |-
+        Returns the documents results of a query.
+      tags:
+        - document retrieval
+      parameters:
+        - $ref: '#/components/parameters/queryId'
+      responses:
+        200:
+          description: |-
+            OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/QueryResults'
+        401:
+          description: |-
+            Response when the user does not supply valid authorization credentials.
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/Problem-Detail'
+        404:
+          description: |-
+            Response for when the requested query results are not found.
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/Problem-Detail'
+    options:
+      summary: |-
+        Options for returning the results of a query.
+      description: |-
+        The `OPTIONS` method is available to support `CORS` preflight requests.
+      tags:
+        - document retrieval
+      parameters:
+        - $ref: '#/components/parameters/queryId'
+        - $ref: '#/components/parameters/Origin'
+        - $ref: '#/components/parameters/Access-Control-Request-Method'
+        - $ref: '#/components/parameters/Access-Control-Request-Headers'
+      responses:
+        200:
+          $ref: '#/components/responses/OPTIONS-CORS-200'
+        400:
+          $ref: '#/components/responses/OPTIONS-CORS-400'
+  /documents/queries/{queryId}/columns:
+    get:
+      summary: |-
+        Returns the display column configuration of a query.
+      description: |-
+        Returns the display column configuration of a query.
+      tags:
+        - document retrieval
+      parameters:
+        - $ref: '#/components/parameters/queryId'
+      responses:
+        200:
+          description: |-
+            OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DisplayColumnConfigurationCollection'
+        401:
+          description: |-
+            Response when the user does not supply valid authorization credentials.
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/Problem-Detail'
+        404:
+          description: |-
+            Response for when the query display column
+            configurations are not found.
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/Problem-Detail'
+    options:
+      summary: |-
+        Options for returning the display column configurations of a query.
+      description: |-
+        The `OPTIONS` method is available to support `CORS` preflight requests.
+      tags:
+        - document retrieval
+      parameters:
+        - $ref: '#/components/parameters/queryId'
+        - $ref: '#/components/parameters/Origin'
+        - $ref: '#/components/parameters/Access-Control-Request-Method'
+        - $ref: '#/components/parameters/Access-Control-Request-Headers'
+      responses:
+        200:
+          $ref: '#/components/responses/OPTIONS-CORS-200'
+        400:
+          $ref: '#/components/responses/OPTIONS-CORS-400'
+  /documents/uploads:
+    post:
+      summary: |-
+        Prepare the staging area to start the upload process.
+      description: |-
+        Prepares the staging area to start the upload.
+        Returns a reference to the file being uploaded.
+      tags:
+        - file upload
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UploadFileMetaData'
+      responses:
+        201:
+          description: |-
+            Upload staging area created.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UploadsPostResponse'
+          headers:
+            location:
+              $ref: '#/components/headers/location'
+        400:
+          description: Invalid file metadata such as non-existent 
+            extension, negative size.
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/Problem-Detail'
+        401:
+          description: |-
+            Response when the user does not supply valid authorization credentials.
+          content:
+           application/problem+json:
+            schema:
+              $ref: '#/components/schemas/Problem-Detail'
+    options:
+      summary: |-
+        Options for staging the upload process.
+      description: |-
+        The `OPTIONS` method is available to support `CORS` preflight requests.
+      tags:
+        - file upload
+      parameters:
+        - $ref: '#/components/parameters/Origin'
+        - $ref: '#/components/parameters/Access-Control-Request-Method'
+        - $ref: '#/components/parameters/Access-Control-Request-Headers'
+      responses:
+        200:
+          $ref: '#/components/responses/OPTIONS-CORS-200'
+        400:
+          $ref: '#/components/responses/OPTIONS-CORS-400'
+  /documents/uploads/{uploadId}:
+    put:
+      summary: |-
+        Upload file data.
+      description: |-
+        Upload file to a location identified by the unique file reference.
+        This end-point can be called multiple times, to upload multiple files.
+        Each file will have it's own unique reference.
+        When uploading a single file as chunks, upload it to the same file reference.
+      tags:
+        - file upload
+      parameters:
+        - $ref: '#/components/parameters/uploadId'
+        - $ref: '#/components/parameters/filePart'
+      requestBody:
+        required: true
+        content:
+          application/octet-stream:
+            schema:
+              $ref: '#/components/schemas/Binary-Content'
+      responses:
+        204:
+          description: Uploaded part has been successfully stored.
+        400:
+          description: File part number is provided in incorrect format
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/Problem-Detail'
+        401:
+          description: |-
+            Response when the user does not supply valid authorization credentials.
+          content:
+           application/problem+json:
+            schema:
+              $ref: '#/components/schemas/Problem-Detail'
+        404:
+          description: If the given file reference could not be found
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/Problem-Detail'
+    delete:
+      summary: |-
+        Delete file corresponding to the given uploadId
+      description: |-
+        Deletes an uploaded file corresponding to the given uploadId.
+        This can be used to cancel the upload.
+      tags:
+        - file upload
+      parameters:
+        - $ref: '#/components/parameters/uploadId'
+      responses:
+        204:
+          description: File has been deleted.
+        401:
+          description: |-
+            Response when the user does not supply valid authorization credentials.
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/Problem-Detail'
+    options:
+      summary: |-
+        Options for uploading file data.
+      description:
+        The `OPTIONS` method is available to support `CORS` preflight requests.
+      tags:
+        - file upload
+      parameters:
+        - $ref: '#/components/parameters/Origin'
+        - $ref: '#/components/parameters/Access-Control-Request-Method'
+        - $ref: '#/components/parameters/Access-Control-Request-Headers'
+        - $ref: '#/components/parameters/uploadId'
+        - $ref: '#/components/parameters/filePart'
       responses:
         200:
           $ref: '#/components/responses/OPTIONS-CORS-200'
@@ -1619,7 +1773,7 @@ components:
       description: |-
         An array of file types.
       properties:
-        FileTypeCollection:
+        items:
           description: |-
             An array of file types.
           type: array
@@ -1649,11 +1803,8 @@ components:
         A representation of keyword type information for a document type
       properties:
         keywordOptions:
-          description: |-
-            An object containing the avaliable keyword type options at the document type
-            level.
           $ref: '#/components/schemas/KeywordOptions'
-        keywordTypeCollection:
+        items:
           description: |-
             An array of keyword types grouped by the keyword type group they belong to.
           type: array
@@ -1695,51 +1846,13 @@ components:
         id:
           type: string
           description: |-
-            The unique identifier of the keyword type group.
-        name:
-          type: string
-          description: |-
-            The localized name of the keyword type group.
-        systemName:
-          type: string
-          description: |-
-            The untranslated system name of the keyword type group.
-            Localization is controlled by the Accept-Language header and
-            the language of the response is represented by the Content-Language
-            header.
-        storageType:
-          description: |-
-            The type of storage for the keyword type group.
-
-            `Standalone` represents a set of keyword types that are not
-            associated with a specific group type. Each standalone keyword type
-            may have multiple value instances.
-
-            `SingleInstance` represents a set of keyword types that will appear
-            only once and are associated with a specific group type. Each single
-            instance keyword type may have only one value instance.
-
-            `MultiInstance` represents a set of keyword types that can appear
-            multiple times as a related instance. Each multiple instance keyword
-            type may have only one value instance within a particular group.
-
-          type: string
-          enum:
-            - Standalone
-            - SingleInstance
-            - MultiInstance
-
+            The unique identifier of the keyword type group.  Omitted id indicates Standalone Keyword Group.
         keywordTypes:
           description: |-
-            An array of keyword types.
+            An array of keyword types.  Keyword Types will be omitted if part of a Keyword Type Group.
           type: array
           items:
             $ref: '#/components/schemas/KeywordType'
-      required:
-        - id
-        - name
-        - storageType
-        - keywordTypes
     KeywordType:
       description: |-
         Keyword type metadata.
@@ -1748,49 +1861,8 @@ components:
           description: |-
             The unique identifier of the keyword type.
           type: string
-        name:
-          description: |-
-            The localized name of the keyword type.
-          type: string
-        systemName:
-          description: |-
-            The untranslated system name of the keyword type.
-            Localization is controlled by the Accept-Language header and
-            the language of the response is represented by the Content-Language
-            header.
-          type: string
-        dataType:
-          description: |-
-            Describes the type of data represented by the keyword type.
-
-            `Numeric9` represents a number up to 9 digits in length.
-
-            `Numeric20` represents a number up to 20 digits in length.
-
-            `Alphanumeric` represents any value with letters and/or numbers.
-
-            `Currency` represents a monetary value. The currency format used is
-            'built-in' to the keyword type.
-
-            `SpecificCurrency` represents a monetary value and allows multiple
-             currency formats to be used with the same keyword type.
-
-            `Date` represents a date.
-
-            `DateTime` represents both a date and a time.
-
-            `FloatingPoint` represents numeric values that have variable decimal
-             point locations.
-          type: string
-          enum:
-            - Numeric9
-            - Numeric20
-            - AlphaNumeric
-            - Currency
-            - SpecificCurrency
-            - Date
-            - DateTime
-            - FloatingPoint
+      required:
+        - id
     QueryInformation:
       description: |-
         Represents the information required to execute a query.
@@ -1977,7 +2049,7 @@ components:
       description: |-
         An array of custom queries.
       properties:
-        customQueryCollection:
+        items:
           description: |-
             An array of custom queries.
           type: array
@@ -1987,7 +2059,7 @@ components:
       description: |-
         A lightweight array of keyword types for custom queries.
       properties:
-        keywordTypeCollection:
+        items:
           description: |-
             An array of keyword type identifiers.
           type: array
@@ -2015,11 +2087,19 @@ components:
             The ending date of the date range.
             If no end date is present, a default maximum date will be used.
           type: string
+    QueriesPostResponse:
+      description: |-
+        Query handle information corresponding to a query.
+      type: object
+      properties:
+        id:
+          description: Unique handle for the query
+          type: string
     QueryResults:
       description: |-
         Represents the result of a query
       properties:
-        documentResultCollection:
+        items:
           description: |-
             An array of Documents returned from executing a query.
           type: array
@@ -2048,16 +2128,18 @@ components:
             Index representing the Display column configuration
             associated with this Display column.
           type: integer
-        value:
+        values:
           description: |-
-            The value for the Display Column.
-          type: string
+            An array of values for the Display Column.
+          type: array
+          items:
+            type: string
     DisplayColumnConfigurationCollection:
       description: |-
         Represents a collection of configurations of
         a Display Column.
       properties:
-        displayColumnConfiguration:
+        items:
           description: |-
             An array of Display Column Configurations returned from executing a query.
           type: array
@@ -2205,7 +2287,39 @@ components:
             $ref: '#/components/schemas/Keyword'
       required:
         - keywords
+    NewKeywordGroup:
+      description: |-
+        A group of keyword values.
+      properties:
+        typeGroupId:
+          description: |-
+            The keyword type group identifier. This field will be omitted when
+            not associated with a `SingleInstance` or `MultiInstance` type
+            group.
+          type: string
+        keywords:
+          description: |-
+            An array of keywords in the group.
+          type: array
+          items:
+            $ref: '#/components/schemas/Keyword'
+      required:
+        - keywords
     KeywordCollection:
+      description: |-
+        Instance data for keywords on a document
+      properties:
+        keywordHash:
+          description: |-
+            Hash string to ensure integrity of restricted keyword values.
+          type: string
+        items:
+          description: |-
+            An array of keywords grouped by the keyword group they belong to.
+          type: array
+          items:
+            $ref: '#/components/schemas/KeywordGroup'
+    KeywordCollectionPutRequest:
       description: |-
         Instance data for keywords on a document
       properties:
@@ -2219,11 +2333,17 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/KeywordGroup'
-
+      required:
+        - keywordHash
+        - keywordCollection
     Document:
       description: |-
         Document metadata.
       properties:
+        id: 
+          description: |-
+            The unique identifier of the document.
+          type: string
         typeId:
           description: |-
             The unique identifier of the document type for this document.
@@ -2257,6 +2377,30 @@ components:
             - Active
             - Deleted
             - Unindexed
+    DocumentsPostResponse:
+      description: |-
+        Document handle information corresponding to a document.
+      type: object
+      properties:
+        id:
+          description: Unique handle for the document
+          type: string
+    RevisionsPostResponse:
+      description: |-
+        Id of the newly created revision.
+      properties:
+        revisionId:
+          description:
+            Latest revision Id.
+          type: string
+    RenditionsPostResponse:
+      description: |-
+        Id of the newly created rendition, which is the File Type Id.
+      properties:
+        fileTypeId:
+          description:
+            File Type Id.
+          type: string
     DocumentType:
       description: |-
         Document Type metadata.
@@ -2296,11 +2440,15 @@ components:
           description: |-
             The Id of the autofill keyset associated with this document type, if any.
           type: string
+        documentTypeGroupId:
+          description: |-
+            The id of the document type group the document type is assigned to.
+          type: string
     DocumentTypeCollection:
       description: |-
         An array of document types.
       properties:
-        documentTypeCollection:
+        items:
           description: |-
             An array of document types.
           type: array
@@ -2370,28 +2518,76 @@ components:
           type: string
           format: date
           example: 2018-08-21
-        uploadIds:
+        uploads:
           description: |-
-              List of unique handles that were used to upload files. Files are ordered in the order of the given upload handles.
+              List of references to uploaded files. The order of uploaded file references will be used for the document page order.
           type: array
           items:
-            $ref: '#/components/schemas/UploadId'
+            $ref: '#/components/schemas/Upload'
         keywordCollection:
           description: |-
             An array of keywords grouped by the keyword group they belong to.
           type: array
           items:
-            $ref: '#/components/schemas/KeywordGroup'
+            $ref: '#/components/schemas/NewKeywordGroup'
       required:
         - documentTypeId
-        - uploadIds
-    UploadId:
+        - uploads
+    RevisionArchiveProperties:
       description: |-
-        Upload handle information corresponding to a file.
+        Meta-data information required to upload revision
+      properties:
+        comment:
+          description: |-
+            Comment for the revision
+          type: string
+        fileTypeId:
+          description: |-
+            Id of the File Type for the document. If File Type Id is not provided, Document Type's default File Type will be used.
+          type: string
+        uploads:
+          description: |-
+              List of references to uploaded files. The order of uploaded file references will be used for the document page order.
+          type: array
+          items:
+            $ref: '#/components/schemas/Upload'
+      required:
+        - uploads
+    Upload:
+      description: |-
+        Reference to an uploaded file.
       type: object
       properties:
-        uploadId:
-          description: Unique handle
+        id:
+          description: Unique file reference
+          type: string
+    RenditionArchiveProperties:
+      description: |-
+        Meta-data information required to upload rendition
+      properties:
+        comment:
+          description: |-
+            Comment for the rendition
+          type: string
+        fileTypeId:
+          description: |-
+            Id of the File Type for the document. If a File Type Id is not provided, then the Document Type's default File Type ID will be used. If the revision already contains the File Type Id then 400 Bad Request will be returned. 
+          type: string
+        uploads:
+          description: |-
+              List of references to uploaded files. The order of uploaded file references will be used for the document page order.
+          type: array
+          items:
+            $ref: '#/components/schemas/Upload'
+      required:
+        - uploads
+    UploadsPostResponse:
+      description: |-
+        Unique file reference corresponding to the uploaded file.
+      type: object
+      properties:
+        id:
+          description: Unique reference for the uploaded file
           type: string
     UploadFileMetaData:
       description: |-
@@ -2403,14 +2599,14 @@ components:
           type: string
         fileSize:
           description: |-
-            Size of the file.
+            Size of the file in bytes.
           type: string
           format: int32
         filePartSize:
           description: |-
-            Size of each file part being uploaded.
-            All file parts should be equal except the last one.
-            Recommended maximum file size is 5MB.
+            Size of each file part being uploaded in bytes.
+            filePartSize can be less than, greater than or equal to the fileSize, but the size of all the parts being uploaded should be the same except the last one which can be either less than or equal to the other parts.
+            Recommended maximum size of a file part to be uploaded per request is 5MB.
           type: string
           format: int32
       required:
@@ -2429,7 +2625,7 @@ components:
       description: |-
         An Array of revisions.
       properties:
-        revisionCollection:
+        items:
           description: |-
             The unique identifier of the revisions.
           type: array
@@ -2463,7 +2659,7 @@ components:
       description: |-
         An Array of renditions.
       properties:
-        renditionCollection:
+        items:
           description: |-
             An array of Renditions
           type: array
@@ -2572,11 +2768,23 @@ components:
       required: true
       schema:
         type: string
+    pages:
+      description: |-
+        The page to be retrieved. Currently only a single 
+        page number is supported. If the page number does 
+        not exist or the value provided is not a single 
+        page number, a 404 Not Found will be returned. 
+        Page number is one-based.
+      name: pages
+      in: query
+      required: false
+      schema:
+        type: string
     uploadId:
       name: uploadId
       in: path
       description: |-
-        The unique handle for the file being uploaded
+        The unique reference to the file being uploaded
       required: true
       schema:
         type: string
@@ -2636,6 +2844,16 @@ components:
       schema:
         type: string
       example: 'Accept-Language: en-US'
+    Hyland-Include-Item-Count:
+      name: Hyland-Include-Item-Count
+      in: header
+      description: |-
+        The Hyland-Include-Item-Count custom header field can be used by user agents 
+        to indicate that the item count should be included in the response.   
+      required: false
+      schema:
+        type: boolean
+      example: 'Hyland-Include-Item-Count: true'
     Range:
       name: Range
       in: header
@@ -2771,6 +2989,12 @@ components:
       schema:
         type: string
       example: 'location: /documents/id'
+    Hyland-Item-Count:
+      description: |-
+        The Hyland-Item-Count custom
+        response header indicates the total number of items included in a response.
+      schema:
+        type: string
   responses:
     OPTIONS-CORS-200:
       description: |-
@@ -2795,154 +3019,3 @@ components:
               "detail": "The method 'POST' is not allowed.",
               "instance": "/content"
             }
-  examples:
-    GetImagePngSinglePartContent:
-      summary: |-
-        Get a rendition with a single part
-      description: |-
-        This example gets a rendition of a document as an image/png.
-
-        The underlying rendition would either be in png format, or can
-        be converted to png.
-
-        There is only one part to the content, so the response status code
-        is 200 OK and headers `Content-Range` and `Accept-Ranges` are not
-        included.
-      value: |-
-        ```http
-        GET /documents/101/revisions/latest/renditions/default HTTP/1.1
-        Accept: image/png
-        ```
-        ```http
-        HTTP/1.1 200 OK
-        Content-Type: image/png
-
-        (bytes for all the png content)
-        ```
-    GetImagePngMultiplePartContentPart1of2:
-      summary: |-
-        Get a part 1 from a rendition with 2 parts
-      description: |-
-        This example gets a rendition of a document as image/png.
-
-        The underlying rendition would either be in png format, or can
-        be converted to png.
-
-        There are multiple parts to the content, so the response
-        status code is 206 and includes the headers `Content-Range`
-        and `Accept-Ranges`.
-
-        The consumer can get additional pages by supplying the `Range`
-        header in a subsequent request.
-      value: |-
-        ```http
-        GET /documents/102/revisions/latest/renditions/default HTTP/1.1
-        Accept: image/png
-        ```
-        ```http
-        HTTP/1.1 206 Partial Content
-        Content-Type: image/png
-        Content-Range: parts 1-1/2
-        Accept-Ranges: parts
-        Access-Control-Expose-Headers: Content-Range, Accept-Ranges
-
-        (bytes for part 1 of the png content)
-        ```
-    GetImagePngMultiplePartContentPart2of2:
-      summary: |-
-        Get a part 2 from a rendition with 2 parts
-      description: |-
-        This example gets a rendition of a document as image/png.
-
-        The underlying rendition would either be in png format, or can
-        be converted to png.
-
-        There are multiple parts to the content, so the response
-        status code is 206 and includes the headers `Content-Range`
-        and `Accept-Ranges`.
-      value: |-
-        ```http
-        GET /documents/102/revisions/latest/renditions/default HTTP/1.1
-        Accept: image/png
-        Range: parts=2-2
-        ```
-        ```http
-        HTTP/1.1 206 Partial Content
-        Content-Type: image/png
-        Content-Range: parts 2-2/2
-        Accept-Ranges: parts
-        Access-Control-Expose-Headers: Content-Range, Accept-Ranges
-
-        (bytes for part 2 of the png content)
-        ```
-    HeadImagePngSinglePartContent:
-      summary: |-
-        Gets information about a rendition with a single part
-      description: |-
-        This example gets information about a rendition of a document when
-        negotiated as image/png.
-
-        There is only one part to the content, so the response status code
-        is `200 OK` and headers `Content-Range` and `Accept-Ranges` are not
-        included.
-      value: |-
-        ```http
-        HEAD /documents/101/revisions/latest/renditions/default HTTP/1.1
-        Accept: image/png
-        ```
-        ```http
-        HTTP/1.1 200 OK
-        Content-Type: image/png
-        ```
-    HeadImagePngMultiplePartContentPart1of2:
-      summary: |-
-        Get information about part 1 from a rendition with 2 parts
-      description: |-
-        This example gets information about a rendition of a document when
-        negotiated as image/png.
-
-        The underlying rendition would either be in png format, or can
-        be converted to png.
-
-        There are multiple parts to the content, so the response
-        status code is 206 and includes the headers `Content-Range`
-        and `Accept-Ranges`.
-      value: |-
-        ```http
-        HEAD /documents/102/revisions/latest/renditions/default HTTP/1.1
-        Accept: image/png
-        ```
-        ```http
-        HTTP/1.1 206 Partial Content
-        Content-Type: image/png
-        Content-Range: parts 1-1/2
-        Accept-Ranges: parts
-        Access-Control-Expose-Headers: Content-Range, Accept-Ranges
-        ```
-    HeadImagePngMultiplePartContentPart2of2:
-      summary: |-
-        Get information about part 2 from a rendition with 2 parts
-      description: |-
-        This example gets information about a rendition of a document when
-        negotiated as image/png.
-
-        The underlying rendition would either be in png format, or can
-        be converted to png.
-
-        There are multiple parts to the content, so the response
-        status code is 206 and includes the headers `Content-Range`
-        and `Accept-Ranges`.
-      value: |-
-        ```http
-        HEAD /documents/102/revisions/latest/renditions/default HTTP/1.1
-        Accept: image/png
-        Range: parts=2-2
-        ```
-        ```http
-        HTTP/1.1 206 Partial Content
-        Content-Type: image/png
-        Content-Range: parts 2-2/2
-        Accept-Ranges: parts
-        Access-Control-Expose-Headers: Content-Range, Accept-Ranges
-        ```
-
