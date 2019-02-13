@@ -150,8 +150,8 @@ namespace HotPotato.Http.Default
                 body = "Test",
                 status = "accepted",
                 direction = "inbound",
-            }
-};
+                }
+            };
         }
         IEnumerator IEnumerable.GetEnumerator() => GetEnumerator();
     }
