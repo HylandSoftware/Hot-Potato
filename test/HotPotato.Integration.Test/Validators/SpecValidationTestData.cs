@@ -1,5 +1,4 @@
-﻿using static HotPotato.IntegrationTestConstants;
-using System;
+﻿
 using System.Collections;
 using System.Collections.Generic;
 using System.Net;
@@ -11,7 +10,7 @@ namespace HotPotato.Http.Default
     {
         public IEnumerator<object[]> GetEnumerator()
         {
-            yield return new object[] { String.Format("specs{0}ccm{0}", s), HttpMethod.Get,
+            yield return new object[] { "specs/ccm/".ToPlatformPath(), HttpMethod.Get,
                 HttpStatusCode.OK, "https://api.hyland.com/sms/messages/41", "application/json", new {
                     id = "SM4262411b90e5464b98a4f66a49c57a97",
                     created = "2019-01-04T15:08:09Z",
@@ -25,7 +24,7 @@ namespace HotPotato.Http.Default
                     direction = "inbound",
                 }
             };
-            yield return new object[] { String.Format("specs{0}ccm{0}", s), HttpMethod.Post,
+            yield return new object[] { "specs/ccm/".ToPlatformPath(), HttpMethod.Post,
                 HttpStatusCode.Accepted, "https://api.hyland.com/sms/messages", "application/json", new {
                     id = "SM4262411b90e5464b98a4f66a49c57a97",
                     created = "2019-01-04T15:08:09Z",
@@ -39,7 +38,7 @@ namespace HotPotato.Http.Default
                     direction = "inbound",
                 }
             };
-            yield return new object[] {String.Format("specs{0}cv{0}", s), HttpMethod.Options,
+            yield return new object[] {"specs/cv/".ToPlatformPath(), HttpMethod.Options,
                 HttpStatusCode.BadRequest, "https://api.hyland.com/combined-viewer/combined-view-types/42/search-keyword-types", "application/problem+json", new {
                     items = new[]{
                         new {
@@ -53,7 +52,7 @@ namespace HotPotato.Http.Default
                     }
                 }
             };
-            yield return new object[] { String.Format("specs{0}deficiencies{0}", s), HttpMethod.Get,
+            yield return new object[] { "specs/deficiencies/".ToPlatformPath(), HttpMethod.Get,
                 HttpStatusCode.OK, "http://api.docs.hyland.io/deficiencies/deficiencies", "application/json", new {
                     items = new[] {
                         new {
@@ -75,8 +74,8 @@ namespace HotPotato.Http.Default
                     }
                 }
             };
-            yield return new object[] { String.Format("specs{0}document{0}", s), HttpMethod.Put,
-                HttpStatusCode.BadRequest, "http://api.docs.hyland.io/document/documents/{documentId}/keywords", "application/problem+json", new {
+            yield return new object[] { "specs/document/".ToPlatformPath(), HttpMethod.Put,
+                HttpStatusCode.BadRequest, "http://api.docs.hyland.io/document/documents/27/keywords", "application/problem+json", new {
                     type = "https://example.net/validation_error",
                     title = "Your request parameters didn't validate.",
                     status = 400,
@@ -84,13 +83,13 @@ namespace HotPotato.Http.Default
                     instance = "https://example.net/example-resource"
                 }
             };
-            yield return new object[] { String.Format("specs{0}document{0}", s), HttpMethod.Post,
+            yield return new object[] { "specs/document/".ToPlatformPath(), HttpMethod.Post,
                 HttpStatusCode.Created, "http://api.docs.hyland.io/document/documents/", "application/json", new {
                     id = "string"
                 }
             };
             
-            yield return new object[] { String.Format("specs{0}rdds{0}configurationservice{0}", s), HttpMethod.Get,
+            yield return new object[] { "specs/rdds/configurationservice/".ToPlatformPath(), HttpMethod.Get,
                 HttpStatusCode.OK, "https://api.hyland.com/ibpaf/rdds/configurations", "application/json", new {
                 configurationCollection = new[]{
                     new {
@@ -102,8 +101,8 @@ namespace HotPotato.Http.Default
                 }
             };
             
-            yield return new object[] { String.Format("specs{0}rdds{0}messagestorageservice{0}", s), HttpMethod.Delete,
-                HttpStatusCode.NotFound, "https://api.hyland.com/ibpaf/rdds/messages/{messageId}", "application/problem+json", new {
+            yield return new object[] { "specs/rdds/messagestorageservice/".ToPlatformPath(), HttpMethod.Delete,
+                HttpStatusCode.NotFound, "https://api.hyland.com/ibpaf/rdds/messages/78", "application/problem+json", new {
                     type = "https://example.net/validation_error",
                     title = "Your message id did not return a message to be deleted.",
                     status = 404,
@@ -112,7 +111,7 @@ namespace HotPotato.Http.Default
                 }
             };
             
-            yield return new object[] { String.Format("specs{0}workflow{0}", s), HttpMethod.Get,
+            yield return new object[] { "specs/workflow/".ToPlatformPath(), HttpMethod.Get,
                 HttpStatusCode.OK, "https://api.hyland.com/workflow/life-cycles/48/", "application/json", new {
                     id = "string",
                     name = "string",
@@ -128,8 +127,8 @@ namespace HotPotato.Http.Default
         //type and instace = invalid URI
         public IEnumerator<object[]> GetEnumerator()
         {
-            yield return new object[] { String.Format("specs{0}rdds{0}messagestorageservice{0}", s), HttpMethod.Delete,
-            HttpStatusCode.NotFound, "https://api.hyland.com/ibpaf/rdds/messages/{messageId}", "application/problem+json", new {
+            yield return new object[] { "specs/rdds/messagestorageservice/".ToPlatformPath(), HttpMethod.Delete,
+            HttpStatusCode.NotFound, "https://api.hyland.com/ibpaf/rdds/messages/47", "application/problem+json", new {
                 type = "https =//example.net/validation_error",
                 title = "Your message id did not return a message to be deleted.",
                 status = 404,
@@ -139,7 +138,7 @@ namespace HotPotato.Http.Default
             };
 
             //created = invalid date, accountId = invalid integer
-            yield return new object[] { String.Format("specs{0}ccm{0}", s), HttpMethod.Get,
+            yield return new object[] { "specs/ccm/".ToPlatformPath(), HttpMethod.Get,
             HttpStatusCode.OK, "https://api.hyland.com/sms/messages/41", "application/json", new {
                 id = "SM4262411b90e5464b98a4f66a49c57a97",
                 created = "2019-01-04T15:08=09Z",

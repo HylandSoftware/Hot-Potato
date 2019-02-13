@@ -1,5 +1,5 @@
-﻿using HotPotato.Http.Default;
-using static HotPotato.IntegrationTestConstants;
+﻿
+using HotPotato.Http.Default;
 using HotPotato.Models;
 using NSwag;
 using static NSwag.SwaggerYamlDocument;
@@ -22,7 +22,7 @@ namespace HotPotato.OpenApi.Locators.NSwag
             HttpResponse testResponse = new HttpResponse(HttpStatusCode.OK, null);
             HttpPair testPair = new HttpPair(testRequest, testResponse);
 
-            string path = Path.Combine(Environment.CurrentDirectory, String.Format("specs{0}keyword{0}", s), "specification.yaml");
+            string path = Path.Combine(Environment.CurrentDirectory, "specs/keyword/".ToPlatformPath(), "specification.yaml");
             Task<SwaggerDocument> swagTask = FromFileAsync(path);
             SwaggerDocument swagDoc = swagTask.Result;
 
@@ -39,7 +39,7 @@ namespace HotPotato.OpenApi.Locators.NSwag
             HttpResponse testResponse = new HttpResponse(HttpStatusCode.OK, null);
             HttpPair testPair = new HttpPair(testRequest, testResponse);
 
-            string path = Path.Combine(Environment.CurrentDirectory, String.Format("specs{0}workflow{0}", s), "specification.yaml");
+            string path = Path.Combine(Environment.CurrentDirectory, "specs/workflow/".ToPlatformPath(), "specification.yaml");
             Task<SwaggerDocument> swagTask = FromFileAsync(path);
             SwaggerDocument swagDoc = swagTask.Result;
 
