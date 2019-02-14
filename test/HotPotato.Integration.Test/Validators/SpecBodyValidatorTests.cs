@@ -45,7 +45,6 @@ namespace HotPotato.Http.Default
 
         }
 
-        //TODO: Use this theory to validate that the correct error messages are being returned once our custom Results object is made
         [Theory]
         [ClassData(typeof(SpecValidationNegTestData))]
         public async void Locator_ReturnsBodyValidator_InvalidSchema(string specSubPath, HttpMethod reqMethod, HttpStatusCode statusCode, string endpointURI, string contentType, object bodyJson)
@@ -69,6 +68,8 @@ namespace HotPotato.Http.Default
             Locator subject = new Locator(swagDoc, new PathLocator(), new MethodLocator(), new StatusCodeLocator());
             Tuple<IBodyValidator, IHeaderValidator> valTup = subject.GetValidator(testPair);
             Results.Result result = valTup.Item1.Validate(bodyString);
+            Assert.Equal("DateTimeExpected", result.Reasons[0].Kind);
+            Assert.Equal("IntegerExpected", result.Reasons[1].Kind);
             Assert.Contains("is invalid", result.Message);
 
         }
