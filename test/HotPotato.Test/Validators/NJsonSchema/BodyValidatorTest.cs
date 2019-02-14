@@ -2,7 +2,7 @@
 using NJsonSchema;
 using Xunit;
 
-namespace HotPotato.Validators.NJsonSchema
+namespace HotPotato.Validators
 {
     public class BodyValidatorTest
     {
@@ -31,6 +31,7 @@ namespace HotPotato.Validators.NJsonSchema
             Result result = subject.Validate(AnInvalidBody);
 
             Assert.NotNull(result);
+            Assert.Equal("IntegerExpected", result.Reasons[0].Kind);
             Assert.IsAssignableFrom<BodyInvalidResult>(result);
         }
     }

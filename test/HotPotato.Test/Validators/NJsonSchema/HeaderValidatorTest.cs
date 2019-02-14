@@ -5,7 +5,7 @@ using NSwag;
 using System.Collections.Generic;
 using Xunit;
 
-namespace HotPotato.Validators.NJsonSchema
+namespace HotPotato.Validators
 {
     public class HeaderValidatorTest
     {
@@ -66,6 +66,7 @@ namespace HotPotato.Validators.NJsonSchema
             Assert.True(result.Count > 0);
             IEnumerator<Result> enumerator = result.GetEnumerator();
             enumerator.MoveNext();
+            Assert.Equal("IntegerExpected", enumerator.Current.Reasons[0].Kind);
             Assert.IsAssignableFrom<HeaderInvalidResult>(enumerator.Current);
         }
     }

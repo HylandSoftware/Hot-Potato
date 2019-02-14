@@ -45,7 +45,12 @@ namespace HotPotato.Validators
                         }
                         else
                         {
-                            results.Add(ResultFactory.HeaderInvalidResult(headerKey, value, result));
+                            List<HotPotatoValidationError> hotPotErrors = new List<HotPotatoValidationError>();
+                            foreach (ValidationError err in result)
+                            {
+                                hotPotErrors.Add(new HotPotatoValidationError(err));
+                            }
+                            results.Add(ResultFactory.HeaderInvalidResult(headerKey, value, hotPotErrors));
                         }
                     }
 

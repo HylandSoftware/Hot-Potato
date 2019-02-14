@@ -4,7 +4,7 @@ using NJsonSchema.Validation;
 using System;
 using System.Collections.Generic;
 
-namespace HotPotato.Validators.NJsonSchema
+namespace HotPotato.Validators
 {
     public class BodyValidator : IBodyValidator
     {
@@ -25,7 +25,12 @@ namespace HotPotato.Validators.NJsonSchema
             }
             else
             {
-                return ResultFactory.BodyInvalidResult(content, errors);
+                List<HotPotatoValidationError> hotPotList = new List<HotPotatoValidationError>();
+                foreach (ValidationError err in errors)
+                {
+                    hotPotList.Add(new HotPotatoValidationError(err));
+                }
+                return ResultFactory.BodyInvalidResult(content, hotPotList);
             }
         }
     }
