@@ -1,4 +1,5 @@
 
+using static HotPotato.IntegrationTestMethods;
 using HotPotato.OpenApi.Locators.NSwag;
 using HotPotato.Models;
 using HotPotato.Validators;
@@ -8,7 +9,6 @@ using static NSwag.SwaggerYamlDocument;
 using System;
 using System.Net;
 using System.Net.Http;
-using System.IO;
 using System.Text;
 using System.Threading.Tasks;
 using Xunit;
@@ -34,7 +34,7 @@ namespace HotPotato.Http.Default
             var testResponse = await testRespMsg.ConvertResponse();
             HttpPair testPair = new HttpPair(testRequest, testResponse);
 
-            string specPath = Path.Combine(Environment.CurrentDirectory, specSubPath, "specification.yaml");
+            string specPath = SpecPath(specSubPath, "specification.yaml");
             Task<SwaggerDocument> swagTask = FromFileAsync(specPath);
             SwaggerDocument swagDoc = swagTask.Result;
 
@@ -62,7 +62,7 @@ namespace HotPotato.Http.Default
             var testResponse = await testRespMsg.ConvertResponse();
             HttpPair testPair = new HttpPair(testRequest, testResponse);
 
-            string specPath = Path.Combine(Environment.CurrentDirectory, specSubPath, "specification.yaml");
+            string specPath = SpecPath(specSubPath, "specification.yaml");
             Task<SwaggerDocument> swagTask = FromFileAsync(specPath);
             SwaggerDocument swagDoc = swagTask.Result;
 

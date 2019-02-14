@@ -1,4 +1,4 @@
-﻿
+﻿using System;
 using System.IO;
 
 namespace HotPotato
@@ -8,9 +8,10 @@ namespace HotPotato
         /// <summary>
         /// Returns a path with the correct directory separator based on your platform
         /// </summary>
-        public static string SpecPath(string path)
+        public static string SpecPath(string subPath, string file)
         {
-            return path.Replace('/', Path.DirectorySeparatorChar).Replace('\\', Path.DirectorySeparatorChar);
+            subPath.Replace('/', Path.DirectorySeparatorChar).Replace('\\', Path.DirectorySeparatorChar);
+            return Path.Combine(Environment.CurrentDirectory, subPath, file);
         }
     }
 }
