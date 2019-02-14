@@ -7,7 +7,7 @@ using System.Net;
 using System.Net.Http;
 using System.Threading.Tasks;
 
-namespace HotPotato.Middleware
+namespace HotPotato.AspNetCore.Middleware
 {
     public class ProxyMiddleware
     {
