@@ -22,4 +22,5 @@
     <ProjectReference Include="..\..\src\HotPotato\HotPotato.csproj" />
   </ItemGroup>
 
+
 </Project>
