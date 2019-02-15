@@ -1,4 +1,5 @@
-﻿using HotPotato.Proxy;
+﻿using HotPotato.AspNetCore.Middleware;
+using HotPotato.Proxy;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
@@ -10,7 +11,7 @@ using Xunit;
 
 namespace HotPotato.Middleware
 {
-    public class ProxyMiddlewareTest
+    public class HotPotatoMiddlewareTest
     {
         private const string RemoteEndpointKey = "RemoteEndpoint";
         private const string AValidEndpoint = "http://foo";
@@ -18,19 +19,19 @@ namespace HotPotato.Middleware
         [Fact]
         public void Constructor_NullProxy_Throws()
         {
-            Assert.Throws<ArgumentNullException>("proxy", () => new ProxyMiddleware(null, null, Mock.Of<IConfiguration>(), Mock.Of<ILogger<ProxyMiddleware>>()));
+            Assert.Throws<ArgumentNullException>("proxy", () => new HotPotatoMiddleware(null, null, Mock.Of<IConfiguration>(), Mock.Of<ILogger<HotPotatoMiddleware>>()));
         }
 
         [Fact]
         public void Constructor_NullConfiguration_Throws()
         {
-            Assert.Throws<ArgumentNullException>("configuration", () => new ProxyMiddleware(null, Mock.Of<IProxy>(), null, Mock.Of<ILogger<ProxyMiddleware>>()));
+            Assert.Throws<ArgumentNullException>("configuration", () => new HotPotatoMiddleware(null, Mock.Of<IProxy>(), null, Mock.Of<ILogger<HotPotatoMiddleware>>()));
         }
 
         [Fact]
         public void Constructor_NullLogger_Throws()
         {
-            Assert.Throws<ArgumentNullException>("log", () => new ProxyMiddleware(null, Mock.Of<IProxy>(), Mock.Of<IConfiguration>(), null));
+            Assert.Throws<ArgumentNullException>("log", () => new HotPotatoMiddleware(null, Mock.Of<IProxy>(), Mock.Of<IConfiguration>(), null));
         }
 
         [Fact]
@@ -45,11 +46,11 @@ namespace HotPotato.Middleware
             contextMock.SetupGet(x => x.Request).Returns(request);
             contextMock.SetupGet(x => x.Response).Returns(response);
 
-            ProxyMiddleware subject = new ProxyMiddleware(
+            HotPotatoMiddleware subject = new HotPotatoMiddleware(
                 null, 
                 proxyMock.Object, 
                 configMock.Object, 
-                Mock.Of<ILogger<ProxyMiddleware>>());
+                Mock.Of<ILogger<HotPotatoMiddleware>>());
 
             await subject.Invoke(contextMock.Object);
 
@@ -64,12 +65,12 @@ namespace HotPotato.Middleware
                 .Throws(new Exception("FAIL"));
             Mock<IConfiguration> configMock = new Mock<IConfiguration>();
             configMock.SetupGet(x => x[RemoteEndpointKey]).Returns(AValidEndpoint);
-            Mock<ILogger<ProxyMiddleware>> loggerMock = new Mock<ILogger<ProxyMiddleware>>();
+            Mock<ILogger<HotPotatoMiddleware>> loggerMock = new Mock<ILogger<HotPotatoMiddleware>>();
             Mock<HttpContext> contextMock = new Mock<HttpContext>();
             contextMock.SetupGet(x => x.Request).Returns(Mock.Of<HttpRequest>());
             contextMock.SetupGet(x => x.Response).Returns(Mock.Of<HttpResponse>());
 
-            ProxyMiddleware subject = new ProxyMiddleware(
+            HotPotatoMiddleware subject = new HotPotatoMiddleware(
                 null,
                 proxyMock.Object,
                 configMock.Object,
@@ -88,12 +89,12 @@ namespace HotPotato.Middleware
                 .Throws(new HttpRequestException("FAIL"));
             Mock<IConfiguration> configMock = new Mock<IConfiguration>();
             configMock.SetupGet(x => x[RemoteEndpointKey]).Returns(AValidEndpoint);
-            Mock<ILogger<ProxyMiddleware>> loggerMock = new Mock<ILogger<ProxyMiddleware>>();
+            Mock<ILogger<HotPotatoMiddleware>> loggerMock = new Mock<ILogger<HotPotatoMiddleware>>();
             Mock<HttpContext> contextMock = new Mock<HttpContext>();
             contextMock.SetupGet(x => x.Request).Returns(Mock.Of<HttpRequest>());
             contextMock.SetupGet(x => x.Response).Returns(Mock.Of<HttpResponse>());
 
-            ProxyMiddleware subject = new ProxyMiddleware(
+            HotPotatoMiddleware subject = new HotPotatoMiddleware(
                 null,
                 proxyMock.Object,
                 configMock.Object,

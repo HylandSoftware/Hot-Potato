@@ -7,9 +7,9 @@ using System.Net;
 using System.Net.Http;
 using System.Threading.Tasks;
 
-namespace HotPotato.Middleware
+namespace HotPotato.AspNetCore.Middleware
 {
-    public class ProxyMiddleware
+    public class HotPotatoMiddleware
     {
         private const string RemoteEndpointKey = "RemoteEndpoint";
 
@@ -17,7 +17,7 @@ namespace HotPotato.Middleware
         private readonly ILogger log;
         private readonly string remoteEndpoint;
         
-        public ProxyMiddleware(RequestDelegate next, IProxy proxy, IConfiguration configuration, ILogger<ProxyMiddleware> log)
+        public HotPotatoMiddleware(RequestDelegate next, IProxy proxy, IConfiguration configuration, ILogger<HotPotatoMiddleware> log)
         {
             _ = proxy ?? throw new ArgumentNullException(nameof(proxy));
             _ = configuration ?? throw new ArgumentNullException(nameof(configuration));

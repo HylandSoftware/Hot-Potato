@@ -19,6 +19,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\..\HotPotato.AspNetCore.Middleware\HotPotato.AspNetCore.Middleware.csproj" />
     <ProjectReference Include="..\..\src\HotPotato\HotPotato.csproj" />
   </ItemGroup>
 
