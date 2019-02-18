@@ -1,10 +1,10 @@
-﻿using HotPotato.Http;
+﻿using HotPotato.Core.Http;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Logging;
 using System;
 using System.Threading.Tasks;
 
-namespace HotPotato.Proxy.Default
+namespace HotPotato.Core.Proxy.Default
 {
     public class Proxy : IProxy
     {

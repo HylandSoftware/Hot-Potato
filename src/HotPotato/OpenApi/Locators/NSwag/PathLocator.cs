@@ -1,5 +1,5 @@
-﻿using HotPotato.Matchers;
-using HotPotato.Models;
+﻿using HotPotato.Core.Models;
+using HotPotato.Matchers;
 using NSwag;
 using System;
 

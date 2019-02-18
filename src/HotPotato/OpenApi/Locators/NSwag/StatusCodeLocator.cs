@@ -1,5 +1,4 @@
-﻿using HotPotato.Models;
-using Microsoft.AspNetCore.Http;
+﻿using HotPotato.Core.Models;
 using NSwag;
 using System;
 

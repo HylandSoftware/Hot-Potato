@@ -1,7 +1,7 @@
-﻿using HotPotato.Http;
+﻿using HotPotato.Core.Http;
 using System;
 
-namespace HotPotato.Models
+namespace HotPotato.Core.Models
 {
     public class HttpPair
     {

@@ -1,7 +1,6 @@
 
 using static HotPotato.IntegrationTestMethods;
 using HotPotato.OpenApi.Locators.NSwag;
-using HotPotato.Models;
 using HotPotato.Validators;
 using Newtonsoft.Json;
 using NSwag;
@@ -12,6 +11,9 @@ using System.Net.Http;
 using System.Text;
 using System.Threading.Tasks;
 using Xunit;
+using HotPotato.Core.Http.Default;
+using HotPotato.Core.Models;
+using HotPotato.Core.Http;
 
 namespace HotPotato.Http.Default
 {

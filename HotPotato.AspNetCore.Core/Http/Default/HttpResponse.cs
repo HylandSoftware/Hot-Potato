@@ -1,8 +1,8 @@
 ﻿using System.Net;
 
-namespace HotPotato.Http.Default
+namespace HotPotato.Core.Http.Default
 {
-    internal class HttpResponse : IHttpResponse
+    public class HttpResponse : IHttpResponse
     {
         public HttpResponse(HttpStatusCode statusCode, HttpHeaders headers)
         {

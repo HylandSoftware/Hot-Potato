@@ -1,6 +1,6 @@
 ﻿using System.Net;
 
-namespace HotPotato.Http
+namespace HotPotato.Core.Http
 {
     public interface IHttpResponse
     {

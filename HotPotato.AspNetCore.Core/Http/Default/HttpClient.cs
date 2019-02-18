@@ -2,7 +2,7 @@
 using System.Net.Http;
 using System.Threading.Tasks;
 
-namespace HotPotato.Http.Default
+namespace HotPotato.Core.Http.Default
 {
     public class HttpClient : IHttpClient
     {

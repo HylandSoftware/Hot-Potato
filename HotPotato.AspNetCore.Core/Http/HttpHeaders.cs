@@ -1,7 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 
-namespace HotPotato.Http
+namespace HotPotato.Core.Http
 {
     public class HttpHeaders : IEnumerable<KeyValuePair<string, List<string>>>
     {

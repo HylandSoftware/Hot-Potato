@@ -3,7 +3,7 @@ using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Text;
 
-namespace HotPotato.Http
+namespace HotPotato.Core.Http
 {
     public interface IHttpRequest
     {

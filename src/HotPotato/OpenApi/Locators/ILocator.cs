@@ -1,4 +1,4 @@
-﻿using HotPotato.Models;
+﻿using HotPotato.Core.Models;
 using HotPotato.Validators;
 using System;
 

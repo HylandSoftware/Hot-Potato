@@ -1,4 +1,4 @@
-﻿using HotPotato.Http.Default;
+﻿using HotPotato.Core.Http.Default;
 using Microsoft.Extensions.Primitives;
 using System;
 using System.Collections.Generic;
@@ -7,7 +7,7 @@ using System.Net.Http;
 using System.Threading.Tasks;
 using MSHTTP = Microsoft.AspNetCore.Http;
 
-namespace HotPotato.Http
+namespace HotPotato.Core.Http
 {
     public static class HttpExtensions
     {

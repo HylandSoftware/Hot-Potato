@@ -1,10 +1,10 @@
-using HotPotato.Http.Default;
-using HotPotato.Models;
+using HotPotato.Core.Models;
 using NSwag;
 using System;
 using System.Net;
 using System.Net.Http;
 using Xunit;
+using HotPotato.Core.Http.Default;
 
 namespace HotPotato.OpenApi.Locators.NSwag
 {

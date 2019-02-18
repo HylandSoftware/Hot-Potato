@@ -1,7 +1,5 @@
-﻿
-using HotPotato.Http.Default;
-using static HotPotato.IntegrationTestMethods;
-using HotPotato.Models;
+﻿using static HotPotato.IntegrationTestMethods;
+using HotPotato.Core.Models;
 using NSwag;
 using static NSwag.SwaggerYamlDocument;
 using System;
@@ -10,6 +8,7 @@ using System.Net;
 using System.Net.Http;
 using System.Threading.Tasks;
 using Xunit;
+using HotPotato.Core.Http.Default;
 
 namespace HotPotato.OpenApi.Locators.NSwag
 {

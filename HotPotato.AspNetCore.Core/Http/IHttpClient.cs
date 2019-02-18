@@ -1,6 +1,6 @@
 ﻿using System.Threading.Tasks;
 
-namespace HotPotato.Http
+namespace HotPotato.Core.Http
 {
     public interface IHttpClient
     {

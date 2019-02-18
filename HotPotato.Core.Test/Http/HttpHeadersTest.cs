@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using Xunit;
 
-namespace HotPotato.Http
+namespace HotPotato.Core.Http
 {
     public class HttpHeadersTest
     {

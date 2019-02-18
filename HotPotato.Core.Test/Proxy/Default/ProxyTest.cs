@@ -1,11 +1,11 @@
-﻿using HotPotato.Http;
+﻿using HotPotato.Core.Http;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Logging;
 using Moq;
 using System.Threading.Tasks;
 using Xunit;
 
-namespace HotPotato.Proxy.Default
+namespace HotPotato.Core.Proxy.Default
 {
     public class ProxyTest
     {

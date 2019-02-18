@@ -15,7 +15,11 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "HotPotato.AspNetCore.Host",
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "HotPotato.AspNetCore.Middleware", "HotPotato.AspNetCore.Middleware\HotPotato.AspNetCore.Middleware.csproj", "{2369CDAC-1669-4B5F-ABD6-CE79BF5D0FB3}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HotPotato.AspNetCore.Middleware.Test", "HotPotato.AspNetCore.Middleware.Test\HotPotato.AspNetCore.Middleware.Test.csproj", "{D84A3992-B146-40AD-B862-208E10287EF0}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "HotPotato.AspNetCore.Middleware.Test", "HotPotato.AspNetCore.Middleware.Test\HotPotato.AspNetCore.Middleware.Test.csproj", "{D84A3992-B146-40AD-B862-208E10287EF0}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "HotPotato.Core", "HotPotato.AspNetCore.Core\HotPotato.Core.csproj", "{DF12BF16-884B-4566-A51A-C9C8FEA37AF9}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HotPotato.Core.Test", "HotPotato.Core.Test\HotPotato.Core.Test.csproj", "{A1DB24DF-3872-4589-A1AB-8A8A7B5F2A29}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -47,6 +51,14 @@ Global
 		{D84A3992-B146-40AD-B862-208E10287EF0}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{D84A3992-B146-40AD-B862-208E10287EF0}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{D84A3992-B146-40AD-B862-208E10287EF0}.Release|Any CPU.Build.0 = Release|Any CPU
+		{DF12BF16-884B-4566-A51A-C9C8FEA37AF9}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{DF12BF16-884B-4566-A51A-C9C8FEA37AF9}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{DF12BF16-884B-4566-A51A-C9C8FEA37AF9}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{DF12BF16-884B-4566-A51A-C9C8FEA37AF9}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A1DB24DF-3872-4589-A1AB-8A8A7B5F2A29}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A1DB24DF-3872-4589-A1AB-8A8A7B5F2A29}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A1DB24DF-3872-4589-A1AB-8A8A7B5F2A29}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A1DB24DF-3872-4589-A1AB-8A8A7B5F2A29}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -55,6 +67,7 @@ Global
 		{74BA99FB-0DAC-4737-8645-D72AAA817520} = {18D73CFF-6ECA-4A0C-8A6A-97F84BC3E1C8}
 		{23CDAEF7-947F-463C-9162-3C8692FC103D} = {18D73CFF-6ECA-4A0C-8A6A-97F84BC3E1C8}
 		{D84A3992-B146-40AD-B862-208E10287EF0} = {18D73CFF-6ECA-4A0C-8A6A-97F84BC3E1C8}
+		{A1DB24DF-3872-4589-A1AB-8A8A7B5F2A29} = {18D73CFF-6ECA-4A0C-8A6A-97F84BC3E1C8}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {2836D304-9C78-41F8-9A22-517D86241D2C}

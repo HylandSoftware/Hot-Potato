@@ -1,5 +1,5 @@
 ﻿using HotPotato.AspNetCore.Middleware;
-using HotPotato.Proxy;
+using HotPotato.Core.Proxy;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;

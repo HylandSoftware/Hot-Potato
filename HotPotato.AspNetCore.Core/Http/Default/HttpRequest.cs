@@ -3,9 +3,9 @@ using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Text;
 
-namespace HotPotato.Http.Default
+namespace HotPotato.Core.Http.Default
 {
-    internal class HttpRequest : IHttpRequest
+    public class HttpRequest : IHttpRequest
     {
         private readonly Encoding DefaultEncoding = Encoding.UTF8;
         private readonly string DefaultMediaType = "application/json";

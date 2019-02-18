@@ -4,7 +4,7 @@ using System.Net;
 using System.Net.Http;
 using Xunit;
 
-namespace HotPotato.Http.Default
+namespace HotPotato.Core.Http.Default
 {
     public class HttpClientTest
     {
