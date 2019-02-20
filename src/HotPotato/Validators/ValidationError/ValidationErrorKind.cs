@@ -118,7 +118,7 @@ namespace HotPotato.Validators
         /// <summary>
         /// The object is not one of the given schemas
         /// </summary>
-        NotOneof,
+        NotOneOf,
         /// <summary>
         /// The object matches the not allowed schema
         /// </summary>
