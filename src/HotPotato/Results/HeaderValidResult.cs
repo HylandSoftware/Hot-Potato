@@ -6,7 +6,7 @@ namespace HotPotato.Results
     public class HeaderValidResult : Result
     {
         public override string Message { get; }
-        public override List<HotPotatoValidationError> Reasons { get; }
+        public override List<ValidationError> Reasons { get; }
 
         public HeaderValidResult(string key, string value)
         {

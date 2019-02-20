@@ -6,7 +6,7 @@ namespace HotPotato.Results
     public class HeaderNotFoundResult : Result
     {
         public override string Message { get; }
-        public override List<HotPotatoValidationError> Reasons { get; }
+        public override List<ValidationError> Reasons { get; }
 
         public HeaderNotFoundResult(string key)
         {

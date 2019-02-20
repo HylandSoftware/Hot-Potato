@@ -5,11 +5,11 @@ namespace HotPotato.Results
 {
     public class BodyInvalidResult : InvalidResult
     {
-        public override List<HotPotatoValidationError> Reasons { get; }
+        public override List<ValidationError> Reasons { get; }
 
         public override string Message { get; }
 
-        public BodyInvalidResult(string content, List<HotPotatoValidationError> reasons)
+        public BodyInvalidResult(string content, List<ValidationError> reasons)
         {
             Message = Messages.BodyInvalid(content);
             Reasons = reasons;

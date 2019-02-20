@@ -5,6 +5,6 @@ namespace HotPotato.Results
 {
     public abstract class InvalidResult : Result
     {
-        public override List<HotPotatoValidationError> Reasons { get; }
+        public override List<ValidationError> Reasons { get; }
     }
 }

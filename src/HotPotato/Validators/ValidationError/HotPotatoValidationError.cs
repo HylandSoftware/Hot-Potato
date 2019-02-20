@@ -2,7 +2,7 @@
 
 namespace HotPotato.Validators
 {
-    public class HotPotatoValidationError : IHotPotatoValidationError
+    public class ValidationError
     {
         public string Message { get; set; }
         public string Kind { get; set; }
@@ -10,13 +10,13 @@ namespace HotPotato.Validators
         public int LineNumber { get; set; }
         public int LinePosition { get; set; }
 
-        public HotPotatoValidationError(ValidationError valErr)
+        public ValidationError(string message, string kind, string property, int lineNumber, int linePosition)
         {
-            this.Message = valErr.ToString();
-            this.Kind = valErr.Kind.ToString();
-            this.Property = valErr.Property;
-            this.LineNumber = valErr.LineNumber;
-            this.LinePosition = valErr.LinePosition;
+            this.Message = message;
+            this.Kind = kind;
+            this.Property = property;
+            this.LineNumber = lineNumber;
+            this.LinePosition = linePosition;
         }
 
     }
