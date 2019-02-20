@@ -1,5 +1,6 @@
 ﻿using HotPotato.Http;
 using HotPotato.Results;
+using static HotPotato.Results.ResultsMethods;
 using NJsonSchema;
 using NSwag;
 using System.Collections.Generic;
@@ -66,7 +67,8 @@ namespace HotPotato.Validators
             Assert.True(result.Count > 0);
             IEnumerator<Result> enumerator = result.GetEnumerator();
             enumerator.MoveNext();
-            Assert.Equal(ValidationErrorKind.IntegerExpected, enumerator.Current.Reasons[0].Kind.ToString().ToErrorKind());
+
+            Assert.Equal(ValidationErrorKind.IntegerExpected, GetInvalidReasons(enumerator.Current)[0].Kind.ToString().ToErrorKind());
             Assert.IsAssignableFrom<HeaderInvalidResult>(enumerator.Current);
         }
     }

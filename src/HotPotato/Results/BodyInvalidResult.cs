@@ -8,11 +8,13 @@ namespace HotPotato.Results
         public override List<ValidationError> Reasons { get; }
 
         public override string Message { get; }
+        public override bool Valid { get; }
 
-        public BodyInvalidResult(string content, List<ValidationError> reasons)
+        public BodyInvalidResult(string content, List<ValidationError> reasons, bool valid)
         {
             Message = Messages.BodyInvalid(content);
             Reasons = reasons;
+            Valid = valid;
         }
     }
 }

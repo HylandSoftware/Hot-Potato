@@ -1,4 +1,5 @@
 ﻿using HotPotato.Results;
+using static HotPotato.Results.ResultsMethods;
 using NJsonSchema;
 using Xunit;
 
@@ -31,7 +32,8 @@ namespace HotPotato.Validators
             Result result = subject.Validate(AnInvalidBody);
 
             Assert.NotNull(result);
-            Assert.Equal(ValidationErrorKind.IntegerExpected, result.Reasons[0].Kind.ToString().ToErrorKind());
+
+            Assert.Equal(ValidationErrorKind.IntegerExpected, GetInvalidReasons(result)[0].Kind.ToString().ToErrorKind());
             Assert.IsAssignableFrom<BodyInvalidResult>(result);
         }
     }
