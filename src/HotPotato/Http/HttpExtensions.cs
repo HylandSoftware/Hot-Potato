@@ -4,6 +4,8 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Net.Http;
+using System.Net.Http.Headers;
+using System.Text;
 using System.Threading.Tasks;
 using MSHTTP = Microsoft.AspNetCore.Http;
 
@@ -30,7 +32,7 @@ namespace HotPotato.Http
                 "upgrade-insecure-requests"
             };
 
-        private static readonly HashSet<string> ExcludedResponseHeaders = 
+        private static readonly HashSet<string> ExcludedResponseHeaders =
             new HashSet<string>
             {
                 "connection",
@@ -58,8 +60,9 @@ namespace HotPotato.Http
                 {
                     headers.Add(item.Key, item.Value);
                 }
+                MediaTypeHeaderValue contentType = @this.Content.Headers?.ContentType;
                 byte[] payload = await @this.Content.ReadAsByteArrayAsync();
-                return new HttpResponse(@this.StatusCode, headers, payload);
+                return new HttpResponse(@this.StatusCode, headers, payload, contentType);
             }
             return new HttpResponse(@this.StatusCode, headers);
         }
@@ -68,7 +71,7 @@ namespace HotPotato.Http
         {
             _ = @this ?? throw new ArgumentNullException(nameof(@this));
             _ = remoteEndpoint ?? throw new ArgumentNullException(nameof(remoteEndpoint));
-            
+
             HttpRequest request = new HttpRequest(new HttpMethod(@this.Method), @this.BuildUri(remoteEndpoint));
             foreach (var item in @this?.Headers)
             {
@@ -129,7 +132,7 @@ namespace HotPotato.Http
             HttpRequestMessage message = new HttpRequestMessage(@this.Method, @this.Uri);
             if (@this.Content != null)
             {
-                message.Content = @this.Content; 
+                message.Content = @this.Content;
             }
             foreach (var item in @this.HttpHeaders)
             {
@@ -142,6 +145,38 @@ namespace HotPotato.Http
                 }
             }
             return message;
+        }
+
+        public static string ToBodyString(this IHttpResponse @this)
+        {
+            if (@this.Content == null || @this.ContentType == null)
+            {
+                return String.Empty;
+            }
+            else if (@this.ContentType.CharSet == null)
+            {
+                @this.ContentType.CharSet = String.Empty;
+            }
+            Encoding encode = null;
+            switch (@this.ContentType.CharSet)
+            {
+                case "utf-8":
+                    encode = Encoding.UTF8;
+                    break;
+                case "utf-7":
+                    encode = Encoding.UTF7;
+                    break;
+                case "utf-32":
+                    encode = Encoding.UTF32;
+                    break;
+                case "us-ascii":
+                    encode = Encoding.ASCII;
+                    break;
+                default:
+                    encode = Encoding.Default;
+                    break;
+            }
+            return encode.GetString(@this.Content);
         }
     }
 }
