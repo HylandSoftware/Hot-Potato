@@ -66,7 +66,7 @@ namespace HotPotato.Validators
             Assert.True(result.Count > 0);
             IEnumerator<Result> enumerator = result.GetEnumerator();
             enumerator.MoveNext();
-            Assert.Equal("IntegerExpected", enumerator.Current.Reasons[0].Kind);
+            Assert.Equal(ValidationErrorKind.IntegerExpected, enumerator.Current.Reasons[0].Kind.ToString().ToErrorKind());
             Assert.IsAssignableFrom<HeaderInvalidResult>(enumerator.Current);
         }
     }

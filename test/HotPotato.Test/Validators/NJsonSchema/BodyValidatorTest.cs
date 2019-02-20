@@ -31,7 +31,7 @@ namespace HotPotato.Validators
             Result result = subject.Validate(AnInvalidBody);
 
             Assert.NotNull(result);
-            Assert.Equal("IntegerExpected", result.Reasons[0].Kind);
+            Assert.Equal(ValidationErrorKind.IntegerExpected, result.Reasons[0].Kind.ToString().ToErrorKind());
             Assert.IsAssignableFrom<BodyInvalidResult>(result);
         }
     }

@@ -68,8 +68,8 @@ namespace HotPotato.Http.Default
             Locator subject = new Locator(swagDoc, new PathLocator(), new MethodLocator(), new StatusCodeLocator());
             Tuple<IBodyValidator, IHeaderValidator> valTup = subject.GetValidator(testPair);
             Results.Result result = valTup.Item1.Validate(bodyString);
-            Assert.Equal("DateTimeExpected", result.Reasons[0].Kind);
-            Assert.Equal("IntegerExpected", result.Reasons[1].Kind);
+            Assert.Equal(ValidationErrorKind.DateTimeExpected, result.Reasons[0].Kind);
+            Assert.Equal(ValidationErrorKind.IntegerExpected, result.Reasons[1].Kind);
             Assert.Contains("is invalid", result.Message);
 
         }

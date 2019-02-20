@@ -47,7 +47,7 @@ namespace HotPotato.Validators
                             List<ValidationError> hotPotErrors = new List<ValidationError>();
                             foreach (NJsonSchema.Validation.ValidationError err in result)
                             {
-                                hotPotErrors.Add(new ValidationError(err.ToString(), err.Kind.ToString(), err.Property, err.LineNumber, err.LinePosition));
+                                hotPotErrors.Add(new ValidationError(err.ToString(), err.Kind.ToString().ToErrorKind(), err.Property, err.LineNumber, err.LinePosition));
                             }
                             results.Add(ResultFactory.HeaderInvalidResult(headerKey, value, hotPotErrors));
                         }
