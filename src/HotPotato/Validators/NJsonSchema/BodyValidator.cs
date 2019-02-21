@@ -24,12 +24,8 @@ namespace HotPotato.Validators
             }
             else
             {
-                List<ValidationError> hotPotList = new List<ValidationError>();
-                foreach (NJsonSchema.Validation.ValidationError err in errors)
-                {
-                    hotPotList.Add(new ValidationError(err.ToString(), err.Kind.ToString().ToErrorKind(), err.Property, err.LineNumber, err.LinePosition));
-                }
-                return ResultFactory.BodyInvalidResult(content, hotPotList);
+                List<ValidationError> errList = errors.ToValidationErrorList();
+                return ResultFactory.BodyInvalidResult(content, errList);
             }
         }
     }

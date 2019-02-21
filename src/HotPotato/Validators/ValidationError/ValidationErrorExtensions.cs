@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 
 namespace HotPotato.Validators
 {
@@ -8,6 +9,14 @@ namespace HotPotato.Validators
         {
             return (ValidationErrorKind)Enum.Parse(typeof(ValidationErrorKind), @this);
         }
-
+        public static List<ValidationError> ToValidationErrorList(this ICollection<NJsonSchema.Validation.ValidationError> @this)
+        {
+            List<ValidationError> errList = new List<ValidationError>();
+            foreach (NJsonSchema.Validation.ValidationError err in @this)
+            {
+                errList.Add(new ValidationError(err.ToString(), err.Kind.ToString().ToErrorKind(), err.Property, err.LineNumber, err.LinePosition));
+            }
+            return errList;
+        }
     }
 }
