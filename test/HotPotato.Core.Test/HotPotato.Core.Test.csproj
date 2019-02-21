@@ -15,7 +15,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\HotPotato.AspNetCore.Core\HotPotato.Core.csproj" />
+    <ProjectReference Include="..\..\src\HotPotato.Core\HotPotato.Core.csproj" />
   </ItemGroup>
 
 </Project>
