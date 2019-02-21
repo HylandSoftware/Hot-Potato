@@ -50,6 +50,7 @@ namespace HotPotato.Http.Default
             IHttpResponse response = await subject.SendAsync(request);
             string bodyString = response.ToBodyString();
 
+            Assert.Equal("utf-8", response.ContentType.CharSet);
             Assert.Equal("application/json", response.ContentType.MediaType);
             Assert.Equal(bodyString, expectString);
         }
