@@ -1,7 +1,6 @@
 ﻿using HotPotato.Core.Http;
 using HotPotato.Results;
 using Newtonsoft.Json;
-using NJsonSchema.Validation;
 using NSwag;
 using System;
 using System.Collections.Generic;
@@ -38,14 +37,15 @@ namespace HotPotato.Validators
                     {
                         // HACK - Need to convert to JSON because that's how NJsonSchema likes it.
                         string jValue = JsonConvert.SerializeObject(value);
-                        ICollection<ValidationError> result = item.Value.Validate(jValue);
-                        if (result == null || result.Count == 0)
+                        ICollection<NJsonSchema.Validation.ValidationError> errors = item.Value.Validate(jValue);
+                        if (errors == null || errors.Count == 0)
                         {
                             results.Add(ResultFactory.HeaderValidResult(headerKey, value));
                         }
                         else
                         {
-                            results.Add(ResultFactory.HeaderInvalidResult(headerKey, value, result));
+                            List<ValidationError> errList = errors.ToValidationErrorList();
+                            results.Add(ResultFactory.HeaderInvalidResult(headerKey, value, errList));
                         }
                     }
 

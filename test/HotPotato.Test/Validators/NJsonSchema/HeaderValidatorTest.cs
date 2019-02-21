@@ -1,11 +1,12 @@
 ﻿using HotPotato.Core.Http;
 using HotPotato.Results;
+using static HotPotato.Results.ResultsMethods;
 using NJsonSchema;
 using NSwag;
 using System.Collections.Generic;
 using Xunit;
 
-namespace HotPotato.Validators.NJsonSchema
+namespace HotPotato.Validators
 {
     public class HeaderValidatorTest
     {
@@ -66,6 +67,8 @@ namespace HotPotato.Validators.NJsonSchema
             Assert.True(result.Count > 0);
             IEnumerator<Result> enumerator = result.GetEnumerator();
             enumerator.MoveNext();
+
+            Assert.Equal(ValidationErrorKind.IntegerExpected, GetInvalidReasons(enumerator.Current)[0].Kind.ToString().ToErrorKind());
             Assert.IsAssignableFrom<HeaderInvalidResult>(enumerator.Current);
         }
     }

@@ -1,8 +1,12 @@
 
 using static HotPotato.IntegrationTestMethods;
 using HotPotato.OpenApi.Locators.NSwag;
+<<<<<<< HEAD
+=======
+using HotPotato.Models;
 using HotPotato.Results;
 using static HotPotato.Results.ResultsMethods;
+>>>>>>> develop
 using HotPotato.Validators;
 using Newtonsoft.Json;
 using NSwag;

@@ -125,20 +125,8 @@ namespace HotPotato.Http.Default
 
     public class SpecValidationNegTestData : IEnumerable<object[]>
     {
-        //type and instace = invalid URI
         public IEnumerator<object[]> GetEnumerator()
         {
-            yield return new object[] { "specs/rdds/messagestorageservice/", HttpMethod.Delete,
-            HttpStatusCode.NotFound, "https://api.hyland.com/ibpaf/rdds/messages/47", "application/problem+json", new {
-                type = "https =//example.net/validation_error",
-                title = "Your message id did not return a message to be deleted.",
-                status = 404,
-                detail = "message was not found for the given messageId, hence nothing will be deleted",
-                instance = "/example-resource"
-                }
-            };
-
-            //created = invalid date, accountId = invalid integer
             yield return new object[] { "specs/ccm/", HttpMethod.Get,
             HttpStatusCode.OK, "https://api.hyland.com/sms/messages/41", "application/json", new {
                 id = "SM4262411b90e5464b98a4f66a49c57a97",

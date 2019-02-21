@@ -1,7 +1,6 @@
 ﻿using HotPotato.Core.Models;
 using HotPotato.Exceptions;
 using HotPotato.Validators;
-using HotPotato.Validators.NJsonSchema;
 using NJsonSchema;
 using NSwag;
 using System;

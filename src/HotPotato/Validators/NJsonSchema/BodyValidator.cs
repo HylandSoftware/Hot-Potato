@@ -1,10 +1,9 @@
 ﻿using HotPotato.Results;
 using NJsonSchema;
-using NJsonSchema.Validation;
 using System;
 using System.Collections.Generic;
 
-namespace HotPotato.Validators.NJsonSchema
+namespace HotPotato.Validators
 {
     public class BodyValidator : IBodyValidator
     {
@@ -18,14 +17,15 @@ namespace HotPotato.Validators.NJsonSchema
 
         public Result Validate(string content)
         {
-            ICollection<ValidationError> errors = schema.Validate(content);
+            ICollection<NJsonSchema.Validation.ValidationError> errors = schema.Validate(content);
             if (errors == null || errors.Count == 0)
             {
                 return ResultFactory.BodyValidResult(content);
             }
             else
             {
-                return ResultFactory.BodyInvalidResult(content, errors);
+                List<ValidationError> errList = errors.ToValidationErrorList();
+                return ResultFactory.BodyInvalidResult(content, errList);
             }
         }
     }
