@@ -37,19 +37,15 @@ namespace HotPotato.Validators
                     {
                         // HACK - Need to convert to JSON because that's how NJsonSchema likes it.
                         string jValue = JsonConvert.SerializeObject(value);
-                        ICollection<NJsonSchema.Validation.ValidationError> result = item.Value.Validate(jValue);
-                        if (result == null || result.Count == 0)
+                        ICollection<NJsonSchema.Validation.ValidationError> errors = item.Value.Validate(jValue);
+                        if (errors == null || errors.Count == 0)
                         {
                             results.Add(ResultFactory.HeaderValidResult(headerKey, value));
                         }
                         else
                         {
-                            List<ValidationError> hotPotErrors = new List<ValidationError>();
-                            foreach (NJsonSchema.Validation.ValidationError err in result)
-                            {
-                                hotPotErrors.Add(new ValidationError(err.ToString(), err.Kind.ToString().ToErrorKind(), err.Property, err.LineNumber, err.LinePosition));
-                            }
-                            results.Add(ResultFactory.HeaderInvalidResult(headerKey, value, hotPotErrors));
+                            List<ValidationError> errList = errors.ToValidationErrorList();
+                            results.Add(ResultFactory.HeaderInvalidResult(headerKey, value, errList));
                         }
                     }
 
