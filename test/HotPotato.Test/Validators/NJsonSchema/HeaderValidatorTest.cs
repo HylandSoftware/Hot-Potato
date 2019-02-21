@@ -1,4 +1,4 @@
-﻿using HotPotato.Http;
+﻿using HotPotato.Core.Http;
 using HotPotato.Results;
 using static HotPotato.Results.ResultsMethods;
 using NJsonSchema;

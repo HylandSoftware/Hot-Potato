@@ -1,6 +1,7 @@
-﻿using HotPotato.Http;
-using HotPotato.Http.Default;
-using HotPotato.Proxy;
+﻿using HotPotato.Core.Proxy;
+using HotPotato.Core.Http;
+using HotPotato.Core.Http.Default;
+using HotPotato.AspNetCore.Middleware;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
@@ -27,12 +28,12 @@ namespace HotPotato.AspNetCore.Host
         public void Configure(ILoggerFactory loggerFactory, IApplicationBuilder builder, IHostingEnvironment env)
         {
             builder.UseResponseBuffering();
-            builder.UseMiddleware<Middleware.HotPotatoMiddleware>();
+            builder.UseMiddleware<HotPotatoMiddleware>();
         }
 
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddScoped<IProxy, HotPotato.Proxy.Default.Proxy>();
+            services.AddScoped<IProxy, HotPotato.Core.Proxy.Default.Proxy>();
             services.AddScoped<IHttpClient, HttpClient>();
             services.AddHttpClient<IHttpClient, HttpClient>(client =>
             {

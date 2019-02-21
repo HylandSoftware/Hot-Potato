@@ -1,5 +1,5 @@
-﻿using HotPotato.Exceptions;
-using HotPotato.Models;
+﻿using HotPotato.Core.Models;
+using HotPotato.Exceptions;
 using HotPotato.Validators;
 using NJsonSchema;
 using NSwag;
