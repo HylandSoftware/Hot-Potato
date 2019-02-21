@@ -2,6 +2,8 @@
 using static HotPotato.IntegrationTestMethods;
 using HotPotato.OpenApi.Locators.NSwag;
 using HotPotato.Models;
+using HotPotato.Results;
+using static HotPotato.Results.ResultsMethods;
 using HotPotato.Validators;
 using Newtonsoft.Json;
 using NSwag;
@@ -45,7 +47,6 @@ namespace HotPotato.Http.Default
 
         }
 
-        //TODO: Use this theory to validate that the correct error messages are being returned once our custom Results object is made
         [Theory]
         [ClassData(typeof(SpecValidationNegTestData))]
         public async void Locator_ReturnsBodyValidator_InvalidSchema(string specSubPath, HttpMethod reqMethod, HttpStatusCode statusCode, string endpointURI, string contentType, object bodyJson)
@@ -68,7 +69,10 @@ namespace HotPotato.Http.Default
 
             Locator subject = new Locator(swagDoc, new PathLocator(), new MethodLocator(), new StatusCodeLocator());
             Tuple<IBodyValidator, IHeaderValidator> valTup = subject.GetValidator(testPair);
-            Results.Result result = valTup.Item1.Validate(bodyString);
+            Result result = valTup.Item1.Validate(bodyString);
+
+            Assert.Equal(ValidationErrorKind.DateTimeExpected, GetInvalidReasons(result)[0].Kind);
+            Assert.Equal(ValidationErrorKind.IntegerExpected, GetInvalidReasons(result)[1].Kind);
             Assert.Contains("is invalid", result.Message);
 
         }
