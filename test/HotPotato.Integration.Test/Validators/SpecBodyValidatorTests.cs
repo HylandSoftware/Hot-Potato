@@ -1,9 +1,9 @@
 
 using static HotPotato.IntegrationTestMethods;
 using HotPotato.OpenApi.Locators.NSwag;
-using HotPotato.Results;
-using static HotPotato.Results.ResultsMethods;
-using HotPotato.Validators;
+using HotPotato.OpenApi.Results;
+using static HotPotato.OpenApi.Results.ResultsMethods;
+using HotPotato.OpenApi.Validators;
 using Newtonsoft.Json;
 using NSwag;
 using static NSwag.SwaggerYamlDocument;
@@ -44,7 +44,7 @@ namespace HotPotato.Http.Default
 
             Locator subject = new Locator(swagDoc, new PathLocator(), new MethodLocator(), new StatusCodeLocator());
             Tuple<IBodyValidator, IHeaderValidator> valTup = subject.GetValidator(testPair);
-            Results.Result result = valTup.Item1.Validate(bodyString);
+            Result result = valTup.Item1.Validate(bodyString);
             Assert.Contains("is valid", result.Message);
 
         }

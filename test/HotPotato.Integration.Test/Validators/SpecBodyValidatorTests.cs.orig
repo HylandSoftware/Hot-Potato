@@ -4,10 +4,10 @@ using HotPotato.OpenApi.Locators.NSwag;
 <<<<<<< HEAD
 =======
 using HotPotato.Models;
-using HotPotato.Results;
-using static HotPotato.Results.ResultsMethods;
+using HotPotato.OpenApi.Results;
+using static HotPotato.OpenApi.Results.ResultsMethods;
 >>>>>>> develop
-using HotPotato.Validators;
+using HotPotato.OpenApi.Validators;
 using Newtonsoft.Json;
 using NSwag;
 using static NSwag.SwaggerYamlDocument;
