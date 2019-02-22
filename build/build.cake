@@ -1,6 +1,6 @@
 //Build script for Hot-Potato.NET
 var HotPotatsln = "../HotPotato.sln";
-var HotPotatoTest = "../test/HotPotato.Test/HotPotato.Test.csproj";
+var HotPotatoOpenApiTest = "../test/HotPotato.OpenApi.Test/HotPotato.OpenApi.Test.csproj";
 var HotPotatoIntegrationTest = "../test/HotPotato.Integration.Test/HotPotato.Integration.Test.csproj";
 
 var target = Argument("target", "Default");
@@ -15,10 +15,10 @@ Task("Build")
 		DotNetCoreBuild(HotPotatsln, new DotNetCoreBuildSettings { NoRestore = true });
 	});
 
-Task("Run-Unit-Tests")
+Task("Run-OpenApi-Tests")
 	.Does(() => {
-		DotNetCoreTest(HotPotatoTest, new DotNetCoreTestSettings {
-			VSTestReportPath = "unit-test-results.xml",
+		DotNetCoreTest(HotPotatoOpenApiTest, new DotNetCoreTestSettings {
+			VSTestReportPath = "openapi-test-results.xml",
 			NoRestore = true,
 			NoBuild = true
 		});
@@ -36,7 +36,7 @@ Task("Run-Integration-Tests")
 Task("Default")
 	.IsDependentOn("NuGet-Restore")
 	.IsDependentOn("Build")
-	.IsDependentOn("Run-Unit-Tests")
+	.IsDependentOn("Run-OpenApi-Tests")
 	.IsDependentOn("Run-Integration-Tests");
 
 RunTarget(target);
