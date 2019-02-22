@@ -17,7 +17,7 @@ namespace HotPotato.Core.Http.Default
         {
             using (HttpResponseMessage response = await client.SendAsync(request.ToClientRequestMessage()))
             {
-                return await response.ToClientResponse();
+                return await response.ToClientResponseAsync();
             }
         }
     }

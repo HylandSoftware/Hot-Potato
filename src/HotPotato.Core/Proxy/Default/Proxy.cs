@@ -25,7 +25,7 @@ namespace HotPotato.Core.Proxy.Default
         {
             IHttpRequest request = requestIn.ToProxyRequest(remoteEndpoint);
             IHttpResponse response = await this.Client.SendAsync(request);
-            await response.ToProxyResponse(responseOut);
+            await response.ToProxyResponseAsync(responseOut);
         }
     }
 }
