@@ -15,9 +15,9 @@ namespace HotPotato.Core.Http.Default
 
         public async Task<IHttpResponse> SendAsync(IHttpRequest request)
         {
-            using (HttpResponseMessage response = await client.SendAsync(request.BuildRequest()))
+            using (HttpResponseMessage response = await client.SendAsync(request.ToClientRequestMessage()))
             {
-                return await response.ConvertResponse();
+                return await response.ToClientResponse();
             }
         }
     }

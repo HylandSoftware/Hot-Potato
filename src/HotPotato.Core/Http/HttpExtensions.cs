@@ -42,7 +42,7 @@ namespace HotPotato.Core.Http
                 "x-powered-by"
             };
 
-        public static async Task<IHttpResponse> ConvertResponse(this HttpResponseMessage @this)
+        public static async Task<IHttpResponse> ToClientResponse(this HttpResponseMessage @this)
         {
             _ = @this ?? throw new ArgumentNullException(nameof(@this));
 
@@ -67,7 +67,7 @@ namespace HotPotato.Core.Http
             return new HttpResponse(@this.StatusCode, headers);
         }
 
-        public static IHttpRequest ToRequest(this MSHTTP.HttpRequest @this, string remoteEndpoint)
+        public static IHttpRequest ToProxyRequest(this MSHTTP.HttpRequest @this, string remoteEndpoint)
         {
             _ = @this ?? throw new ArgumentNullException(nameof(@this));
             _ = remoteEndpoint ?? throw new ArgumentNullException(nameof(remoteEndpoint));
@@ -97,7 +97,7 @@ namespace HotPotato.Core.Http
             return new Uri($"{remoteEndpoint}{@this.Path.Value}{@this.QueryString}");
         }
 
-        public static async Task BuildResponse(this IHttpResponse @this, MSHTTP.HttpResponse response)
+        public static async Task ToProxyResponse(this IHttpResponse @this, MSHTTP.HttpResponse response)
         {
             _ = @this ?? throw new ArgumentNullException(nameof(@this));
             _ = response ?? throw new ArgumentNullException(nameof(response));
@@ -125,7 +125,7 @@ namespace HotPotato.Core.Http
             }
         }
 
-        public static HttpRequestMessage BuildRequest(this IHttpRequest @this)
+        public static HttpRequestMessage ToClientRequestMessage(this IHttpRequest @this)
         {
             _ = @this ?? throw new ArgumentNullException(nameof(@this));
 

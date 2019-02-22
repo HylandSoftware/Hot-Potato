@@ -35,7 +35,7 @@ namespace HotPotato.Http.Default
             HttpResponseMessage testRespMsg = new HttpResponseMessage();
             testRespMsg.StatusCode = statusCode;
             testRespMsg.Content = content;
-            var testResponse = await testRespMsg.ConvertResponse();
+            var testResponse = await testRespMsg.ToClientResponse();
             HttpPair testPair = new HttpPair(testRequest, testResponse);
 
             string specPath = SpecPath(specSubPath, "specification.yaml");
@@ -62,7 +62,7 @@ namespace HotPotato.Http.Default
             HttpResponseMessage testRespMsg = new HttpResponseMessage();
             testRespMsg.StatusCode = statusCode;
             testRespMsg.Content = content;
-            var testResponse = await testRespMsg.ConvertResponse();
+            var testResponse = await testRespMsg.ToClientResponse();
             HttpPair testPair = new HttpPair(testRequest, testResponse);
 
             string specPath = SpecPath(specSubPath, "specification.yaml");
