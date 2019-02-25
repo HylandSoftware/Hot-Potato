@@ -1,15 +1,19 @@
 ﻿using System;
+using System.ComponentModel;
 using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Text;
 
 namespace HotPotato.Core.Http.Default
 {
-    public class HttpRequest : IHttpRequest
+    public class HttpRequest : IHttpRequest, IDisposable
     {
         private readonly Encoding DefaultEncoding = Encoding.UTF8;
         private readonly string DefaultMediaType = "application/json";
         private HttpRequestMessage requestContent { get; }
+
+        private Component component = new Component();
+        private bool disposed = false;
 
         public HttpMethod Method { get; }
         public Uri Uri { get; }
@@ -66,6 +70,25 @@ namespace HotPotato.Core.Http.Default
             }
 
             return this;
+        }
+
+        public void Dispose()
+        {
+            Dispose(true);
+            GC.SuppressFinalize(this);
+        }
+
+        protected virtual void Dispose(bool disposing)
+        {
+            if (!this.disposed)
+            {
+                if (disposing)
+                {
+                    component.Dispose();
+                }
+
+                disposed = true;
+            }
         }
     }
 }

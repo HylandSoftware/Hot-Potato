@@ -23,9 +23,11 @@ namespace HotPotato.Core.Proxy.Default
 
         public async Task ProcessAsync(string remoteEndpoint, HttpRequest requestIn, HttpResponse responseOut)
         {
-            IHttpRequest request = requestIn.ToRequest(remoteEndpoint);
-            IHttpResponse response = await this.Client.SendAsync(request);
-            await response.BuildResponse(responseOut);
+            using (IHttpRequest request = requestIn.ToRequest(remoteEndpoint))
+            {
+                IHttpResponse response = await this.Client.SendAsync(request);
+                await response.BuildResponse(responseOut);
+            }
         }
     }
 }
