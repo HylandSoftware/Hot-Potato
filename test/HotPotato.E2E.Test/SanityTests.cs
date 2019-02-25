@@ -170,7 +170,7 @@ namespace HotPotato.E2E.Test
                 {
                     options.AddServerHeader = false;
                 })
-                .UseSetting("RemoteEndpoint", "http://localhost:9191")
+                .UseSetting("RemoteEndpoint", ApiLocation)
                 .UseUrls("http://0.0.0.0:3232")
                 .UseStartup<Startup>()
                 .Build();
