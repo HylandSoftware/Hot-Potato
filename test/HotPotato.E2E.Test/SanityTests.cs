@@ -154,8 +154,8 @@ namespace HotPotato.E2E.Test
             var host = new WebHostBuilder()
                 .ConfigureAppConfiguration((hostingContext, config) =>
                 {
-                    config.SetBasePath(hostingContext.HostingEnvironment.ContentRootPath)
-                    .AddJsonFile("appsettings.json", optional: true);
+                    config.SetBasePath(hostingContext.HostingEnvironment.ContentRootPath);
+                    //.AddJsonFile("appsettings.json", optional: true);
                 })
                 .ConfigureLogging((hostingContext, logging) =>
                 {
@@ -170,6 +170,7 @@ namespace HotPotato.E2E.Test
                 {
                     options.AddServerHeader = false;
                 })
+                .UseSetting("RemoteEndpoint", "http://localhost:9191")
                 .UseUrls("http://0.0.0.0:3232")
                 .UseStartup<Startup>()
                 .Build();
