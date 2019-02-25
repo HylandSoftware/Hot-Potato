@@ -19,7 +19,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\HotPotato.AspNetCore.Middleware\HotPotato.AspNetCore.Middleware.csproj" />
-    <ProjectReference Include="..\HotPotato\HotPotato.csproj" />
+    <ProjectReference Include="..\HotPotato.OpenApi\HotPotato.OpenApi.csproj" />
   </ItemGroup>
 
   <ItemGroup>
