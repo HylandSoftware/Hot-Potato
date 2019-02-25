@@ -13,6 +13,7 @@ namespace HotPotato.E2E.Test
     public class SanityTests
     {
         private IWebHost host;
+        private HttpResponseMessage res;
         private const string ApiLocation = "http://localhost:9191";
         private const string Endpoint = "/endpoint";
         private const string ProxyEndpoint = "http://localhost:3232/endpoint";
@@ -38,11 +39,7 @@ namespace HotPotato.E2E.Test
             SetupWebHost();
             host.Start();
 
-            //Setting up Http Client
-            HttpClient client = new HttpClient();
-            HttpMethod method = new HttpMethod(GetMethodCall);
-            HttpRequestMessage req = new HttpRequestMessage(method, ProxyEndpoint);
-            HttpResponseMessage res = await client.SendAsync(req);
+            await SetupClientAsync();
 
             //Dispose host so the port can be used by other tests
             host.Dispose();
@@ -77,11 +74,7 @@ namespace HotPotato.E2E.Test
             SetupWebHost();
             host.Start();
 
-            //Setting up Http Client
-            HttpClient client = new HttpClient();
-            HttpMethod method = new HttpMethod(GetMethodCall);
-            HttpRequestMessage req = new HttpRequestMessage(method, ProxyEndpoint);
-            HttpResponseMessage res = await client.SendAsync(req);
+            await SetupClientAsync();
 
             //Dispose host so the port can be used by other tests
             host.Dispose();
@@ -108,10 +101,7 @@ namespace HotPotato.E2E.Test
             host.Start();
 
             //Setting up Http Client
-            HttpClient client = new HttpClient();
-            HttpMethod method = new HttpMethod(GetMethodCall);
-            HttpRequestMessage req = new HttpRequestMessage(method, ProxyEndpoint);
-            HttpResponseMessage res = await client.SendAsync(req);
+            await SetupClientAsync();
 
             //Dispose host so the port can be used by other tests
             host.Dispose();
@@ -137,10 +127,7 @@ namespace HotPotato.E2E.Test
             host.Start();
 
             //Setting up Http Client
-            HttpClient client = new HttpClient();
-            HttpMethod method = new HttpMethod(GetMethodCall);
-            HttpRequestMessage req = new HttpRequestMessage(method, ProxyEndpoint);
-            HttpResponseMessage res = await client.SendAsync(req);
+            await SetupClientAsync();
 
             //Dispose host so the port can be used by other tests
             host.Dispose();
@@ -148,6 +135,17 @@ namespace HotPotato.E2E.Test
             //Asserts
             Assert.Equal(InternalServerErrorResponseMessage, res.ReasonPhrase);
             Assert.Equal(expected, res.Content.ReadAsStringAsync().Result);
+        }
+
+        private async Task SetupClientAsync()
+        {
+            //Setting up Http Client
+            HttpClient client = new HttpClient();
+            HttpMethod method = new HttpMethod(GetMethodCall);
+            HttpRequestMessage req = new HttpRequestMessage(method, ProxyEndpoint);
+            HttpResponseMessage res = await client.SendAsync(req);
+
+            this.res = res;
         }
 
         private void SetupWebHost()
