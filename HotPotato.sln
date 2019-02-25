@@ -20,6 +20,7 @@ EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "HotPotato.OpenApi.Test", "test\HotPotato.OpenApi.Test\HotPotato.OpenApi.Test.csproj", "{E29DAA75-A907-455E-9538-C9FF9C846F34}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "HotPotato.OpenApi", "src\HotPotato.OpenApi\HotPotato.OpenApi.csproj", "{EDBE134E-38B4-46DE-B009-D3C21331C585}"
+EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "HotPotato.E2E.Test", "test\HotPotato.E2E.Test\HotPotato.E2E.Test.csproj", "{9F37DBB8-2971-4155-BCBD-D82DB5C8D1DC}"
 EndProject
 Global
