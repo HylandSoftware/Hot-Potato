@@ -5,7 +5,7 @@ using System.Text;
 
 namespace HotPotato.Core.Http
 {
-    public interface IHttpRequest
+    public interface IHttpRequest : IDisposable
     {
         HttpMethod Method { get; }
         Uri Uri { get; }

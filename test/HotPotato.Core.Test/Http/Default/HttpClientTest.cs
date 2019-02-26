@@ -17,13 +17,14 @@ namespace HotPotato.Core.Http.Default
             var mockHttp = new MockHttpMessageHandler();
             mockHttp.When(AValidEndpoint)
                 .Respond(HttpStatusCode.OK);
-            HttpRequest request = new HttpRequest(HttpMethod.Get, new Uri(AValidEndpoint));
+            using (HttpRequest request = new HttpRequest(HttpMethod.Get, new Uri(AValidEndpoint)))
+            {
+                HttpClient subject = new HttpClient(mockHttp.ToHttpClient());
 
-            HttpClient subject = new HttpClient(mockHttp.ToHttpClient());
+                IHttpResponse response = await subject.SendAsync(request);
 
-            IHttpResponse response = await subject.SendAsync(request);
-
-            mockHttp.VerifyNoOutstandingRequest();
+                mockHttp.VerifyNoOutstandingRequest();
+            }
         }
 
         [Fact]
@@ -37,22 +38,19 @@ namespace HotPotato.Core.Http.Default
             mockHttp.When(AValidEndpoint)
                 .Respond(HttpStatusCode.OK).Respond(expectContent);
 
-            HttpRequest request = new HttpRequest(HttpMethod.Get, new Uri(AValidEndpoint));
-            request.SetContent(expectString);
+            using (HttpRequest request = new HttpRequest(HttpMethod.Get, new Uri(AValidEndpoint)))
+            {
+                request.SetContent(expectString);
 
-            HttpRequestMessage requestMessage = new HttpRequestMessage();
-            requestMessage.Method = HttpMethod.Get;
-            requestMessage.RequestUri = new Uri(AValidEndpoint);
-            requestMessage.Content = expectContent;
+                HttpClient subject = new HttpClient(mockHttp.ToHttpClient());
 
-            HttpClient subject = new HttpClient(mockHttp.ToHttpClient());
+                IHttpResponse response = await subject.SendAsync(request);
+                string bodyString = response.ToBodyString();
 
-            IHttpResponse response = await subject.SendAsync(request);
-            string bodyString = response.ToBodyString();
-
-            Assert.Equal("utf-8", response.ContentType.CharSet);
-            Assert.Equal("application/json", response.ContentType.MediaType);
-            Assert.Equal(bodyString, expectString);
+                Assert.Equal("utf-8", response.ContentType.CharSet);
+                Assert.Equal("application/json", response.ContentType.MediaType);
+                Assert.Equal(bodyString, expectString);
+            }
         }
     }
 }

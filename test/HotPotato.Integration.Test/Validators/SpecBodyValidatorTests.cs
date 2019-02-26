@@ -30,22 +30,24 @@ namespace HotPotato.Http.Default
             string bodyString = JsonConvert.SerializeObject(bodyJson);
             HttpContent content = new StringContent(bodyString, Encoding.UTF8, contentType);
             
-            HttpRequest testRequest = new HttpRequest(reqMethod, new Uri(endpointURI));
-
             HttpResponseMessage testRespMsg = new HttpResponseMessage();
             testRespMsg.StatusCode = statusCode;
             testRespMsg.Content = content;
             var testResponse = await testRespMsg.ToClientResponseAsync();
-            HttpPair testPair = new HttpPair(testRequest, testResponse);
 
-            string specPath = SpecPath(specSubPath, "specification.yaml");
-            Task<SwaggerDocument> swagTask = FromFileAsync(specPath);
-            SwaggerDocument swagDoc = swagTask.Result;
+            using (HttpRequest testRequest = new HttpRequest(reqMethod, new Uri(endpointURI)))
+            {
+                HttpPair testPair = new HttpPair(testRequest, testResponse);
 
-            Locator subject = new Locator(swagDoc, new PathLocator(), new MethodLocator(), new StatusCodeLocator());
-            Tuple<IBodyValidator, IHeaderValidator> valTup = subject.GetValidator(testPair);
-            Result result = valTup.Item1.Validate(bodyString);
-            Assert.Contains("is valid", result.Message);
+                string specPath = SpecPath(specSubPath, "specification.yaml");
+                Task<SwaggerDocument> swagTask = FromFileAsync(specPath);
+                SwaggerDocument swagDoc = swagTask.Result;
+
+                Locator subject = new Locator(swagDoc, new PathLocator(), new MethodLocator(), new StatusCodeLocator());
+                Tuple<IBodyValidator, IHeaderValidator> valTup = subject.GetValidator(testPair);
+                Result result = valTup.Item1.Validate(bodyString);
+                Assert.Contains("is valid", result.Message);
+            }
 
         }
 
@@ -57,25 +59,28 @@ namespace HotPotato.Http.Default
             string bodyString = JsonConvert.SerializeObject(bodyJson);
             HttpContent content = new StringContent(bodyString, Encoding.UTF8, contentType);
 
-            HttpRequest testRequest = new HttpRequest(reqMethod, new Uri(endpointURI));
-
             HttpResponseMessage testRespMsg = new HttpResponseMessage();
             testRespMsg.StatusCode = statusCode;
             testRespMsg.Content = content;
+
             var testResponse = await testRespMsg.ToClientResponseAsync();
-            HttpPair testPair = new HttpPair(testRequest, testResponse);
 
-            string specPath = SpecPath(specSubPath, "specification.yaml");
-            Task<SwaggerDocument> swagTask = FromFileAsync(specPath);
-            SwaggerDocument swagDoc = swagTask.Result;
+            using (HttpRequest testRequest = new HttpRequest(reqMethod, new Uri(endpointURI)))
+            {
+                HttpPair testPair = new HttpPair(testRequest, testResponse);
 
-            Locator subject = new Locator(swagDoc, new PathLocator(), new MethodLocator(), new StatusCodeLocator());
-            Tuple<IBodyValidator, IHeaderValidator> valTup = subject.GetValidator(testPair);
-            Result result = valTup.Item1.Validate(bodyString);
+                string specPath = SpecPath(specSubPath, "specification.yaml");
+                Task<SwaggerDocument> swagTask = FromFileAsync(specPath);
+                SwaggerDocument swagDoc = swagTask.Result;
 
-            Assert.Equal(ValidationErrorKind.DateTimeExpected, GetInvalidReasons(result)[0].Kind);
-            Assert.Equal(ValidationErrorKind.IntegerExpected, GetInvalidReasons(result)[1].Kind);
-            Assert.Contains("is invalid", result.Message);
+                Locator subject = new Locator(swagDoc, new PathLocator(), new MethodLocator(), new StatusCodeLocator());
+                Tuple<IBodyValidator, IHeaderValidator> valTup = subject.GetValidator(testPair);
+                Result result = valTup.Item1.Validate(bodyString);
+
+                Assert.Equal(ValidationErrorKind.DateTimeExpected, GetInvalidReasons(result)[0].Kind);
+                Assert.Equal(ValidationErrorKind.IntegerExpected, GetInvalidReasons(result)[1].Kind);
+                Assert.Contains("is invalid", result.Message);
+            }
 
         }
     }

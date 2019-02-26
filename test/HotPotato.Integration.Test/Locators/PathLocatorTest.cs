@@ -18,34 +18,40 @@ namespace HotPotato.OpenApi.Locators.NSwag
         public void PathLocator_LocatesWithParam()
         {
             string endpointWithPar = "http://api.docs.hyland.io/keyword/keyword-type-groups/48732/keyword-types";
-            HttpRequest testRequest = new HttpRequest(HttpMethod.Get, new Uri(endpointWithPar));
             HttpResponse testResponse = new HttpResponse(HttpStatusCode.OK, null);
-            HttpPair testPair = new HttpPair(testRequest, testResponse);
 
-            string path = SpecPath("specs/keyword/", "specification.yaml");
-            Task<SwaggerDocument> swagTask = FromFileAsync(path);
-            SwaggerDocument swagDoc = swagTask.Result;
+            using (HttpRequest testRequest = new HttpRequest(HttpMethod.Get, new Uri(endpointWithPar)))
+            {
+                HttpPair testPair = new HttpPair(testRequest, testResponse);
 
-            PathLocator subject = new PathLocator();
-            SwaggerPathItem result = subject.Locate(testPair, swagDoc);
-            Assert.NotNull(result);
+                string path = SpecPath("specs/keyword/", "specification.yaml");
+                Task<SwaggerDocument> swagTask = FromFileAsync(path);
+                SwaggerDocument swagDoc = swagTask.Result;
+
+                PathLocator subject = new PathLocator();
+                SwaggerPathItem result = subject.Locate(testPair, swagDoc);
+                Assert.NotNull(result);
+            }
         }
 
         [Fact]
         public void PathLocator_LocatesWithoutParam()
         {
             string endpointWithoutPar = "https://api.hyland.com/workflow/life-cycles";
-            HttpRequest testRequest = new HttpRequest(HttpMethod.Get, new Uri(endpointWithoutPar));
             HttpResponse testResponse = new HttpResponse(HttpStatusCode.OK, null);
-            HttpPair testPair = new HttpPair(testRequest, testResponse);
 
-            string path = SpecPath("specs/workflow/", "specification.yaml");
-            Task<SwaggerDocument> swagTask = FromFileAsync(path);
-            SwaggerDocument swagDoc = swagTask.Result;
+            using (HttpRequest testRequest = new HttpRequest(HttpMethod.Get, new Uri(endpointWithoutPar)))
+            {
+                HttpPair testPair = new HttpPair(testRequest, testResponse);
 
-            PathLocator subject = new PathLocator();
-            SwaggerPathItem result = subject.Locate(testPair, swagDoc);
-            Assert.NotNull(result);
+                string path = SpecPath("specs/workflow/", "specification.yaml");
+                Task<SwaggerDocument> swagTask = FromFileAsync(path);
+                SwaggerDocument swagDoc = swagTask.Result;
+
+                PathLocator subject = new PathLocator();
+                SwaggerPathItem result = subject.Locate(testPair, swagDoc);
+                Assert.NotNull(result);
+            }
         }
 
     }
