@@ -1,5 +1,4 @@
 ﻿using System;
-using System.ComponentModel;
 using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Text;
@@ -12,7 +11,6 @@ namespace HotPotato.Core.Http.Default
         private readonly string DefaultMediaType = "application/json";
         private HttpRequestMessage requestContent { get; }
 
-        private Component component = new Component();
         private bool disposed = false;
 
         public HttpMethod Method { get; }
@@ -84,7 +82,7 @@ namespace HotPotato.Core.Http.Default
             {
                 if (disposing)
                 {
-                    component.Dispose();
+                    requestContent.Dispose();
                 }
 
                 disposed = true;
