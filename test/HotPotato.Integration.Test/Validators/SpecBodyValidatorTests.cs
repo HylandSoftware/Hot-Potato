@@ -33,7 +33,7 @@ namespace HotPotato.Http.Default
             HttpResponseMessage testRespMsg = new HttpResponseMessage();
             testRespMsg.StatusCode = statusCode;
             testRespMsg.Content = content;
-            var testResponse = await testRespMsg.ConvertResponse();
+            var testResponse = await testRespMsg.ToClientResponseAsync();
 
             using (HttpRequest testRequest = new HttpRequest(reqMethod, new Uri(endpointURI)))
             {
@@ -62,7 +62,8 @@ namespace HotPotato.Http.Default
             HttpResponseMessage testRespMsg = new HttpResponseMessage();
             testRespMsg.StatusCode = statusCode;
             testRespMsg.Content = content;
-            var testResponse = await testRespMsg.ConvertResponse();
+
+            var testResponse = await testRespMsg.ToClientResponseAsync();
 
             using (HttpRequest testRequest = new HttpRequest(reqMethod, new Uri(endpointURI)))
             {

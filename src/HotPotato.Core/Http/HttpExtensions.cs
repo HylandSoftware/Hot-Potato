@@ -42,7 +42,28 @@ namespace HotPotato.Core.Http
                 "x-powered-by"
             };
 
-        public static async Task<IHttpResponse> ConvertResponse(this HttpResponseMessage @this)
+        public static HttpRequestMessage ToClientRequestMessage(this IHttpRequest @this)
+        {
+            _ = @this ?? throw new ArgumentNullException(nameof(@this));
+
+            HttpRequestMessage message = new HttpRequestMessage(@this.Method, @this.Uri);
+            if (@this.Content != null)
+            {
+                message.Content = @this.Content;
+            }
+            foreach (var item in @this.HttpHeaders)
+            {
+                if (!ExcludedRequestHeaders.Contains(item.Key))
+                {
+                    if (!message.Headers.TryAddWithoutValidation(item.Key, item.Value))
+                    {
+                        message.Content.Headers.TryAddWithoutValidation(item.Key, item.Value);
+                    }
+                }
+            }
+            return message;
+        }
+        public static async Task<IHttpResponse> ToClientResponseAsync(this HttpResponseMessage @this)
         {
             _ = @this ?? throw new ArgumentNullException(nameof(@this));
 
@@ -67,7 +88,7 @@ namespace HotPotato.Core.Http
             return new HttpResponse(@this.StatusCode, headers);
         }
 
-        public static IHttpRequest ToRequest(this MSHTTP.HttpRequest @this, string remoteEndpoint)
+        public static IHttpRequest ToProxyRequest(this MSHTTP.HttpRequest @this, string remoteEndpoint)
         {
             _ = @this ?? throw new ArgumentNullException(nameof(@this));
             _ = remoteEndpoint ?? throw new ArgumentNullException(nameof(remoteEndpoint));
@@ -89,15 +110,7 @@ namespace HotPotato.Core.Http
             return request;
         }
 
-        public static Uri BuildUri(this MSHTTP.HttpRequest @this, string remoteEndpoint)
-        {
-            _ = @this ?? throw new ArgumentNullException(nameof(@this));
-            _ = remoteEndpoint ?? throw new ArgumentNullException(nameof(remoteEndpoint));
-
-            return new Uri($"{remoteEndpoint}{@this.Path.Value}{@this.QueryString}");
-        }
-
-        public static async Task BuildResponse(this IHttpResponse @this, MSHTTP.HttpResponse response)
+        public static async Task ToProxyResponseAsync(this IHttpResponse @this, MSHTTP.HttpResponse response)
         {
             _ = @this ?? throw new ArgumentNullException(nameof(@this));
             _ = response ?? throw new ArgumentNullException(nameof(response));
@@ -125,26 +138,12 @@ namespace HotPotato.Core.Http
             }
         }
 
-        public static HttpRequestMessage BuildRequest(this IHttpRequest @this)
+        public static Uri BuildUri(this MSHTTP.HttpRequest @this, string remoteEndpoint)
         {
             _ = @this ?? throw new ArgumentNullException(nameof(@this));
+            _ = remoteEndpoint ?? throw new ArgumentNullException(nameof(remoteEndpoint));
 
-            HttpRequestMessage message = new HttpRequestMessage(@this.Method, @this.Uri);
-            if (@this.Content != null)
-            {
-                message.Content = @this.Content;
-            }
-            foreach (var item in @this.HttpHeaders)
-            {
-                if (!ExcludedRequestHeaders.Contains(item.Key))
-                {
-                    if (!message.Headers.TryAddWithoutValidation(item.Key, item.Value))
-                    {
-                        message.Content.Headers.TryAddWithoutValidation(item.Key, item.Value);
-                    }
-                }
-            }
-            return message;
+            return new Uri($"{remoteEndpoint}{@this.Path.Value}{@this.QueryString}");
         }
 
         public static string ToBodyString(this IHttpResponse @this)
