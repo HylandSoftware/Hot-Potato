@@ -12,8 +12,6 @@ namespace HotPotato.E2E.Test
 {
     public class SanityTests
     {
-        private IWebHost host;
-        private HttpResponseMessage res;
         private const string ApiLocation = "http://localhost:9191";
         private const string Endpoint = "/endpoint";
         private const string ProxyEndpoint = "http://localhost:3232/endpoint";
@@ -30,25 +28,33 @@ namespace HotPotato.E2E.Test
             //Setting up mock server to hit
             const string expected = "ValidResponse";
 
-            var _stubHttp = HttpMockRepository.At(ApiLocation);
-
-            _stubHttp.Stub(x => x.Get(Endpoint))
+            using (var _stubHttp = HttpMockRepository.At(ApiLocation))
+            {
+                _stubHttp.Stub(x => x.Get(Endpoint))
                 .Return(expected)
                 .OK();
 
-            SetupWebHost();
-            host.Start();
+                using (var host = SetupWebHost())
+                {
+                    host.Start();
 
-            await SetupClientAsync();
+                    using (HttpClient client = new HttpClient())
+                    {
+                        HttpMethod method = new HttpMethod(GetMethodCall);
 
-            //Dispose host so the port can be used by other tests
-            host.Dispose();
+                        using (HttpRequestMessage req = new HttpRequestMessage(method, ProxyEndpoint))
+                        {
+                            HttpResponseMessage res = await client.SendAsync(req);
 
-            //Asserts
-            Assert.Equal(OKResponseMessage, res.ReasonPhrase);
-            Assert.Equal(13, res.Content.Headers.ContentLength);
-            Assert.Equal(PlainTextContentType, res.Content.Headers.ContentType.MediaType);
-            Assert.Equal(expected, res.Content.ReadAsStringAsync().Result);
+                            //Asserts
+                            Assert.Equal(OKResponseMessage, res.ReasonPhrase);
+                            Assert.Equal(13, res.Content.Headers.ContentLength);
+                            Assert.Equal(PlainTextContentType, res.Content.Headers.ContentType.MediaType);
+                            Assert.Equal(expected, res.Content.ReadAsStringAsync().Result);
+                        }
+                    }
+                }
+            }
         }
 
         [Fact]
@@ -64,25 +70,35 @@ namespace HotPotato.E2E.Test
                     'Admin'
                 ]}";
 
-            var _stubHttp = HttpMockRepository.At(ApiLocation);
-
-            _stubHttp.Stub(x => x.Get(Endpoint))
+            using (var _stubHttp = HttpMockRepository.At(ApiLocation))
+            {
+                _stubHttp.Stub(x => x.Get(Endpoint))
                 .Return(json)
                 .AsContentType(ApplicationJsonContentType)
                 .OK();
 
-            SetupWebHost();
-            host.Start();
+                using (var host = SetupWebHost())
+                {
+                    host.Start();
 
-            await SetupClientAsync();
+                    using (HttpClient client = new HttpClient())
+                    {
+                        HttpMethod method = new HttpMethod(GetMethodCall);
 
-            //Dispose host so the port can be used by other tests
-            host.Dispose();
+                        using (HttpRequestMessage req = new HttpRequestMessage(method, ProxyEndpoint))
+                        {
 
-            //Asserts
-            Assert.Equal(OKResponseMessage, res.ReasonPhrase);
-            Assert.Equal(ApplicationJsonContentType, res.Content.Headers.ContentType.MediaType);
-            Assert.Equal(json, res.Content.ReadAsStringAsync().Result);
+                            HttpResponseMessage res = await client.SendAsync(req);
+
+                            //Asserts
+                            Assert.Equal(OKResponseMessage, res.ReasonPhrase);
+                            Assert.Equal(ApplicationJsonContentType, res.Content.Headers.ContentType.MediaType);
+                            Assert.Equal(json, res.Content.ReadAsStringAsync().Result); 
+                        } 
+                    }
+                }
+                
+            }  
         }
 
         [Fact]
@@ -91,24 +107,32 @@ namespace HotPotato.E2E.Test
             //Setting up mock server to hit
             const string expected = NotFoundResponseMessage;
 
-            var _stubHttp = HttpMockRepository.At(ApiLocation);
-
-            _stubHttp.Stub(x => x.Get(Endpoint))
+            using (var _stubHttp = HttpMockRepository.At(ApiLocation))
+            {
+                _stubHttp.Stub(x => x.Get(Endpoint))
                 .Return(expected)
                 .NotFound();
 
-            SetupWebHost();
-            host.Start();
+                using (var host = SetupWebHost())
+                {
+                    host.Start();
 
-            //Setting up Http Client
-            await SetupClientAsync();
+                    using (HttpClient client = new HttpClient())
+                    {
+                        HttpMethod method = new HttpMethod(GetMethodCall);
 
-            //Dispose host so the port can be used by other tests
-            host.Dispose();
+                        using (HttpRequestMessage req = new HttpRequestMessage(method, ProxyEndpoint))
+                        {
 
-            //Asserts
-            Assert.Equal(NotFoundResponseMessage, res.ReasonPhrase);
-            Assert.Equal(expected, res.Content.ReadAsStringAsync().Result);
+                            HttpResponseMessage res = await client.SendAsync(req);
+
+                            //Asserts
+                            Assert.Equal(NotFoundResponseMessage, res.ReasonPhrase);
+                            Assert.Equal(expected, res.Content.ReadAsStringAsync().Result);
+                        }
+                    }
+                }
+            }
         }
 
         [Fact]        
@@ -117,38 +141,36 @@ namespace HotPotato.E2E.Test
             //Setting up mock server to hit
             const string expected = InternalServerErrorResponseMessage;
 
-            var _stubHttp = HttpMockRepository.At(ApiLocation);
+            using (var _stubHttp = HttpMockRepository.At(ApiLocation))
+            {
+                _stubHttp.Stub(x => x.Get(Endpoint))
+               .Return(expected)
+               .WithStatus(HttpStatusCode.InternalServerError);
 
-            _stubHttp.Stub(x => x.Get(Endpoint))
-                .Return(expected)
-                .WithStatus(HttpStatusCode.InternalServerError);
+                using (var host = SetupWebHost())
+                {
+                    host.Start();
 
-            SetupWebHost();
-            host.Start();
+                    //Setting up Http Client
+                    using (HttpClient client = new HttpClient())
+                    {
+                        HttpMethod method = new HttpMethod(GetMethodCall);
+                        
+                        using (HttpRequestMessage req = new HttpRequestMessage(method, ProxyEndpoint))
+                        {
 
-            //Setting up Http Client
-            await SetupClientAsync();
+                            HttpResponseMessage res = await client.SendAsync(req);
 
-            //Dispose host so the port can be used by other tests
-            host.Dispose();
-
-            //Asserts
-            Assert.Equal(InternalServerErrorResponseMessage, res.ReasonPhrase);
-            Assert.Equal(expected, res.Content.ReadAsStringAsync().Result);
+                            //Asserts
+                            Assert.Equal(InternalServerErrorResponseMessage, res.ReasonPhrase);
+                            Assert.Equal(expected, res.Content.ReadAsStringAsync().Result);
+                        }
+                    }
+                }
+            }
         }
 
-        private async Task SetupClientAsync()
-        {
-            //Setting up Http Client
-            HttpClient client = new HttpClient();
-            HttpMethod method = new HttpMethod(GetMethodCall);
-            HttpRequestMessage req = new HttpRequestMessage(method, ProxyEndpoint);
-            HttpResponseMessage res = await client.SendAsync(req);
-
-            this.res = res;
-        }
-
-        private void SetupWebHost()
+        private IWebHost SetupWebHost()
         {
             //Setting up proxy host
             var host = new WebHostBuilder()
@@ -175,7 +197,7 @@ namespace HotPotato.E2E.Test
                 .UseStartup<Startup>()
                 .Build();
 
-            this.host = host;
+            return host;
         }
     }
 }
