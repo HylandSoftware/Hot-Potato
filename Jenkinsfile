@@ -24,10 +24,10 @@ pipeline {
             }
         }
 
-        stage("Run-OpenApi-Tests") {
+        stage("Run-Unit-Tests") {
             steps {
                 container("builder") {
-                    sh './build.sh -t Run-OpenApi-Tests'
+                    sh './build.sh -t Run-Unit-Tests'
                 }
             }
         }
@@ -36,6 +36,14 @@ pipeline {
             steps {
                 container("builder") {
                     sh './build.sh -t Run-Integration-Tests'
+                }
+            }
+        }
+
+        stage("Run-E2E-Tests") {
+            steps {
+                container("builder") {
+                    sh './build.sh -t Run-E2E-Tests'
                 }
             }
         }

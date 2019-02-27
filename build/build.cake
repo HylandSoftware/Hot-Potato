@@ -1,7 +1,10 @@
 //Build script for Hot-Potato.NET
 var HotPotatsln = "../HotPotato.sln";
+var HotPotatoCoreTest = "../test/HotPotato.Core.Test/HotPotato.Core.Test.csproj";
 var HotPotatoOpenApiTest = "../test/HotPotato.OpenApi.Test/HotPotato.OpenApi.Test.csproj";
 var HotPotatoIntegrationTest = "../test/HotPotato.Integration.Test/HotPotato.Integration.Test.csproj";
+var HotPotatoMiddlewareTest = "../test/HotPotato.AspNetCore.Middleware.Test/HotPotato.AspNetCore.Middleware.Test.csproj";
+var HotPotatpE2ETest = "../test/HotPotato.E2E.Test/HotPotato.E2E.Test.csproj";
 
 var target = Argument("target", "Default");
 
@@ -15,8 +18,18 @@ Task("Build")
 		DotNetCoreBuild(HotPotatsln, new DotNetCoreBuildSettings { NoRestore = true });
 	});
 
-Task("Run-OpenApi-Tests")
+Task("Run-Unit-Tests")
 	.Does(() => {
+		DotNetCoreTest(HotPotatoCoreTest, new DotNetCoreTestSettings {
+			VSTestReportPath = "core-test-results.xml",
+			NoRestore = true,
+			NoBuild = true
+		});
+		DotNetCoreTest(HotPotatoMiddlewareTest, new DotNetCoreTestSettings {
+			VSTestReportPath = "middleware-test-results.xml",
+			NoRestore = true,
+			NoBuild = true
+		});
 		DotNetCoreTest(HotPotatoOpenApiTest, new DotNetCoreTestSettings {
 			VSTestReportPath = "openapi-test-results.xml",
 			NoRestore = true,
@@ -33,6 +46,15 @@ Task("Run-Integration-Tests")
 		});
 	});
 
+Task("Run-E2E-Tests")
+	.Does(() => {
+		DotNetCoreTest(HotPotatpE2ETest, new DotNetCoreBuildSettings {
+			VSTestReportPath = "E2E-test-results.xml",
+			NoRestore = true,
+			NoBuild = true
+		});
+	});
+	
 Task("Default")
 	.IsDependentOn("NuGet-Restore")
 	.IsDependentOn("Build")
