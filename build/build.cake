@@ -58,7 +58,8 @@ Task("Run-E2E-Tests")
 Task("Default")
 	.IsDependentOn("NuGet-Restore")
 	.IsDependentOn("Build")
-	.IsDependentOn("Run-OpenApi-Tests")
+	.IsDependentOn("Run-Unit-Tests")
 	.IsDependentOn("Run-Integration-Tests");
+	//.IsDependentOn("Run-E2E-Tests");
 
 RunTarget(target);
