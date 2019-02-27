@@ -40,13 +40,13 @@ pipeline {
             }
         }
 
-        stage("Run-E2E-Tests") {
-            steps {
-                container("builder") {
-                    sh './build.sh -t Run-E2E-Tests'
-                }
-            }
-        }
+        // stage("Run-E2E-Tests") {
+        //     steps {
+        //         container("builder") {
+        //             sh './build.sh -t Run-E2E-Tests'
+        //         }
+        //     }
+        // }
 
     }
 }
