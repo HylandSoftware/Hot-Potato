@@ -48,13 +48,13 @@ Task("Run-Integration-Tests")
 
 Task("Run-E2E-Tests")
 	.Does(() => {
-		DotNetCoreTest(HotPotatpE2ETest, new DotNetCoreBuildSettings {
+		DotNetCoreTest(HotPotatpE2ETest, new DotNetCoreTestSettings {
 			VSTestReportPath = "E2E-test-results.xml",
 			NoRestore = true,
 			NoBuild = true
 		});
 	});
-	
+
 Task("Default")
 	.IsDependentOn("NuGet-Restore")
 	.IsDependentOn("Build")
