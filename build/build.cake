@@ -4,7 +4,7 @@ var HotPotatoCoreTest = "../test/HotPotato.Core.Test/HotPotato.Core.Test.csproj"
 var HotPotatoOpenApiTest = "../test/HotPotato.OpenApi.Test/HotPotato.OpenApi.Test.csproj";
 var HotPotatoIntegrationTest = "../test/HotPotato.Integration.Test/HotPotato.Integration.Test.csproj";
 var HotPotatoMiddlewareTest = "../test/HotPotato.AspNetCore.Middleware.Test/HotPotato.AspNetCore.Middleware.Test.csproj";
-var HotPotatpE2ETest = "../test/HotPotato.E2E.Test/HotPotato.E2E.Test.csproj";
+var HotPotatoE2ETest = "../test/HotPotato.E2E.Test/HotPotato.E2E.Test.csproj";
 
 var target = Argument("target", "Default");
 
