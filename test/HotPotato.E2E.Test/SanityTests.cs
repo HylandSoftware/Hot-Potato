@@ -37,6 +37,7 @@ namespace HotPotato.E2E.Test
                 using (var host = SetupWebHost())
                 {
                     host.Start();
+                    _stubHttp.IsAvailable();
 
                     using (HttpClient client = new HttpClient())
                     {
@@ -80,6 +81,7 @@ namespace HotPotato.E2E.Test
                 using (var host = SetupWebHost())
                 {
                     host.Start();
+                    _stubHttp.IsAvailable();
 
                     using (HttpClient client = new HttpClient())
                     {
@@ -116,6 +118,7 @@ namespace HotPotato.E2E.Test
                 using (var host = SetupWebHost())
                 {
                     host.Start();
+                    _stubHttp.IsAvailable();
 
                     using (HttpClient client = new HttpClient())
                     {
@@ -150,6 +153,7 @@ namespace HotPotato.E2E.Test
                 using (var host = SetupWebHost())
                 {
                     host.Start();
+                    _stubHttp.IsAvailable();
 
                     //Setting up Http Client
                     using (HttpClient client = new HttpClient())
