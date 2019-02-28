@@ -15,13 +15,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\src\HotPotato.AspNetCore.Host\HotPotato.AspNetCore.Host.csproj" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <None Update="appsettings.json">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
+    <ProjectReference Include="..\..\src\HotPotato.AspNetCore.Host\HotPotato.AspNetCore.Host.csproj" />
   </ItemGroup>
 
 </Project>
