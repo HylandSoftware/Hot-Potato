@@ -59,7 +59,7 @@ Task("Default")
 	.IsDependentOn("NuGet-Restore")
 	.IsDependentOn("Build")
 	.IsDependentOn("Run-Unit-Tests")
-	.IsDependentOn("Run-Integration-Tests");
+	.IsDependentOn("Run-Integration-Tests")
 	.IsDependentOn("Run-E2E-Tests");
 
 RunTarget(target);
