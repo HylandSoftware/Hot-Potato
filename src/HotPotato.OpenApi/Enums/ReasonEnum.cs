@@ -4,6 +4,7 @@
     {
         public enum Reason
         {
+            Unknown,
             ValidBody,
             InvalidBody,
             ValidHeaders,

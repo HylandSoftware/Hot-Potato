@@ -4,9 +4,9 @@
     {
         public enum State
         {
+            Inconclusive,
             Pass,
-            Fail,
-            Inconclusive
+            Fail
         }
     }
 }
