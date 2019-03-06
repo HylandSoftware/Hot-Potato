@@ -1,7 +1,5 @@
 ﻿using HotPotato.OpenApi.Validators;
 using System.Collections.Generic;
-using static HotPotato.OpenApi.Enums.ReasonEnum;
-using static HotPotato.OpenApi.Enums.StateEnum;
 
 namespace HotPotato.OpenApi.Models
 {
