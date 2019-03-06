@@ -10,7 +10,25 @@ namespace HotPotato.OpenApi.Models
         public int StatusCode { get; }
         public State State { get; }
         public Reason Reason { get; }
-        public List<ValidationError> ErrorReason { get; }
+        public List<ValidationError> ValidationErrors { get; }
+
+        public Result(string path, string method, int statusCode, State state)
+        {
+            Path = path;
+            Method = method;
+            StatusCode = statusCode;
+            State = state;
+        }
+
+        public Result(string path, string method, int statusCode, State state, Reason reason, List<ValidationError> validationErrors)
+        {
+            Path = path;
+            Method = method;
+            StatusCode = statusCode;
+            State = state;
+            Reason = reason;
+            ValidationErrors = validationErrors;
+        }
         
     }
 }
