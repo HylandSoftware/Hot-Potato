@@ -28,15 +28,13 @@ namespace HotPotato.Http.Default
         {
 
             string bodyString = JsonConvert.SerializeObject(bodyJson);
-            HttpContent content = new StringContent(bodyString, Encoding.UTF8, contentType);
-            
-            HttpResponseMessage testRespMsg = new HttpResponseMessage();
-            testRespMsg.StatusCode = statusCode;
-            testRespMsg.Content = content;
-            var testResponse = await testRespMsg.ToClientResponseAsync();
 
+            using (HttpResponseMessage testRespMsg = new HttpResponseMessage(statusCode))
             using (HttpRequest testRequest = new HttpRequest(reqMethod, new Uri(endpointURI)))
             {
+                testRespMsg.Content = new StringContent(bodyString, Encoding.UTF8, contentType); ;
+                var testResponse = await testRespMsg.ToClientResponseAsync();
+
                 HttpPair testPair = new HttpPair(testRequest, testResponse);
 
                 string specPath = SpecPath(specSubPath, "specification.yaml");
@@ -57,16 +55,13 @@ namespace HotPotato.Http.Default
         {
 
             string bodyString = JsonConvert.SerializeObject(bodyJson);
-            HttpContent content = new StringContent(bodyString, Encoding.UTF8, contentType);
 
-            HttpResponseMessage testRespMsg = new HttpResponseMessage();
-            testRespMsg.StatusCode = statusCode;
-            testRespMsg.Content = content;
-
-            var testResponse = await testRespMsg.ToClientResponseAsync();
-
+            using (HttpResponseMessage testRespMsg = new HttpResponseMessage(statusCode))
             using (HttpRequest testRequest = new HttpRequest(reqMethod, new Uri(endpointURI)))
             {
+                testRespMsg.Content = new StringContent(bodyString, Encoding.UTF8, contentType); ;
+                var testResponse = await testRespMsg.ToClientResponseAsync();
+
                 HttpPair testPair = new HttpPair(testRequest, testResponse);
 
                 string specPath = SpecPath(specSubPath, "specification.yaml");
