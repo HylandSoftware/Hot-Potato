@@ -1,7 +1,4 @@
-﻿using HotPotato.OpenApi.Validators;
-using NJsonSchema.Validation;
-using System.Collections.Generic;
-using System.Linq;
+﻿using System.Collections.Generic;
 
 namespace HotPotato.OpenApi.Results
 {
