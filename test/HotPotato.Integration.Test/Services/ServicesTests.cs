@@ -7,12 +7,12 @@ using Moq;
 using NSwag;
 using Xunit;
 
-namespace HotPotato.OpenApi.Models
+namespace HotPotato.OpenApi.Services
 {
-    public class ModelsTests
+    public class ServicesTests
     {
         [Fact]
-        public void IDocumentProvider_ReturnsDocument()
+        public void IDocumentProvider_ReturnsDocumentFromPath()
         {
             IConfigurationRoot config = new ConfigurationBuilder()
                 .AddJsonFile("appsettings.json")

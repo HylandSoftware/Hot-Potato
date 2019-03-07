@@ -4,7 +4,7 @@ using static NSwag.SwaggerYamlDocument;
 using System;
 using System.Threading.Tasks;
 
-namespace HotPotato.OpenApi.Models
+namespace HotPotato.OpenApi.Services
 {
     public class DocumentProvider : IDocumentProvider
     {
@@ -16,7 +16,19 @@ namespace HotPotato.OpenApi.Models
         }
         public SwaggerDocument GetSpecDocument()
         {
-            Task<SwaggerDocument> swagTask = FromFileAsync(specLoc);
+            Task<SwaggerDocument> swagTask = null;
+            if (System.IO.Path.IsPathFullyQualified(specLoc))
+            {
+                swagTask = FromFileAsync(specLoc);
+            }
+            else if (Uri.IsWellFormedUriString(specLoc, UriKind.Absolute))
+            {
+                swagTask = FromUrlAsync(specLoc);
+            }
+            else
+            {
+                throw new InvalidOperationException("AppSettings does not contain a valid Spec Location");
+            }
             return swagTask.Result;
         }
     }

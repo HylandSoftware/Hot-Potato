@@ -4,12 +4,11 @@ using HotPotato.Core.Http.Default;
 using HotPotato.AspNetCore.Middleware;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using HotPotato.OpenApi.Models;
+using HotPotato.OpenApi.Services;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using System;
-using System.Threading.Tasks;
 
 namespace HotPotato.AspNetCore.Host
 {

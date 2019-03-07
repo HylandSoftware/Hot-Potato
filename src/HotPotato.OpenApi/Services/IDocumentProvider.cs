@@ -1,6 +1,6 @@
 ﻿using NSwag;
 
-namespace HotPotato.OpenApi.Models
+namespace HotPotato.OpenApi.Services
 {
     public interface IDocumentProvider
     {
