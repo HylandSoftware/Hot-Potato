@@ -18,14 +18,15 @@ namespace HotPotato.OpenApi.Locators.NSwag
 
             using (HttpRequest testRequest = new HttpRequest(HttpMethod.Get, new Uri(AValidEndpoint)))
             {
-                HttpPair testPair = new HttpPair(testRequest, testResponse);
+                using (HttpPair testPair = new HttpPair(testRequest, testResponse))
+                {
+                    SwaggerOperation swagOp = new SwaggerOperation();
+                    swagOp.Responses.Add("200", new SwaggerResponse());
 
-                SwaggerOperation swagOp = new SwaggerOperation();
-                swagOp.Responses.Add("200", new SwaggerResponse());
-
-                StatusCodeLocator statLoc = new StatusCodeLocator();
-                SwaggerResponse subject = statLoc.Locate(testPair, swagOp);
-                Assert.NotNull(subject);
+                    StatusCodeLocator statLoc = new StatusCodeLocator();
+                    SwaggerResponse subject = statLoc.Locate(testPair, swagOp);
+                    Assert.NotNull(subject);
+                }
             }
         }
     }
