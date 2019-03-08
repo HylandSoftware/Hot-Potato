@@ -29,18 +29,19 @@ namespace HotPotato.Results
             {
                 IHttpResponse res = new HttpResponse(HttpStatusCode.OK, new HttpHeaders());
 
-                //TODO Add using statement to HttpPair once it is Dsiposable
-                HttpPair pair = new HttpPair(req, res);
-                ResultCollector subject = new ResultCollector();
+                using (HttpPair pair = new HttpPair(req, res))
+                {
+                    ResultCollector subject = new ResultCollector();
 
-                subject.Pass(pair);
+                    subject.Pass(pair);
 
-                Assert.NotEmpty(subject.resultList);
-                Assert.Single(subject.resultList);
-                Assert.Equal(expected.Path, subject.resultList[0].Path);
-                Assert.Equal(expected.Method, subject.resultList[0].Method);
-                Assert.Equal(expected.StatusCode, subject.resultList[0].StatusCode);
-                Assert.Equal(expected.State, subject.resultList[0].State);
+                    Assert.NotEmpty(subject.resultList);
+                    Assert.Single(subject.resultList);
+                    Assert.Equal(expected.Path, subject.resultList[0].Path);
+                    Assert.Equal(expected.Method, subject.resultList[0].Method);
+                    Assert.Equal(expected.StatusCode, subject.resultList[0].StatusCode);
+                    Assert.Equal(expected.State, subject.resultList[0].State);
+                }
             }
         }
 
@@ -56,20 +57,21 @@ namespace HotPotato.Results
             {
                 IHttpResponse res = new HttpResponse(HttpStatusCode.NotFound, new HttpHeaders());
 
-                //TODO Add using statement to HttpPair once it is Dsiposable
-                HttpPair pair = new HttpPair(req, res);
-                ResultCollector subject = new ResultCollector();
+                using (HttpPair pair = new HttpPair(req, res))
+                {
+                    ResultCollector subject = new ResultCollector();
 
-                subject.Fail(pair, Reason.Unknown, validationErrors.ToArray());
+                    subject.Fail(pair, Reason.Unknown, validationErrors.ToArray());
 
-                Assert.NotEmpty(subject.resultList);
-                Assert.Single(subject.resultList);
-                Assert.Equal(expected.Path, subject.resultList[0].Path);
-                Assert.Equal(expected.Method, subject.resultList[0].Method);
-                Assert.Equal(expected.StatusCode, subject.resultList[0].StatusCode);
-                Assert.Equal(expected.State, subject.resultList[0].State);
-                Assert.Equal(expected.Reason, subject.resultList[0].Reason);
-                Assert.Equal(expected.ValidationErrors, subject.resultList[0].ValidationErrors);
+                    Assert.NotEmpty(subject.resultList);
+                    Assert.Single(subject.resultList);
+                    Assert.Equal(expected.Path, subject.resultList[0].Path);
+                    Assert.Equal(expected.Method, subject.resultList[0].Method);
+                    Assert.Equal(expected.StatusCode, subject.resultList[0].StatusCode);
+                    Assert.Equal(expected.State, subject.resultList[0].State);
+                    Assert.Equal(expected.Reason, subject.resultList[0].Reason);
+                    Assert.Equal(expected.ValidationErrors, subject.resultList[0].ValidationErrors);
+                }
             }
         }
     }
