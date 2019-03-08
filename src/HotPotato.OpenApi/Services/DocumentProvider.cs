@@ -6,10 +6,10 @@ using System.Threading.Tasks;
 
 namespace HotPotato.OpenApi.Services
 {
-    public class DocumentProvider : IDocumentProvider
+    public class SpecificationProvider : ISpecificationProvider
     {
         private readonly string specLoc;
-        public DocumentProvider(IConfiguration config)
+        public SpecificationProvider(IConfiguration config)
         {
             _ = config ?? throw new ArgumentNullException(nameof(config));
             this.specLoc = config["SpecLocation"];

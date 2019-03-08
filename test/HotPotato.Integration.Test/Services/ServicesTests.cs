@@ -12,23 +12,22 @@ namespace HotPotato.OpenApi.Services
     public class ServicesTests
     {
         [Fact]
-        public void IDocumentProvider_ReturnsDocumentFromPath()
+        public void ISpecificationProvider_ReturnsDocumentFromPath()
         {
             IConfigurationRoot config = new ConfigurationBuilder()
                 .AddJsonFile("appsettings.json")
                 .Build();
-                ;
+                
             config["SpecLocation"] = SpecPath("specs/keyword/", "specification.yaml");
 
-            Mock<ILogger<Startup>> logMock = new Mock<ILogger<Startup>>();
-            Startup startUp = new Startup(config, logMock.Object);
+            Startup startUp = new Startup(config, Mock.Of<ILogger<Startup>>());
 
             IServiceCollection services = new ServiceCollection();
             startUp.ConfigureServices(services);
             services.AddSingleton<IConfiguration>(config);
             ServiceProvider provider = services.BuildServiceProvider();
 
-            IDocumentProvider subject = provider.GetService<IDocumentProvider>();
+            ISpecificationProvider subject = provider.GetService<ISpecificationProvider>();
             SwaggerDocument result = subject.GetSpecDocument();
 
             Assert.Equal(result.DocumentPath, config["SpecLocation"]);

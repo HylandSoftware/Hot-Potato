@@ -40,7 +40,7 @@ namespace HotPotato.AspNetCore.Host
             {
                 client.BaseAddress = new Uri(Configuration["RemoteEndpoint"]);
             });
-            services.AddSingleton<IDocumentProvider, DocumentProvider>();
+            services.AddSingleton<ISpecificationProvider, SpecificationProvider>();
         }
     }
 }
