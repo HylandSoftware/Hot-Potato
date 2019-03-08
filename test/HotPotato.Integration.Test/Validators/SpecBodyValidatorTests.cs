@@ -37,16 +37,17 @@ namespace HotPotato.Http.Default
 
             using (HttpRequest testRequest = new HttpRequest(reqMethod, new Uri(endpointURI)))
             {
-                HttpPair testPair = new HttpPair(testRequest, testResponse);
+                using (HttpPair testPair = new HttpPair(testRequest, testResponse))
+                {
+                    string specPath = SpecPath(specSubPath, "specification.yaml");
+                    Task<SwaggerDocument> swagTask = FromFileAsync(specPath);
+                    SwaggerDocument swagDoc = swagTask.Result;
 
-                string specPath = SpecPath(specSubPath, "specification.yaml");
-                Task<SwaggerDocument> swagTask = FromFileAsync(specPath);
-                SwaggerDocument swagDoc = swagTask.Result;
-
-                Locator subject = new Locator(swagDoc, new PathLocator(), new MethodLocator(), new StatusCodeLocator());
-                Tuple<IBodyValidator, IHeaderValidator> valTup = subject.GetValidator(testPair);
-                Result result = valTup.Item1.Validate(bodyString);
-                Assert.Contains("is valid", result.Message);
+                    Locator subject = new Locator(swagDoc, new PathLocator(), new MethodLocator(), new StatusCodeLocator());
+                    Tuple<IBodyValidator, IHeaderValidator> valTup = subject.GetValidator(testPair);
+                    Result result = valTup.Item1.Validate(bodyString);
+                    Assert.Contains("is valid", result.Message);
+                }
             }
 
         }
@@ -67,19 +68,21 @@ namespace HotPotato.Http.Default
 
             using (HttpRequest testRequest = new HttpRequest(reqMethod, new Uri(endpointURI)))
             {
-                HttpPair testPair = new HttpPair(testRequest, testResponse);
+                using (HttpPair testPair = new HttpPair(testRequest, testResponse))
+                {
 
-                string specPath = SpecPath(specSubPath, "specification.yaml");
-                Task<SwaggerDocument> swagTask = FromFileAsync(specPath);
-                SwaggerDocument swagDoc = swagTask.Result;
+                    string specPath = SpecPath(specSubPath, "specification.yaml");
+                    Task<SwaggerDocument> swagTask = FromFileAsync(specPath);
+                    SwaggerDocument swagDoc = swagTask.Result;
 
-                Locator subject = new Locator(swagDoc, new PathLocator(), new MethodLocator(), new StatusCodeLocator());
-                Tuple<IBodyValidator, IHeaderValidator> valTup = subject.GetValidator(testPair);
-                Result result = valTup.Item1.Validate(bodyString);
+                    Locator subject = new Locator(swagDoc, new PathLocator(), new MethodLocator(), new StatusCodeLocator());
+                    Tuple<IBodyValidator, IHeaderValidator> valTup = subject.GetValidator(testPair);
+                    Result result = valTup.Item1.Validate(bodyString);
 
-                Assert.Equal(ValidationErrorKind.DateTimeExpected, GetInvalidReasons(result)[0].Kind);
-                Assert.Equal(ValidationErrorKind.IntegerExpected, GetInvalidReasons(result)[1].Kind);
-                Assert.Contains("is invalid", result.Message);
+                    Assert.Equal(ValidationErrorKind.DateTimeExpected, GetInvalidReasons(result)[0].Kind);
+                    Assert.Equal(ValidationErrorKind.IntegerExpected, GetInvalidReasons(result)[1].Kind);
+                    Assert.Contains("is invalid", result.Message); 
+                }
             }
 
         }
