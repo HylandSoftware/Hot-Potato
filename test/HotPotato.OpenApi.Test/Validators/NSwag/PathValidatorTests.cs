@@ -15,12 +15,15 @@ namespace HotPotato.OpenApi.Validators.NSwag
         {
             Mock<IHttpRequest> mockReq = new Mock<IHttpRequest>();
             Mock<IHttpResponse> mockResp = new Mock<IHttpResponse>();
-            HttpPair testPair = new HttpPair(mockReq.Object, mockResp.Object);
-            Mock <IResultCollector> mockColl = new Mock<IResultCollector>();
 
-            PathValidator subject = new PathValidator();
-            subject.Validate(null, testPair, mockColl.Object);
-            mockColl.Verify(m => m.Fail(testPair, Reason.MissingPath));
+            using (HttpPair testPair = new HttpPair(mockReq.Object, mockResp.Object))
+            {
+                mockReq.Object.Dispose();
+                Mock<IResultCollector> mockColl = new Mock<IResultCollector>();
+                PathValidator subject = new PathValidator();
+                subject.Validate(null, testPair, mockColl.Object);
+                mockColl.Verify(m => m.Fail(testPair, Reason.MissingPath));
+            }
         }
 
         [Fact]
@@ -29,12 +32,15 @@ namespace HotPotato.OpenApi.Validators.NSwag
             Mock<SwaggerPathItem> mockSwagPath = new Mock<SwaggerPathItem>();
             Mock<IHttpRequest> mockReq = new Mock<IHttpRequest>();
             Mock<IHttpResponse> mockResp = new Mock<IHttpResponse>();
-            HttpPair testPair = new HttpPair(mockReq.Object, mockResp.Object);
-            Mock<IResultCollector> mockColl = new Mock<IResultCollector>();
 
-            PathValidator subject = new PathValidator();
-            subject.Validate(mockSwagPath.Object, testPair, mockColl.Object);
-            mockColl.Verify(m => m.Pass(testPair));
+            using (HttpPair testPair = new HttpPair(mockReq.Object, mockResp.Object))
+            {
+                mockReq.Object.Dispose();
+                Mock<IResultCollector> mockColl = new Mock<IResultCollector>();
+                PathValidator subject = new PathValidator();
+                subject.Validate(mockSwagPath.Object, testPair, mockColl.Object);
+                mockColl.Verify(m => m.Pass(testPair));
+            }
         }
     }
 }
