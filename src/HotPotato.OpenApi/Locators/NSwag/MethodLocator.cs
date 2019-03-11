@@ -8,12 +8,12 @@ namespace HotPotato.OpenApi.Locators.NSwag
     {
         public SwaggerOperation Locate(HttpPair pair, SwaggerPathItem path)
         {
-            string method = pair.Request.Method.ToString();
-            SwaggerOperationMethod operationMethod = toOperationMethod(method);
-            return path[operationMethod];
+            string method = toOperationMethod(pair.Request.Method.ToString());
+            return path[method];
         }
 
-        private SwaggerOperationMethod toOperationMethod(string method)
+        //NSwag v12.0.15 - SwaggerOperation method is now a class that returns strings
+        private string toOperationMethod(string method)
         {
             switch (method)
             {

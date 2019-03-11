@@ -35,7 +35,7 @@ namespace HotPotato.OpenApi.Locators.NSwag
             _ = operation ?? throw new LocatorException();
             SwaggerResponse response = this.statusCodeLocator.Locate(pair, operation);
             _ = response ?? throw new LocatorException();
-            JsonSchema4 schema = response.ActualResponseSchema;
+            JsonSchema4 schema = response.ActualResponse.Schema;
             return new Tuple<IBodyValidator, IHeaderValidator>(new BodyValidator(schema), new HeaderValidator(response.Headers));
         }
     }
