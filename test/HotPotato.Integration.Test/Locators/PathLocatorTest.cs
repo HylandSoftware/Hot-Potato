@@ -22,15 +22,16 @@ namespace HotPotato.OpenApi.Locators.NSwag
 
             using (HttpRequest testRequest = new HttpRequest(HttpMethod.Get, new Uri(endpointWithPar)))
             {
-                HttpPair testPair = new HttpPair(testRequest, testResponse);
+                using (HttpPair testPair = new HttpPair(testRequest, testResponse))
+                {
+                    string path = SpecPath("specs/keyword/", "specification.yaml");
+                    Task<SwaggerDocument> swagTask = FromFileAsync(path);
+                    SwaggerDocument swagDoc = swagTask.Result;
 
-                string path = SpecPath("specs/keyword/", "specification.yaml");
-                Task<SwaggerDocument> swagTask = FromFileAsync(path);
-                SwaggerDocument swagDoc = swagTask.Result;
-
-                PathLocator subject = new PathLocator();
-                SwaggerPathItem result = subject.Locate(testPair, swagDoc);
-                Assert.NotNull(result);
+                    PathLocator subject = new PathLocator();
+                    SwaggerPathItem result = subject.Locate(testPair, swagDoc);
+                    Assert.NotNull(result);
+                }
             }
         }
 
@@ -42,15 +43,16 @@ namespace HotPotato.OpenApi.Locators.NSwag
 
             using (HttpRequest testRequest = new HttpRequest(HttpMethod.Get, new Uri(endpointWithoutPar)))
             {
-                HttpPair testPair = new HttpPair(testRequest, testResponse);
+                using (HttpPair testPair = new HttpPair(testRequest, testResponse))
+                {
+                    string path = SpecPath("specs/workflow/", "specification.yaml");
+                    Task<SwaggerDocument> swagTask = FromFileAsync(path);
+                    SwaggerDocument swagDoc = swagTask.Result;
 
-                string path = SpecPath("specs/workflow/", "specification.yaml");
-                Task<SwaggerDocument> swagTask = FromFileAsync(path);
-                SwaggerDocument swagDoc = swagTask.Result;
-
-                PathLocator subject = new PathLocator();
-                SwaggerPathItem result = subject.Locate(testPair, swagDoc);
-                Assert.NotNull(result);
+                    PathLocator subject = new PathLocator();
+                    SwaggerPathItem result = subject.Locate(testPair, swagDoc);
+                    Assert.NotNull(result);
+                }
             }
         }
 
