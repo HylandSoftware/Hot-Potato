@@ -5,7 +5,7 @@ using Xunit;
 
 namespace HotPotato.Results
 {
-    public class PassFailFactoryTest
+    public class ResultFactoryTest
     {
         private const string Path = "/endpoint";
         private const string Method = "GET";
@@ -18,7 +18,7 @@ namespace HotPotato.Results
         [Fact]
         public void CanICreateAPassResult()
         {
-            var subject = PassFailFactory.PassResult(Path, Method, PassStatusCode, PassState);
+            var subject = ResultFactory.PassResult(Path, Method, PassStatusCode, PassState);
 
             Assert.NotNull(subject);
             Assert.Equal(Path, subject.Path);
@@ -33,7 +33,7 @@ namespace HotPotato.Results
             var err = new ValidationError("Error", ValidationErrorKind.Unknown, "Property", 5, 10);
             var validationErrors = new ValidationError[] { err };
 
-            var subject = PassFailFactory.FailResult(Path, Method, FailStatusCode, FailState, FailReason, validationErrors);
+            var subject = ResultFactory.FailResult(Path, Method, FailStatusCode, FailState, FailReason, validationErrors);
 
             Assert.NotNull(subject);
             Assert.Equal(Path, subject.Path);
