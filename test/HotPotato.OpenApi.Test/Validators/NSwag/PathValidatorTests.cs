@@ -13,12 +13,12 @@ namespace HotPotato.OpenApi.Validators.NSwag
         [Fact]
         public void PathValidator_CallsFail()
         {
-            Mock<IHttpRequest> mockReq = new Mock<IHttpRequest>();
-            Mock<IHttpResponse> mockResp = new Mock<IHttpResponse>();
+            IHttpResponse mockResp = Mock.Of<IHttpResponse>();
 
-            using (HttpPair testPair = new HttpPair(mockReq.Object, mockResp.Object))
+            using (IHttpRequest mockReq = Mock.Of<IHttpRequest>())
+            using (HttpPair testPair = new HttpPair(mockReq, mockResp))
             {
-                mockReq.Object.Dispose();
+                mockReq.Dispose();
                 Mock<IResultCollector> mockColl = new Mock<IResultCollector>();
                 PathValidator subject = new PathValidator();
                 subject.Validate(null, testPair, mockColl.Object);
@@ -29,16 +29,15 @@ namespace HotPotato.OpenApi.Validators.NSwag
         [Fact]
         public void PathValidator_CallsPass()
         {
-            Mock<SwaggerPathItem> mockSwagPath = new Mock<SwaggerPathItem>();
-            Mock<IHttpRequest> mockReq = new Mock<IHttpRequest>();
-            Mock<IHttpResponse> mockResp = new Mock<IHttpResponse>();
+            SwaggerPathItem mockSwagPath = Mock.Of<SwaggerPathItem>();
+            IHttpResponse mockResp = Mock.Of<IHttpResponse>();
 
-            using (HttpPair testPair = new HttpPair(mockReq.Object, mockResp.Object))
+            using(IHttpRequest mockReq = Mock.Of<IHttpRequest>())
+            using (HttpPair testPair = new HttpPair(mockReq, mockResp))
             {
-                mockReq.Object.Dispose();
                 Mock<IResultCollector> mockColl = new Mock<IResultCollector>();
                 PathValidator subject = new PathValidator();
-                subject.Validate(mockSwagPath.Object, testPair, mockColl.Object);
+                subject.Validate(mockSwagPath, testPair, mockColl.Object);
                 mockColl.Verify(m => m.Pass(testPair));
             }
         }
