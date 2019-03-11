@@ -10,8 +10,8 @@ namespace HotPotato
         /// </summary>
         public static string SpecPath(string subPath, string file)
         {
-            subPath.Replace('/', Path.DirectorySeparatorChar).Replace('\\', Path.DirectorySeparatorChar);
-            return Path.Combine(Environment.CurrentDirectory, subPath, file);
+            string path = Path.Combine(Environment.CurrentDirectory, subPath, file);
+            return path.Replace('/', Path.DirectorySeparatorChar).Replace('\\', Path.DirectorySeparatorChar);
         }
     }
 }
