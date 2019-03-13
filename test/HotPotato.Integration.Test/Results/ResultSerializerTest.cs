@@ -18,7 +18,7 @@ namespace HotPotato.Integration.Test.Results
         [Fact]
         public void CanISerializeListFromResultCollector()
         {
-            ValidationError er = new ValidationError("message", ValidationErrorKind.Unknown, "property", 10, 15);
+            ValidationError er = new ValidationError("message", ValidationErrorKind.AdditionalItemNotValid, "property", 10, 15);
             ValidationError er2 = new ValidationError("Not Found", ValidationErrorKind.NullExpected, "property", 5, 28);
             ValidationError[] arr = new ValidationError[] { er, er2 };
 
@@ -26,7 +26,7 @@ namespace HotPotato.Integration.Test.Results
 
             collector.Pass(GetNewPair("/endpoint", HttpStatusCode.OK));
             collector.Pass(GetNewPair("/endpoint2", HttpStatusCode.Accepted));
-            collector.Fail(GetNewPair("/endpoint3", HttpStatusCode.BadRequest), Reason.Unknown, er);
+            collector.Fail(GetNewPair("/endpoint3", HttpStatusCode.BadRequest), Reason.InvalidBody, er);
             collector.Fail(GetNewPair("/endpoint4", HttpStatusCode.NotFound), Reason.MissingPath, arr);
 
             JsonResultSerializer serializer = new JsonResultSerializer();
