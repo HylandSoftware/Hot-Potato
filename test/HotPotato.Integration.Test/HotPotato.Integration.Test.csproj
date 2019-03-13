@@ -34,6 +34,9 @@
     <None Update="specs\document\specification.yaml">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
+    <None Update="specs\JsonTestData.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
     <None Update="specs\keyword\specification.yaml">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
