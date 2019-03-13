@@ -13,7 +13,6 @@ namespace HotPotato.Integration.Test.Results
 {
     public class ResultSerializerTest
     {
-        private const string Path = @"M:\Git\HotPotato .NET\test\HotPotato.Integration.Test\JsonTestData.json";
 
         [Fact]
         public void CanISerializeListFromResultCollector()
@@ -33,7 +32,7 @@ namespace HotPotato.Integration.Test.Results
 
             var actual = serializer.SerializeResult(collector.resultList);
 
-            using (StreamReader reader = new StreamReader(Path))
+            using (StreamReader reader = new StreamReader(IntegrationTestMethods.SpecPath("specs/", "JsonTestData.json")))
             {
                 string expected = reader.ReadToEnd();
 
