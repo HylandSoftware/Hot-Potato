@@ -16,6 +16,7 @@ namespace HotPotato.AspNetCore.Middleware
         private readonly IProxy proxy;
         private readonly ILogger log;
         private readonly string remoteEndpoint;
+        private readonly RequestDelegate _next;
         
         public HotPotatoMiddleware(RequestDelegate next, IProxy proxy, IConfiguration configuration, ILogger<HotPotatoMiddleware> log)
         {
@@ -27,27 +28,35 @@ namespace HotPotato.AspNetCore.Middleware
             this.log = log;
             this.remoteEndpoint = configuration[RemoteEndpointKey];
             log.LogInformation($"Forwarding to {remoteEndpoint}");
+            _next = next;
         }
 
         public async Task Invoke(HttpContext context)
         {
-            try
+            if(context.Request.Path.Value == "/results")
             {
-                this.log.LogDebug($"{context.Request.Method} {context.Request.Path}");
-                await this.proxy.ProcessAsync(this.remoteEndpoint, context.Request, context.Response);
-                this.log.LogDebug($"{context.Response.StatusCode} Length: {context.Response.ContentLength}");
-                this.log.LogDebug("--------------- Request End ---------------");
+                await _next.Invoke(context);
             }
-            catch (HttpRequestException httpEx)
-            {
-                this.log.LogError(httpEx, "Failed to forward request. Remote endpoint may be down.");
-                context.Response.StatusCode = (int)HttpStatusCode.BadGateway;
-            }
-            catch (Exception e)
-            {
-                this.log.LogError(e, "Failed to forward request");
-                context.Response.StatusCode = (int)HttpStatusCode.InternalServerError;
-            }
+           else
+	       {
+                try
+                {
+                    this.log.LogDebug($"{context.Request.Method} {context.Request.Path}");
+                    await this.proxy.ProcessAsync(this.remoteEndpoint, context.Request, context.Response);
+                    this.log.LogDebug($"{context.Response.StatusCode} Length: {context.Response.ContentLength}");
+                    this.log.LogDebug("--------------- Request End ---------------");
+                }
+                catch (HttpRequestException httpEx)
+                {
+                    this.log.LogError(httpEx, "Failed to forward request. Remote endpoint may be down.");
+                    context.Response.StatusCode = (int)HttpStatusCode.BadGateway;
+                }
+                catch (Exception e)
+                {
+                    this.log.LogError(e, "Failed to forward request");
+                    context.Response.StatusCode = (int)HttpStatusCode.InternalServerError;
+                } 
+           }
         }
     }
 }
