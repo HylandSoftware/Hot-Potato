@@ -20,7 +20,7 @@ namespace HotPotato.OpenApi.Processor
         public void Process(HttpPair pair)
         {
             ValidatePath(pair);
-            if (HasValidationError())
+            if (HasValidationResult())
             {
                 return;
             }
@@ -28,7 +28,7 @@ namespace HotPotato.OpenApi.Processor
             {
                 ValidateMethod(pair);
             }
-            if (HasValidationError())
+            if (HasValidationResult())
             {
                 return;
             }
@@ -36,7 +36,7 @@ namespace HotPotato.OpenApi.Processor
             {
                 ValidateStatusCode(pair);
             }
-            if (HasValidationError())
+            if (HasValidationResult())
             {
                 return;
             }
@@ -67,7 +67,7 @@ namespace HotPotato.OpenApi.Processor
         {
             validationAccessor("header").Validate(pair);
         }
-        public bool HasValidationError()
+        private bool HasValidationResult()
         {
             return (collector.Results.Count > 0) ? true : false;
         }

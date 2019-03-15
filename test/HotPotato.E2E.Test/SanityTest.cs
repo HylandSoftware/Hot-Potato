@@ -57,7 +57,7 @@ namespace HotPotato.E2E.Test
                         using (HttpRequestMessage req = new HttpRequestMessage(method, ProxyEndpoint))
                         {
                             HttpResponseMessage res = await client.SendAsync(req);
-
+                            
                             //Asserts
                             Assert.Equal(HttpStatusCode.OK, res.StatusCode);
                             Assert.Equal(OKResponseMessage, res.ReasonPhrase);
@@ -209,8 +209,8 @@ namespace HotPotato.E2E.Test
             var host = new WebHostBuilder()
                 .ConfigureAppConfiguration((hostingContext, config) =>
                 {
-                    config.SetBasePath(hostingContext.HostingEnvironment.ContentRootPath);
-                    //.AddJsonFile("appsettings.json", optional: true);
+                    config.SetBasePath(hostingContext.HostingEnvironment.ContentRootPath)
+                    .AddJsonFile("appsettings.json", optional: true);
                 })
                 .ConfigureLogging((hostingContext, logging) =>
                 {
