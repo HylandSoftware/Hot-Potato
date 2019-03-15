@@ -2,6 +2,7 @@
 using NSwag;
 using static NSwag.SwaggerYamlDocument;
 using System;
+using System.IO;
 using System.Threading.Tasks;
 
 namespace HotPotato.OpenApi.SpecificationProvider
@@ -12,18 +13,19 @@ namespace HotPotato.OpenApi.SpecificationProvider
         public SpecificationProvider(IConfiguration config)
         {
             _ = config ?? throw new ArgumentNullException(nameof(config));
-            this.specLoc = config["SpecLocation"];
+            this.specLoc = config["SpecLocation"].Replace('/', Path.DirectorySeparatorChar).Replace('\\', Path.DirectorySeparatorChar);
         }
         public SwaggerDocument GetSpecDocument()
         {
             Task<SwaggerDocument> swagTask = null;
-            if (System.IO.Path.IsPathFullyQualified(specLoc))
+            if (Path.IsPathFullyQualified(specLoc))
             {
                 swagTask = FromFileAsync(specLoc);
             }
             else if (Uri.IsWellFormedUriString(specLoc, UriKind.Absolute))
             {
                 swagTask = FromUrlAsync(specLoc);
+                var test = swagTask.Result;
             }
             else
             {
