@@ -13,7 +13,7 @@ namespace HotPotato.OpenApi.SpecificationProvider
         public SpecificationProvider(IConfiguration config)
         {
             _ = config ?? throw new ArgumentNullException(nameof(config));
-            this.specLoc = config["SpecLocation"].Replace('/', Path.DirectorySeparatorChar).Replace('\\', Path.DirectorySeparatorChar);
+            this.specLoc = config["SpecLocation"];
         }
         public SwaggerDocument GetSpecDocument()
         {
@@ -25,7 +25,6 @@ namespace HotPotato.OpenApi.SpecificationProvider
             else if (Uri.IsWellFormedUriString(specLoc, UriKind.Absolute))
             {
                 swagTask = FromUrlAsync(specLoc);
-                var test = swagTask.Result;
             }
             else
             {
