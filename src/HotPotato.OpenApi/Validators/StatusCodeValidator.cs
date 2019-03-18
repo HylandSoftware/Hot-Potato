@@ -1,8 +1,8 @@
 ﻿
+using HotPotato.Core.Http;
 using HotPotato.Core.Models;
 using HotPotato.OpenApi.Models;
 using HotPotato.OpenApi.Results;
-using HotPotato.OpenApi.SpecificationProvider;
 using NSwag;
 using System;
 
@@ -27,11 +27,14 @@ namespace HotPotato.OpenApi.Validators
             {
                 if (statusCode == "204")
                 {
-                    if (swagOp.Responses[statusCode].Content != null)
+                    if (pair.Response.Content == null || string.IsNullOrWhiteSpace(pair.Response.ToBodyString()))
                     {
                         collector.Pass(pair);
                     }
-                    collector.Fail(pair, Reason.UnexpectedBody);
+                    else
+                    {
+                        collector.Fail(pair, Reason.UnexpectedBody);
+                    }
                 }
                 valPro.specResp = swagOp.Responses[statusCode];
             }
