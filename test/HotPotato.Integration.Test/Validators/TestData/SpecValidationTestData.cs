@@ -6,7 +6,7 @@ using System.Net.Http;
 
 namespace HotPotato.Http.Default
 {
-    public class SpecValidationTestData : IEnumerable<object[]>
+    public class SpecBodyValidTestData : IEnumerable<object[]>
     {
         public IEnumerator<object[]> GetEnumerator()
         {
@@ -122,7 +122,7 @@ namespace HotPotato.Http.Default
         IEnumerator IEnumerable.GetEnumerator() => GetEnumerator();
     }
 
-    public class SpecValidationNegTestData : IEnumerable<object[]>
+    public class SpecBodyInvalidTestData : IEnumerable<object[]>
     {
         public IEnumerator<object[]> GetEnumerator()
         {
@@ -144,5 +144,36 @@ namespace HotPotato.Http.Default
         IEnumerator IEnumerable.GetEnumerator() => GetEnumerator();
     }
 
+    public class SpecHeaderTestData : IEnumerable<object[]>
+    {
+        public IEnumerator<object[]> GetEnumerator()
+        {
+            yield return new object[] { "specs/document/", HttpMethod.Post,
+                HttpStatusCode.Created, "http://api.docs.hyland.io/document/documents/", "application/json", new {
+                    id = "string"
+                }
+            };
+        }
+        IEnumerator IEnumerable.GetEnumerator() => GetEnumerator();
+    }
+
+    public class StatusCodeNoContentTestData : IEnumerable<object[]>
+    {
+        public IEnumerator<object[]> GetEnumerator()
+        {
+            yield return new object[] { "specs/document/", HttpMethod.Put,
+            HttpStatusCode.NoContent, "http://api.docs.hyland.io/document/documents/56/keywords"};
+
+            yield return new object[] { "specs/rdds/configurationservice/", HttpMethod.Patch,
+            HttpStatusCode.NoContent, "https://api.hyland.com/ibpaf/rdds/configurations/93"};
+
+            yield return new object[] { "specs/rdds/messagestorageservice/", HttpMethod.Delete,
+            HttpStatusCode.NoContent, "https://api.hyland.com/ibpaf/rdds/messages/64"};
+
+            yield return new object[] { "specs/rdds/onrampservice/", HttpMethod.Post,
+            HttpStatusCode.NoContent, "https://api.hyland.com/ibpaf/rdds/notifications"};
+        }
+        IEnumerator IEnumerable.GetEnumerator() => GetEnumerator();
+    }
 }
 
