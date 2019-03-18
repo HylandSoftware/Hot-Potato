@@ -1,7 +1,6 @@
 
 using static HotPotato.IntegrationTestMethods;
 using HotPotato.OpenApi.Results;
-using HotPotato.OpenApi.Validators;
 using Microsoft.Extensions.DependencyInjection;
 using Newtonsoft.Json;
 using NSwag;
@@ -11,6 +10,7 @@ using HotPotato.Core.Models;
 using HotPotato.Core.Processor;
 using HotPotato.OpenApi.SpecificationProvider;
 using HotPotato.OpenApi.Models;
+using HotPotato.Http.Default;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -19,14 +19,14 @@ using System.Net.Http;
 using System.Text;
 using Xunit;
 
-namespace HotPotato.Http.Default
+namespace HotPotato.OpenApi.Validators
 {
 
-    public class SpecBodyValidatorTest
+    public class SpecBodyValTest
     {
         [Theory]
-        [ClassData(typeof(SpecValidationTestData))]
-        public async void BodyValidator_ValidatesWithSpecData(string specSubPath, HttpMethod reqMethod, HttpStatusCode statusCode, string endpointURI, string contentType, object bodyJson)
+        [ClassData(typeof(SpecBodyValidTestData))]
+        public async void BodyValidator_CreatesValidResult(string specSubPath, HttpMethod reqMethod, HttpStatusCode statusCode, string endpointURI, string contentType, object bodyJson)
         {
             string specPath = SpecPath(specSubPath, "specification.yaml");
             ServiceProvider provider = GetServiceProvider(specPath);
@@ -59,8 +59,8 @@ namespace HotPotato.Http.Default
         }
 
         [Theory]
-        [ClassData(typeof(SpecValidationNegTestData))]
-        public async void BodyValidator_ValidatesWithSpecData_InvalidSchema(string specSubPath, HttpMethod reqMethod, HttpStatusCode statusCode, string endpointURI, string contentType, object bodyJson)
+        [ClassData(typeof(SpecBodyInvalidTestData))]
+        public async void BodyValidator_CreatesInvalidResult(string specSubPath, HttpMethod reqMethod, HttpStatusCode statusCode, string endpointURI, string contentType, object bodyJson)
         {
 
             string specPath = SpecPath(specSubPath, "specification.yaml");

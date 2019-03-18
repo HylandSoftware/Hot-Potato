@@ -13,10 +13,10 @@ using HotPotato.Core.Http.Default;
 
 namespace HotPotato.OpenApi.Validators
 {
-    public class PathValidatorTest
+    public class SpecPathValTest
     {
         [Fact]
-        public void PathValidator_SetsWithParam()
+        public void PathValidator_GeneratesSpecPathWithParam()
         {
             string endpointWithPar = "http://api.docs.hyland.io/keyword/keyword-type-groups/48732/keyword-types";
             HttpResponse testResponse = new HttpResponse(HttpStatusCode.OK, null);
@@ -45,7 +45,7 @@ namespace HotPotato.OpenApi.Validators
         }
 
         [Fact]
-        public void PathValidator_SetsWithoutParam()
+        public void PathValidator_GeneratesSpecPathWithoutParam()
         {
             string endpointWithoutPar = "https://api.hyland.com/workflow/life-cycles";
             HttpResponse testResponse = new HttpResponse(HttpStatusCode.OK, null);

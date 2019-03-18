@@ -15,7 +15,7 @@ namespace HotPotato.OpenApi.Validators
     {
         private const string AValidEndpoint = "https://api.hyland.com/workflow/life-cycles";
         [Fact]
-        public void StatCodeValidator_SetsValData()
+        public void StatCodeValidator_GeneratesResponse()
         {
             HttpResponse testResponse = new HttpResponse(HttpStatusCode.OK, null);
 
