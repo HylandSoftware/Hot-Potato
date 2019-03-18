@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 
 namespace HotPotato.Core.Http
@@ -9,7 +10,8 @@ namespace HotPotato.Core.Http
 
         public HttpHeaders()
         {
-            data = new Dictionary<string, List<string>>();
+            StringComparer ignoreCase = StringComparer.OrdinalIgnoreCase;
+            data = new Dictionary<string, List<string>>(ignoreCase);
         }
 
         public void Add(string key, string value)
