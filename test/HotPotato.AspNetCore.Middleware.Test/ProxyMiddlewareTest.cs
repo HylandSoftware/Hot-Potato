@@ -42,7 +42,7 @@ namespace HotPotato.Middleware
             configMock.SetupGet(x => x[RemoteEndpointKey]).Returns(AValidEndpoint);
             Mock<HttpContext> contextMock = new Mock<HttpContext>();
             var response = Mock.Of<HttpResponse>();
-            var request = Mock.Of<HttpRequest>(); ;
+            var request = Mock.Of<HttpRequest>();
             contextMock.SetupGet(x => x.Request).Returns(request);
             contextMock.SetupGet(x => x.Response).Returns(response);
 

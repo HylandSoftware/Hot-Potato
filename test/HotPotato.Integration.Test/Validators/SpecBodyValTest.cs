@@ -70,7 +70,7 @@ namespace HotPotato.OpenApi.Validators
 
             using (HttpResponseMessage testRespMsg = new HttpResponseMessage(statusCode))
             {
-                testRespMsg.Content = new StringContent(bodyString, Encoding.UTF8, contentType); ;
+                testRespMsg.Content = new StringContent(bodyString, Encoding.UTF8, contentType);
                 var testResponse = await testRespMsg.ToClientResponseAsync();
 
                 using (HttpRequest testRequest = new HttpRequest(reqMethod, new Uri(endpointURI)))

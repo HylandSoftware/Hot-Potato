@@ -2,7 +2,6 @@
 using HotPotato.OpenApi.Matchers;
 using HotPotato.OpenApi.Models;
 using HotPotato.OpenApi.Results;
-using HotPotato.OpenApi.SpecificationProvider;
 using NSwag;
 using System;
 

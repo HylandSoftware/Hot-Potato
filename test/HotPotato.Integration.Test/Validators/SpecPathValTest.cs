@@ -36,7 +36,7 @@ namespace HotPotato.OpenApi.Validators
 
                     ResultCollector resColl = new ResultCollector();
 
-                    PathValidator subject = new PathValidator(valPro, resColl); ;
+                    PathValidator subject = new PathValidator(valPro, resColl);
                     subject.Validate(testPair);
 
                     Assert.NotNull(valPro.specPath);
@@ -65,7 +65,7 @@ namespace HotPotato.OpenApi.Validators
 
                     ResultCollector resColl = new ResultCollector();
 
-                    PathValidator subject = new PathValidator(valPro, resColl); ;
+                    PathValidator subject = new PathValidator(valPro, resColl);
                     subject.Validate(testPair);
 
                     Assert.NotNull(valPro.specPath);
