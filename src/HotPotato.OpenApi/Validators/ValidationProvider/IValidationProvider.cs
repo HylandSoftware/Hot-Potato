@@ -2,7 +2,7 @@
 
 namespace HotPotato.OpenApi.Validators
 {
-    public interface IValidationProvider
+    internal interface IValidationProvider
     {
         SwaggerDocument specDoc { get; set; }
         SwaggerPathItem specPath { get; set; }

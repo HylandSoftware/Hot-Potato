@@ -1,4 +1,4 @@
-using HotPotato.Core.Models;
+﻿using HotPotato.Core.Models;
 using HotPotato.Core.Http.Default;
 using HotPotato.OpenApi.Models;
 using HotPotato.OpenApi.Results;
@@ -13,11 +13,11 @@ using Xunit;
 
 namespace HotPotato.OpenApi.Validators
 {
-    public class StatusCodeValidatorTest
+    public class MethodValidatorTest
     {
         private const string AValidEndpoint = "https://api.hyland.com/workflow/life-cycles";
         [Fact]
-        public void StatCodeValidator_GeneratesResponse()
+        public void MethodValidator_GeneratesOperation()
         {
             HttpResponse testResponse = new HttpResponse(HttpStatusCode.OK, null);
 
@@ -25,44 +25,48 @@ namespace HotPotato.OpenApi.Validators
             {
                 using (HttpPair testPair = new HttpPair(testRequest, testResponse))
                 {
-                    SwaggerOperation swagOp = new SwaggerOperation();
-                    swagOp.Responses.Add("200", new SwaggerResponse());
+                    SwaggerPathItem swagPath = new SwaggerPathItem();
+                    swagPath.Add("GET", new SwaggerOperation());
+
                     ValidationProvider valPro = new ValidationProvider(Mock.Of<ISpecificationProvider>());
-                    valPro.specMeth = swagOp;
+                    valPro.specPath = swagPath;
 
                     ResultCollector resColl = new ResultCollector();
-                    StatusCodeValidator subject = new StatusCodeValidator(valPro, resColl);
-                    subject.Validate(testPair);
-                    
-                    Assert.NotNull(valPro.specResp);
-                }
-            }
-        }
-        [Fact]
-        public void StatCodeValidator_CreatesNotFoundResult()
-        {
-            HttpResponse testResponse = new HttpResponse(HttpStatusCode.OK, null);
-
-            using (HttpRequest testRequest = new HttpRequest(HttpMethod.Get, new Uri(AValidEndpoint)))
-            {
-                using (HttpPair testPair = new HttpPair(testRequest, testResponse))
-                {
-                    SwaggerOperation swagOp = new SwaggerOperation();
-                    swagOp.Responses.Add("400", new SwaggerResponse());
-                    ValidationProvider valPro = new ValidationProvider(Mock.Of<ISpecificationProvider>());
-                    valPro.specMeth = swagOp;
-
-                    ResultCollector resColl = new ResultCollector();
-                    StatusCodeValidator subject = new StatusCodeValidator(valPro, resColl);
+                    MethodValidator subject = new MethodValidator(valPro, resColl);
                     subject.Validate(testPair);
 
                     Result result = resColl.Results.ElementAt(0);
 
                     Assert.Equal(State.Fail, result.State);
-                    Assert.Equal(Reason.MissingStatusCode, result.Reason);
+                    Assert.Equal(Reason.MissingMethod, result.Reason);
+                }
+            }
+        }
+        [Fact]
+        public void MethodValidator_CreatesNotFoundResult()
+        {
+            HttpResponse testResponse = new HttpResponse(HttpStatusCode.OK, null);
+
+            using (HttpRequest testRequest = new HttpRequest(HttpMethod.Get, new Uri(AValidEndpoint)))
+            {
+                using (HttpPair testPair = new HttpPair(testRequest, testResponse))
+                {
+                    SwaggerPathItem swagPath = new SwaggerPathItem();
+                    swagPath.Add("TRACE", new SwaggerOperation());
+
+                    ValidationProvider valPro = new ValidationProvider(Mock.Of<ISpecificationProvider>());
+                    valPro.specPath = swagPath;
+
+                    ResultCollector resColl = new ResultCollector();
+                    MethodValidator subject = new MethodValidator(valPro, resColl);
+                    subject.Validate(testPair);
+
+                    Result result = resColl.Results.ElementAt(0);
+
+                    Assert.Equal(State.Fail, result.State);
+                    Assert.Equal(Reason.MissingMethod, result.Reason);
                 }
             }
         }
     }
-
 }

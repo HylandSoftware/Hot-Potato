@@ -1,4 +1,4 @@
-using HotPotato.Core.Models;
+﻿using HotPotato.Core.Models;
 using HotPotato.Core.Http.Default;
 using HotPotato.OpenApi.Models;
 using HotPotato.OpenApi.Results;
@@ -13,11 +13,11 @@ using Xunit;
 
 namespace HotPotato.OpenApi.Validators
 {
-    public class StatusCodeValidatorTest
+    public class PathValidatorTest
     {
         private const string AValidEndpoint = "https://api.hyland.com/workflow/life-cycles";
         [Fact]
-        public void StatCodeValidator_GeneratesResponse()
+        public void PathValidator_GeneratesPathItem()
         {
             HttpResponse testResponse = new HttpResponse(HttpStatusCode.OK, null);
 
@@ -25,21 +25,22 @@ namespace HotPotato.OpenApi.Validators
             {
                 using (HttpPair testPair = new HttpPair(testRequest, testResponse))
                 {
-                    SwaggerOperation swagOp = new SwaggerOperation();
-                    swagOp.Responses.Add("200", new SwaggerResponse());
+                    SwaggerDocument swagDoc = new SwaggerDocument();
+                    swagDoc.Paths.Add("/workflow/life-cycles", new SwaggerPathItem());
+
                     ValidationProvider valPro = new ValidationProvider(Mock.Of<ISpecificationProvider>());
-                    valPro.specMeth = swagOp;
+                    valPro.specDoc = swagDoc;
 
                     ResultCollector resColl = new ResultCollector();
-                    StatusCodeValidator subject = new StatusCodeValidator(valPro, resColl);
+                    PathValidator subject = new PathValidator(valPro, resColl);
                     subject.Validate(testPair);
-                    
-                    Assert.NotNull(valPro.specResp);
+
+                    Assert.NotNull(valPro.specPath);
                 }
             }
         }
         [Fact]
-        public void StatCodeValidator_CreatesNotFoundResult()
+        public void PathValidator_CreatesNotFoundResult()
         {
             HttpResponse testResponse = new HttpResponse(HttpStatusCode.OK, null);
 
@@ -47,22 +48,22 @@ namespace HotPotato.OpenApi.Validators
             {
                 using (HttpPair testPair = new HttpPair(testRequest, testResponse))
                 {
-                    SwaggerOperation swagOp = new SwaggerOperation();
-                    swagOp.Responses.Add("400", new SwaggerResponse());
+                    SwaggerDocument swagDoc = new SwaggerDocument();
+                    swagDoc.Paths.Add("http://api.docs.hyland.io/deficiencies/deficiencies", new SwaggerPathItem());
+
                     ValidationProvider valPro = new ValidationProvider(Mock.Of<ISpecificationProvider>());
-                    valPro.specMeth = swagOp;
+                    valPro.specDoc = swagDoc;
 
                     ResultCollector resColl = new ResultCollector();
-                    StatusCodeValidator subject = new StatusCodeValidator(valPro, resColl);
+                    PathValidator subject = new PathValidator(valPro, resColl);
                     subject.Validate(testPair);
 
                     Result result = resColl.Results.ElementAt(0);
 
                     Assert.Equal(State.Fail, result.State);
-                    Assert.Equal(Reason.MissingStatusCode, result.Reason);
+                    Assert.Equal(Reason.MissingPath, result.Reason);
                 }
             }
         }
     }
-
 }
