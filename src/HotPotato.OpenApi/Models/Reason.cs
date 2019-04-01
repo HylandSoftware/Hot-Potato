@@ -5,9 +5,10 @@
         Unknown,
         InvalidBody,
         InvalidHeaders,
+        MissingBody,
         MissingHeaders,
-        MissingPath,
         MissingMethod,
+        MissingPath,
         MissingSpecBody,
         MissingStatusCode,
         UnexpectedBody

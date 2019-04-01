@@ -21,7 +21,7 @@ namespace HotPotato.OpenApi.Validators
             Assert.Equal(expected, subject.Result);
         }
         [Fact]
-        public void PathValidator_ReturnsFailWithMissingPath()
+        public void PathValidator_ReturnsFalseWithMissingPath()
         {
             SwaggerDocument swagDoc = new SwaggerDocument();
             swagDoc.Paths.Add("/deficiencies/deficiencies", Mock.Of<SwaggerPathItem>());
@@ -32,7 +32,7 @@ namespace HotPotato.OpenApi.Validators
         }
 
         [Fact]
-        public void PathValidator_ReturnsFailWithNullPath()
+        public void PathValidator_ReturnsFalseWithNullPath()
         {
             SwaggerDocument swagDoc = new SwaggerDocument();
             swagDoc.Paths.Add("/deficiencies/deficiencies", Mock.Of<SwaggerPathItem>());

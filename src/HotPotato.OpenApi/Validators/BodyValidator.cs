@@ -24,6 +24,12 @@ namespace HotPotato.OpenApi.Validators
                 FailReason = Reason.MissingSpecBody;
                 return false;
             }
+            else if(string.IsNullOrWhiteSpace(bodyString))
+            {
+                bodyString = "";
+                FailReason = Reason.MissingBody;
+                return false;
+            }
             JsonSchema4 specBody = swagResp.ActualResponse.Schema;
             ICollection<NJsonSchema.Validation.ValidationError> errors = specBody.Validate(bodyString);
             if (errors == null || errors.Count == 0)

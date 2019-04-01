@@ -37,5 +37,18 @@ namespace HotPotato.OpenApi.Validators
             Assert.Equal(Reason.InvalidBody, subject.FailReason);
             Assert.Equal(ValidationErrorKind.IntegerExpected, subject.ErrorArr[0].Kind);
         }
+
+        [Fact]
+        public void BodyValidator_ReturnsFalseWithNull()
+        {
+            JsonSchema4 schema = JsonSchema4.CreateAnySchema();
+            SwaggerResponse swagResp = new SwaggerResponse();
+            swagResp.ActualResponse.Schema = schema;
+
+            BodyValidator subject = new BodyValidator(null);
+
+            Assert.False(subject.Validate(swagResp));
+            Assert.Equal(Reason.MissingBody, subject.FailReason);
+        }
     }
 }
