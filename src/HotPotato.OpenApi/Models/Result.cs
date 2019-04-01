@@ -8,7 +8,9 @@ namespace HotPotato.OpenApi.Models
         public string Path { get; }
         public string Method { get; }
         public int StatusCode { get; }
+        [Newtonsoft.Json.JsonConverter(typeof(Newtonsoft.Json.Converters.StringEnumConverter))]
         public State State { get; }
+        [Newtonsoft.Json.JsonConverter(typeof(Newtonsoft.Json.Converters.StringEnumConverter))]
         public Reason Reason { get; }
         public List<ValidationError> ValidationErrors { get; }
 

@@ -1,13 +1,13 @@
-﻿using HotPotato.Core.Processor;
-using HotPotato.Core.Proxy;
-using HotPotato.Core.Http;
-using HotPotato.Core.Http.Default;
 using HotPotato.AspNetCore.Middleware;
+using HotPotato.Core.Http;
+using HotPotato.Core.Processor;
+using HotPotato.Core.Proxy;
+using HotPotato.Core.Http.Default;
+using HotPotato.OpenApi.Results;
+using HotPotato.OpenApi.Processor;
+using HotPotato.OpenApi.SpecificationProvider;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using HotPotato.OpenApi.Processor;
-using HotPotato.OpenApi.Results;
-using HotPotato.OpenApi.SpecificationProvider;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
@@ -33,12 +33,14 @@ namespace HotPotato.AspNetCore.Host
         {
             builder.UseResponseBuffering();
             builder.UseMiddleware<HotPotatoMiddleware>();
+            builder.UseMvc();
         }
 
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddScoped<IProxy, HotPotato.Core.Proxy.Default.Proxy>();
             services.AddScoped<IHttpClient, HttpClient>();
+            services.AddMvcCore().AddJsonFormatters();
             services.AddHttpClient<IHttpClient, HttpClient>(client =>
             {
                 client.BaseAddress = new Uri(Configuration["RemoteEndpoint"]);

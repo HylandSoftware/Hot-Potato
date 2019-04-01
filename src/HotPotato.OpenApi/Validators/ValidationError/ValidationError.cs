@@ -4,6 +4,7 @@ namespace HotPotato.OpenApi.Validators
     public class ValidationError
     {
         public string Message { get; set; }
+        [Newtonsoft.Json.JsonConverter(typeof(Newtonsoft.Json.Converters.StringEnumConverter))]
         public ValidationErrorKind Kind { get; set; }
         public string Property { get; set; }
         public int LineNumber { get; set; }
