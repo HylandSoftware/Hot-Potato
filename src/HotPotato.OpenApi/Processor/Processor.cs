@@ -8,7 +8,7 @@ using HotPotato.OpenApi.Validators;
 
 namespace HotPotato.OpenApi.Processor
 {
-    internal class Processor : IProcessor
+    public class Processor : IProcessor
     {
         private readonly IResultCollector collector;
         private readonly ISpecificationProvider specPro;

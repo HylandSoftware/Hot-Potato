@@ -12,7 +12,7 @@ namespace HotPotato.OpenApi.Results
 
         public ResultCollector()
         {
-            Results = new List<Models.Result>();
+            Results = new List<Result>();
         }
 
         public void Pass(string path, string method, int statusCode)
