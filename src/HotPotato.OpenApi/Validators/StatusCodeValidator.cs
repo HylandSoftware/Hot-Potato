@@ -1,46 +1,49 @@
 ﻿
-using HotPotato.Core.Http;
-using HotPotato.Core.Models;
 using HotPotato.OpenApi.Models;
-using HotPotato.OpenApi.Results;
 using NSwag;
 using System;
+using System.Net;
 
 namespace HotPotato.OpenApi.Validators
 {
-    internal class StatusCodeValidator : IValidator
+    internal class StatusCodeValidator
     {
-        private readonly IValidationProvider valPro;
-        private readonly IResultCollector collector;
-        public StatusCodeValidator(IValidationProvider valPro, IResultCollector collector)
-        {
-            this.valPro = valPro;
-            this.collector = collector;
-        }
-        public void Validate(HttpPair pair)
-        {
-            _ = pair ?? throw new ArgumentNullException(nameof(pair));
+        public int statCode;
+        public string bodyString;
 
-            string statusCode = Convert.ToInt32(pair.Response.StatusCode).ToString();
-            SwaggerOperation swagOp = valPro.specMeth;
-            if (swagOp.Responses.ContainsKey(statusCode))
+        public Reason FailReason;
+        public SwaggerResponse Result;
+
+        public StatusCodeValidator(HttpStatusCode StatCode, string BodyString)
+        {
+            statCode = Convert.ToInt32(StatCode);
+            bodyString = BodyString;
+        }
+
+        public bool Validate(SwaggerOperation swagOp)
+        {
+            string statCodeStr = statCode.ToString();
+            if (swagOp.Responses.ContainsKey(statCodeStr))
             {
-                if (statusCode == "204")
+                if (statCodeStr == "204")
                 {
-                    if (pair.Response.Content == null || string.IsNullOrWhiteSpace(pair.Response.ToBodyString()))
+                    if (string.IsNullOrWhiteSpace(bodyString))
                     {
-                        collector.Pass(pair);
+                        return true;
                     }
                     else
                     {
-                        collector.Fail(pair, Reason.UnexpectedBody);
+                        FailReason = Reason.UnexpectedBody;
+                        return false;
                     }
                 }
-                valPro.specResp = swagOp.Responses[statusCode];
+                Result = swagOp.Responses[statCodeStr];
+                return true;
             }
             else
             {
-                collector.Fail(pair, Reason.MissingStatusCode);
+                FailReason = Reason.MissingStatusCode;
+                return false;
             }
         }
     }

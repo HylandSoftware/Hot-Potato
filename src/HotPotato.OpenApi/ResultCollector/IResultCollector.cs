@@ -8,7 +8,7 @@ namespace HotPotato.OpenApi.Results
     public interface IResultCollector
     {
         List<Models.Result> Results { get; }
-        void Pass(HttpPair pair);
-        void Fail(HttpPair pair, Reason reason, params ValidationError[] validationErrors);
+        void Pass(string path, string method, int statusCode);
+        void Fail(string path, string method, int StatusCode, Reason reason, ValidationError[] validationErrors);
     }
 }

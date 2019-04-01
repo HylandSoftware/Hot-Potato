@@ -1,14 +1,8 @@
-using HotPotato.Core.Models;
-using HotPotato.Core.Http.Default;
+
 using HotPotato.OpenApi.Models;
-using HotPotato.OpenApi.Results;
-using HotPotato.OpenApi.SpecificationProvider;
 using Moq;
 using NSwag;
-using System;
-using System.Linq;
 using System.Net;
-using System.Net.Http;
 using Xunit;
 
 namespace HotPotato.OpenApi.Validators
@@ -19,49 +13,47 @@ namespace HotPotato.OpenApi.Validators
         [Fact]
         public void StatCodeValidator_GeneratesResponse()
         {
-            HttpResponse testResponse = new HttpResponse(HttpStatusCode.OK, null);
+            SwaggerOperation swagOp = new SwaggerOperation();
+            SwaggerResponse expected = Mock.Of<SwaggerResponse>();
+            swagOp.Responses.Add("200", expected);
 
-            using (HttpRequest testRequest = new HttpRequest(HttpMethod.Get, new Uri(AValidEndpoint)))
-            {
-                using (HttpPair testPair = new HttpPair(testRequest, testResponse))
-                {
-                    SwaggerOperation swagOp = new SwaggerOperation();
-                    swagOp.Responses.Add("200", new SwaggerResponse());
-                    ValidationProvider valPro = new ValidationProvider(Mock.Of<ISpecificationProvider>());
-                    valPro.specMeth = swagOp;
+            StatusCodeValidator subject = new StatusCodeValidator(HttpStatusCode.OK, "");
 
-                    ResultCollector resColl = new ResultCollector();
-                    StatusCodeValidator subject = new StatusCodeValidator(valPro, resColl);
-                    subject.Validate(testPair);
-                    
-                    Assert.NotNull(valPro.specResp);
-                }
-            }
+            Assert.True(subject.Validate(swagOp));
+            Assert.Equal(expected, subject.Result);
         }
         [Fact]
-        public void StatCodeValidator_CreatesNotFoundResult()
+        public void StatCodeValidator_ReturnsTrueWithNoContentExpected()
         {
-            HttpResponse testResponse = new HttpResponse(HttpStatusCode.OK, null);
+            SwaggerOperation swagOp = new SwaggerOperation();
+            swagOp.Responses.Add("204", Mock.Of<SwaggerResponse>());
 
-            using (HttpRequest testRequest = new HttpRequest(HttpMethod.Get, new Uri(AValidEndpoint)))
-            {
-                using (HttpPair testPair = new HttpPair(testRequest, testResponse))
-                {
-                    SwaggerOperation swagOp = new SwaggerOperation();
-                    swagOp.Responses.Add("400", new SwaggerResponse());
-                    ValidationProvider valPro = new ValidationProvider(Mock.Of<ISpecificationProvider>());
-                    valPro.specMeth = swagOp;
+            StatusCodeValidator subject = new StatusCodeValidator(HttpStatusCode.NoContent, "");
 
-                    ResultCollector resColl = new ResultCollector();
-                    StatusCodeValidator subject = new StatusCodeValidator(valPro, resColl);
-                    subject.Validate(testPair);
+            Assert.True(subject.Validate(swagOp));
+            Assert.Null(subject.Result);
+        }
+        [Fact]
+        public void StatCodeValidator_ReturnsFalseWithMissingStatCode()
+        {
+            SwaggerOperation swagOp = new SwaggerOperation();
+            swagOp.Responses.Add("400", Mock.Of<SwaggerResponse>());
 
-                    Result result = resColl.Results.ElementAt(0);
+            StatusCodeValidator subject = new StatusCodeValidator(HttpStatusCode.OK, "");
 
-                    Assert.Equal(State.Fail, result.State);
-                    Assert.Equal(Reason.MissingStatusCode, result.Reason);
-                }
-            }
+            Assert.False(subject.Validate(swagOp));
+            Assert.Equal(Reason.MissingStatusCode, subject.FailReason);
+        }
+        [Fact]
+        public void StatCodeValidator_ReturnsFalseWithUnexpectedBody()
+        {
+            SwaggerOperation swagOp = new SwaggerOperation();
+            swagOp.Responses.Add("204", Mock.Of<SwaggerResponse>());
+
+            StatusCodeValidator subject = new StatusCodeValidator(HttpStatusCode.NoContent, "{'perfectSquare': '4'}");
+
+            Assert.False(subject.Validate(swagOp));
+            Assert.Equal(Reason.UnexpectedBody, subject.FailReason);
         }
     }
 

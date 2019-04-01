@@ -1,17 +1,7 @@
-﻿using HotPotato.Core.Models;
-using HotPotato.Core.Http;
-using HotPotato.Core.Http.Default;
+﻿
 using HotPotato.OpenApi.Models;
-using HotPotato.OpenApi.Results;
-using HotPotato.OpenApi.SpecificationProvider;
-using Moq;
 using NJsonSchema;
 using NSwag;
-using System;
-using System.Linq;
-using System.Net;
-using System.Net.Http;
-using System.Text;
 using Xunit;
 
 namespace HotPotato.OpenApi.Validators
@@ -21,67 +11,31 @@ namespace HotPotato.OpenApi.Validators
         private const string AValidBody = "{'foo': '1'}";
         private const string AnInvalidBody = "{'foo': 'abc'}";
         private const string AValidSchema = @"{'type': 'integer'}";
-        private const string AValidEndpoint = "https://api.hyland.com/workflow/life-cycles";
 
         [Fact]
-        public async void Validate_ValidBody()
+        public void BodyValidator_ReturnsTrueWithValid()
         {
-            using (HttpResponseMessage testRespMsg = new HttpResponseMessage(HttpStatusCode.OK))
-            {
-                testRespMsg.Content = new StringContent(AValidBody, Encoding.UTF8, "application/json");
-                var testResponse = await testRespMsg.ToClientResponseAsync();
+            JsonSchema4 schema = JsonSchema4.CreateAnySchema();
+            SwaggerResponse swagResp = new SwaggerResponse();
+            swagResp.ActualResponse.Schema = schema;
 
-                using (HttpRequest testRequest = new HttpRequest(HttpMethod.Get, new Uri(AValidEndpoint)))
-                {
-                    using (HttpPair testPair = new HttpPair(testRequest, testResponse))
-                    {
-                        JsonSchema4 schema = JsonSchema4.CreateAnySchema();
-                        ValidationProvider valPro = new ValidationProvider(Mock.Of<ISpecificationProvider>());
-                        SwaggerResponse swagResp = new SwaggerResponse();
-                        swagResp.ActualResponse.Schema = schema;
-                        valPro.specResp = swagResp;
+            BodyValidator subject = new BodyValidator(AValidBody);
 
-                        ResultCollector resColl = new ResultCollector();
-
-                        BodyValidator bodyVal = new BodyValidator(valPro, resColl);
-                        bodyVal.Validate(testPair);
-                        Result result = resColl.Results.ElementAt(0);
-
-                        Assert.Equal(State.Pass, result.State);
-                    }
-                } 
-            }
+            Assert.True(subject.Validate(swagResp));
         }
 
         [Fact]
-        public async void Validate_InvalidBody()
+        public void BodyValidator_ReturnsFalseWithInvalid()
         {
-            using (HttpResponseMessage testRespMsg = new HttpResponseMessage(HttpStatusCode.OK))
-            {
-                testRespMsg.Content = new StringContent(AValidBody, Encoding.UTF8, "application/json");
-                var testResponse = await testRespMsg.ToClientResponseAsync();
+            JsonSchema4 schema = JsonSchema4.FromJsonAsync(AValidSchema).Result;
+            SwaggerResponse swagResp = new SwaggerResponse();
+            swagResp.ActualResponse.Schema = schema;
 
-                using (HttpRequest testRequest = new HttpRequest(HttpMethod.Get, new Uri(AValidEndpoint)))
-                {
-                    using (HttpPair testPair = new HttpPair(testRequest, testResponse))
-                    {
-                        JsonSchema4 schema = JsonSchema4.FromJsonAsync(AValidSchema).Result;
-                        ValidationProvider valPro = new ValidationProvider(Mock.Of<ISpecificationProvider>());
-                        SwaggerResponse swagResp = new SwaggerResponse();
-                        swagResp.ActualResponse.Schema = schema;
-                        valPro.specResp = swagResp;
+            BodyValidator subject = new BodyValidator(AnInvalidBody);
 
-                        ResultCollector resColl = new ResultCollector();
-
-                        BodyValidator bodyVal = new BodyValidator(valPro, resColl);
-                        bodyVal.Validate(testPair);
-                        Result result = resColl.Results.ElementAt(0);
-
-                        Assert.Equal(State.Fail, result.State);
-                        Assert.Equal(ValidationErrorKind.IntegerExpected, result.ValidationErrors[0].Kind);
-                    }
-                }
-            }
+            Assert.False(subject.Validate(swagResp));
+            Assert.Equal(Reason.InvalidBody, subject.FailReason);
+            Assert.Equal(ValidationErrorKind.IntegerExpected, subject.ErrorArr[0].Kind);
         }
     }
 }

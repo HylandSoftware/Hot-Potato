@@ -1,75 +1,35 @@
-﻿using System;
+﻿
+using HotPotato.Core.Http;
 using HotPotato.Core.Models;
 using HotPotato.Core.Processor;
 using HotPotato.OpenApi.Results;
+using HotPotato.OpenApi.SpecificationProvider;
 using HotPotato.OpenApi.Validators;
 
 namespace HotPotato.OpenApi.Processor
 {
     internal class Processor : IProcessor
     {
-        private readonly Func<string, IValidator> validationAccessor;
         private readonly IResultCollector collector;
+        private readonly ISpecificationProvider specPro;
 
-        public Processor(Func<string, IValidator> valAccess, IResultCollector resColl)
+        public Processor(IResultCollector resColl, ISpecificationProvider specificationProvider)
         {
-            validationAccessor = valAccess;
             collector = resColl;
+            specPro = specificationProvider;
         }
 
         public void Process(HttpPair pair)
         {
-            ValidatePath(pair);
-            if (HasValidationResult())
-            {
-                return;
-            }
-            else
-            {
-                ValidateMethod(pair);
-            }
-            if (HasValidationResult())
-            {
-                return;
-            }
-            else
-            {
-                ValidateStatusCode(pair);
-            }
-            if (HasValidationResult())
-            {
-                return;
-            }
-            else
-            {
-                ValidateBody(pair);
-                ValidateHeader(pair);
-            }
-        }
+            Validator val = new ValidationBuilder(collector, specPro)
+                .WithPath(pair.Request.Uri.AbsolutePath)
+                .WithMethod(pair.Request.Method)
+                .WithStatusCode(pair.Response.StatusCode, pair.Response.ToBodyString())
+                .WithBody(pair.Response.ToBodyString())
+                .WithHeaders(pair.Response.Headers)
+                .Build();
 
-        public void ValidatePath(HttpPair pair)
-        {
-            validationAccessor("path").Validate(pair);
-        }
-        public void ValidateMethod(HttpPair pair)
-        {
-            validationAccessor("method").Validate(pair);
-        }
-        public void ValidateStatusCode(HttpPair pair)
-        {
-            validationAccessor("status").Validate(pair);
-        }
-        public void ValidateBody(HttpPair pair)
-        {
-            validationAccessor("body").Validate(pair);
-        }
-        public void ValidateHeader(HttpPair pair)
-        {
-            validationAccessor("header").Validate(pair);
-        }
-        private bool HasValidationResult()
-        {
-            return (collector.Results.Count > 0) ? true : false;
+            val.Validate();
         }
     }
 }

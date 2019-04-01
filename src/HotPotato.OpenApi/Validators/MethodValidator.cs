@@ -1,34 +1,35 @@
 ﻿using HotPotato.Core;
-using HotPotato.Core.Models;
-using HotPotato.OpenApi.Models;
-using HotPotato.OpenApi.Results;
 using NSwag;
-using System;
+using System.Net.Http;
 
 namespace HotPotato.OpenApi.Validators
 {
-    internal class MethodValidator : IValidator
+    internal class MethodValidator
     {
-        private readonly IValidationProvider valPro;
-        private readonly IResultCollector collector;
-        public MethodValidator(IValidationProvider valPro, IResultCollector collector)
+        public string method;
+        public SwaggerOperation Result;
+        public MethodValidator(HttpMethod Method)
         {
-            this.valPro = valPro;
-            this.collector = collector;
-        }
-        public void Validate(HttpPair pair)
-        {
-            _ = pair ?? throw new ArgumentNullException(nameof(pair));
-
-            string method = toOperationMethod(pair.Request.Method.ToString());
-            SwaggerPathItem swagPath = valPro.specPath;
-            if (swagPath.ContainsKey(method))
+            if (Method == null)
             {
-                valPro.specMeth = swagPath[method];
+                method = "";
             }
             else
             {
-                collector.Fail(pair, Reason.MissingMethod);
+                method = toOperationMethod(Method.ToString());
+            }
+        }
+
+        public bool Validate(SwaggerPathItem swagPath)
+        {
+            if (swagPath.ContainsKey(method))
+            {
+                Result = swagPath[method];
+                return true;
+            }
+            else
+            {
+                return false;
             }
         }
 

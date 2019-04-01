@@ -8,12 +8,10 @@ using Microsoft.AspNetCore.Hosting;
 using HotPotato.OpenApi.Processor;
 using HotPotato.OpenApi.Results;
 using HotPotato.OpenApi.SpecificationProvider;
-using HotPotato.OpenApi.Validators;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using System;
-using System.Collections.Generic;
 
 namespace HotPotato.AspNetCore.Host
 {
@@ -46,33 +44,7 @@ namespace HotPotato.AspNetCore.Host
                 client.BaseAddress = new Uri(Configuration["RemoteEndpoint"]);
             });
             services.AddSingleton<ISpecificationProvider, SpecificationProvider>();
-            services.AddSingleton<IValidationProvider, ValidationProvider>();
             services.AddSingleton<IResultCollector, ResultCollector>();
-
-            services.AddTransient<PathValidator>();
-            services.AddTransient<MethodValidator>();
-            services.AddTransient<StatusCodeValidator>();
-            services.AddTransient<BodyValidator>();
-            services.AddTransient<HeaderValidator>();
-
-            services.AddTransient<Func<string, IValidator>>(serviceProvider => key =>
-            {
-                switch (key)
-                {
-                    case "path":
-                        return serviceProvider.GetService<PathValidator>();
-                    case "method":
-                        return serviceProvider.GetService<MethodValidator>();
-                    case "status":
-                        return serviceProvider.GetService<StatusCodeValidator>();
-                    case "body":
-                        return serviceProvider.GetService<BodyValidator>();
-                    case "header":
-                        return serviceProvider.GetService<HeaderValidator>();
-                    default:
-                        throw new KeyNotFoundException();
-                }
-            });
 
             services.AddTransient<IProcessor, Processor>();
 

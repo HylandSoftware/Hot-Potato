@@ -1,34 +1,35 @@
-﻿using HotPotato.Core.Models;
+﻿
 using HotPotato.OpenApi.Matchers;
-using HotPotato.OpenApi.Models;
-using HotPotato.OpenApi.Results;
 using NSwag;
-using System;
 
 namespace HotPotato.OpenApi.Validators
 {
-    internal class PathValidator : IValidator
+    internal class PathValidator
     {
-        private readonly IValidationProvider valPro;
-        private readonly IResultCollector collector;
-        public PathValidator(IValidationProvider valPro, IResultCollector collector)
-        {
-            this.valPro = valPro;
-            this.collector = collector;
-        }
-        public void Validate(HttpPair pair)
-        {
-            _ = pair ?? throw new ArgumentNullException(nameof(pair));
+        public string path;
+        public SwaggerPathItem Result;
 
-            SwaggerDocument swagDoc = valPro.specDoc;
-            string match = PathMatcher.Match(pair.Request.Uri.AbsolutePath, swagDoc.Paths.Keys);
+        public PathValidator(string Path)
+        {
+            path = Path;
+        }
+
+        public bool Validate(SwaggerDocument swagDoc)
+        {
+            if (path == null)
+            {
+                path = "";
+                return false;
+            }
+            string match = PathMatcher.Match(path, swagDoc.Paths.Keys);
             if (swagDoc.Paths.ContainsKey(match))
             {
-                valPro.specPath = swagDoc.Paths[match];
+                Result = swagDoc.Paths[match];
+                return true;
             }
             else
             {
-                collector.Fail(pair, Reason.MissingPath);
+                return false;
             }
         }
     }

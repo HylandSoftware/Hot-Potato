@@ -1,14 +1,6 @@
-﻿using HotPotato.Core.Models;
-using HotPotato.Core.Http.Default;
-using HotPotato.OpenApi.Models;
-using HotPotato.OpenApi.Results;
-using HotPotato.OpenApi.SpecificationProvider;
+﻿
 using Moq;
 using NSwag;
-using System;
-using System.Linq;
-using System.Net;
-using System.Net.Http;
 using Xunit;
 
 namespace HotPotato.OpenApi.Validators
@@ -19,51 +11,35 @@ namespace HotPotato.OpenApi.Validators
         [Fact]
         public void PathValidator_GeneratesPathItem()
         {
-            HttpResponse testResponse = new HttpResponse(HttpStatusCode.OK, null);
+            SwaggerDocument swagDoc = new SwaggerDocument();
+            SwaggerPathItem expected = Mock.Of<SwaggerPathItem>();
+            swagDoc.Paths.Add("/workflow/life-cycles", expected);
 
-            using (HttpRequest testRequest = new HttpRequest(HttpMethod.Get, new Uri(AValidEndpoint)))
-            {
-                using (HttpPair testPair = new HttpPair(testRequest, testResponse))
-                {
-                    SwaggerDocument swagDoc = new SwaggerDocument();
-                    swagDoc.Paths.Add("/workflow/life-cycles", new SwaggerPathItem());
+            PathValidator subject = new PathValidator(AValidEndpoint);
 
-                    ValidationProvider valPro = new ValidationProvider(Mock.Of<ISpecificationProvider>());
-                    valPro.specDoc = swagDoc;
-
-                    ResultCollector resColl = new ResultCollector();
-                    PathValidator subject = new PathValidator(valPro, resColl);
-                    subject.Validate(testPair);
-
-                    Assert.NotNull(valPro.specPath);
-                }
-            }
+            Assert.True(subject.Validate(swagDoc));
+            Assert.Equal(expected, subject.Result);
         }
         [Fact]
-        public void PathValidator_CreatesNotFoundResult()
+        public void PathValidator_ReturnsFailWithMissingPath()
         {
-            HttpResponse testResponse = new HttpResponse(HttpStatusCode.OK, null);
+            SwaggerDocument swagDoc = new SwaggerDocument();
+            swagDoc.Paths.Add("/deficiencies/deficiencies", Mock.Of<SwaggerPathItem>());
 
-            using (HttpRequest testRequest = new HttpRequest(HttpMethod.Get, new Uri(AValidEndpoint)))
-            {
-                using (HttpPair testPair = new HttpPair(testRequest, testResponse))
-                {
-                    SwaggerDocument swagDoc = new SwaggerDocument();
-                    swagDoc.Paths.Add("http://api.docs.hyland.io/deficiencies/deficiencies", new SwaggerPathItem());
+            PathValidator subject = new PathValidator(AValidEndpoint);
 
-                    ValidationProvider valPro = new ValidationProvider(Mock.Of<ISpecificationProvider>());
-                    valPro.specDoc = swagDoc;
+            Assert.False(subject.Validate(swagDoc));
+        }
 
-                    ResultCollector resColl = new ResultCollector();
-                    PathValidator subject = new PathValidator(valPro, resColl);
-                    subject.Validate(testPair);
+        [Fact]
+        public void PathValidator_ReturnsFailWithNullPath()
+        {
+            SwaggerDocument swagDoc = new SwaggerDocument();
+            swagDoc.Paths.Add("/deficiencies/deficiencies", Mock.Of<SwaggerPathItem>());
 
-                    Result result = resColl.Results.ElementAt(0);
+            PathValidator subject = new PathValidator(null);
 
-                    Assert.Equal(State.Fail, result.State);
-                    Assert.Equal(Reason.MissingPath, result.Reason);
-                }
-            }
+            Assert.False(subject.Validate(swagDoc));
         }
     }
 }

@@ -1,15 +1,10 @@
 ﻿using static HotPotato.IntegrationTestMethods;
-using HotPotato.Core.Models;
 using HotPotato.OpenApi.Results;
 using HotPotato.OpenApi.SpecificationProvider;
 using Microsoft.Extensions.DependencyInjection;
-using Moq;
 using NSwag;
-using System;
-using System.Net;
-using System.Net.Http;
+using System.Linq;
 using Xunit;
-using HotPotato.Core.Http.Default;
 
 namespace HotPotato.OpenApi.Validators
 {
@@ -18,61 +13,35 @@ namespace HotPotato.OpenApi.Validators
         [Fact]
         public void PathValidator_GeneratesSpecPathWithParam()
         {
-            string endpointWithPar = "http://api.docs.hyland.io/keyword/keyword-type-groups/48732/keyword-types";
-            HttpResponse testResponse = new HttpResponse(HttpStatusCode.OK, null);
+            string specPath = SpecPath("specs/keyword/", "specification.yaml");
+            ServiceProvider provider = GetServiceProvider(specPath);
 
-            using (HttpRequest testRequest = new HttpRequest(HttpMethod.Get, new Uri(endpointWithPar)))
-            {
-                using (HttpPair testPair = new HttpPair(testRequest, testResponse))
-                {
-                    string specPath = SpecPath("specs/keyword/", "specification.yaml");
-                    ServiceProvider provider = GetServiceProvider(specPath);
+            ISpecificationProvider specPro = provider.GetService<ISpecificationProvider>();
+            SwaggerDocument swagDoc = specPro.GetSpecDocument();
 
-                    ISpecificationProvider specPro = provider.GetService<ISpecificationProvider>();
-                    SwaggerDocument swagDoc = specPro.GetSpecDocument();
+            ResultCollector resColl = new ResultCollector();
 
-                    ValidationProvider valPro = new ValidationProvider(Mock.Of<ISpecificationProvider>());
-                    valPro.specDoc = swagDoc;
+            PathValidator subject = new PathValidator("http://api.docs.hyland.io/keyword/keyword-type-groups/48732/keyword-types");
 
-                    ResultCollector resColl = new ResultCollector();
-
-                    PathValidator subject = new PathValidator(valPro, resColl);
-                    subject.Validate(testPair);
-
-                    Assert.NotNull(valPro.specPath);
-                }
-            }
+            Assert.True(subject.Validate(swagDoc));
+            Assert.Equal("get", subject.Result.Keys.ElementAt(0).ToLower());
         }
 
         [Fact]
         public void PathValidator_GeneratesSpecPathWithoutParam()
         {
-            string endpointWithoutPar = "https://api.hyland.com/workflow/life-cycles";
-            HttpResponse testResponse = new HttpResponse(HttpStatusCode.OK, null);
+            string specPath = SpecPath("specs/workflow/", "specification.yaml");
+            ServiceProvider provider = GetServiceProvider(specPath);
 
-            using (HttpRequest testRequest = new HttpRequest(HttpMethod.Get, new Uri(endpointWithoutPar)))
-            {
-                using (HttpPair testPair = new HttpPair(testRequest, testResponse))
-                {
-                    string specPath = SpecPath("specs/workflow/", "specification.yaml");
-                    ServiceProvider provider = GetServiceProvider(specPath);
+            ISpecificationProvider specPro = provider.GetService<ISpecificationProvider>();
+            SwaggerDocument swagDoc = specPro.GetSpecDocument();
 
-                    ISpecificationProvider specPro = provider.GetService<ISpecificationProvider>();
-                    SwaggerDocument swagDoc = specPro.GetSpecDocument();
+            ResultCollector resColl = new ResultCollector();
 
-                    ValidationProvider valPro = new ValidationProvider(Mock.Of<ISpecificationProvider>());
-                    valPro.specDoc = swagDoc;
+            PathValidator subject = new PathValidator("https://api.hyland.com/workflow/life-cycles");
 
-                    ResultCollector resColl = new ResultCollector();
-
-                    PathValidator subject = new PathValidator(valPro, resColl);
-                    subject.Validate(testPair);
-
-                    Assert.NotNull(valPro.specPath);
-                }
-            }
+            Assert.True(subject.Validate(swagDoc));
+            Assert.Equal("get", subject.Result.Keys.ElementAt(0).ToLower());
         }
-
     }
-
 }

@@ -14,14 +14,13 @@ namespace HotPotato.OpenApi.Results
             Results = new List<Models.Result>();
         }
 
-        public void Pass(HttpPair pair)
+        public void Pass(string path, string method, int statusCode)
         {
-            Results.Add(ResultFactory.PassResult(pair.Request.Uri.AbsolutePath, pair.Request.Method.ToString(), (int)pair.Response.StatusCode, State.Pass));
+            Results.Add(ResultFactory.PassResult(path, method, statusCode, State.Pass));
         }
-
-        public void Fail(HttpPair pair, Reason reason, params ValidationError[] validationErrors)
+        public void Fail(string path, string method, int statusCode, Reason reason, params ValidationError[] validationErrors)
         {
-            Results.Add(ResultFactory.FailResult(pair.Request.Uri.AbsolutePath, pair.Request.Method.ToString(), (int)pair.Response.StatusCode, State.Fail, reason, validationErrors));
+            Results.Add(ResultFactory.FailResult(path, method, statusCode, State.Fail, reason, validationErrors));
         }
     }
 }
