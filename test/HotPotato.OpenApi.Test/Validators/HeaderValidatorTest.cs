@@ -14,13 +14,25 @@ namespace HotPotato.OpenApi.Validators
         private const string AnInvalidValue = "invalidValue";
 
         [Fact]
-        public void HeaderValidator_ReturnsFalseWithKeyNotFound()
+        public void HeaderValidator_ReturnsFalseWithMissingHeaders()
         {
             SwaggerResponse swagResp = new SwaggerResponse();
             swagResp.Headers.Add(AValidHeaderKey, new JsonSchema4());
 
             Core.Http.HttpHeaders headers = new Core.Http.HttpHeaders();
             HeaderValidator subject = new HeaderValidator(headers);
+
+            Assert.False(subject.Validate(swagResp));
+            Assert.Equal(Reason.MissingHeaders, subject.FailReason);
+        }
+
+        [Fact]
+        public void HeaderValidator_ReturnsFalseWithNullHeaders()
+        {
+            SwaggerResponse swagResp = new SwaggerResponse();
+            swagResp.Headers.Add(AValidHeaderKey, new JsonSchema4());
+
+            HeaderValidator subject = new HeaderValidator(null);
 
             Assert.False(subject.Validate(swagResp));
             Assert.Equal(Reason.MissingHeaders, subject.FailReason);
