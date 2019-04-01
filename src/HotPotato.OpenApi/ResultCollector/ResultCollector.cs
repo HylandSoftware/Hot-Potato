@@ -1,4 +1,4 @@
-﻿using HotPotato.Core.Models;
+﻿
 using HotPotato.OpenApi.Models;
 using HotPotato.OpenApi.Validators;
 using System.Collections.Generic;
@@ -7,7 +7,8 @@ namespace HotPotato.OpenApi.Results
 {
     public class ResultCollector : IResultCollector
     {
-        public List<Models.Result> Results { get; }
+        public State OverallResult { get; private set; }
+        public List<Result> Results { get; }
 
         public ResultCollector()
         {
@@ -21,6 +22,8 @@ namespace HotPotato.OpenApi.Results
         public void Fail(string path, string method, int statusCode, Reason reason, params ValidationError[] validationErrors)
         {
             Results.Add(ResultFactory.FailResult(path, method, statusCode, State.Fail, reason, validationErrors));
+
+            OverallResult = State.Fail;
         }
     }
 }
