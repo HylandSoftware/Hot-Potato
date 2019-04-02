@@ -41,5 +41,15 @@ namespace HotPotato.OpenApi.Validators
 
             Assert.False(subject.Validate(swagDoc));
         }
+
+        [Fact]
+        public void PathValidator_ReturnsFalseWithNullSwaggerPath()
+        {
+            SwaggerDocument swagDoc = new SwaggerDocument();
+
+            PathValidator subject = new PathValidator(AValidEndpoint);
+
+            Assert.False(subject.Validate(swagDoc));
+        }
     }
 }

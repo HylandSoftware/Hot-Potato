@@ -39,6 +39,18 @@ namespace HotPotato.OpenApi.Validators
         }
 
         [Fact]
+        public void HeaderValidator_ReturnsFalseWithNullSwaggerResponse()
+        {
+            SwaggerResponse swagResp = new SwaggerResponse();
+            swagResp.Headers.Add(AValidHeaderKey, new JsonSchema4());
+
+            HeaderValidator subject = new HeaderValidator(null);
+
+            Assert.False(subject.Validate(swagResp));
+            Assert.Equal(Reason.MissingHeaders, subject.FailReason);
+        }
+
+        [Fact]
         public void HeaderValidator_ReturnsTrueWithValidSchema()
         {
             SwaggerResponse swagResp = new SwaggerResponse();

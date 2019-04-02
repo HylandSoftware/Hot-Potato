@@ -33,7 +33,19 @@ namespace HotPotato.OpenApi.Validators
         }
 
         [Fact]
-        public void MethodValidator_ReturnsFalseWithNull()
+        public void MethodValidator_ReturnsFalseWithNullMethod()
+        {
+            SwaggerPathItem swagPath = new SwaggerPathItem();
+
+            swagPath.Add("TRACE", Mock.Of<SwaggerOperation>());
+
+            MethodValidator subject = new MethodValidator(null);
+
+            Assert.False(subject.Validate(swagPath));
+        }
+
+        [Fact]
+        public void MethodValidator_ReturnsFalseWithNullSwaggerOp()
         {
             SwaggerPathItem swagPath = new SwaggerPathItem();
 
@@ -41,5 +53,6 @@ namespace HotPotato.OpenApi.Validators
 
             Assert.False(subject.Validate(swagPath));
         }
+
     }
 }

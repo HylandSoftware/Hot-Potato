@@ -55,6 +55,19 @@ namespace HotPotato.OpenApi.Validators
             Assert.False(subject.Validate(swagOp));
             Assert.Equal(Reason.UnexpectedBody, subject.FailReason);
         }
+
+        [Fact]
+        public void StatCodeValidator_ReturnsFalseWithNullSwaggerResponse()
+        {
+            SwaggerOperation swagOp = new SwaggerOperation();
+
+            StatusCodeValidator subject = new StatusCodeValidator(HttpStatusCode.Ambiguous, "{'perfectSquare': '49'}");
+
+            Assert.False(subject.Validate(swagOp));
+            Assert.Equal(Reason.MissingStatusCode, subject.FailReason);
+        }
+
+        //HttpStatusCodes are guarded against null, so a StatCodeValidator_ReturnsFalseWithNullStatusCode test isn't possible
     }
 
 }

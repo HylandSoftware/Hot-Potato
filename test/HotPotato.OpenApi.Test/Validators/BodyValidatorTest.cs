@@ -39,7 +39,7 @@ namespace HotPotato.OpenApi.Validators
         }
 
         [Fact]
-        public void BodyValidator_ReturnsFalseWithNull()
+        public void BodyValidator_ReturnsFalseWithNullBody()
         {
             JsonSchema4 schema = JsonSchema4.CreateAnySchema();
             SwaggerResponse swagResp = new SwaggerResponse();
@@ -49,6 +49,27 @@ namespace HotPotato.OpenApi.Validators
 
             Assert.False(subject.Validate(swagResp));
             Assert.Equal(Reason.MissingBody, subject.FailReason);
+        }
+
+        [Fact]
+        public void BodyValidator_ReturnsFalseWithNullSchema()
+        {
+            SwaggerResponse swagResp = new SwaggerResponse();
+            swagResp.ActualResponse.Schema = null;
+
+            BodyValidator subject = new BodyValidator(AValidBody);
+
+            Assert.False(subject.Validate(swagResp));
+            Assert.Equal(Reason.MissingSpecBody, subject.FailReason);
+        }
+
+        [Fact]
+        public void BodyValidator_ReturnsFalseWithNullSwaggerResponse()
+        {
+            BodyValidator subject = new BodyValidator(AValidBody);
+
+            Assert.False(subject.Validate(null));
+            Assert.Equal(Reason.MissingSpecBody, subject.FailReason);
         }
     }
 }
