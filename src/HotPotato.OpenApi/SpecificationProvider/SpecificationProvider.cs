@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace HotPotato.OpenApi.SpecificationProvider
 {
-    internal class SpecificationProvider : ISpecificationProvider
+    public class SpecificationProvider : ISpecificationProvider
     {
         private readonly string specLoc;
         public SpecificationProvider(IConfiguration config)

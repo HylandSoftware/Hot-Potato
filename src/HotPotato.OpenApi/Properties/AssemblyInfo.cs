@@ -4,7 +4,6 @@ using System.Runtime.CompilerServices;
 using System.Text;
 
 #if DEBUG
-[assembly: InternalsVisibleTo("HotPotato.AspNetCore.Host")]
 [assembly: InternalsVisibleTo("HotPotato.Integration.Test")]
 [assembly: InternalsVisibleTo("HotPotato.OpenApi.Test")]
 #endif

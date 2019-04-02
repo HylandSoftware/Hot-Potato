@@ -62,14 +62,5 @@ namespace HotPotato.OpenApi.Validators
             Assert.False(subject.Validate(swagResp));
             Assert.Equal(Reason.MissingSpecBody, subject.FailReason);
         }
-
-        [Fact]
-        public void BodyValidator_ReturnsFalseWithNullSwaggerResponse()
-        {
-            BodyValidator subject = new BodyValidator(AValidBody);
-
-            Assert.False(subject.Validate(null));
-            Assert.Equal(Reason.MissingSpecBody, subject.FailReason);
-        }
     }
 }

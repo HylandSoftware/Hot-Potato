@@ -19,7 +19,7 @@ namespace HotPotato.OpenApi.Validators
 
         public bool Validate(SwaggerResponse swagResp)
         {
-            if (swagResp == null || swagResp.ActualResponse == null || swagResp.ActualResponse.Schema == null)
+            if (swagResp.ActualResponse == null || swagResp.ActualResponse.Schema == null)
             {
                 FailReason = Reason.MissingSpecBody;
                 return false;
