@@ -8,14 +8,14 @@ namespace HotPotato.OpenApi.Validators
 {
     public class Validator
     {
-        internal PathValidator pathVal;
-        internal MethodValidator methodVal;
-        internal StatusCodeValidator statusCodeVal;
-        internal BodyValidator bodyVal;
-        internal HeaderValidator headerVal;
+        internal PathValidator pathVal { get; set; }
+        internal MethodValidator methodVal { get; set; }
+        internal StatusCodeValidator statusCodeVal { get; set; }
+        internal BodyValidator bodyVal { get; set; }
+        internal HeaderValidator headerVal { get; set; }
 
-        private readonly IResultCollector resColl;
-        private readonly SwaggerDocument swagDoc;
+        private IResultCollector resColl { get; }
+        private SwaggerDocument swagDoc { get; }
 
         public Validator(IResultCollector ResColl, ISpecificationProvider SpecPro)
         {

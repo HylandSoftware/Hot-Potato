@@ -9,7 +9,12 @@ namespace HotPotato.OpenApi.Validators
     public class ValidationBuilder
     {
 
-        private readonly Validator val;
+        private Validator val { get; }
+        private string Path { get; set; }
+        private HttpMethod Method { get; set; }
+        private HttpStatusCode StatusCode { get; set; }
+        private string Body { get; set; }
+        private HttpHeaders Headers { get; set; }
 
         public ValidationBuilder(IResultCollector resColl, ISpecificationProvider specPro)
         {
@@ -18,36 +23,41 @@ namespace HotPotato.OpenApi.Validators
 
         public ValidationBuilder WithPath(string path)
         {
-            val.pathVal = new PathValidator(path);
+            Path = path;
             return this;
         }
         
         public ValidationBuilder WithMethod(HttpMethod method)
         {
-            val.methodVal = new MethodValidator(method);
+            Method = method;
             return this;
         }
         
-        public ValidationBuilder WithStatusCode(HttpStatusCode statusCode, string body)
+        public ValidationBuilder WithStatusCode(HttpStatusCode statusCode)
         {
-            val.statusCodeVal = new StatusCodeValidator(statusCode, body);
+            StatusCode = statusCode;
             return this;
         }
 
         public ValidationBuilder WithBody(string body, string contentType)
         {
-            val.bodyVal = new BodyValidator(body, contentType);
+            Body = body;
             return this;
         }
 
         public ValidationBuilder WithHeaders(HttpHeaders headers)
         {
-            val.headerVal = new HeaderValidator(headers);
+            Headers = headers;
             return this;
         }
 
         public Validator Build()
         {
+            val.pathVal = new PathValidator(Path);
+            val.methodVal = new MethodValidator(Method);
+            val.statusCodeVal = new StatusCodeValidator(StatusCode, Body);
+            val.bodyVal = new BodyValidator(Body);
+            val.headerVal = new HeaderValidator(Headers);
             return val;
         }
     }
