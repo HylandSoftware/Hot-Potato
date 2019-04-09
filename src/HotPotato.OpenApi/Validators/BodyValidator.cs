@@ -8,13 +8,20 @@ namespace HotPotato.OpenApi.Validators
 {
     internal class BodyValidator
     {
-        public string bodyString;
-        public Reason FailReason;
-        public ValidationError[] ErrorArr;
+        public string bodyString { get; }
+        public Reason FailReason { get; set; }
+        public ValidationError[] ErrorArr { get; set; }
 
         public BodyValidator(string BodyString)
         {
-            bodyString = BodyString;
+            if (string.IsNullOrWhiteSpace(BodyString))
+            {
+                bodyString = "";
+            }
+            else
+            {
+                bodyString = BodyString;
+            }
         }
 
         public bool Validate(SwaggerResponse swagResp)
@@ -24,9 +31,8 @@ namespace HotPotato.OpenApi.Validators
                 FailReason = Reason.MissingSpecBody;
                 return false;
             }
-            else if(string.IsNullOrWhiteSpace(bodyString))
+            else if(bodyString == "")
             {
-                bodyString = "";
                 FailReason = Reason.MissingBody;
                 return false;
             }
