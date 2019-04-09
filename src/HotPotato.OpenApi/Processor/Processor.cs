@@ -24,7 +24,7 @@ namespace HotPotato.OpenApi.Processor
             Validator val = new ValidationBuilder(collector, specificationProvider)
                 .WithPath(pair.Request.Uri.AbsolutePath)
                 .WithMethod(pair.Request.Method)
-                .WithStatusCode(pair.Response.StatusCode, pair.Response.ToBodyString())
+                .WithStatusCode(pair.Response.StatusCode)
                 .WithBody(pair.Response.ToBodyString())
                 .WithHeaders(pair.Response.Headers)
                 .Build();

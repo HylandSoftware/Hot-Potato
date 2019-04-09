@@ -33,7 +33,7 @@ namespace HotPotato.OpenApi.Validators
             return this;
         }
         
-        public ValidationBuilder WithStatusCode(HttpStatusCode statusCode, string body)
+        public ValidationBuilder WithStatusCode(HttpStatusCode statusCode)
         {
             StatusCode = statusCode;
             return this;

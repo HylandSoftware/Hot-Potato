@@ -37,7 +37,7 @@ namespace HotPotato.OpenApi.Validators
 
             HttpStatusCode expectedStatCode = HttpStatusCode.Ambiguous;
             string expectedBody = "{'perfectSquare': '16'}";
-            Validator result = subject.WithStatusCode(expectedStatCode, expectedBody).Build();
+            Validator result = subject.WithStatusCode(expectedStatCode).WithBody(expectedBody).Build();
 
             Assert.Equal(result.statusCodeVal.statCode, Convert.ToInt32(expectedStatCode));
             Assert.Equal(result.statusCodeVal.bodyString, expectedBody);
