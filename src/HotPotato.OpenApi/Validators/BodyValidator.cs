@@ -9,8 +9,8 @@ namespace HotPotato.OpenApi.Validators
     internal class BodyValidator
     {
         public string bodyString { get; }
-        public Reason FailReason { get; set; }
-        public ValidationError[] ErrorArr { get; set; }
+        public Reason FailReason { get; private set; }
+        public ValidationError[] ErrorArr { get; private set; }
 
         public BodyValidator(string BodyString)
         {

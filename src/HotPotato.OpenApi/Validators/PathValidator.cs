@@ -7,7 +7,7 @@ namespace HotPotato.OpenApi.Validators
     internal class PathValidator
     {
         public string path { get; }
-        public SwaggerPathItem Result { get; set; }
+        public SwaggerPathItem Result { get; private set; }
 
         public PathValidator(string Path)
         {

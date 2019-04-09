@@ -11,8 +11,8 @@ namespace HotPotato.OpenApi.Validators
         public int statCode { get; }
         public string bodyString { get; }
 
-        public Reason FailReason { get; set; }
-        public SwaggerResponse Result { get; set; }
+        public Reason FailReason { get; private set; }
+        public SwaggerResponse Result { get; private set; }
 
         public StatusCodeValidator(HttpStatusCode StatCode, string BodyString)
         {
