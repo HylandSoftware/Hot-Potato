@@ -11,6 +11,7 @@ namespace HotPotato.OpenApi.Validators
         private const string AValidBody = "{'foo': '1'}";
         private const string AnInvalidBody = "{'foo': 'abc'}";
         private const string AValidSchema = @"{'type': 'integer'}";
+        private const string AValidXmlBody = @"<LGNotification><MediaType>video</MediaType><StatusFlag>new</StatusFlag><URL>http://domain.com/program/app?clienttype=htmlamp;id=49977</URL></LGNotification>";
 
         [Fact]
         public void BodyValidator_ReturnsTrueWithValid()
@@ -19,7 +20,7 @@ namespace HotPotato.OpenApi.Validators
             SwaggerResponse swagResp = new SwaggerResponse();
             swagResp.ActualResponse.Schema = schema;
 
-            BodyValidator subject = new BodyValidator(AValidBody);
+            BodyValidator subject = new BodyValidator(AValidBody, "application/json");
 
             Assert.True(subject.Validate(swagResp));
         }
@@ -31,7 +32,7 @@ namespace HotPotato.OpenApi.Validators
             SwaggerResponse swagResp = new SwaggerResponse();
             swagResp.ActualResponse.Schema = schema;
 
-            BodyValidator subject = new BodyValidator(AnInvalidBody);
+            BodyValidator subject = new BodyValidator(AnInvalidBody, "application/json");
 
             Assert.False(subject.Validate(swagResp));
             Assert.Equal(Reason.InvalidBody, subject.FailReason);
@@ -45,7 +46,7 @@ namespace HotPotato.OpenApi.Validators
             SwaggerResponse swagResp = new SwaggerResponse();
             swagResp.ActualResponse.Schema = schema;
 
-            BodyValidator subject = new BodyValidator(null);
+            BodyValidator subject = new BodyValidator(null, "application/json");
 
             Assert.False(subject.Validate(swagResp));
             Assert.Equal(Reason.MissingBody, subject.FailReason);
@@ -57,10 +58,34 @@ namespace HotPotato.OpenApi.Validators
             SwaggerResponse swagResp = new SwaggerResponse();
             swagResp.ActualResponse.Schema = null;
 
-            BodyValidator subject = new BodyValidator(AValidBody);
+            BodyValidator subject = new BodyValidator(AValidBody, "application/json");
 
             Assert.False(subject.Validate(swagResp));
             Assert.Equal(Reason.MissingSpecBody, subject.FailReason);
+        }
+
+        [Fact]
+        public void BodyValidator_ReturnsTrueWithPlainText()
+        {
+            JsonSchema4 schema = JsonSchema4.CreateAnySchema();
+            SwaggerResponse swagResp = new SwaggerResponse();
+            swagResp.ActualResponse.Schema = schema;
+
+            BodyValidator subject = new BodyValidator("Content", "text/plain");
+
+            Assert.True(subject.Validate(swagResp));
+        }
+
+        [Fact]
+        public void BodyValidator_ReturnsTrueWithXml()
+        {
+            JsonSchema4 schema = JsonSchema4.CreateAnySchema();
+            SwaggerResponse swagResp = new SwaggerResponse();
+            swagResp.ActualResponse.Schema = schema;
+
+            BodyValidator subject = new BodyValidator(AValidXmlBody, "application/xml");
+
+            Assert.True(subject.Validate(swagResp));
         }
     }
 }

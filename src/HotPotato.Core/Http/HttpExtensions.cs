@@ -75,6 +75,7 @@ namespace HotPotato.Core.Http
                     headers.Add(item.Key, item.Value);
                 }
             }
+
             if (@this.Content != null)
             {
                 foreach (var item in @this.Content?.Headers)
@@ -82,10 +83,16 @@ namespace HotPotato.Core.Http
                     headers.Add(item.Key, item.Value);
                 }
                 MediaTypeHeaderValue contentType = @this.Content.Headers?.ContentType;
+
+                contentType = contentType ?? new MediaTypeHeaderValue("application/json");
                 byte[] payload = await @this.Content.ReadAsByteArrayAsync();
+
                 return new HttpResponse(@this.StatusCode, headers, payload, contentType);
             }
-            return new HttpResponse(@this.StatusCode, headers);
+            else
+            {
+                return new HttpResponse(@this.StatusCode, headers, new byte[] { }, new MediaTypeHeaderValue("application/json"));
+            }
         }
 
         public static IHttpRequest ToProxyRequest(this MSHTTP.HttpRequest @this, string remoteEndpoint)

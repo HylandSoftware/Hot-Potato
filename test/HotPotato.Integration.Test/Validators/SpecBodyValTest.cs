@@ -54,7 +54,7 @@ namespace HotPotato.OpenApi.Validators
 
                     Assert.Equal(State.Pass, result.State);
 
-                } 
+                }
             }
         }
 
@@ -94,6 +94,38 @@ namespace HotPotato.OpenApi.Validators
                 }
             }
 
+        }
+
+        [Theory]
+        [ClassData(typeof(TextTypeTestData))]
+        public async void BodyValidator_CreatesValidResultWithTextType(string specSubPath, HttpMethod reqMethod, HttpStatusCode statusCode, string endpointURI, string contentType, string bodyString)
+        {
+            string specPath = SpecPath(specSubPath, "specification.yaml");
+            ServiceProvider provider = GetServiceProvider(specPath);
+
+            using (HttpResponseMessage testRespMsg = new HttpResponseMessage(statusCode))
+            {
+                testRespMsg.Content = new StringContent(bodyString, Encoding.UTF8, contentType);
+                var testResponse = await testRespMsg.ToClientResponseAsync();
+
+                using (HttpRequest testRequest = new HttpRequest(reqMethod, new Uri(endpointURI)))
+                using (HttpPair testPair = new HttpPair(testRequest, testResponse))
+                {
+                    ISpecificationProvider specPro = provider.GetService<ISpecificationProvider>();
+                    SwaggerDocument swagDoc = specPro.GetSpecDocument();
+
+                    IProcessor processor = provider.GetService<IProcessor>();
+                    processor.Process(testPair);
+
+                    IResultCollector collector = provider.GetService<IResultCollector>();
+
+                    List<Result> results = collector.Results;
+                    Result result = results.ElementAt(0);
+
+                    Assert.Equal(State.Pass, result.State);
+
+                }
+            }
         }
     }
 }

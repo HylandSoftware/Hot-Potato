@@ -37,6 +37,9 @@
     <None Update="specs\keyword\specification.yaml">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
+    <None Update="specs\rawpotato\specification.yaml">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
     <None Update="specs\rdds\configurationservice\specification.yaml">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>

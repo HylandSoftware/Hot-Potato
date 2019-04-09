@@ -34,9 +34,9 @@ namespace HotPotato.OpenApi.Validators
             return this;
         }
 
-        public ValidationBuilder WithBody(string body)
+        public ValidationBuilder WithBody(string body, string contentType)
         {
-            val.bodyVal = new BodyValidator(body);
+            val.bodyVal = new BodyValidator(body, contentType);
             return this;
         }
 

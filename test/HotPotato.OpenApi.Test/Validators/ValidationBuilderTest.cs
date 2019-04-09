@@ -48,7 +48,7 @@ namespace HotPotato.OpenApi.Validators
             ValidationBuilder subject = new ValidationBuilder(Mock.Of<IResultCollector>(), Mock.Of<ISpecificationProvider>());
 
             string expected = "{'perfectSquare': '64'}";
-            Validator result = subject.WithBody(expected).Build();
+            Validator result = subject.WithBody(expected, "application/json").Build();
 
             Assert.Equal(expected, result.bodyVal.bodyString);
         }

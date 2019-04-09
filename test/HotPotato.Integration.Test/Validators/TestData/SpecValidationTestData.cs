@@ -88,7 +88,7 @@ namespace HotPotato.Http.Default
                     id = "string"
                 }
             };
-            
+
             yield return new object[] { "specs/rdds/configurationservice/", HttpMethod.Get,
                 HttpStatusCode.OK, "https://api.hyland.com/ibpaf/rdds/configurations", "application/json", new {
                 configurationCollection = new[]{
@@ -100,7 +100,7 @@ namespace HotPotato.Http.Default
                     }
                 }
             };
-            
+
             yield return new object[] { "specs/rdds/messagestorageservice/", HttpMethod.Delete,
                 HttpStatusCode.NotFound, "https://api.hyland.com/ibpaf/rdds/messages/78", "application/problem+json", new {
                     type = "https://example.net/validation_error",
@@ -110,7 +110,7 @@ namespace HotPotato.Http.Default
                     instance = "https://example.net/example-resource"
                 }
             };
-            
+
             yield return new object[] { "specs/workflow/", HttpMethod.Get,
                 HttpStatusCode.OK, "https://api.hyland.com/workflow/life-cycles/48/", "application/json", new {
                     id = "string",
@@ -172,6 +172,28 @@ namespace HotPotato.Http.Default
 
             yield return new object[] { "specs/rdds/onrampservice/", HttpMethod.Post,
             HttpStatusCode.NoContent, "https://api.hyland.com/ibpaf/rdds/notifications"};
+        }
+        IEnumerator IEnumerable.GetEnumerator() => GetEnumerator();
+    }
+
+    public class TextTypeTestData : IEnumerable<object[]>
+    {
+        public IEnumerator<object[]> GetEnumerator()
+        {
+            yield return new object[] { "specs/rdds/configurationservice/", HttpMethod.Get,
+            HttpStatusCode.OK, "https://api.hyland.com/ibpaf/rdds/configurations/48/content", "text/plain", "Configuration Content"};
+        }
+        IEnumerator IEnumerable.GetEnumerator() => GetEnumerator();
+    }
+
+    public class XmlTypeTestData : IEnumerable<object[]>
+    {
+        public IEnumerator<object[]> GetEnumerator()
+        {
+
+            yield return new object[] { "specs/rawpotato/", HttpMethod.Get,
+            HttpStatusCode.OK, "https://api.hyland.com/order/4/finishedFile/8", "application/xml",
+                "101" };
         }
         IEnumerator IEnumerable.GetEnumerator() => GetEnumerator();
     }
