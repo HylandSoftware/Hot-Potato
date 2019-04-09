@@ -8,9 +8,9 @@ namespace HotPotato.OpenApi.Validators
 {
     internal class HeaderValidator
     {
-        public HttpHeaders headers;
-        public Reason FailReason;
-        public ValidationError[] ErrorArr;
+        public HttpHeaders headers { get; }
+        public Reason FailReason { get; private set; }
+        public ValidationError[] ErrorArr { get; private set; }
 
         public HeaderValidator(HttpHeaders Headers)
         {

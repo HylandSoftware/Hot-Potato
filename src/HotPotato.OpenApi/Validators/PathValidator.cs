@@ -6,19 +6,18 @@ namespace HotPotato.OpenApi.Validators
 {
     internal class PathValidator
     {
-        public string path;
-        public SwaggerPathItem Result;
+        public string path { get; }
+        public SwaggerPathItem Result { get; private set; }
 
         public PathValidator(string Path)
         {
-            path = Path;
+            path = Path ?? "";
         }
 
         public bool Validate(SwaggerDocument swagDoc)
         {
-            if (path == null)
+            if (path == "")
             {
-                path = "";
                 return false;
             }
             string match = PathMatcher.Match(path, swagDoc.Paths.Keys);

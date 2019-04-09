@@ -6,8 +6,9 @@ namespace HotPotato.OpenApi.Validators
 {
     internal class MethodValidator
     {
-        public string method;
-        public SwaggerOperation Result;
+        public string method { get; }
+        public SwaggerOperation Result { get; private set; }
+        
         public MethodValidator(HttpMethod Method)
         {
             if (Method == null)

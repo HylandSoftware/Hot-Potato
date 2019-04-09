@@ -8,11 +8,11 @@ namespace HotPotato.OpenApi.Validators
 {
     internal class StatusCodeValidator
     {
-        public int statCode;
-        public string bodyString;
+        public int statCode { get; }
+        public string bodyString { get; }
 
-        public Reason FailReason;
-        public SwaggerResponse Result;
+        public Reason FailReason { get; private set; }
+        public SwaggerResponse Result { get; private set; }
 
         public StatusCodeValidator(HttpStatusCode StatCode, string BodyString)
         {

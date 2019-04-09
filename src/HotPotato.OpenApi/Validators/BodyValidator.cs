@@ -10,14 +10,21 @@ namespace HotPotato.OpenApi.Validators
 {
     internal class BodyValidator
     {
-        public string bodyString;
-        public string contentType;
-        public Reason FailReason;
-        public ValidationError[] ErrorArr;
+        public string bodyString { get; private set; }
+        public string contentType { get; }
+        public Reason FailReason { get; private set; }
+        public ValidationError[] ErrorArr { get; private set; }
 
         public BodyValidator(string BodyString, string ContentType)
         {
-            bodyString = BodyString;
+            if (string.IsNullOrWhiteSpace(BodyString))
+            {
+                bodyString = "";
+            }
+            else
+            {
+                bodyString = BodyString;
+            }
             contentType = ContentType;
         }
 
@@ -28,9 +35,8 @@ namespace HotPotato.OpenApi.Validators
                 FailReason = Reason.MissingSpecBody;
                 return false;
             }
-            else if(string.IsNullOrWhiteSpace(bodyString))
+            else if(bodyString == "")
             {
-                bodyString = "";
                 FailReason = Reason.MissingBody;
                 return false;
             }
