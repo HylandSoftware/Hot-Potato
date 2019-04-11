@@ -213,5 +213,21 @@ namespace HotPotato.Http.Default
         }
         IEnumerator IEnumerable.GetEnumerator() => GetEnumerator();
     }
+
+    public class ByteStringNegTestData : IEnumerable<object[]>
+    {
+        public IEnumerator<object[]> GetEnumerator()
+        {
+            yield return new object[] { "specs/rawpotato/", HttpMethod.Get,
+                    HttpStatusCode.OK, "https://api.hyland.com/risks/48/accountSnapshot", "application/octet-stream",
+                    "Byte Strings Are Base64"};
+
+            yield return new object[] { "specs/rawpotato/", HttpMethod.Get,
+                    HttpStatusCode.OK, "https://api.hyland.com/risks/48/accountSnapshot", "application/pdf",
+                    "'ByteStringsAreBase64'"};
+
+        }
+        IEnumerator IEnumerable.GetEnumerator() => GetEnumerator();
+    }
 }
 
