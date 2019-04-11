@@ -186,14 +186,30 @@ namespace HotPotato.Http.Default
         IEnumerator IEnumerable.GetEnumerator() => GetEnumerator();
     }
 
-    public class XmlTypeTestData : IEnumerable<object[]>
+    public class CustomSpecTestData : IEnumerable<object[]>
     {
         public IEnumerator<object[]> GetEnumerator()
         {
+            yield return new object[] { "specs/rawpotato/", HttpMethod.Get,
+                    HttpStatusCode.OK, "https://api.hyland.com/risks/48/accountSnapshot", "application/octet-stream",
+                    "ByteStringsAreBase64"};
 
             yield return new object[] { "specs/rawpotato/", HttpMethod.Get,
-            HttpStatusCode.OK, "https://api.hyland.com/order/4/finishedFile/8", "application/xml",
-                "101" };
+                    HttpStatusCode.OK, "https://api.hyland.com/risks/48/accountSnapshot", "text/csv",
+                        @"booking_date;purpose;amount;currency;counter_iban;counter_bic;counter_holder;tags;category_id" +
+                        @"26.02.2019; 'ABSCHLUSS KEINE BELEG INFORMATIONEN, SIEHE GGF. KONTOAUSZUG !'; -9.55; EUR; ; ; ; ;" };
+
+            yield return new object[] { "specs/rawpotato/", HttpMethod.Get,
+                    HttpStatusCode.OK, "https://api.hyland.com/order/4/finishedFile/8", "application/pdf",
+                        "101" };
+
+            yield return new object[] { "specs/rawpotato/", HttpMethod.Get,
+                    HttpStatusCode.OK, "https://api.hyland.com/order/4/finishedFile/8", "image/jpg",
+                        "10101" };
+
+            yield return new object[] { "specs/rawpotato/", HttpMethod.Delete,
+            HttpStatusCode.OK, "https://api.hyland.com/v1/48/plans/48", "application/xml",
+                @"<BaseResponse><ErrorCode>48</ErrorCode><Message>Not really an error</Message></BaseResponse>" };
         }
         IEnumerator IEnumerable.GetEnumerator() => GetEnumerator();
     }
