@@ -10,64 +10,64 @@ namespace HotPotato.OpenApi.Validators
     {
 
         private Validator val { get; }
-        private string Path { get; set; }
-        private HttpMethod Method { get; set; }
-        private HttpStatusCode StatusCode { get; set; }
-        private string Body { get; set; }
-        private string ContentType { get; set; }
-        private HttpHeaders Headers { get; set; }
+        private string path { get; set; }
+        private HttpMethod method { get; set; }
+        private HttpStatusCode statusCode { get; set; }
+        private string body { get; set; }
+        private string contentType { get; set; }
+        private HttpHeaders headers { get; set; }
 
         public ValidationBuilder(IResultCollector resColl, ISpecificationProvider specPro)
         {
             val = new Validator(resColl, specPro);
         }
 
-        public ValidationBuilder WithPath(string path)
+        public ValidationBuilder WithPath(string Path)
         {
-            Path = path;
+            path = Path;
             return this;
         }
         
-        public ValidationBuilder WithMethod(HttpMethod method)
+        public ValidationBuilder WithMethod(HttpMethod Method)
         {
-            Method = method;
+            method = Method;
             return this;
         }
         
-        public ValidationBuilder WithStatusCode(HttpStatusCode statusCode)
+        public ValidationBuilder WithStatusCode(HttpStatusCode StatusCode)
         {
-            StatusCode = statusCode;
+            statusCode = StatusCode;
             return this;
         }
 
-        public ValidationBuilder WithBody(string body, string contentType)
+        public ValidationBuilder WithBody(string Body, string ContentType)
         {
-            Body = body;
-            if (contentType.Contains(";"))
+            body = Body;
+            if (ContentType.Contains(";"))
             {
                 //Sanitize content-types for uniform matching later on
-                ContentType = contentType.Split(";")[0];
+                contentType = ContentType.Split(";")[0];
             }
             else
             {
-                ContentType = contentType;
+                contentType = ContentType;
             }
             return this;
         }
 
-        public ValidationBuilder WithHeaders(HttpHeaders headers)
+        public ValidationBuilder WithHeaders(HttpHeaders Headers)
         {
-            Headers = headers;
+            headers = Headers;
             return this;
         }
 
         public Validator Build()
         {
-            val.pathVal = new PathValidator(Path);
-            val.methodVal = new MethodValidator(Method);
-            val.statusCodeVal = new StatusCodeValidator(StatusCode, Body);
-            val.bodyVal = new BodyValidator(Body, ContentType);
-            val.headerVal = new HeaderValidator(Headers);
+            val.pathVal = new PathValidator(path);
+            val.methodVal = new MethodValidator(method);
+            val.statusCodeVal = new StatusCodeValidator(statusCode, body);
+            val.bodyVal = new BodyValidator(body, contentType);
+            val.headerVal = new HeaderValidator(headers);
             return val;
         }
     }
