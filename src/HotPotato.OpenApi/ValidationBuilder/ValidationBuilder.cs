@@ -43,7 +43,14 @@ namespace HotPotato.OpenApi.Validators
         public ValidationBuilder WithBody(string body, string contentType)
         {
             Body = body;
-            ContentType = contentType;
+            if (contentType.Contains(";"))
+            {
+                ContentType = contentType.Split(";")[0];
+            }
+            else
+            {
+                ContentType = contentType;
+            }
             return this;
         }
 

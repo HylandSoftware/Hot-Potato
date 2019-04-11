@@ -25,12 +25,24 @@ namespace HotPotato.OpenApi.Validators
             {
                 bodyString = BodyString;
             }
+
             contentType = ContentType;
         }
 
         public bool Validate(SwaggerResponse swagResp)
         {
-            if (swagResp.ActualResponse == null || swagResp.ActualResponse.Schema == null)
+            JsonSchema4 specBody = swagResp.ActualResponse.Schema;
+
+            if (swagResp.Content != null && swagResp.Content.Count > 0)
+            {
+                var contentSchemas = ToContentWithoutEncoding(swagResp.Content);
+                if (contentSchemas.ContainsKey(contentType))
+                {
+                    specBody = contentSchemas[contentType].Schema;
+                }
+            }
+
+            if (specBody == null)
             {
                 FailReason = Reason.MissingSpecBody;
                 return false;
@@ -46,7 +58,6 @@ namespace HotPotato.OpenApi.Validators
                 ConvertBodyString();
             }
 
-            JsonSchema4 specBody = swagResp.ActualResponse.Schema;
             ICollection<NJsonSchema.Validation.ValidationError> errors = specBody.Validate(bodyString);
             if (errors == null || errors.Count == 0)
             {
@@ -75,6 +86,23 @@ namespace HotPotato.OpenApi.Validators
                 //also cases like "application/pdf" will just need a string to be validated
                 bodyString = JsonConvert.SerializeObject(bodyString);
             }
+        }
+
+        public Dictionary<string, OpenApiMediaType> ToContentWithoutEncoding(IDictionary<string, OpenApiMediaType> Content)
+        {
+            Dictionary<string, OpenApiMediaType> returnDict = new Dictionary<string, OpenApiMediaType>();
+            foreach (KeyValuePair<string, OpenApiMediaType> kvp in Content)
+            {
+                if (kvp.Key.Contains(";"))
+                {
+                    returnDict.Add(kvp.Key.Split(";")[0], kvp.Value);
+                }
+                else
+                {
+                    returnDict.Add(kvp.Key, kvp.Value);
+                }
+            }
+            return returnDict;
         }
     }
 }
