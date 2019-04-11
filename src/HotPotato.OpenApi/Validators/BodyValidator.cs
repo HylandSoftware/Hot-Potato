@@ -33,9 +33,10 @@ namespace HotPotato.OpenApi.Validators
         {
             JsonSchema4 specBody = swagResp.ActualResponse.Schema;
 
+            //Conditional for matching schemas with multiple content-type returns
             if (swagResp.Content != null && swagResp.Content.Count > 0)
             {
-                var contentSchemas = ToContentWithoutEncoding(swagResp.Content);
+                var contentSchemas = SanitizeContentTypes(swagResp.Content);
                 if (contentSchemas.ContainsKey(contentType))
                 {
                     specBody = contentSchemas[contentType].Schema;
@@ -88,7 +89,12 @@ namespace HotPotato.OpenApi.Validators
             }
         }
 
-        public Dictionary<string, OpenApiMediaType> ToContentWithoutEncoding(IDictionary<string, OpenApiMediaType> Content)
+        /// <summary>
+        /// Remove all trailing encodings from content-types for uniform matching
+        /// </summary>
+        /// <param name="Content">A SwaggerResponse.Content dict</param>
+        /// <returns>Content dict with sanitized content-types</returns>
+        private Dictionary<string, OpenApiMediaType> SanitizeContentTypes(IDictionary<string, OpenApiMediaType> Content)
         {
             Dictionary<string, OpenApiMediaType> returnDict = new Dictionary<string, OpenApiMediaType>();
             foreach (KeyValuePair<string, OpenApiMediaType> kvp in Content)

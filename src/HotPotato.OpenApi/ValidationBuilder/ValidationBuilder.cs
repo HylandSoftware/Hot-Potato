@@ -45,6 +45,7 @@ namespace HotPotato.OpenApi.Validators
             Body = body;
             if (contentType.Contains(";"))
             {
+                //Sanitize content-types for uniform matching later on
                 ContentType = contentType.Split(";")[0];
             }
             else
