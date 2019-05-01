@@ -9,16 +9,20 @@ namespace HotPotato.OpenApi.Validators
     public class ValidationBuilder
     {
 
-        private Validator val { get; }
+        private ValidationStrategy val { get; set; }
         private string Path { get; set; }
         private HttpMethod Method { get; set; }
         private HttpStatusCode StatusCode { get; set; }
         private string Body { get; set; }
         private HttpHeaders Headers { get; set; }
 
+        private IResultCollector ResultCollector { get; }
+        private ISpecificationProvider SpecificationProvider { get; }
+
         public ValidationBuilder(IResultCollector resColl, ISpecificationProvider specPro)
         {
-            val = new Validator(resColl, specPro);
+            ResultCollector = resColl;
+            SpecificationProvider = specPro;
         }
 
         public ValidationBuilder WithPath(string path)
@@ -51,13 +55,14 @@ namespace HotPotato.OpenApi.Validators
             return this;
         }
 
-        public Validator Build()
+        public IValidationStrategy Build()
         {
-            val.pathVal = new PathValidator(Path);
-            val.methodVal = new MethodValidator(Method);
-            val.statusCodeVal = new StatusCodeValidator(StatusCode, Body);
-            val.bodyVal = new BodyValidator(Body);
-            val.headerVal = new HeaderValidator(Headers);
+            val = new ValidationStrategy(ResultCollector, SpecificationProvider);
+            val.PathValidator = new PathValidator(Path);
+            val.MethodValidator = new MethodValidator(Method);
+            val.StatusCodeValidator = new StatusCodeValidator(StatusCode, Body);
+            val.BodyValidator = new BodyValidator(Body);
+            val.HeaderValidator = new HeaderValidator(Headers);
             return val;
         }
     }
