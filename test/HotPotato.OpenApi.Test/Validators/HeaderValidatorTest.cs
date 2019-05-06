@@ -18,12 +18,13 @@ namespace HotPotato.OpenApi.Validators
         {
             SwaggerResponse swagResp = new SwaggerResponse();
             swagResp.Headers.Add(AValidHeaderKey, new JsonSchema4());
-
             Core.Http.HttpHeaders headers = new Core.Http.HttpHeaders();
-            HeaderValidator subject = new HeaderValidator(headers);
 
-            Assert.False(subject.Validate(swagResp));
-            Assert.Equal(Reason.MissingHeaders, subject.FailReason);
+            HeaderValidator subject = new HeaderValidator(headers);
+            InvalidResult result = (InvalidResult)subject.Validate(swagResp);
+
+            Assert.False(result.Valid);
+            Assert.Equal(Reason.MissingHeaders, result.Reason);
         }
 
         [Fact]
@@ -33,9 +34,10 @@ namespace HotPotato.OpenApi.Validators
             swagResp.Headers.Add(AValidHeaderKey, new JsonSchema4());
 
             HeaderValidator subject = new HeaderValidator(null);
+            InvalidResult result = (InvalidResult)subject.Validate(swagResp);
 
-            Assert.False(subject.Validate(swagResp));
-            Assert.Equal(Reason.MissingHeaders, subject.FailReason);
+            Assert.False(result.Valid);
+            Assert.Equal(Reason.MissingHeaders, result.Reason);
         }
 
         [Fact]
@@ -45,9 +47,10 @@ namespace HotPotato.OpenApi.Validators
             swagResp.Headers.Add(AValidHeaderKey, new JsonSchema4());
 
             HeaderValidator subject = new HeaderValidator(null);
+            InvalidResult result = (InvalidResult)subject.Validate(swagResp);
 
-            Assert.False(subject.Validate(swagResp));
-            Assert.Equal(Reason.MissingHeaders, subject.FailReason);
+            Assert.False(result.Valid);
+            Assert.Equal(Reason.MissingHeaders, result.Reason);
         }
 
         [Fact]
@@ -58,9 +61,11 @@ namespace HotPotato.OpenApi.Validators
 
             Core.Http.HttpHeaders headers = new Core.Http.HttpHeaders();
             headers.Add(AValidHeaderKey, AValidHeaderValue);
-            HeaderValidator subject = new HeaderValidator(headers);
 
-            Assert.True(subject.Validate(swagResp));
+            HeaderValidator subject = new HeaderValidator(headers);
+            IValidationResult result = subject.Validate(swagResp);
+
+            Assert.True(result.Valid);
         }
 
         [Fact]
@@ -71,10 +76,12 @@ namespace HotPotato.OpenApi.Validators
 
             Core.Http.HttpHeaders headers = new Core.Http.HttpHeaders();
             headers.Add(AValidHeaderKey, AnInvalidValue);
-            HeaderValidator subject = new HeaderValidator(headers);
 
-            Assert.False(subject.Validate(swagResp));
-            Assert.Equal(Reason.InvalidHeaders, subject.FailReason);
+            HeaderValidator subject = new HeaderValidator(headers);
+            InvalidResult result = (InvalidResult)subject.Validate(swagResp);
+
+            Assert.False(result.Valid);
+            Assert.Equal(Reason.InvalidHeaders, result.Reason);
         }
     }
 }

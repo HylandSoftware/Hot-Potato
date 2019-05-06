@@ -20,8 +20,9 @@ namespace HotPotato.OpenApi.Validators
             swagResp.ActualResponse.Schema = schema;
 
             BodyValidator subject = new BodyValidator(AValidBody);
+            IValidationResult result = subject.Validate(swagResp);
 
-            Assert.True(subject.Validate(swagResp));
+            Assert.True(result.Valid);
         }
 
         [Fact]
@@ -32,10 +33,11 @@ namespace HotPotato.OpenApi.Validators
             swagResp.ActualResponse.Schema = schema;
 
             BodyValidator subject = new BodyValidator(AnInvalidBody);
+            InvalidResult result = (InvalidResult)subject.Validate(swagResp);
 
-            Assert.False(subject.Validate(swagResp));
-            Assert.Equal(Reason.InvalidBody, subject.FailReason);
-            Assert.Equal(ValidationErrorKind.IntegerExpected, subject.ErrorArr[0].Kind);
+            Assert.False(result.Valid);
+            Assert.Equal(Reason.InvalidBody, result.Reason);
+            Assert.Equal(ValidationErrorKind.IntegerExpected, result.Errors[0].Kind);
         }
 
         [Fact]
@@ -46,9 +48,10 @@ namespace HotPotato.OpenApi.Validators
             swagResp.ActualResponse.Schema = schema;
 
             BodyValidator subject = new BodyValidator(null);
+            InvalidResult result = (InvalidResult)subject.Validate(swagResp);
 
-            Assert.False(subject.Validate(swagResp));
-            Assert.Equal(Reason.MissingBody, subject.FailReason);
+            Assert.False(result.Valid);
+            Assert.Equal(Reason.MissingBody, result.Reason);
         }
 
         [Fact]
@@ -58,9 +61,10 @@ namespace HotPotato.OpenApi.Validators
             swagResp.ActualResponse.Schema = null;
 
             BodyValidator subject = new BodyValidator(AValidBody);
+            InvalidResult result = (InvalidResult)subject.Validate(swagResp);
 
-            Assert.False(subject.Validate(swagResp));
-            Assert.Equal(Reason.MissingSpecBody, subject.FailReason);
+            Assert.False(result.Valid);
+            Assert.Equal(Reason.MissingSpecBody, result.Reason);
         }
     }
 }

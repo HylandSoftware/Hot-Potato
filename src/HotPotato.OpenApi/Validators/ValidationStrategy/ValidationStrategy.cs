@@ -46,32 +46,31 @@ namespace HotPotato.OpenApi.Validators
                 return;
             }
 
-            if (!BodyValidator.Validate(StatusCodeValidator.Result))
-            {
-                AddFail(BodyValidator.FailReason, BodyValidator.ErrorArr);
-            }
-            else
-            {
-                AddPass();
-            }
-            if (!HeaderValidator.Validate(StatusCodeValidator.Result))
-            {
-                AddFail(HeaderValidator.FailReason, HeaderValidator.ErrorArr);
-            }
-            else
-            {
-                AddPass();
-            }
+            AddValidationResult(BodyValidator.Validate(StatusCodeValidator.Result));
+            AddValidationResult(HeaderValidator.Validate(StatusCodeValidator.Result));
         }
 
-        public void AddFail(Reason reason, params ValidationError[] validationErrors)
+        private void AddFail(Reason reason, params ValidationError[] validationErrors)
         {
             resColl.Fail(PathValidator.path, MethodValidator.method, StatusCodeValidator.statCode, reason, validationErrors);
         }
         
-        public void AddPass()
+        private void AddPass()
         {
             resColl.Pass(PathValidator.path, MethodValidator.method, StatusCodeValidator.statCode);
+        }
+
+        private void AddValidationResult(IValidationResult result)
+        {
+            if (result.Valid)
+            {
+                AddPass();
+            }
+            else if(!result.Valid)
+            {
+                InvalidResult invResult = (InvalidResult)result;
+                AddFail(invResult.Reason, invResult.Errors);
+            }
         }
     }
 }
