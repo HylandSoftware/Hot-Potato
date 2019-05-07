@@ -42,7 +42,7 @@ namespace HotPotato.OpenApi.Validators
             }
             else if(StatusCodeValidator.statCode == 204)
             {
-                AddPass();
+                AddValidationResult(HeaderValidator.Validate(StatusCodeValidator.Result));
                 return;
             }
 

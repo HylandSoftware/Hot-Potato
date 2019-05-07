@@ -26,12 +26,13 @@ namespace HotPotato.OpenApi.Validators
         public void StatCodeValidator_ReturnsTrueWithNoContentExpected()
         {
             SwaggerOperation swagOp = new SwaggerOperation();
-            swagOp.Responses.Add("204", Mock.Of<SwaggerResponse>());
+            SwaggerResponse expected = Mock.Of<SwaggerResponse>();
+            swagOp.Responses.Add("204", expected);
 
             StatusCodeValidator subject = new StatusCodeValidator(HttpStatusCode.NoContent, "");
 
             Assert.True(subject.Validate(swagOp));
-            Assert.Null(subject.Result);
+            Assert.Equal(expected, subject.Result);
         }
         [Fact]
         public void StatCodeValidator_ReturnsFalseWithMissingStatCode()
