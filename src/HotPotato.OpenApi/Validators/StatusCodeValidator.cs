@@ -25,17 +25,10 @@ namespace HotPotato.OpenApi.Validators
             string statCodeStr = statCode.ToString();
             if (swagOp.Responses.ContainsKey(statCodeStr))
             {
-                if (statCodeStr == "204")
+                if (statCodeStr == "204" && !string.IsNullOrWhiteSpace(bodyString))
                 {
-                    if (string.IsNullOrWhiteSpace(bodyString))
-                    {
-                        return true;
-                    }
-                    else
-                    {
-                        FailReason = Reason.UnexpectedBody;
-                        return false;
-                    }
+                    FailReason = Reason.UnexpectedBody;
+                    return false;
                 }
                 Result = swagOp.Responses[statCodeStr];
                 return true;

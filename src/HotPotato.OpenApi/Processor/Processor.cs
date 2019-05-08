@@ -21,7 +21,7 @@ namespace HotPotato.OpenApi.Processor
 
         public void Process(HttpPair pair)
         {
-            Validator val = new ValidationBuilder(collector, specificationProvider)
+            IValidationStrategy val = new ValidationBuilder(collector, specificationProvider)
                 .WithPath(pair.Request.Uri.AbsolutePath)
                 .WithMethod(pair.Request.Method)
                 .WithStatusCode(pair.Response.StatusCode)

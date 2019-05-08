@@ -9,15 +9,13 @@ namespace HotPotato.OpenApi.Validators
     internal class HeaderValidator
     {
         public HttpHeaders headers { get; }
-        public Reason FailReason { get; private set; }
-        public ValidationError[] ErrorArr { get; private set; }
 
         public HeaderValidator(HttpHeaders Headers)
         {
             headers = Headers;
         }
 
-        public bool Validate(SwaggerResponse swagResp)
+        public IValidationResult Validate(SwaggerResponse swagResp)
         {
             if (swagResp.Headers != null && swagResp.Headers.Count > 0)
             {
@@ -26,8 +24,7 @@ namespace HotPotato.OpenApi.Validators
                     string headerKey = item.Key;
                     if (headers == null || !headers.ContainsKey(headerKey))
                     {
-                        FailReason = Reason.MissingHeaders;
-                        return false;
+                        return new InvalidResult(Reason.MissingHeaders);
                     }
                     else
                     {
@@ -40,9 +37,8 @@ namespace HotPotato.OpenApi.Validators
                             if (errors != null && errors.Count != 0)
                             {
                                 List<ValidationError> errList = errors.ToValidationErrorList();
-                                ErrorArr = errList.ToArray();
-                                FailReason = Reason.InvalidHeaders;
-                                return false;
+                                ValidationError[] errorArr = errList.ToArray();
+                                return new InvalidResult(Reason.InvalidHeaders, errorArr);
                             }
 
                         }
@@ -50,7 +46,7 @@ namespace HotPotato.OpenApi.Validators
 
                 }
             }
-            return true;
+            return new ValidResult();
         }
     }
 }
