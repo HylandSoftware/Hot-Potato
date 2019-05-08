@@ -9,7 +9,7 @@ namespace HotPotato.OpenApi.Matchers
         public void Match_WithNormalPaths()
         {
             string AValidPath = "/foo/bar";
-            List<string> AValidPaths = new List<string>
+            List<string> ValidPaths = new List<string>
             {
                 "/a/b/c",
                 "/a/b",
@@ -17,7 +17,7 @@ namespace HotPotato.OpenApi.Matchers
                 "/d/c"
             };
 
-            string result = PathMatcher.Match(AValidPath, AValidPaths);
+            string result = PathMatcher.Match(AValidPath, ValidPaths);
 
             Assert.Equal("/foo/bar", result);
         }
@@ -26,14 +26,14 @@ namespace HotPotato.OpenApi.Matchers
         public void Match_WithParameters()
         {
             string AValidPath = "/foo/1/bar";
-            List<string> AValidPaths = new List<string>
+            List<string> ValidPaths = new List<string>
             {
                 "/a/b/{c}",
                 "/foo/{docID}/bar",
                 "/b/d/c"
             };
 
-            string result = PathMatcher.Match(AValidPath, AValidPaths);
+            string result = PathMatcher.Match(AValidPath, ValidPaths);
             Assert.Equal("/foo/{docID}/bar", result);
         }
 
@@ -41,14 +41,14 @@ namespace HotPotato.OpenApi.Matchers
         public void Match_ParamAtEnd()
         {
             string AValidPath = "/foo/1";
-            List<string> AVAlidPaths = new List<string>
+            List<string> ValidPaths = new List<string>
             {
                 "/a/b/{c}",
                 "/foo/{bar}",
                 "/d/{e}/f"
             };
 
-            string result = PathMatcher.Match(AValidPath, AVAlidPaths);
+            string result = PathMatcher.Match(AValidPath, ValidPaths);
 
             Assert.Equal("/foo/{bar}", result);
         }
@@ -57,14 +57,14 @@ namespace HotPotato.OpenApi.Matchers
         public void Match_NotInList_ReturnsEmpty()
         {
             string AValidPath = "/foo/bar";
-            List<string> AValidPaths = new List<string>
+            List<string> ValidPaths = new List<string>
             {
                 "/a/b/{c}",
                 "/foo",
                 "/bar/{c}"
             };
 
-            string result = PathMatcher.Match(AValidPath, AValidPaths);
+            string result = PathMatcher.Match(AValidPath, ValidPaths);
 
             Assert.Equal(string.Empty, result);
         }
