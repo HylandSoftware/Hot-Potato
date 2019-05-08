@@ -6,26 +6,26 @@ namespace HotPotato.OpenApi.Validators
 {
     internal class MethodValidator
     {
-        public string method { get; }
+        public string Method { get; }
         public SwaggerOperation Result { get; private set; }
         
-        public MethodValidator(HttpMethod Method)
+        public MethodValidator(HttpMethod method)
         {
-            if (Method == null)
+            if (method == null)
             {
-                method = "";
+                Method = "";
             }
             else
             {
-                method = toOperationMethod(Method.ToString());
+                Method = toOperationMethod(method.ToString());
             }
         }
 
         public bool Validate(SwaggerPathItem swagPath)
         {
-            if (swagPath.ContainsKey(method))
+            if (swagPath.ContainsKey(Method))
             {
-                Result = swagPath[method];
+                Result = swagPath[Method];
                 return true;
             }
             else

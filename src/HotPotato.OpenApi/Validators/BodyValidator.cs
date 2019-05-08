@@ -8,17 +8,17 @@ namespace HotPotato.OpenApi.Validators
 {
     internal class BodyValidator
     {
-        public string bodyString { get; }
+        public string BodyString { get; }
 
-        public BodyValidator(string BodyString)
+        public BodyValidator(string bodyString)
         {
-            if (string.IsNullOrWhiteSpace(BodyString))
+            if (string.IsNullOrWhiteSpace(bodyString))
             {
-                bodyString = "";
+                BodyString = "";
             }
             else
             {
-                bodyString = BodyString;
+                BodyString = bodyString;
             }
         }
 
@@ -28,12 +28,12 @@ namespace HotPotato.OpenApi.Validators
             {
                 return new InvalidResult(Reason.MissingSpecBody);
             }
-            else if(bodyString == "")
+            else if(BodyString == "")
             {
                 return new InvalidResult(Reason.MissingBody);
             }
             JsonSchema4 specBody = swagResp.ActualResponse.Schema;
-            ICollection<NJsonSchema.Validation.ValidationError> errors = specBody.Validate(bodyString);
+            ICollection<NJsonSchema.Validation.ValidationError> errors = specBody.Validate(BodyString);
             if (errors == null || errors.Count == 0)
             {
                 return new ValidResult();

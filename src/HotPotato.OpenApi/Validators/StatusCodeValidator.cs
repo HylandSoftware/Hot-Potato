@@ -8,24 +8,24 @@ namespace HotPotato.OpenApi.Validators
 {
     internal class StatusCodeValidator
     {
-        public int statCode { get; }
-        public string bodyString { get; }
+        public int StatusCode { get; }
+        public string BodyString { get; }
 
         public Reason FailReason { get; private set; }
         public SwaggerResponse Result { get; private set; }
 
-        public StatusCodeValidator(HttpStatusCode StatCode, string BodyString)
+        public StatusCodeValidator(HttpStatusCode statCode, string bodyString)
         {
-            statCode = Convert.ToInt32(StatCode);
-            bodyString = BodyString;
+            StatusCode = Convert.ToInt32(statCode);
+            BodyString = bodyString;
         }
 
         public bool Validate(SwaggerOperation swagOp)
         {
-            string statCodeStr = statCode.ToString();
+            string statCodeStr = StatusCode.ToString();
             if (swagOp.Responses.ContainsKey(statCodeStr))
             {
-                if (statCodeStr == "204" && !string.IsNullOrWhiteSpace(bodyString))
+                if (statCodeStr == "204" && !string.IsNullOrWhiteSpace(BodyString))
                 {
                     FailReason = Reason.UnexpectedBody;
                     return false;

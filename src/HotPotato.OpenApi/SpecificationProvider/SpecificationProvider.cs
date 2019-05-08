@@ -9,22 +9,22 @@ namespace HotPotato.OpenApi.SpecificationProvider
 {
     public class SpecificationProvider : ISpecificationProvider
     {
-        private readonly string specLoc;
+        private readonly string SpecLocation;
         public SpecificationProvider(IConfiguration config)
         {
             _ = config ?? throw new ArgumentNullException(nameof(config));
-            this.specLoc = config["SpecLocation"];
+            this.SpecLocation = config["SpecLocation"];
         }
         public SwaggerDocument GetSpecDocument()
         {
             Task<SwaggerDocument> swagTask = null;
-            if (Path.IsPathFullyQualified(specLoc))
+            if (Path.IsPathFullyQualified(SpecLocation))
             {
-                swagTask = FromFileAsync(specLoc);
+                swagTask = FromFileAsync(SpecLocation);
             }
-            else if (Uri.IsWellFormedUriString(specLoc, UriKind.Absolute))
+            else if (Uri.IsWellFormedUriString(SpecLocation, UriKind.Absolute))
             {
-                swagTask = FromUrlAsync(specLoc);
+                swagTask = FromUrlAsync(SpecLocation);
             }
             else
             {

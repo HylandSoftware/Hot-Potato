@@ -8,11 +8,11 @@ namespace HotPotato.OpenApi.Validators
 {
     internal class HeaderValidator
     {
-        public HttpHeaders headers { get; }
+        public HttpHeaders Headers { get; }
 
-        public HeaderValidator(HttpHeaders Headers)
+        public HeaderValidator(HttpHeaders headers)
         {
-            headers = Headers;
+            Headers = headers;
         }
 
         public IValidationResult Validate(SwaggerResponse swagResp)
@@ -22,13 +22,13 @@ namespace HotPotato.OpenApi.Validators
                 foreach (var item in swagResp.Headers)
                 {
                     string headerKey = item.Key;
-                    if (headers == null || !headers.ContainsKey(headerKey))
+                    if (Headers == null || !Headers.ContainsKey(headerKey))
                     {
                         return new InvalidResult(Reason.MissingHeaders);
                     }
                     else
                     {
-                        List<string> headerValues = headers[headerKey];
+                        List<string> headerValues = Headers[headerKey];
                         foreach (string value in headerValues)
                         {
                             // HACK - Need to convert to JSON because that's how NJsonSchema likes it.
