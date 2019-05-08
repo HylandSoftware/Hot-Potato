@@ -25,7 +25,7 @@ namespace HotPotato.OpenApi.Validators
         public void MethodValidator_ReturnsFalseWithMissingMethod()
         {
             SwaggerPathItem swagPath = new SwaggerPathItem();
-            swagPath.Add("TRACE", Mock.Of<SwaggerOperation>());
+            swagPath.Add("trace", Mock.Of<SwaggerOperation>());
 
             MethodValidator subject = new MethodValidator(HttpMethod.Get);
 
@@ -37,7 +37,7 @@ namespace HotPotato.OpenApi.Validators
         {
             SwaggerPathItem swagPath = new SwaggerPathItem();
 
-            swagPath.Add("TRACE", Mock.Of<SwaggerOperation>());
+            swagPath.Add("trace", Mock.Of<SwaggerOperation>());
 
             MethodValidator subject = new MethodValidator(null);
 
