@@ -8,8 +8,6 @@ namespace HotPotato.OpenApi.Validators
 {
     public class ValidationBuilder
     {
-
-        private ValidationStrategy val { get; set; }
         private string Path { get; set; }
         private HttpMethod Method { get; set; }
         private HttpStatusCode StatusCode { get; set; }
@@ -57,7 +55,7 @@ namespace HotPotato.OpenApi.Validators
 
         public IValidationStrategy Build()
         {
-            val = new ValidationStrategy(ResultCollector, SpecificationProvider);
+            ValidationStrategy val = new ValidationStrategy(ResultCollector, SpecificationProvider);
             val.PathValidator = new PathValidator(Path);
             val.MethodValidator = new MethodValidator(Method);
             val.StatusCodeValidator = new StatusCodeValidator(StatusCode, Body);

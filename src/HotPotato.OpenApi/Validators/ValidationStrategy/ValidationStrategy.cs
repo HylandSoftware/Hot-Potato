@@ -66,7 +66,7 @@ namespace HotPotato.OpenApi.Validators
             {
                 AddPass();
             }
-            else if(!result.Valid)
+            else
             {
                 InvalidResult invResult = (InvalidResult)result;
                 AddFail(invResult.Reason, invResult.Errors);
