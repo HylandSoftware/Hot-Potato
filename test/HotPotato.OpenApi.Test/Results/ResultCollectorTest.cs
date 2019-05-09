@@ -25,24 +25,16 @@ namespace HotPotato.Results
         {
             OpenApi.Models.Result expected = new OpenApi.Models.Result(Path, Get, OkStatusCode, State.Pass);
 
-            using (IHttpRequest req = new HttpRequest(HttpMethod.Get, new Uri(Uri)))
-            {
-                IHttpResponse res = new HttpResponse(HttpStatusCode.OK, new HttpHeaders());
+            ResultCollector subject = new ResultCollector();
 
-                using (HttpPair pair = new HttpPair(req, res))
-                {
-                    ResultCollector subject = new ResultCollector();
+            subject.Pass(Path, Get, OkStatusCode);
 
-                    subject.Pass(pair);
-
-                    Assert.NotEmpty(subject.Results);
-                    Assert.Single(subject.Results);
-                    Assert.Equal(expected.Path, subject.Results[0].Path);
-                    Assert.Equal(expected.Method, subject.Results[0].Method);
-                    Assert.Equal(expected.StatusCode, subject.Results[0].StatusCode);
-                    Assert.Equal(expected.State, subject.Results[0].State);
-                }
-            }
+            Assert.NotEmpty(subject.Results);
+            Assert.Single(subject.Results);
+            Assert.Equal(expected.Path, subject.Results[0].Path);
+            Assert.Equal(expected.Method, subject.Results[0].Method);
+            Assert.Equal(expected.StatusCode, subject.Results[0].StatusCode);
+            Assert.Equal(expected.State, subject.Results[0].State);
         }
 
         [Fact]
@@ -53,26 +45,18 @@ namespace HotPotato.Results
 
             OpenApi.Models.Result expected = new OpenApi.Models.Result(Path, Get, NotFoundStatusCode, State.Fail, Reason.Unknown, validationErrors);
 
-            using (IHttpRequest req = new HttpRequest(HttpMethod.Get, new Uri(Uri)))
-            {
-                IHttpResponse res = new HttpResponse(HttpStatusCode.NotFound, new HttpHeaders());
+            ResultCollector subject = new ResultCollector();
 
-                using (HttpPair pair = new HttpPair(req, res))
-                {
-                    ResultCollector subject = new ResultCollector();
+            subject.Fail(Path, Get, NotFoundStatusCode, Reason.Unknown, validationErrors.ToArray());
 
-                    subject.Fail(pair, Reason.Unknown, validationErrors.ToArray());
-
-                    Assert.NotEmpty(subject.Results);
-                    Assert.Single(subject.Results);
-                    Assert.Equal(expected.Path, subject.Results[0].Path);
-                    Assert.Equal(expected.Method, subject.Results[0].Method);
-                    Assert.Equal(expected.StatusCode, subject.Results[0].StatusCode);
-                    Assert.Equal(expected.State, subject.Results[0].State);
-                    Assert.Equal(expected.Reason, subject.Results[0].Reason);
-                    Assert.Equal(expected.ValidationErrors, subject.Results[0].ValidationErrors);
-                }
-            }
+            Assert.NotEmpty(subject.Results);
+            Assert.Single(subject.Results);
+            Assert.Equal(expected.Path, subject.Results[0].Path);
+            Assert.Equal(expected.Method, subject.Results[0].Method);
+            Assert.Equal(expected.StatusCode, subject.Results[0].StatusCode);
+            Assert.Equal(expected.State, subject.Results[0].State);
+            Assert.Equal(expected.Reason, subject.Results[0].Reason);
+            Assert.Equal(expected.ValidationErrors, subject.Results[0].ValidationErrors);
         }
     }
 }

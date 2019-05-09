@@ -1,4 +1,5 @@
 ﻿using HotPotato.Core.Http;
+using HotPotato.Core.Processor;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Logging;
 using Moq;
@@ -41,7 +42,7 @@ namespace HotPotato.Core.Proxy.Default
             Mock<HttpResponse> responseMock = new Mock<HttpResponse>();
             responseMock.SetupGet(x => x.Headers).Returns(responseHeaders);
 
-            Proxy subject = new Proxy(clientMock.Object, Mock.Of<ILogger<Proxy>>());
+            Proxy subject = new Proxy(clientMock.Object, Mock.Of<ILogger<Proxy>>(), Mock.Of<IProcessor>());
 
             await subject.ProcessAsync(AValidEndpoint, requestMock.Object, responseMock.Object);
 

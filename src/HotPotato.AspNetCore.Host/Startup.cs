@@ -1,9 +1,11 @@
-﻿using HotPotato.AspNetCore.Middleware;
+using HotPotato.AspNetCore.Middleware;
 using HotPotato.Core.Http;
-using HotPotato.Core.Http.Default;
+using HotPotato.Core.Processor;
 using HotPotato.Core.Proxy;
+using HotPotato.Core.Http.Default;
 using HotPotato.OpenApi.Results;
-using HotPotato.OpenApi.Services;
+using HotPotato.OpenApi.Processor;
+using HotPotato.OpenApi.SpecificationProvider;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
@@ -45,6 +47,9 @@ namespace HotPotato.AspNetCore.Host
             });
             services.AddSingleton<ISpecificationProvider, SpecificationProvider>();
             services.AddSingleton<IResultCollector, ResultCollector>();
+
+            services.AddTransient<IProcessor, Processor>();
+
         }
     }
 }
