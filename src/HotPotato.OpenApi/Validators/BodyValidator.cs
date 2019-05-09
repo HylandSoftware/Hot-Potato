@@ -10,21 +10,21 @@ namespace HotPotato.OpenApi.Validators
 {
     internal class BodyValidator
     {
-        public string bodyString { get; private set; }
-        public string contentType { get; }
+        public string BodyString { get; private set; }
+        public string ContentType { get; }
 
-        public BodyValidator(string BodyString, string ContentType)
+        public BodyValidator(string bodyString, string contentType)
         {
-            if (string.IsNullOrWhiteSpace(BodyString))
+            if (string.IsNullOrWhiteSpace(bodyString))
             {
-                bodyString = "";
+                BodyString = "";
             }
             else
             {
-                bodyString = BodyString;
+                BodyString = bodyString;
             }
 
-            contentType = ContentType;
+            ContentType = contentType;
         }
 
         public IValidationResult Validate(SwaggerResponse swagResp)
@@ -35,9 +35,9 @@ namespace HotPotato.OpenApi.Validators
             if (swagResp.Content != null && swagResp.Content.Count > 0)
             {
                 var contentSchemas = SanitizeContentTypes(swagResp.Content);
-                if (contentSchemas.ContainsKey(contentType))
+                if (contentSchemas.ContainsKey(ContentType))
                 {
-                    specBody = contentSchemas[contentType].Schema;
+                    specBody = contentSchemas[ContentType].Schema;
                 }
             }
 
@@ -45,17 +45,17 @@ namespace HotPotato.OpenApi.Validators
             {
                 return new InvalidResult(Reason.MissingSpecBody);
             }
-            else if(bodyString == "")
+            else if(BodyString == "")
             {
                 return new InvalidResult(Reason.MissingBody);
             }
 
-            if (!contentType.ToLower().Contains("json"))
+            if (!ContentType.ToLower().Contains("json"))
             {
                 ConvertBodyString();
             }
 
-            ICollection<NJsonSchema.Validation.ValidationError> errors = specBody.Validate(bodyString);
+            ICollection<NJsonSchema.Validation.ValidationError> errors = specBody.Validate(BodyString);
             if (errors == null || errors.Count == 0)
             {
                 return new ValidResult();
@@ -70,17 +70,17 @@ namespace HotPotato.OpenApi.Validators
 
         internal void ConvertBodyString()
         {
-            if (contentType.Contains("xml"))
+            if (ContentType.Contains("xml"))
             {
                 XmlDocument xmlDoc = new XmlDocument();
-                xmlDoc.LoadXml(bodyString);
-                bodyString = JsonConvert.SerializeXmlNode(xmlDoc);
+                xmlDoc.LoadXml(BodyString);
+                BodyString = JsonConvert.SerializeXmlNode(xmlDoc);
             }
             else
             {
                 //this will allow "text/" content types to be validated
                 //also cases like "application/pdf" will just need a string to be validated
-                bodyString = JsonConvert.SerializeObject(bodyString);
+                BodyString = JsonConvert.SerializeObject(BodyString);
             }
         }
 

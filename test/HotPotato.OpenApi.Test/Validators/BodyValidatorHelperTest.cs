@@ -13,7 +13,7 @@ namespace HotPotato.OpenApi.Validators
             string inputXML = @"<LGNotification><MediaType>video</MediaType><StatusFlag>new</StatusFlag><URL>http://domain.com/program/app?clienttype=htmlamp;id=49977</URL></LGNotification>";
             BodyValidator bodVal = new BodyValidator(inputXML, "application/xml");
             bodVal.ConvertBodyString();
-            Assert.Equal("{\"LGNotification\":{\"MediaType\":\"video\",\"StatusFlag\":\"new\",\"URL\":\"http://domain.com/program/app?clienttype=htmlamp;id=49977\"}}", bodVal.bodyString);
+            Assert.Equal("{\"LGNotification\":{\"MediaType\":\"video\",\"StatusFlag\":\"new\",\"URL\":\"http://domain.com/program/app?clienttype=htmlamp;id=49977\"}}", bodVal.BodyString);
         }
 
         [Fact]
@@ -22,7 +22,7 @@ namespace HotPotato.OpenApi.Validators
             string inputText = "Content";
             BodyValidator bodVal = new BodyValidator(inputText, "text/plain");
             bodVal.ConvertBodyString();
-            Assert.Equal("\"Content\"", bodVal.bodyString);
+            Assert.Equal("\"Content\"", bodVal.BodyString);
         }
     }
 }

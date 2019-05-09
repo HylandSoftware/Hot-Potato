@@ -40,7 +40,7 @@ namespace HotPotato.OpenApi.Validators
                 AddFail(StatusCodeValidator.FailReason);
                 return;
             }
-            else if(StatusCodeValidator.statCode == 204)
+            else if(StatusCodeValidator.StatusCode == 204)
             {
                 AddValidationResult(HeaderValidator.Validate(StatusCodeValidator.Result));
                 return;
@@ -52,12 +52,12 @@ namespace HotPotato.OpenApi.Validators
 
         private void AddFail(Reason reason, params ValidationError[] validationErrors)
         {
-            resColl.Fail(PathValidator.path, MethodValidator.method, StatusCodeValidator.statCode, reason, validationErrors);
+            resColl.Fail(PathValidator.Path, MethodValidator.Method, StatusCodeValidator.StatusCode, reason, validationErrors);
         }
         
         private void AddPass()
         {
-            resColl.Pass(PathValidator.path, MethodValidator.method, StatusCodeValidator.statCode);
+            resColl.Pass(PathValidator.Path, MethodValidator.Method, StatusCodeValidator.StatusCode);
         }
 
         private void AddValidationResult(IValidationResult result)

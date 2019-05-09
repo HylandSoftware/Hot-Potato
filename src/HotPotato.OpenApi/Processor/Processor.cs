@@ -10,18 +10,18 @@ namespace HotPotato.OpenApi.Processor
 {
     public class Processor : IProcessor
     {
-        private readonly IResultCollector collector;
-        private readonly ISpecificationProvider specificationProvider;
+        private readonly IResultCollector ResultCollector;
+        private readonly ISpecificationProvider SpecificationProvider;
 
-        public Processor(IResultCollector ResColl, ISpecificationProvider SpecificationProvider)
+        public Processor(IResultCollector resColl, ISpecificationProvider specPro)
         {
-            collector = ResColl;
-            specificationProvider = SpecificationProvider;
+            ResultCollector = resColl;
+            SpecificationProvider = specPro;
         }
 
         public void Process(HttpPair pair)
         {
-            IValidationStrategy val = new ValidationBuilder(collector, specificationProvider)
+            IValidationStrategy val = new ValidationBuilder(ResultCollector, SpecificationProvider)
                 .WithPath(pair.Request.Uri.AbsolutePath)
                 .WithMethod(pair.Request.Method)
                 .WithStatusCode(pair.Response.StatusCode)

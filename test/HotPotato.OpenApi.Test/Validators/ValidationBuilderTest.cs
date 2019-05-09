@@ -19,7 +19,7 @@ namespace HotPotato.OpenApi.Validators
             string expected = "deficiencies/deficiencies";
             ValidationStrategy result = (ValidationStrategy)subject.WithPath(expected).Build();
 
-            Assert.Equal(expected, result.PathValidator.path);
+            Assert.Equal(expected, result.PathValidator.Path);
         }
         [Fact]
         public void Builder_ReturnsValWithMethod()
@@ -28,7 +28,7 @@ namespace HotPotato.OpenApi.Validators
 
             ValidationStrategy result = (ValidationStrategy)subject.WithMethod(HttpMethod.Trace).Build();
 
-            Assert.Equal("trace", result.MethodValidator.method);
+            Assert.Equal("trace", result.MethodValidator.Method);
         }
         [Fact]
         public void Builder_ReturnsValWithStatusCode()
@@ -39,8 +39,8 @@ namespace HotPotato.OpenApi.Validators
             string expectedBody = "{'perfectSquare': '16'}";
             ValidationStrategy result = (ValidationStrategy)subject.WithStatusCode(expectedStatCode).WithBody(expectedBody, "application/json").Build();
 
-            Assert.Equal(Convert.ToInt32(expectedStatCode), result.StatusCodeValidator.statCode);
-            Assert.Equal(expectedBody, result.StatusCodeValidator.bodyString);
+            Assert.Equal(Convert.ToInt32(expectedStatCode), result.StatusCodeValidator.StatusCode);
+            Assert.Equal(expectedBody, result.StatusCodeValidator.BodyString);
         }
         [Fact]
         public void Builder_ReturnsValWithBody()
@@ -50,7 +50,7 @@ namespace HotPotato.OpenApi.Validators
             string expected = "{'perfectSquare': '64'}";
             ValidationStrategy result = (ValidationStrategy)subject.WithBody(expected, "application/json").Build();
 
-            Assert.Equal(expected, result.BodyValidator.bodyString);
+            Assert.Equal(expected, result.BodyValidator.BodyString);
         }
         [Fact]
         public void Builder_ReturnsValWithHeaders()
@@ -61,7 +61,7 @@ namespace HotPotato.OpenApi.Validators
             expected.Add("perfectSquare", "36");
             ValidationStrategy result = (ValidationStrategy)subject.WithHeaders(expected).Build();
 
-            Assert.Equal(expected, result.HeaderValidator.headers);
+            Assert.Equal(expected, result.HeaderValidator.Headers);
         }
     }
 }
