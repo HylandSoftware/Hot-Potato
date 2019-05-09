@@ -11,12 +11,12 @@ namespace HotPotato.OpenApi.Validators
 
         public PathValidator(string path)
         {
-            Path = path ?? "";
+            Path = path ?? string.Empty;
         }
 
         public bool Validate(SwaggerDocument swagDoc)
         {
-            if (Path == "")
+            if (string.IsNullOrEmpty(Path))
             {
                 return false;
             }
