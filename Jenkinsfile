@@ -11,7 +11,7 @@ pipeline {
             steps {
                 container("builder") {
                     sh 'chmod +x ./build.sh'
-                    sh './build.sh -t NuGet-Restor'
+                    sh './build.sh -t NuGet-Restore'
                 }
             }
         }
