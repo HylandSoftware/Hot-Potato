@@ -186,16 +186,6 @@ namespace HotPotato.Http.Default
         IEnumerator IEnumerable.GetEnumerator() => GetEnumerator();
     }
 
-    public class TextTypeTestData : IEnumerable<object[]>
-    {
-        public IEnumerator<object[]> GetEnumerator()
-        {
-            yield return new object[] { "specs/rdds/configurationservice/", HttpMethod.Get,
-            HttpStatusCode.OK, "https://api.hyland.com/ibpaf/rdds/configurations/48/content", "text/plain", "Configuration Content"};
-        }
-        IEnumerator IEnumerable.GetEnumerator() => GetEnumerator();
-    }
-
     public class CustomSpecTestData : IEnumerable<object[]>
     {
         public IEnumerator<object[]> GetEnumerator()
@@ -211,7 +201,7 @@ namespace HotPotato.Http.Default
             yield return new object[] { "specs/rawpotato/", HttpMethod.Get,
                     HttpStatusCode.OK, "https://api.hyland.com/risks/48/accountSnapshot", "text/csv",
                         @"booking_date;purpose;amount;currency;counter_iban;counter_bic;counter_holder;tags;category_id" +
-                        @"26.02.2019; 'ABSCHLUSS KEINE BELEG INFORMATIONEN, SIEHE GGF. KONTOAUSZUG !'; -9.55; EUR; ; ; ; ;" };
+                        @"26.07.2007; 'CONCLUSION NO INFORMATION, SEE GGF. STATEMENT OF ACCOUNT'; -7.32; EUR; ; ; ; ;" };
 
             yield return new object[] { "specs/rawpotato/", HttpMethod.Get,
                     HttpStatusCode.OK, "https://api.hyland.com/order/4/finishedFile/8", "application/pdf",
@@ -220,6 +210,9 @@ namespace HotPotato.Http.Default
             yield return new object[] { "specs/rawpotato/", HttpMethod.Get,
                     HttpStatusCode.OK, "https://api.hyland.com/order/4/finishedFile/8", "image/jpg",
                         "10101" };
+
+            yield return new object[] { "specs/rdds/configurationservice/", HttpMethod.Get,
+            HttpStatusCode.OK, "https://api.hyland.com/ibpaf/rdds/configurations/48/content", "text/plain", "Configuration Content"};
         }
         IEnumerator IEnumerable.GetEnumerator() => GetEnumerator();
     }
