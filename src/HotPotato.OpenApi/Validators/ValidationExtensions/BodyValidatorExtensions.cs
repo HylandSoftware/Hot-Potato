@@ -1,4 +1,4 @@
-﻿
+﻿using Newtonsoft.Json;
 using NJsonSchema;
 using System.Collections.Generic;
 using System.Xml;
@@ -13,11 +13,7 @@ namespace HotPotato.OpenApi.Validators
         public static List<ValidationError> ValidateXml(this JsonSchema4 @this, string xmlBody)
         {
             List<ValidationError> errorList = new List<ValidationError>();
-            IReadOnlyDictionary<string, JsonProperty> expectedProperties = @this.ActualSchema?.ActualProperties;
-            if (expectedProperties == null || expectedProperties.Count == 0)
-            {
-                return errorList;
-            }
+
             try
             {
                 XElement xElem = XElement.Parse(xmlBody);
@@ -28,6 +24,13 @@ namespace HotPotato.OpenApi.Validators
                 errorList.Add(valErr);
                 return errorList;
             }
+
+            IReadOnlyDictionary<string, JsonProperty> expectedProperties = @this.ActualSchema?.ActualProperties;
+            if (expectedProperties == null || expectedProperties.Count == 0)
+            {
+                return errorList;
+            }
+
             foreach (KeyValuePair<string, JsonProperty> property in expectedProperties)
             {
                 if (property.Value.IsRequired && !xmlBody.Contains(property.Key))
@@ -37,6 +40,13 @@ namespace HotPotato.OpenApi.Validators
                 }
             }
             return errorList;
+        }
+
+        //this will allow "text/" content types to be validated
+        //also cases like "application/pdf" will just need a string to be validated
+        public static string ToJsonText(this string @this)
+        {
+            return JsonConvert.SerializeObject(@this);
         }
     }
 }
