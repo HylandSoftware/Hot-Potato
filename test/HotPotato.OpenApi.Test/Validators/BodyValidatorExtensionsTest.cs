@@ -1,7 +1,5 @@
-﻿using HotPotato.Core.Http;
-using HotPotato.OpenApi.Models;
+﻿
 using NJsonSchema;
-using NSwag;
 using System.Collections.Generic;
 using System.Linq;
 using Xunit;
