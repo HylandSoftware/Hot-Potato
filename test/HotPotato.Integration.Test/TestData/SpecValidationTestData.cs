@@ -230,7 +230,7 @@ namespace HotPotato.Http.Default
         {
             yield return new object[] { "specs/rawpotato/", HttpMethod.Delete,
             HttpStatusCode.OK, "https://api.hyland.com/v1/48/plans/48", "application/xml",
-                @"<BaseResponse><Code>48</Code><Message>Deleted with a malformed xml</Message>", ValidationErrorKind.NotAnyOf };
+                @"<BaseResponse><Code>48</Code><Message>Deleted with a malformed xml</Message>", ValidationErrorKind.InvalidXml };
 
             yield return new object[] { "specs/rawpotato/", HttpMethod.Delete,
             HttpStatusCode.OK, "https://api.hyland.com/v1/48/plans/48", "application/xml",

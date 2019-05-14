@@ -178,7 +178,10 @@ namespace HotPotato.OpenApi.Validators
         /// <summary>
         /// No type of the types validates (check error details in <see cref="cref="MultiTypeValidationError"/>).
         /// </summary>
-        NoTypeValidates
-
+        NoTypeValidates,
+        /// <summary>
+        /// Xml body cannot be parsed
+        /// </summary>
+        InvalidXml
     }
 }

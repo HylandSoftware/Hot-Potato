@@ -21,19 +21,20 @@ namespace HotPotato.OpenApi.Validators
             try
             {
                 XElement xElem = XElement.Parse(xmlBody);
-                foreach (KeyValuePair<string, JsonProperty> property in expectedProperties)
-                {
-                    if (property.Value.IsRequired && !xmlBody.Contains(property.Key))
-                    {
-                        ValidationError valErr = new ValidationError($"Required property {property.Key} was not found in the response body", ValidationErrorKind.PropertyRequired, "", 0, 0);
-                        errorList.Add(valErr);
-                    }
-                }
             }
             catch (XmlException ex)
             {
-                ValidationError valErr = new ValidationError(ex.Message, ValidationErrorKind.NotAnyOf, "", ex.LineNumber, ex.LinePosition);
+                ValidationError valErr = new ValidationError(ex.Message, ValidationErrorKind.InvalidXml, "", ex.LineNumber, ex.LinePosition);
                 errorList.Add(valErr);
+                return errorList;
+            }
+            foreach (KeyValuePair<string, JsonProperty> property in expectedProperties)
+            {
+                if (property.Value.IsRequired && !xmlBody.Contains(property.Key))
+                {
+                    ValidationError valErr = new ValidationError($"Required property {property.Key} was not found in the response body", ValidationErrorKind.PropertyRequired, "", 0, 0);
+                    errorList.Add(valErr);
+                }
             }
             return errorList;
         }
