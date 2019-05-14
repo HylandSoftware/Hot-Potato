@@ -48,7 +48,7 @@ namespace HotPotato.Core.Http.Default
                 string bodyString = response.ToBodyString();
 
                 Assert.Equal("utf-8", response.ContentType.CharSet);
-                Assert.Equal("application/json", response.ContentType.MediaType);
+                Assert.Equal("application/json", response.ContentType.Type);
                 Assert.Equal(bodyString, expectString);
             }
         }

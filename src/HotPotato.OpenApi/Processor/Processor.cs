@@ -25,7 +25,7 @@ namespace HotPotato.OpenApi.Processor
                 .WithPath(pair.Request.Uri.AbsolutePath)
                 .WithMethod(pair.Request.Method)
                 .WithStatusCode(pair.Response.StatusCode)
-                .WithBody(pair.Response.ToBodyString(), pair.Response.ContentType.ToString())
+                .WithBody(pair.Response.ToBodyString(), pair.Response.ContentType)
                 .WithHeaders(pair.Response.Headers)
                 .Build();
 

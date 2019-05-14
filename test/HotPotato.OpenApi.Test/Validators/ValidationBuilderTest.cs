@@ -1,4 +1,4 @@
-﻿
+﻿using HotPotato.Core.Http;
 using HotPotato.OpenApi.Results;
 using HotPotato.OpenApi.SpecificationProvider;
 using Moq;
@@ -37,7 +37,7 @@ namespace HotPotato.OpenApi.Validators
 
             HttpStatusCode expectedStatCode = HttpStatusCode.Ambiguous;
             string expectedBody = "{'perfectSquare': '16'}";
-            ValidationStrategy result = (ValidationStrategy)subject.WithStatusCode(expectedStatCode).WithBody(expectedBody, "application/json").Build();
+            ValidationStrategy result = (ValidationStrategy)subject.WithStatusCode(expectedStatCode).WithBody(expectedBody, new HttpContentType("application/json")).Build();
 
             Assert.Equal(Convert.ToInt32(expectedStatCode), result.StatusCodeValidator.StatusCode);
             Assert.Equal(expectedBody, result.StatusCodeValidator.BodyString);
@@ -48,7 +48,7 @@ namespace HotPotato.OpenApi.Validators
             ValidationBuilder subject = new ValidationBuilder(Mock.Of<IResultCollector>(), Mock.Of<ISpecificationProvider>());
 
             string expected = "{'perfectSquare': '64'}";
-            ValidationStrategy result = (ValidationStrategy)subject.WithBody(expected, "application/json").Build();
+            ValidationStrategy result = (ValidationStrategy)subject.WithBody(expected, new HttpContentType("application/json")).Build();
 
             Assert.Equal(expected, result.BodyValidator.BodyString);
         }

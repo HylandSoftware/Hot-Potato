@@ -159,10 +159,6 @@ namespace HotPotato.Core.Http
             {
                 return String.Empty;
             }
-            else if (@this.ContentType.CharSet == null)
-            {
-                @this.ContentType.CharSet = String.Empty;
-            }
             Encoding encode = null;
             switch (@this.ContentType.CharSet)
             {

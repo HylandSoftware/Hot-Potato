@@ -1,5 +1,6 @@
 ﻿
 using HotPotato.OpenApi.Models;
+using HotPotato.Core.Http;
 using Newtonsoft.Json;
 using NJsonSchema;
 using NSwag;
@@ -10,9 +11,9 @@ namespace HotPotato.OpenApi.Validators
     internal class BodyValidator
     {
         public string BodyString { get; private set; }
-        public string ContentType { get; }
+        public HttpContentType ContentType { get; }
 
-        public BodyValidator(string bodyString, string contentType)
+        public BodyValidator(string bodyString, HttpContentType contentType)
         {
             if (string.IsNullOrWhiteSpace(bodyString))
             {
@@ -34,9 +35,9 @@ namespace HotPotato.OpenApi.Validators
             if (swagResp.Content != null && swagResp.Content.Count > 0)
             {
                 Dictionary<string, OpenApiMediaType> contentSchemas = SanitizeContentTypes(swagResp.Content);
-                if (contentSchemas.ContainsKey(ContentType))
+                if (contentSchemas.ContainsKey(ContentType.Type))
                 {
-                    specBody = contentSchemas[ContentType].Schema;
+                    specBody = contentSchemas[ContentType.Type].Schema;
                 }
             }
 
@@ -49,13 +50,13 @@ namespace HotPotato.OpenApi.Validators
                 return new InvalidResult(Reason.MissingBody);
             }
 
-            if (!ContentType.ToLower().Contains("json") && !ContentType.ToLower().Contains("xml"))
+            if (!ContentType.Type.ToLower().Contains("json") && !ContentType.Type.ToLower().Contains("xml"))
             {
                 //this will allow "text/" content types to be validated
                 //also cases like "application/pdf" will just need a string to be validated
                 BodyString = JsonConvert.SerializeObject(BodyString);
             }
-            else if (ContentType.ToLower().Contains("xml"))
+            else if (ContentType.Type.ToLower().Contains("xml"))
             {
                 var xmlErrList = specBody.ValidateXml(BodyString);
                 if (xmlErrList.Count == 0)

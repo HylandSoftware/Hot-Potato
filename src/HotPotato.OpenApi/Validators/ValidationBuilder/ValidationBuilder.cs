@@ -12,7 +12,7 @@ namespace HotPotato.OpenApi.Validators
         private HttpMethod Method { get; set; }
         private HttpStatusCode StatusCode { get; set; }
         private string Body { get; set; }
-        private string ContentType { get; set; }
+        private HttpContentType ContentType { get; set; }
         private HttpHeaders Headers { get; set; }
 
         private IResultCollector ResultCollector { get; }
@@ -42,18 +42,10 @@ namespace HotPotato.OpenApi.Validators
             return this;
         }
 
-        public ValidationBuilder WithBody(string body, string contentType)
+        public ValidationBuilder WithBody(string body, HttpContentType contentType)
         {
             Body = body;
-            if (contentType.Contains(";"))
-            {
-                //Sanitize content-types for uniform matching later on
-                ContentType = contentType.Split(";")[0];
-            }
-            else
-            {
-                ContentType = contentType;
-            }
+            ContentType = contentType;
             return this;
         }
 
