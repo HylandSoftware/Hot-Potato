@@ -10,15 +10,7 @@ namespace HotPotato.OpenApi.Validators
     {
         public JsonBodyValidator(string bodyString, HttpContentType contentType)
         {
-            if (string.IsNullOrWhiteSpace(bodyString))
-            {
-                BodyString = "";
-            }
-            else
-            {
-                BodyString = bodyString;
-            }
-
+            BodyString = bodyString;
             ContentType = contentType;
         }
 
@@ -40,7 +32,7 @@ namespace HotPotato.OpenApi.Validators
             {
                 return new InvalidResult(Reason.MissingSpecBody);
             }
-            else if (BodyString == "")
+            else if (string.IsNullOrWhiteSpace(BodyString))
             {
                 return new InvalidResult(Reason.MissingBody);
             }
