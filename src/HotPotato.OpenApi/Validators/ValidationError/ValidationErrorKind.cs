@@ -112,7 +112,7 @@ namespace HotPotato.OpenApi.Validators
         /// </summary>
         NotAnyOf,
         /// <summary>
-        /// The obeject is not all of the given schemas
+        /// The object is not all of the given schemas
         /// </summary>
         NotAllOf,
         /// <summary>

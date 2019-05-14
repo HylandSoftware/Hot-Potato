@@ -150,9 +150,11 @@ components:
     BaseResponse:
       type: object
       properties:
-        ErrorCode:
-          description: error code
+        Code:
+          description: identifier code
           type: string
         Message:
-          description: sucessfully or failure
+          description: deletion status
           type: string
+      required:
+        - Code

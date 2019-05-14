@@ -4,7 +4,6 @@ using Newtonsoft.Json;
 using NJsonSchema;
 using NSwag;
 using System.Collections.Generic;
-using System.Xml;
 
 namespace HotPotato.OpenApi.Validators
 {
@@ -34,7 +33,7 @@ namespace HotPotato.OpenApi.Validators
             //Conditional for matching schemas with multiple content-type returns
             if (swagResp.Content != null && swagResp.Content.Count > 0)
             {
-                var contentSchemas = SanitizeContentTypes(swagResp.Content);
+                Dictionary<string, OpenApiMediaType> contentSchemas = SanitizeContentTypes(swagResp.Content);
                 if (contentSchemas.ContainsKey(ContentType))
                 {
                     specBody = contentSchemas[ContentType].Schema;
@@ -45,14 +44,29 @@ namespace HotPotato.OpenApi.Validators
             {
                 return new InvalidResult(Reason.MissingSpecBody);
             }
-            else if(BodyString == "")
+            else if (BodyString == "")
             {
                 return new InvalidResult(Reason.MissingBody);
             }
 
-            if (!ContentType.ToLower().Contains("json"))
+            if (!ContentType.ToLower().Contains("json") && !ContentType.ToLower().Contains("xml"))
             {
-                ConvertBodyString();
+                //this will allow "text/" content types to be validated
+                //also cases like "application/pdf" will just need a string to be validated
+                BodyString = JsonConvert.SerializeObject(BodyString);
+            }
+            else if (ContentType.ToLower().Contains("xml"))
+            {
+                var xmlErrList = specBody.ValidateXml(BodyString);
+                if (xmlErrList.Count == 0)
+                {
+                    return new ValidResult();
+                }
+                else
+                {
+                    ValidationError[] xmlErrorArr = xmlErrList.ToArray();
+                    return new InvalidResult(Reason.InvalidBody, xmlErrorArr);
+                }
             }
 
             ICollection<NJsonSchema.Validation.ValidationError> errors = specBody.Validate(BodyString);
@@ -65,22 +79,6 @@ namespace HotPotato.OpenApi.Validators
                 List<ValidationError> errList = errors.ToValidationErrorList();
                 ValidationError[] errorArr = errList.ToArray();
                 return new InvalidResult(Reason.InvalidBody, errorArr);
-            }
-        }
-
-        internal void ConvertBodyString()
-        {
-            if (ContentType.Contains("xml"))
-            {
-                XmlDocument xmlDoc = new XmlDocument();
-                xmlDoc.LoadXml(BodyString);
-                BodyString = JsonConvert.SerializeXmlNode(xmlDoc);
-            }
-            else
-            {
-                //this will allow "text/" content types to be validated
-                //also cases like "application/pdf" will just need a string to be validated
-                BodyString = JsonConvert.SerializeObject(BodyString);
             }
         }
 

@@ -60,7 +60,8 @@ namespace HotPotato.OpenApi.Validators
 
         [Theory]
         [ClassData(typeof(SpecBodyInvalidTestData))]
-        public async void BodyValidator_CreatesInvalidResult(string specSubPath, HttpMethod reqMethod, HttpStatusCode statusCode, string endpointURI, string contentType, object bodyJson)
+        public async void BodyValidator_CreatesInvalidResult(string specSubPath, HttpMethod reqMethod, HttpStatusCode statusCode, 
+            string endpointURI, string contentType, object bodyJson, ValidationErrorKind expectedKind1, ValidationErrorKind expectedKind2)
         {
 
             string specPath = SpecPath(specSubPath, "specification.yaml");
@@ -89,8 +90,8 @@ namespace HotPotato.OpenApi.Validators
                     Result result = results.ElementAt(0);
 
                     Assert.Equal(Reason.InvalidBody, result.Reason);
-                    Assert.Equal(ValidationErrorKind.DateTimeExpected, result.ValidationErrors[0].Kind);
-                    Assert.Equal(ValidationErrorKind.IntegerExpected, result.ValidationErrors[1].Kind);
+                    Assert.Equal(expectedKind1, result.ValidationErrors[0].Kind);
+                    Assert.Equal(expectedKind2, result.ValidationErrors[1].Kind);
                 }
             }
 
@@ -161,8 +162,9 @@ namespace HotPotato.OpenApi.Validators
         }
 
         [Theory]
-        [ClassData(typeof(ByteStringNegTestData))]
-        public async void BodyValidator_CreatesInvalidResultWithInvalidByteString(string specSubPath, HttpMethod reqMethod, HttpStatusCode statusCode, string endpointURI, string contentType, string bodyString)
+        [ClassData(typeof(CustomSpecNegTestData))]
+        public async void BodyValidator_CreatesInvalidResultWithDiffTypes(string specSubPath, HttpMethod reqMethod, 
+            HttpStatusCode statusCode, string endpointURI, string contentType, string bodyString, ValidationErrorKind errorKind)
         {
             string specPath = SpecPath(specSubPath, "specification.yaml");
             ServiceProvider provider = GetServiceProvider(specPath);
@@ -187,7 +189,7 @@ namespace HotPotato.OpenApi.Validators
                     Result result = results.ElementAt(0);
 
                     Assert.Equal(State.Fail, result.State);
-                    Assert.Equal(ValidationErrorKind.Base64Expected, result.ValidationErrors[0].Kind);
+                    Assert.Equal(errorKind, result.ValidationErrors[0].Kind);
                 }
             }
         }
