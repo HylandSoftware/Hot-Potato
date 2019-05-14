@@ -20,7 +20,7 @@ namespace HotPotato.OpenApi.Validators
             SwaggerResponse swagResp = new SwaggerResponse();
             swagResp.ActualResponse.Schema = schema;
 
-            BodyValidator subject = new BodyValidator(AValidBody, new HttpContentType("application/json"));
+            BodyValidator subject = BodyValidatorFactory.Create(AValidBody, new HttpContentType("application/json"));
             IValidationResult result = subject.Validate(swagResp);
 
             Assert.True(result.Valid);
@@ -33,7 +33,7 @@ namespace HotPotato.OpenApi.Validators
             SwaggerResponse swagResp = new SwaggerResponse();
             swagResp.ActualResponse.Schema = schema;
 
-            BodyValidator subject = new BodyValidator(AnInvalidBody, new HttpContentType("application/json"));
+            BodyValidator subject = BodyValidatorFactory.Create(AnInvalidBody, new HttpContentType("application/json"));
             InvalidResult result = (InvalidResult)subject.Validate(swagResp);
 
             Assert.False(result.Valid);
@@ -48,7 +48,7 @@ namespace HotPotato.OpenApi.Validators
             SwaggerResponse swagResp = new SwaggerResponse();
             swagResp.ActualResponse.Schema = schema;
 
-            BodyValidator subject = new BodyValidator(null, new HttpContentType("application/json"));
+            BodyValidator subject = BodyValidatorFactory.Create(null, new HttpContentType("application/json"));
             InvalidResult result = (InvalidResult)subject.Validate(swagResp);
 
             Assert.False(result.Valid);
@@ -61,7 +61,7 @@ namespace HotPotato.OpenApi.Validators
             SwaggerResponse swagResp = new SwaggerResponse();
             swagResp.ActualResponse.Schema = null;
 
-            BodyValidator subject = new BodyValidator(AValidBody, new HttpContentType("application/json"));
+            BodyValidator subject = BodyValidatorFactory.Create(AValidBody, new HttpContentType("application/json"));
             InvalidResult result = (InvalidResult)subject.Validate(swagResp);
 
             Assert.False(result.Valid);
@@ -75,7 +75,7 @@ namespace HotPotato.OpenApi.Validators
             SwaggerResponse swagResp = new SwaggerResponse();
             swagResp.ActualResponse.Schema = schema;
 
-            BodyValidator subject = new BodyValidator("Content", new HttpContentType("text/plain"));
+            BodyValidator subject = BodyValidatorFactory.Create("Content", new HttpContentType("text/plain"));
 
             Assert.True(subject.Validate(swagResp).Valid);
         }
@@ -87,7 +87,7 @@ namespace HotPotato.OpenApi.Validators
             SwaggerResponse swagResp = new SwaggerResponse();
             swagResp.ActualResponse.Schema = schema;
 
-            BodyValidator subject = new BodyValidator(AValidXmlBody, new HttpContentType("application/xml"));
+            BodyValidator subject = BodyValidatorFactory.Create(AValidXmlBody, new HttpContentType("application/xml"));
 
             Assert.True(subject.Validate(swagResp).Valid);
         }

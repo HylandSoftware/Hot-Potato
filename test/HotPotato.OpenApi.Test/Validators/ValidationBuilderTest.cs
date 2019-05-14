@@ -17,7 +17,7 @@ namespace HotPotato.OpenApi.Validators
             ValidationBuilder subject = new ValidationBuilder(Mock.Of<IResultCollector>(), Mock.Of<ISpecificationProvider>());
 
             string expected = "deficiencies/deficiencies";
-            ValidationStrategy result = (ValidationStrategy)subject.WithPath(expected).Build();
+            ValidationStrategy result = (ValidationStrategy)subject.WithPath(expected).WithBody("", new HttpContentType("", "")).Build();
 
             Assert.Equal(expected, result.PathValidator.Path);
         }
@@ -26,7 +26,7 @@ namespace HotPotato.OpenApi.Validators
         {
             ValidationBuilder subject = new ValidationBuilder(Mock.Of<IResultCollector>(), Mock.Of<ISpecificationProvider>());
 
-            ValidationStrategy result = (ValidationStrategy)subject.WithMethod(HttpMethod.Trace).Build();
+            ValidationStrategy result = (ValidationStrategy)subject.WithMethod(HttpMethod.Trace).WithBody("", new HttpContentType("", "")).Build();
 
             Assert.Equal("trace", result.MethodValidator.Method);
         }
@@ -57,10 +57,9 @@ namespace HotPotato.OpenApi.Validators
         {
             ValidationBuilder subject = new ValidationBuilder(Mock.Of<IResultCollector>(), Mock.Of<ISpecificationProvider>());
 
-            Core.Http.HttpHeaders expected = new Core.Http.HttpHeaders();
+            HttpHeaders expected = new HttpHeaders();
             expected.Add("perfectSquare", "36");
-            ValidationStrategy result = (ValidationStrategy)subject.WithHeaders(expected).Build();
-
+            ValidationStrategy result = (ValidationStrategy)subject.WithHeaders(expected).WithBody("", new HttpContentType("", "")).Build();
             Assert.Equal(expected, result.HeaderValidator.Headers);
         }
     }

@@ -1,7 +1,7 @@
 openapi: '3.0.0'
 info:
   version: 1.0.0-draft1
-  title: Raw Potato Faux API
+  title: Raw Potato Test API
 paths:
   '/':
     get:

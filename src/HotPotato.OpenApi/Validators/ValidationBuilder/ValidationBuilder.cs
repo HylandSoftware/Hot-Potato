@@ -61,7 +61,7 @@ namespace HotPotato.OpenApi.Validators
             val.PathValidator = new PathValidator(Path);
             val.MethodValidator = new MethodValidator(Method);
             val.StatusCodeValidator = new StatusCodeValidator(StatusCode, Body);
-            val.BodyValidator = new BodyValidator(Body, ContentType);
+            val.BodyValidator = BodyValidatorFactory.Create(Body, ContentType);
             val.HeaderValidator = new HeaderValidator(Headers);
             return val;
         }

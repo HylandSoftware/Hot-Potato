@@ -1,0 +1,64 @@
+﻿
+using HotPotato.OpenApi.Models;
+using HotPotato.Core.Http;
+using NJsonSchema;
+using NSwag;
+using System.Collections.Generic;
+
+namespace HotPotato.OpenApi.Validators
+{
+    internal class TextBodyValidator : BodyValidator
+    {
+        public TextBodyValidator(string bodyString, HttpContentType contentType)
+        {
+            if (string.IsNullOrWhiteSpace(bodyString))
+            {
+                BodyString = "";
+            }
+            else
+            {
+                BodyString = bodyString;
+            }
+
+            ContentType = contentType;
+        }
+
+        public override IValidationResult Validate(SwaggerResponse swagResp)
+        {
+            JsonSchema4 specBody = swagResp.ActualResponse.Schema;
+
+            //Conditional for matching schemas with multiple content-type returns
+            if (swagResp.Content != null && swagResp.Content.Count > 0)
+            {
+                Dictionary<string, OpenApiMediaType> contentSchemas = SanitizeContentTypes(swagResp.Content);
+                if (contentSchemas.ContainsKey(ContentType.Type))
+                {
+                    specBody = contentSchemas[ContentType.Type].Schema;
+                }
+            }
+
+            if (specBody == null)
+            {
+                return new InvalidResult(Reason.MissingSpecBody);
+            }
+            else if (BodyString == "")
+            {
+                return new InvalidResult(Reason.MissingBody);
+            }
+
+            BodyString = BodyString.ToJsonText();
+
+            ICollection<NJsonSchema.Validation.ValidationError> errors = specBody.Validate(BodyString);
+            if (errors == null || errors.Count == 0)
+            {
+                return new ValidResult();
+            }
+            else
+            {
+                List<ValidationError> errList = errors.ToValidationErrorList();
+                ValidationError[] errorArr = errList.ToArray();
+                return new InvalidResult(Reason.InvalidBody, errorArr);
+            }
+        }
+    }
+}
