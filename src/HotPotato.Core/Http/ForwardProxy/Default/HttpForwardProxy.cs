@@ -18,7 +18,7 @@ namespace HotPotato.Core.Http.ForwardProxy.Default
             //here you can load it from your custom config settings 
             try
             {
-                this.ProxyUri = new Uri(configuration.proxyAddress);
+                this.ProxyUri = new Uri(configuration.ProxyAddress);
             }
             catch (ArgumentNullException)
             {
