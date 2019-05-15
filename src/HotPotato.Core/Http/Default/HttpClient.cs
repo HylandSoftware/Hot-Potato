@@ -27,7 +27,7 @@ namespace HotPotato.Core.Http.Default
             }
             else
             {
-                this.client = new System.Net.Http.HttpClient();
+                this.client = client;
             }
         }
 
