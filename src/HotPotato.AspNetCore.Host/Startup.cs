@@ -1,8 +1,8 @@
 using HotPotato.AspNetCore.Middleware;
 using HotPotato.Core.Http;
+using HotPotato.Core.Http.ForwardProxy;
 using HotPotato.Core.Processor;
 using HotPotato.Core.Proxy;
-using HotPotato.Core.Http.Default;
 using HotPotato.OpenApi.Results;
 using HotPotato.OpenApi.Processor;
 using HotPotato.OpenApi.SpecificationProvider;
@@ -12,6 +12,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using System;
+using System.Net;
 
 namespace HotPotato.AspNetCore.Host
 {
@@ -39,17 +40,19 @@ namespace HotPotato.AspNetCore.Host
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddScoped<IProxy, HotPotato.Core.Proxy.Default.Proxy>();
-            services.AddScoped<IHttpClient, HttpClient>();
+            services.AddScoped<IHttpClient, HotPotato.Core.Http.Default.HttpClient>();
             services.AddMvcCore().AddJsonFormatters();
-            services.AddHttpClient<IHttpClient, HttpClient>(client =>
+            services.AddSingleton<HttpForwardProxyConfig>(Configuration.GetSection("ForwardProxy").Get<HttpForwardProxyConfig>());
+            services.AddSingleton<IWebProxy, Core.Http.ForwardProxy.Default.HttpForwardProxy>();
+            services.AddSingleton<System.Net.Http.HttpClientHandler, System.Net.Http.HttpClientHandler>();
+            services.AddHttpClient<IHttpClient, HotPotato.Core.Http.Default.HttpClient>(client =>
             {
-                client.BaseAddress = new Uri(Configuration["RemoteEndpoint"]);
+                client.BaseAddress = new Uri(Configuration["RemoteEndpoint"]);                
             });
             services.AddSingleton<ISpecificationProvider, SpecificationProvider>();
             services.AddSingleton<IResultCollector, ResultCollector>();
 
             services.AddTransient<IProcessor, Processor>();
-
         }
     }
 }

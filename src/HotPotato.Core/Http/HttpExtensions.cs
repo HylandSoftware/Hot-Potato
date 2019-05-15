@@ -3,6 +3,7 @@ using Microsoft.Extensions.Primitives;
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.IO.Compression;
 using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Text;
@@ -156,6 +157,13 @@ namespace HotPotato.Core.Http
             {
                 @this.ContentType.CharSet = String.Empty;
             }
+            string contentEncoding = @this.Headers["Content-Encoding"][0];
+            if (@this.Headers["Content-Encoding"].Count > 1)
+            {
+                throw new System.NotImplementedException("Multiple values for Content-Encoding were received on the response, and the response could not be decoded.");
+            }
+            byte[] decompressedContent = HttpExtensions.DecodeCompressedContent(@this.Content, contentEncoding);
+
             Encoding encode = null;
             switch (@this.ContentType.CharSet)
             {
@@ -175,7 +183,48 @@ namespace HotPotato.Core.Http
                     encode = Encoding.Default;
                     break;
             }
-            return encode.GetString(@this.Content);
+            return encode.GetString(decompressedContent);
+        }
+
+        private static byte[] DecodeCompressedContent(byte[] compressedContent, string contentEncoding)
+        {
+            byte[] decodedBytes;
+            using (MemoryStream responseContentStream = new MemoryStream(compressedContent))
+            {
+                using (MemoryStream decompressedMemoryStream = new MemoryStream())
+                {
+                    switch (contentEncoding)
+                    {
+                        case "br":
+                            using (BrotliStream decompressionStream = new BrotliStream(responseContentStream, CompressionMode.Decompress))
+                            {
+                                decompressionStream.CopyTo(decompressedMemoryStream);
+                                decodedBytes = decompressedMemoryStream.GetBuffer();
+                            }
+                            break;
+                        case "deflate":
+                            using (DeflateStream decompressionStream = new DeflateStream(responseContentStream, CompressionMode.Decompress))
+                            {
+                                decompressionStream.CopyTo(decompressedMemoryStream);
+                                decodedBytes = decompressedMemoryStream.GetBuffer();
+                            }
+                            break;
+                        case "gzip":
+                            using (GZipStream decompressionStream = new GZipStream(responseContentStream, CompressionMode.Decompress))
+                            {
+                                decompressionStream.CopyTo(decompressedMemoryStream);
+                                decodedBytes = decompressedMemoryStream.GetBuffer();
+                            }
+                            break;
+
+                        default:
+                            throw new System.NotImplementedException(String.Format(
+                                "The response encoding \"{0}\" was not recognized and is not supported, and the response could not be read.", contentEncoding));
+                            break;
+                    }
+                }
+            }
+            return decodedBytes;
         }
     }
 }
