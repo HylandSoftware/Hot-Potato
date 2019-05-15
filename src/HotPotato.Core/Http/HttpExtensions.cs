@@ -151,18 +151,24 @@ namespace HotPotato.Core.Http
         {
             if (@this.Content == null || @this.ContentType == null)
             {
-                return String.Empty;
+                return string.Empty;
             }
             else if (@this.ContentType.CharSet == null)
             {
-                @this.ContentType.CharSet = String.Empty;
+                @this.ContentType.CharSet = string.Empty;
             }
-            string contentEncoding = @this.Headers["Content-Encoding"][0];
-            if (@this.Headers["Content-Encoding"].Count > 1)
+
+            byte[] bodyContent = @this.Content;
+
+            if (@this.Headers.ContainsKey("Content-Encoding"))
             {
-                throw new System.NotImplementedException("Multiple values for Content-Encoding were received on the response, and the response could not be decoded.");
+                string contentEncoding = @this.Headers["Content-Encoding"][0];
+                if (@this.Headers["Content-Encoding"].Count > 1)
+                {
+                    throw new NotImplementedException("Multiple values for Content-Encoding were received on the response, and the response could not be decoded.");
+                }
+                bodyContent = DecodeCompressedContent(@this.Content, contentEncoding);
             }
-            byte[] decompressedContent = HttpExtensions.DecodeCompressedContent(@this.Content, contentEncoding);
 
             Encoding encode = null;
             switch (@this.ContentType.CharSet)
@@ -183,7 +189,7 @@ namespace HotPotato.Core.Http
                     encode = Encoding.Default;
                     break;
             }
-            return encode.GetString(decompressedContent);
+            return encode.GetString(bodyContent);
         }
 
         private static byte[] DecodeCompressedContent(byte[] compressedContent, string contentEncoding)
@@ -218,9 +224,8 @@ namespace HotPotato.Core.Http
                             break;
 
                         default:
-                            throw new System.NotImplementedException(String.Format(
+                            throw new NotImplementedException(string.Format(
                                 "The response encoding \"{0}\" was not recognized and is not supported, and the response could not be read.", contentEncoding));
-                            break;
                     }
                 }
             }
