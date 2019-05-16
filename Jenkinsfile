@@ -21,21 +21,21 @@ pipeline {
             }
         }
         
-		stage("NuGet-Restore") {
-            steps {
-                container("builder") {
-                    // sh 'chmod +x ./build.sh'
-                    // sh './build.sh -t NuGet-Restore'
-                    sh 'dotnet restore'
-                }
-            }
-        }
+		// stage("NuGet-Restore") {
+        //     steps {
+        //         container("builder") {
+        //             // sh 'chmod +x ./build.sh'
+        //             // sh './build.sh -t NuGet-Restore'
+        //             sh 'dotnet restore'
+        //         }
+        //     }
+        // }
 
         stage("Build") {
             steps {
                 container("builder") {
                     //sh './build.sh -t Build'
-                    sh 'dotnet build --no-restore'
+                    sh 'dotnet build'
                 }
             }
         }
