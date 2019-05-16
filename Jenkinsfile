@@ -24,7 +24,7 @@ pipeline {
         stage("Build") {
             steps {
                 container("builder") {
-                    sh 'dotnet build -p:Version=${IMAGE_VERSION}'
+                    sh 'dotnet build --configuration Release -p:Version=${IMAGE_VERSION}'
                 }
             }
         }
