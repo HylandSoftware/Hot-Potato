@@ -7,11 +7,16 @@ pipeline {
     }
 
     stages {
-		stage("NuGet-Restore") {
+        stage('Version') {
+            environment {
+                IGNORE_NORMALISATION_GIT_HEAD_MOVE = "1"
+            }
             steps {
-                container("builder") {
-                    sh 'chmod +x ./build.sh'
-                    sh './build.sh -t NuGet-Restore'
+                container('gitversion') {
+                    script {
+                        env.IMAGE_VERSION = sh(script: 'mono /usr/lib/GitVersion/GitVersion.exe /output json /showvariable NuGetVersionV2', returnStdout: true).trim()
+                        echo IMAGE_VERSION 
+                    }
                 }
             }
         }
@@ -19,7 +24,7 @@ pipeline {
         stage("Build") {
             steps {
                 container("builder") {
-                    sh './build.sh -t Build'
+                    sh 'dotnet build --configuration Release -p:Version=${IMAGE_VERSION}'
                 }
             }
         }
@@ -27,7 +32,9 @@ pipeline {
         stage("Run-Unit-Tests") {
             steps {
                 container("builder") {
-                    sh './build.sh -t Run-Unit-Tests'
+                    sh 'dotnet test ./test/HotPotato.Core.Test/HotPotato.Core.Test.csproj --configuration Release -r core-test-results.xml --no-restore --no-build'
+                    sh 'dotnet test ./test/HotPotato.AspNetCore.Middleware.Test/HotPotato.AspNetCore.Middleware.Test.csproj --configuration Release -r middleware-test-results.xml --no-restore --no-build'
+                    sh 'dotnet test ./test/HotPotato.OpenApi.Test/HotPotato.OpenApi.Test.csproj --configuration Release -r openapi-test-results.xml --no-restore --no-build'
                 }
             }
         }
@@ -35,7 +42,7 @@ pipeline {
 		stage("Run-Integration-Tests") {
             steps {
                 container("builder") {
-                    sh './build.sh -t Run-Integration-Tests'
+                    sh 'dotnet test ./test/HotPotato.Integration.Test/HotPotato.Integration.Test.csproj --configuration Release -r integration-test-results.xml --no-restore --no-build'
                 }
             }
         }
@@ -43,7 +50,7 @@ pipeline {
         stage("Run-E2E-Tests") {
             steps {
                 container("builder") {
-                    sh './build.sh -t Run-E2E-Tests'
+                    sh 'dotnet test ./test/HotPotato.E2E.Test/HotPotato.E2E.Test.csproj --configuration Release -r E2E-test-results.xml --no-restore --no-build'
                 }
             }
         }
