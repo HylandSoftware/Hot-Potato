@@ -32,9 +32,9 @@ pipeline {
         stage("Run-Unit-Tests") {
             steps {
                 container("builder") {
-                    sh 'dotnet test ./test/HotPotato.Core.Test/HotPotato.Core.Test.csproj -r core-test-results.xml --no-restore --no-build'
-                    sh 'dotnet test ./test/HotPotato.AspNetCore.Middleware.Test/HotPotato.AspNetCore.Middleware.Test.csproj -r middleware-test-results.xml --no-restore --no-build'
-                    sh 'dotnet test ./test/HotPotato.OpenApi.Test/HotPotato.OpenApi.Test.csproj -r openapi-test-results.xml --no-restore --no-build'
+                    sh 'dotnet test ./test/HotPotato.Core.Test/HotPotato.Core.Test.csproj --configuration Release -r core-test-results.xml --no-restore --no-build'
+                    sh 'dotnet test ./test/HotPotato.AspNetCore.Middleware.Test/HotPotato.AspNetCore.Middleware.Test.csproj --configuration Release -r middleware-test-results.xml --no-restore --no-build'
+                    sh 'dotnet test ./test/HotPotato.OpenApi.Test/HotPotato.OpenApi.Test.csproj --configuration Release -r openapi-test-results.xml --no-restore --no-build'
                 }
             }
         }
@@ -42,7 +42,7 @@ pipeline {
 		stage("Run-Integration-Tests") {
             steps {
                 container("builder") {
-                    sh 'dotnet test ./test/HotPotato.Integration.Test/HotPotato.Integration.Test.csproj -r integration-test-results.xml --no-restore --no-build'
+                    sh 'dotnet test ./test/HotPotato.Integration.Test/HotPotato.Integration.Test.csproj --configuration Release -r integration-test-results.xml --no-restore --no-build'
                 }
             }
         }
@@ -50,7 +50,7 @@ pipeline {
         stage("Run-E2E-Tests") {
             steps {
                 container("builder") {
-                    sh 'dotnet test ./test/HotPotato.E2E.Test/HotPotato.E2E.Test.csproj -r E2E-test-results.xml --no-restore --no-build'
+                    sh 'dotnet test ./test/HotPotato.E2E.Test/HotPotato.E2E.Test.csproj --configuration Release -r E2E-test-results.xml --no-restore --no-build'
                 }
             }
         }
