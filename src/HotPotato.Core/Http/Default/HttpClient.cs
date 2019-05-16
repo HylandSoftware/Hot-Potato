@@ -17,7 +17,7 @@ namespace HotPotato.Core.Http.Default
         public HttpClient(System.Net.Http.HttpClient client, IWebProxy proxy = null, ForwardProxy.HttpForwardProxyConfig proxyConfig = null)
         {
             _ = client ?? throw new ArgumentNullException(nameof(client));
-            if (proxyConfig.Enabled)
+            if (proxyConfig != null && proxyConfig.Enabled)
             { 
                 System.Net.Http.HttpClientHandler handler = new System.Net.Http.HttpClientHandler
                 {
@@ -27,7 +27,7 @@ namespace HotPotato.Core.Http.Default
             }
             else
             {
-                this.client = new System.Net.Http.HttpClient();
+                this.client = client;
             }
         }
 
