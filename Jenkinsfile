@@ -44,7 +44,9 @@ pipeline {
             steps {
                 container("builder") {
                     //sh './build.sh -t Run-Unit-Tests'
-                    sh 'dotnet test '
+                    sh 'dotnet test ~/../test/HotPotato.Core.Test/HotPotato.Core.Test.csproj -r core-test-results.xml --no-restore --no-build'
+                    sh 'dotnet test ~/../test/HotPotato.AspNetCore.Middleware.Test/HotPotato.AspNetCore.Middleware.Test.csproj -r middleware-test-results.xml --no-restore --no-build'
+                    sh 'dotnet test ~/../test/HotPotato.OpenApi.Test/HotPotato.OpenApi.Test.csproj -r openapi-test-results.xml --no-restore --no-build'
                 }
             }
         }
@@ -52,7 +54,8 @@ pipeline {
 		stage("Run-Integration-Tests") {
             steps {
                 container("builder") {
-                    sh './build.sh -t Run-Integration-Tests'
+                    //sh './build.sh -t Run-Integration-Tests'
+                    sh 'dotnet test ~/../test/HotPotato.Integration.Test/HotPotato.Integration.Test.csproj -r integration-test-results.xml --no-restore --no-build'
                 }
             }
         }
@@ -60,7 +63,8 @@ pipeline {
         stage("Run-E2E-Tests") {
             steps {
                 container("builder") {
-                    sh './build.sh -t Run-E2E-Tests'
+                    //sh './build.sh -t Run-E2E-Tests'
+                    sh 'dotnet test ~/../test/HotPotato.E2E.Test/HotPotato.E2E.Test.csproj -r E2E-test-results.xml --no-restore --no-build'
                 }
             }
         }
