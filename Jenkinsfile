@@ -69,7 +69,7 @@ pipeline {
                     sh 'dotnet pack ./src/HotPotato.Core/HotPotato.Core.csproj -c Release --no-build --no-restore'
                     sh 'dotnet pack ./src/HotPotato.OpenApi/HotPotato.OpenApi.csproj -c Release --no-build --no-restore'
 
-                    sh 'dotnet nuget push *.nupkg -k ${API_KEY} -s https://proget.onbase.net/nuget/TestFeed/' //https://proget.onbase.net/nuget/NuGet/
+                    sh 'dotnet nuget push ./src/HotPotato.AspNetCore.Host/bin/Release/HotPotato.AspNetCore.Host.1.0.0.nupkg -k ${API_KEY} -s https://proget.onbase.net/nuget/TestFeed/' //https://proget.onbase.net/nuget/NuGet/
                 }
             }
         }
