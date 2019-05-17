@@ -50,7 +50,7 @@ pipeline {
         stage("Run-E2E-Tests") {
             steps {
                 container("builder") {
-                    sh 'dotnet test ./test/HotPotato.E2E.Test/HotPotato.E2E.Test.csproj --configuration Release -r E2E-test-results.xml --no-build'
+                    sh 'dotnet test ./test/HotPotato.E2E.Test/HotPotato.E2E.Test.csproj --configuration Release -r E2E-test-results.xml'
                 }
             }
         }
