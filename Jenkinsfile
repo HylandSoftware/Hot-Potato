@@ -54,6 +54,25 @@ pipeline {
                 }
             }
         }
+
+        stage("Deploy") {
+            when {
+                branch 'feat/AUTOTEST-326-deploy-hotpotato-packages-to-nuget' //'master'
+            }
+            environment {
+                API_KEY = credentials('testautomation_push')
+            }
+            steps {
+                container("builder") {
+                    sh 'dotnet pack ./src/HotPotato.AspNetCore.Host/HotPotato.AspNetCore.Host.csproj -c Release --no-build --no-restore'
+                    sh 'dotnet pack ./src/HotPotato.AspNetCore.Middleware/HotPotato.AspNetCore.Middleware.csproj -c Release --no-build --no-restore'
+                    sh 'dotnet pack ./src/HotPotato.Core/HotPotato.Core.csproj -c Release --no-build --no-restore'
+                    sh 'dotnet pack ./src/HotPotato.OpenApi/HotPotato.OpenApi.csproj -c Release --no-build --no-restore'
+
+                    sh 'dotnet nuget push *.nupkg -k ${API_KEY} -s https://proget.onbase.net/nuget/TestFeed/' //https://proget.onbase.net/nuget/NuGet/
+                }
+            }
+        }
     }
     post {
         regression {
