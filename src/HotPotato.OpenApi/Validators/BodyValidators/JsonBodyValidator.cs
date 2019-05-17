@@ -21,7 +21,7 @@ namespace HotPotato.OpenApi.Validators
             //Conditional for matching schemas with multiple content-type returns
             if (swagResp.Content != null && swagResp.Content.Count > 0)
             {
-                Dictionary<string, OpenApiMediaType> contentSchemas = SanitizeContentTypes(swagResp.Content);
+                Dictionary<string, OpenApiMediaType> contentSchemas = swagResp.Content.SanitizeContentTypes();
                 if (contentSchemas.ContainsKey(ContentType.Type))
                 {
                     specBody = contentSchemas[ContentType.Type].Schema;

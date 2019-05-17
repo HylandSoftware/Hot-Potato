@@ -1,5 +1,6 @@
 ﻿using Newtonsoft.Json;
 using NJsonSchema;
+using NSwag;
 using System.Collections.Generic;
 using System.Xml;
 using System.Xml.Linq;
@@ -47,6 +48,28 @@ namespace HotPotato.OpenApi.Validators
         public static string ToJsonText(this string @this)
         {
             return JsonConvert.SerializeObject(@this);
+        }
+
+        /// <summary>
+        /// Remove all trailing encodings from content-types for uniform matching
+        /// </summary>
+        /// <param name="this">A SwaggerResponse.Content dic</param>
+        /// <returns>Content dict with sanitized content-types</returns>
+        public static Dictionary<string, OpenApiMediaType> SanitizeContentTypes(this IDictionary<string, OpenApiMediaType> @this)
+        {
+            Dictionary<string, OpenApiMediaType> returnDict = new Dictionary<string, OpenApiMediaType>();
+            foreach (KeyValuePair<string, OpenApiMediaType> kvp in @this)
+            {
+                if (kvp.Key.Contains(";"))
+                {
+                    returnDict.Add(kvp.Key.Split(";")[0], kvp.Value);
+                }
+                else
+                {
+                    returnDict.Add(kvp.Key, kvp.Value);
+                }
+            }
+            return returnDict;
         }
     }
 }

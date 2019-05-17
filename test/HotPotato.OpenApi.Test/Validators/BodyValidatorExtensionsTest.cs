@@ -1,5 +1,6 @@
 ﻿
 using NJsonSchema;
+using NSwag;
 using System.Collections.Generic;
 using System.Linq;
 using Xunit;
@@ -13,6 +14,9 @@ namespace HotPotato.OpenApi.Validators
 
         private const string FutureJsonString = "JsonString";
         private const string ExpectedJsonString = "\"JsonString\"";
+
+        private const string UnsanitizedContent = "application/json; charset=utf-8";
+        private const string SanitizedContent = "application/json";
 
         [Fact]
         public void ValidateXml_ReturnsEmptyErrorListWithValidXml()
@@ -36,5 +40,17 @@ namespace HotPotato.OpenApi.Validators
             string result = FutureJsonString.ToJsonText();
             Assert.Equal(ExpectedJsonString, result);
         }
+
+        [Fact]
+        public void SanitizeContentTypes_RemovesTrailingEncoding()
+        {
+            Dictionary<string, OpenApiMediaType> subject = new Dictionary<string, OpenApiMediaType>();
+            subject.Add(UnsanitizedContent, new OpenApiMediaType());
+
+            Dictionary<string, OpenApiMediaType> result = subject.SanitizeContentTypes();
+
+            Assert.True(result.ContainsKey(SanitizedContent));
+        }
+
     }
 }
