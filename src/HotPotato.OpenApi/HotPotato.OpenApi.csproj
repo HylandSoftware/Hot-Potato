@@ -7,6 +7,11 @@
     <WarningsAsErrors />
     <ApplicationIcon />
     <StartupObject />
+    <PackageVersion></PackageVersion>
+    <Title>HotPotato.OpenApi</Title>
+    <Authors>Test Automation Team | GRP-AutomatedTesting@.hyland.com</Authors>
+    <Description>This is the Host package for HotPotato</Description>
+    <RepositoryUrl>https://bitbucket.hylandqa.net/projects/AUTOTEST/repos/hot-potato-.net/browse</RepositoryUrl>
   </PropertyGroup>
   
   <ItemGroup>
