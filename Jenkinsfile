@@ -39,7 +39,7 @@ pipeline {
         stage("Run-Unit-Tests") {
             steps {
                 container("builder") {
-                    sh 'dotnet test ./test/HotPotato.Core.Test/**/*.csproj --configuration Release -r core-test-results.xml --no-restore --no-build'
+                    sh 'dotnet test ${WORKSPACE}/test/HotPotato.Core.Test/**/*.csproj --configuration Release -r core-test-results.xml --no-restore --no-build'
                     sh 'dotnet test ./test/HotPotato.AspNetCore.Middleware.Test/**/*.csproj --configuration Release -r middleware-test-results.xml --no-restore --no-build'
                     sh 'dotnet test ./test/HotPotato.OpenApi.Test/**/*.csproj --configuration Release -r openapi-test-results.xml --no-restore --no-build'
                 }
