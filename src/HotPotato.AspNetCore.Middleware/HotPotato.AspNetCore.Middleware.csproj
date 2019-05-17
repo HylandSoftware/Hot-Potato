@@ -8,7 +8,7 @@
     <PackageVersion></PackageVersion>
     <Title>HotPotato.AspNetCore.Middleware</Title>
     <Authors>Test Automation Team | GRP-AutomatedTesting@.hyland.com</Authors>
-    <Description>This is the Host package for HotPotato</Description>
+    <Description>This is an ASP.NETCore middleware that can be used in situations where test suites are directly starting up the server startup or using the TestServer.</Description>
     <RepositoryUrl>https://bitbucket.hylandqa.net/projects/AUTOTEST/repos/hot-potato-.net/browse</RepositoryUrl>
   </PropertyGroup>
 
