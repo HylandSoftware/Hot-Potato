@@ -23,7 +23,7 @@ namespace HotPotato.Results
         [Fact]
         public void CanIAddAPassResultToResultsList()
         {
-            OpenApi.Models.Result expected = new OpenApi.Models.Result(Path, Get, OkStatusCode, State.Pass);
+            PassResult expected = new PassResult(Path, Get, OkStatusCode, State.Pass);
 
             ResultCollector subject = new ResultCollector();
 
@@ -43,7 +43,7 @@ namespace HotPotato.Results
             var err = new ValidationError("Error", ValidationErrorKind.Unknown, "Property", 5, 10);
             var validationErrors = new List<ValidationError> { err };
 
-            OpenApi.Models.Result expected = new OpenApi.Models.Result(Path, Get, NotFoundStatusCode, State.Fail, Reason.Unknown, validationErrors);
+            FailResult expected = new FailResult(Path, Get, NotFoundStatusCode, State.Fail, Reason.Unknown, validationErrors);
 
             ResultCollector subject = new ResultCollector();
 
@@ -51,12 +51,15 @@ namespace HotPotato.Results
 
             Assert.NotEmpty(subject.Results);
             Assert.Single(subject.Results);
-            Assert.Equal(expected.Path, subject.Results[0].Path);
-            Assert.Equal(expected.Method, subject.Results[0].Method);
-            Assert.Equal(expected.StatusCode, subject.Results[0].StatusCode);
-            Assert.Equal(expected.State, subject.Results[0].State);
-            Assert.Equal(expected.Reason, subject.Results[0].Reason);
-            Assert.Equal(expected.ValidationErrors, subject.Results[0].ValidationErrors);
+
+            FailResult result = (FailResult)subject.Results[0];
+
+            Assert.Equal(expected.Path, result.Path);
+            Assert.Equal(expected.Method, result.Method);
+            Assert.Equal(expected.StatusCode, result.StatusCode);
+            Assert.Equal(expected.State, result.State);
+            Assert.Equal(expected.Reason, result.Reason);
+            Assert.Equal(expected.ValidationErrors, result.ValidationErrors);
         }
     }
 }

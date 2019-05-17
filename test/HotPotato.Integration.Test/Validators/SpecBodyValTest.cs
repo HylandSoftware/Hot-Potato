@@ -86,7 +86,7 @@ namespace HotPotato.OpenApi.Validators
                     IResultCollector collector = provider.GetService<IResultCollector>();
 
                     List<Result> results = collector.Results;
-                    Result result = results.ElementAt(0);
+                    FailResult result = (FailResult)results.ElementAt(0);
 
                     Assert.Equal(Reason.InvalidBody, result.Reason);
                     Assert.Equal(ValidationErrorKind.DateTimeExpected, result.ValidationErrors[0].Kind);

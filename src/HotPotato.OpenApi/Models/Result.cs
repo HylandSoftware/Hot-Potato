@@ -3,34 +3,12 @@ using System.Collections.Generic;
 
 namespace HotPotato.OpenApi.Models
 {
-    public class Result
+    public abstract class Result
     {
-        public string Path { get; }
-        public string Method { get; }
-        public int StatusCode { get; }
+        public string Path { get; protected set; }
+        public string Method { get; protected set; }
+        public int StatusCode { get; protected set; }
         [Newtonsoft.Json.JsonConverter(typeof(Newtonsoft.Json.Converters.StringEnumConverter))]
-        public State State { get; }
-        [Newtonsoft.Json.JsonConverter(typeof(Newtonsoft.Json.Converters.StringEnumConverter))]
-        public Reason Reason { get; }
-        public List<ValidationError> ValidationErrors { get; }
-
-        public Result(string path, string method, int statusCode, State state)
-        {
-            Path = path;
-            Method = method;
-            StatusCode = statusCode;
-            State = state;
-        }
-
-        public Result(string path, string method, int statusCode, State state, Reason reason, List<ValidationError> validationErrors)
-        {
-            Path = path;
-            Method = method;
-            StatusCode = statusCode;
-            State = state;
-            Reason = reason;
-            ValidationErrors = validationErrors;
-        }
-        
+        public State State { get; protected set; }       
     }
 }

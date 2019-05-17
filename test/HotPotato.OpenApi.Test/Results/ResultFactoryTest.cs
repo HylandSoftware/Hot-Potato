@@ -33,7 +33,7 @@ namespace HotPotato.Results
             var err = new ValidationError("Error", ValidationErrorKind.Unknown, "Property", 5, 10);
             var validationErrors = new ValidationError[] { err };
 
-            var subject = ResultFactory.FailResult(Path, Method, FailStatusCode, FailState, FailReason, validationErrors);
+            FailResult subject = (FailResult)ResultFactory.FailResult(Path, Method, FailStatusCode, FailState, FailReason, validationErrors);
 
             Assert.NotNull(subject);
             Assert.Equal(Path, subject.Path);
