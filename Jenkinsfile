@@ -64,7 +64,7 @@ pipeline {
             }
             steps {
                 container("builder") {
-                    sh 'dotnet pack ./src/HotPotato.AspNetCore.Host/HotPotato.AspNetCore.Host.csproj -o ./src/nupkg -c Release --no-build --no-restore'
+                    sh 'dotnet pack ./src/HotPotato.AspNetCore.Host/HotPotato.AspNetCore.Host.csproj -o $WORKSPACE/nupkg -c Release --no-build --no-restore'
                     sh 'dotnet pack ./src/HotPotato.AspNetCore.Middleware/HotPotato.AspNetCore.Middleware.csproj -c Release --no-build --no-restore'
                     sh 'dotnet pack ./src/HotPotato.Core/HotPotato.Core.csproj -c Release --no-build --no-restore'
                     sh 'dotnet pack ./src/HotPotato.OpenApi/HotPotato.OpenApi.csproj -c Release --no-build --no-restore'
