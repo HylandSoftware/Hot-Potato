@@ -14,7 +14,7 @@ pipeline {
             steps {
                 container('gitversion') {
                     script {
-                        env.IMAGE_VERSION = sh(script: 'mono /usr/lib/GitVersion/GitVersion.exe /output json /showvariable NuGetVersionV2', returnStdout: true).trim()
+                        env.IMAGE_VERSION = sh(script: 'mono /usr/lib/GitVersion/GitVersion.exe /output MajorMinorPatch /showvariable NuGetVersionV2', returnStdout: true).trim()
                         echo IMAGE_VERSION 
                     }
                 }
