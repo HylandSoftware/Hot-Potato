@@ -56,5 +56,5 @@ Tool 'hotpotato.aspnetcore.host' (version '0.1.29') was successfully installed.
 
 You can now start the tool by using the command `HotPotato`. Add the arguments for your testing situation and you can utilize `HotPotato` from the command line.
 ```sh
-`hotpotato --RemoteEndpoint http://hyland.io/my/api --SpecLocation http://hyland.io/my/spec.json`
+hotpotato --RemoteEndpoint http://hyland.io/my/api --SpecLocation http://hyland.io/my/spec.json
 ```
