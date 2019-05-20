@@ -71,16 +71,16 @@ pipeline {
             }
             steps {
                 container("builder") {
-                    sh 'dotnet pack ${host}/**/*.csproj -p:PackageVersion=${IMAGE_VERSION} -c Release --no-build --no-restore'
-                    sh 'dotnet pack ${middleware}/**/*.csproj -p:PackageVersion=${IMAGE_VERSION} -c Release --no-build --no-restore'
-                    sh 'dotnet pack ${core}/**/*.csproj -p:PackageVersion=${IMAGE_VERSION} -c Release --no-build --no-restore'
-                    sh 'dotnet pack ${openapi}/**/*.csproj -p:PackageVersion=${IMAGE_VERSION} -c Release --no-build --no-restore'
+                    sh 'dotnet pack $WORKSPACE/src/HotPotato.AspNetCore.Host/**/*.csproj -p:PackageVersion=${IMAGE_VERSION} -c Release --no-build --no-restore'
+                    sh 'dotnet pack $WORKSPACE/src/HotPotato.AspNetCore.Middleware/**/*.csproj -p:PackageVersion=${IMAGE_VERSION} -c Release --no-build --no-restore'
+                    sh 'dotnet pack $WORKSPACE/src/HotPotato.Core/**/*.csproj -p:PackageVersion=${IMAGE_VERSION} -c Release --no-build --no-restore'
+                    sh 'dotnet pack $WORKSPACE/src/HotPotato.OpenApi/**/*.csproj -p:PackageVersion=${IMAGE_VERSION} -c Release --no-build --no-restore'
 
                     //sh 'dotnet nuget push $WORKSPACE/**/*.nupkg -k ${API_KEY} -s https://proget.onbase.net/nuget/TestFeed/' //https://proget.onbase.net/nuget/NuGet/
-                    sh 'dotnet nuget push ${host}/**/*.nupkg -k ${API_KEY} -s ${TestFeed}' //https://proget.onbase.net/nuget/NuGet/
-                    sh 'dotnet nuget push ${middleware}/**/*.nupkg -k ${API_KEY} -s ${TestFeed}'
-                    sh 'dotnet nuget push ${core}/**/*.nupkg -k ${API_KEY} -s ${TestFeed}'
-                    sh 'dotnet nuget push ${openapi}/**/*.nupkg -k ${API_KEY} -s ${TestFeed}'
+                    sh 'dotnet nuget push $WORKSPACE/src/HotPotato.AspNetCore.Host/**/*.nupkg -k ${API_KEY} -s https://proget.onbase.net/nuget/TestFeed/' //https://proget.onbase.net/nuget/NuGet/
+                    sh 'dotnet nuget push $WORKSPACE/src/HotPotato.AspNetCore.Middleware/**/*.nupkg -k ${API_KEY} -s https://proget.onbase.net/nuget/TestFeed/'
+                    sh 'dotnet nuget push $WORKSPACE/src/HotPotato.Core/**/*.nupkg -k ${API_KEY} -s https://proget.onbase.net/nuget/TestFeed/'
+                    sh 'dotnet nuget push $WORKSPACE/src/HotPotato.OpenApi/**/*.nupkg -k ${API_KEY} -s https://proget.onbase.net/nuget/TestFeed/'
 
                 }
             }
