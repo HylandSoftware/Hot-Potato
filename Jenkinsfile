@@ -57,7 +57,7 @@ pipeline {
     }
     post {
         always {
-            cobertura coberturaReportFile: '*/.xml'
+            cobertura coberturaReportFile: './test/HotPotato.Core.Test/core-test-results.xml'
         }
         regression {
             mattermostSend color: "#ef1717", icon: "https://jenkins.io/images/logos/jenkins/jenkins.png", message: "Someone broke ${env.BRANCH_NAME}, Ref build number -- ${env.BUILD_NUMBER}! (<${env.BUILD_URL}|${env.BUILD_URL}>)"
