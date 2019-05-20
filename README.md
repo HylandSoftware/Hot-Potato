@@ -38,3 +38,23 @@ This is an ASP.NETCore middleware that can be used in situations where test suit
 
 ## Setup
 
+To use the complete tool you will need to download the `HotPotato.AspNetCore.Host` NuGet package from https://proget.onbase.net/feeds/NuGet/HotPotato.AspNetCore.Host/. Since `HotPotato` is a dotnet global tool you can easily download it from Powershell or Command Prompt.
+
+### Install
+To install `HotPotato` use the following command:
+```sh
+dotnet tool install -g hotpotato.aspnetcore.host --add-source https://proget.onbase.net/feeds/NuGet/HotPotato.AspNetCore.Host/
+```
+There are other options that can be utilized when downloading a dotnet tool. A complete list of options can be found here: https://docs.microsoft.com/en-us/dotnet/core/tools/dotnet-tool-install
+
+If the install is successful you will see a message like this:  
+```sh
+You can invoke the tool using the following command: HotPotato
+Tool 'hotpotato.aspnetcore.host' (version '0.1.29') was successfully installed.
+```
+### Start HotPotato
+
+You can now start the tool by using the command `HotPotato`. Add the arguments for your testing situation and you can utilize `HotPotato` from the command line.
+```sh
+`hotpotato --RemoteEndpoint http://hyland.io/my/api --SpecLocation http://hyland.io/my/spec.json`
+```
