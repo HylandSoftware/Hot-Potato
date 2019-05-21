@@ -6,11 +6,11 @@ namespace HotPotato.OpenApi.Validators
     {
         public static BodyValidator Create(string bodyString, HttpContentType contentType)
         {
-            if (contentType.Type.ToLower().Contains("json"))
+            if (contentType.Type.ToLower().Contains(BodyValidatorContentTypes.json))
             {
                 return new JsonBodyValidator(bodyString, contentType);
             }
-            else if (contentType.Type.ToLower().Contains("xml"))
+            else if (contentType.Type.ToLower().Contains(BodyValidatorContentTypes.xml))
             {
                 return new XmlBodyValidator(bodyString, contentType);
             }
