@@ -54,7 +54,7 @@ namespace HotPotato.Core.Http
             }
             foreach (var item in @this.HttpHeaders)
             {
-                if (!ExcludedRequestHeaders.Contains(item.Key))
+                if (!ExcludedRequestHeaders.Contains(item.Key.ToLowerInvariant()))
                 {
                     if (!message.Headers.TryAddWithoutValidation(item.Key, item.Value))
                     {
@@ -123,7 +123,7 @@ namespace HotPotato.Core.Http
             {
                 foreach (var header in @this.Headers)
                 {
-                    if (!ExcludedResponseHeaders.Contains(header.Key))
+                    if (!ExcludedResponseHeaders.Contains(header.Key.ToLowerInvariant()))
                     {
                         response.Headers.Add(header.Key, new StringValues(header.Value.ToArray()));
                     }
