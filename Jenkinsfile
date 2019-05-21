@@ -32,7 +32,7 @@ pipeline {
         stage("Run-Unit-Tests") {
             steps {
                 container("builder") {
-                    sh 'dotnet test ./test/HotPotato.Core.Test/HotPotato.Core.Test.csproj --configuration Release --logger trx -r $WORKSPACE/test/results --no-restore --no-build'
+                    sh 'dotnet test ./test/HotPotato.Core.Test/HotPotato.Core.Test.csproj -c Release -l:"trx;LogFileName=$WORKSPACE/test/results/CoreResults.xml" -r $WORKSPACE/test/results --no-restore --no-build'
                     sh 'dotnet test ./test/HotPotato.AspNetCore.Middleware.Test/HotPotato.AspNetCore.Middleware.Test.csproj --configuration Release -r middleware-test-results.xml --no-restore --no-build'
                     sh 'dotnet test ./test/HotPotato.OpenApi.Test/HotPotato.OpenApi.Test.csproj --configuration Release -r openapi-test-results.xml --no-restore --no-build'
                 }
@@ -57,7 +57,7 @@ pipeline {
     }
     post {
         always {
-            cobertura coberturaReportFile: '*/.trx'
+            cobertura coberturaReportFile: '*/.xml'
         }
         regression {
             mattermostSend color: "#ef1717", icon: "https://jenkins.io/images/logos/jenkins/jenkins.png", message: "Someone broke ${env.BRANCH_NAME}, Ref build number -- ${env.BUILD_NUMBER}! (<${env.BUILD_URL}|${env.BUILD_URL}>)"
