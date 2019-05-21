@@ -57,7 +57,7 @@ pipeline {
     }
     post {
         always {
-            hunit '**/test/results/*.xml'
+            junit '**/test/results/*.xml'
 
         }
         regression {
