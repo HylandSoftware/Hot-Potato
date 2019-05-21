@@ -32,10 +32,10 @@ pipeline {
         stage("Run-Unit-Tests") {
             steps {
                 container("builder") {
-                    //sh 'dotnet test ./test/HotPotato.Core.Test/HotPotato.Core.Test.csproj -c Release -l:"trx;LogFileName=$WORKSPACE/test/results/CoreResults.xml" -r $WORKSPACE/test/results --no-restore --no-build'
-                    sh 'dotnet test ./test/HotPotato.Core.Test/HotPotato.Core.Test.csproj -c Release -p:CollectCoverage=true -p:CoverletOutputFormat=cobertura -p:CoverletOutput=./test/results/coreResults.xml -p:Exclude="[xunit.*]*" --no-restore --no-build'
-                    sh 'dotnet test ./test/HotPotato.AspNetCore.Middleware.Test/HotPotato.AspNetCore.Middleware.Test.csproj -c Release -p:CollectCoverage=true -p:CoverletOutputFormat=cobertura -p:CoverletOutput=./test/results/middlewareResults.xml -p:Include="[*.Middleware]*" --no-restore --no-build'
-                    sh 'dotnet test ./test/HotPotato.OpenApi.Test/HotPotato.OpenApi.Test.csproj -c Release -p:CollectCoverage=true -p:CoverletOutputFormat=cobertura -p:CoverletOutput=./test/results/openApiResults.xml -p:Include="[*.OpenApi]*" --no-restore --no-build'
+                    //sh 'dotnet test ./test/HotPotato.Core.Test/HotPotato.Core.Test.csproj -c Release -l:"trx;LogFileName=$WORKSPACE/test/results/coreResults.xml" -r $WORKSPACE/test/results --no-restore --no-build'
+                    sh 'dotnet test ./test/HotPotato.Core.Test/HotPotato.Core.Test.csproj -c Release -p:CollectCoverage=true -p:CoverletOutputFormat=cobertura -p:CoverletOutput=./test/coverage/coreCoverage.xml -p:Exclude="[xunit.*]*" -l:"trx;LogFileName=$WORKSPACE/test/results/coreResults.xml" --no-restore --no-build'
+                    sh 'dotnet test ./test/HotPotato.AspNetCore.Middleware.Test/HotPotato.AspNetCore.Middleware.Test.csproj -c Release -p:CollectCoverage=true -p:CoverletOutputFormat=cobertura -p:CoverletOutput=./test/Coverage/middlewareCoverage.xml -p:Include="[*.Middleware]*" --no-restore --no-build'
+                    sh 'dotnet test ./test/HotPotato.OpenApi.Test/HotPotato.OpenApi.Test.csproj -c Release -p:CollectCoverage=true -p:CoverletOutputFormat=cobertura -p:CoverletOutput=./test/Coverage/openApiCoverage.xml -p:Include="[*.OpenApi]*" --no-restore --no-build'
                 }
             }
         }
@@ -58,7 +58,8 @@ pipeline {
     }
     post {
         always {
-            cobertura coberturaReportFile: '**/test/results/*.xml'
+            cobertura coberturaReportFile: '**/test/coverage/*.xml'
+            junit '**/test/results/*.xml'
         }
         regression {
             mattermostSend color: "#ef1717", icon: "https://jenkins.io/images/logos/jenkins/jenkins.png", message: "Someone broke ${env.BRANCH_NAME}, Ref build number -- ${env.BUILD_NUMBER}! (<${env.BUILD_URL}|${env.BUILD_URL}>)"
