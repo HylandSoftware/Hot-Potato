@@ -61,5 +61,26 @@ namespace HotPotato.Results
             Assert.Equal(expected.Reason, result.Reason);
             Assert.Equal(expected.ValidationErrors, result.ValidationErrors);
         }
+
+        [Fact]
+        public void ResultCollector_OverallResult_ReflectsFail()
+        {
+            ResultCollector subject = new ResultCollector();
+
+            subject.Pass(Path, Get, OkStatusCode);
+            subject.Fail(Path, Get, NotFoundStatusCode, Reason.Unknown, null);
+
+            Assert.Equal(State.Fail, subject.OverallResult);
+        }
+
+        [Fact]
+        public void ResultCollector_OverallResult_ReflectsPass()
+        {
+            ResultCollector subject = new ResultCollector();
+
+            subject.Pass(Path, Get, OkStatusCode);
+
+            Assert.Equal(State.Pass, subject.OverallResult);
+        }
     }
 }
