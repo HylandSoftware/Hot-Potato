@@ -1,8 +1,19 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
     <OutputType>Exe</OutputType>
     <TargetFramework>netcoreapp2.1</TargetFramework>
+    <PackAsTool>true</PackAsTool>
+    <ToolCommandName>HotPotato</ToolCommandName>
+    <PackageVersion></PackageVersion>
+    <Title>HotPotato.AspNetCore.Host</Title>
+    <Authors>Test Automation Team | GRP-AutomatedTesting@.hyland.com</Authors>
+    <Description>
+      This is an ASP.NETCore host configured to use the HotPotato Middleware. It is stood up as a separate server that listens by default on port 3232. There is an appsettings.json to allow the developer to set the remote endpoing to forward requests to and the specification location of the OpenAPI spec to validate conformance. These values can also be passed into the command line via the following command
+
+      hotpotato --RemoteEndpoint http://hyland.io/my/api --SpecLocation http://hyland.io/my/spec.json
+    </Description>
+    <RepositoryUrl>https://bitbucket.hylandqa.net/projects/AUTOTEST/repos/hot-potato-.net/browse</RepositoryUrl>
   </PropertyGroup>
 
   <ItemGroup>
