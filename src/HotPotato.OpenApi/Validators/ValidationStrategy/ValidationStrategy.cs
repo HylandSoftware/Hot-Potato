@@ -46,8 +46,16 @@ namespace HotPotato.OpenApi.Validators
                 return;
             }
 
-            AddValidationResult(BodyValidator.Validate(StatusCodeValidator.Result));
-            AddValidationResult(HeaderValidator.Validate(StatusCodeValidator.Result));
+            IValidationResult bodyResult = BodyValidator.Validate(StatusCodeValidator.Result);
+            AddValidationResult(bodyResult);
+
+            IValidationResult headerResult = HeaderValidator.Validate(StatusCodeValidator.Result);
+            //BodyValidator and HeaderValidator return identical pass results,
+            //only want to add both if one or both fails
+            if (!bodyResult.Valid || !headerResult.Valid)
+            {
+                AddValidationResult(headerResult);
+            }
         }
 
         private void AddFail(Reason reason, params ValidationError[] validationErrors)

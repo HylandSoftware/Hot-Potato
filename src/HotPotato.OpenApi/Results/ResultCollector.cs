@@ -13,11 +13,17 @@ namespace HotPotato.OpenApi.Results
         public ResultCollector()
         {
             Results = new List<Result>();
+            OverallResult = State.Inconclusive;
         }
 
         public void Pass(string path, string method, int statusCode)
         {
             Results.Add(ResultFactory.PassResult(path, method, statusCode, State.Pass));
+            //for if the body fails but the header passes
+            if (OverallResult != State.Fail)
+            {
+                OverallResult = State.Pass;
+            }
         }
         public void Fail(string path, string method, int statusCode, Reason reason, params ValidationError[] validationErrors)
         {
