@@ -10,7 +10,6 @@ namespace HotPotato.OpenApi.Validators
     {
         private const string AValidBody = @"<LGNotification><MediaType>video</MediaType><StatusFlag>new</StatusFlag><URL>http://domain.com/program/app?clienttype=htmlamp;id=49977</URL></LGNotification>";
         private const string AnInvalidBody = @"<MediaType>video</MediaType><StatusFlag>new</StatusFlag><URL>http://domain.com/program/app?clienttype=htmlamp;id=49977</URL></LGNotification>";
-        private const string AValidSchema = @"{'type': 'integer'}";
 
         [Fact]
         public void XmlBodyValidator_ReturnsTrueWithValid()
