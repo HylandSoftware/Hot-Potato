@@ -32,33 +32,34 @@ pipeline {
         stage("Run-Unit-Tests") {
             steps {
                 container("builder") {
-                    sh 'dotnet test ./test/HotPotato.Core.Test/HotPotato.Core.Test.csproj -c Release -l:"trx;LogFileName=$WORKSPACE/test/results/CoreResults.xml" -r $WORKSPACE/test/results --no-restore --no-build'
-                    sh 'dotnet test ./test/HotPotato.AspNetCore.Middleware.Test/HotPotato.AspNetCore.Middleware.Test.csproj --configuration Release -r middleware-test-results.xml --no-restore --no-build'
-                    sh 'dotnet test ./test/HotPotato.OpenApi.Test/HotPotato.OpenApi.Test.csproj --configuration Release -r openapi-test-results.xml --no-restore --no-build'
+                    //sh 'dotnet test ./test/HotPotato.Core.Test/HotPotato.Core.Test.csproj -c Release -l:"trx;LogFileName=$WORKSPACE/test/results/CoreResults.xml" -r $WORKSPACE/test/results --no-restore --no-build'
+                    sh 'dotnet test ./test/HotPotato.Core.Test/HotPotato.Core.Test.csproj -c Release -p:CollectCoverage=true -p:CoverletOutputFormat=cobertura -p:CoverletOutput=./test/results/cobertura-coverage.xml --no-restore --no-build'
+
+                    //sh 'dotnet test ./test/HotPotato.AspNetCore.Middleware.Test/HotPotato.AspNetCore.Middleware.Test.csproj --configuration Release -r middleware-test-results.xml --no-restore --no-build'
+                   // sh 'dotnet test ./test/HotPotato.OpenApi.Test/HotPotato.OpenApi.Test.csproj --configuration Release -r openapi-test-results.xml --no-restore --no-build'
                 }
             }
         }
 		
-		stage("Run-Integration-Tests") {
-            steps {
-                container("builder") {
-                    sh 'dotnet test ./test/HotPotato.Integration.Test/HotPotato.Integration.Test.csproj --configuration Release -r integration-test-results.xml --no-restore --no-build'
-                }
-            }
-        }
+		// stage("Run-Integration-Tests") {
+        //     steps {
+        //         container("builder") {
+        //             sh 'dotnet test ./test/HotPotato.Integration.Test/HotPotato.Integration.Test.csproj --configuration Release -r integration-test-results.xml --no-restore --no-build'
+        //         }
+        //     }
+        // }
 
-        stage("Run-E2E-Tests") {
-            steps {
-                container("builder") {
-                    sh 'dotnet test ./test/HotPotato.E2E.Test/HotPotato.E2E.Test.csproj --configuration Release -r E2E-test-results.xml --no-restore --no-build'
-                }
-            }
-        }
+        // stage("Run-E2E-Tests") {
+        //     steps {
+        //         container("builder") {
+        //             sh 'dotnet test ./test/HotPotato.E2E.Test/HotPotato.E2E.Test.csproj --configuration Release -r E2E-test-results.xml --no-restore --no-build'
+        //         }
+        //     }
+        // }
     }
     post {
         always {
-            cobertura coberturaReportFile: '**/coverage/cobertura-coverage.xml'
-            junit '**/results/*.xml'
+            cobertura coberturaReportFile: '**/test/results/*.xml'
         }
         regression {
             mattermostSend color: "#ef1717", icon: "https://jenkins.io/images/logos/jenkins/jenkins.png", message: "Someone broke ${env.BRANCH_NAME}, Ref build number -- ${env.BUILD_NUMBER}! (<${env.BUILD_URL}|${env.BUILD_URL}>)"
