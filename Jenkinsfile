@@ -34,8 +34,8 @@ pipeline {
                 container("builder") {
                     //sh 'dotnet test ./test/HotPotato.Core.Test/HotPotato.Core.Test.csproj -c Release -l:"trx;LogFileName=$WORKSPACE/test/results/CoreResults.xml" -r $WORKSPACE/test/results --no-restore --no-build'
                     sh 'dotnet test ./test/HotPotato.Core.Test/HotPotato.Core.Test.csproj -c Release -p:CollectCoverage=true -p:CoverletOutputFormat=cobertura -p:CoverletOutput=./test/results/coreResults.xml -p:Exclude="[xunit.*]*" --no-restore --no-build'
-                   // sh 'dotnet test ./test/HotPotato.AspNetCore.Middleware.Test/HotPotato.AspNetCore.Middleware.Test.csproj --configuration Release -r middleware-test-results.xml --no-restore --no-build'
-                   // sh 'dotnet test ./test/HotPotato.OpenApi.Test/HotPotato.OpenApi.Test.csproj --configuration Release -r openapi-test-results.xml --no-restore --no-build'
+                    //sh 'dotnet test ./test/HotPotato.AspNetCore.Middleware.Test/HotPotato.AspNetCore.Middleware.Test.csproj --configuration Release -r middleware-test-results.xml --no-restore --no-build'
+                    sh 'dotnet test ./test/HotPotato.OpenApi.Test/HotPotato.OpenApi.Test.csproj -c Release -p:CollectCoverage=true -p:CoverletOutputFormat=cobertura -p:CoverletOutput=./test/results/openApiResults.xml -p:Include="[*.OpenApi]*" --no-restore --no-build'
                 }
             }
         }
