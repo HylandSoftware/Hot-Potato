@@ -6,9 +6,9 @@ namespace HotPotato.OpenApi.Results
 {
     public static class ResultFactory
     {
-        public static Result PassResult(string path, string method, int statusCode, State state) =>
-            new PassResult(path, method, statusCode, state);
-        public static Result FailResult(string path, string method, int statusCode, State state, Reason reason, params ValidationError[] validationErrors) =>
-            new FailResult(path, method, statusCode, state, reason, validationErrors?.ToList());
+        public static Result PassResult(string path, string method, int statusCode) =>
+            new PassResult(path, method, statusCode);
+        public static Result FailResult(string path, string method, int statusCode, Reason reason, params ValidationError[] validationErrors) =>
+            new FailResult(path, method, statusCode, reason, validationErrors?.ToList());
     }
 }

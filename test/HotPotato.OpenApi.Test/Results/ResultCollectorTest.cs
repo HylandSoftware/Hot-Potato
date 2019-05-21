@@ -1,16 +1,9 @@
-﻿using HotPotato.Core.Http;
-using HotPotato.Core.Http.Default;
-using HotPotato.Core.Models;
-using HotPotato.OpenApi.Models;
-using HotPotato.OpenApi.Results;
+﻿using HotPotato.OpenApi.Models;
 using HotPotato.OpenApi.Validators;
-using System;
 using System.Collections.Generic;
-using System.Net;
-using System.Net.Http;
 using Xunit;
 
-namespace HotPotato.Results
+namespace HotPotato.OpenApi.Results
 {
     public class ResultCollectorTest
     {
@@ -23,7 +16,7 @@ namespace HotPotato.Results
         [Fact]
         public void CanIAddAPassResultToResultsList()
         {
-            PassResult expected = new PassResult(Path, Get, OkStatusCode, State.Pass);
+            PassResult expected = new PassResult(Path, Get, OkStatusCode);
 
             ResultCollector subject = new ResultCollector();
 
@@ -43,7 +36,7 @@ namespace HotPotato.Results
             var err = new ValidationError("Error", ValidationErrorKind.Unknown, "Property", 5, 10);
             var validationErrors = new List<ValidationError> { err };
 
-            FailResult expected = new FailResult(Path, Get, NotFoundStatusCode, State.Fail, Reason.Unknown, validationErrors);
+            FailResult expected = new FailResult(Path, Get, NotFoundStatusCode, Reason.Unknown, validationErrors);
 
             ResultCollector subject = new ResultCollector();
 

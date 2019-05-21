@@ -18,7 +18,7 @@ namespace HotPotato.OpenApi.Results
 
         public void Pass(string path, string method, int statusCode)
         {
-            Results.Add(ResultFactory.PassResult(path, method, statusCode, State.Pass));
+            Results.Add(ResultFactory.PassResult(path, method, statusCode));
             //for if the body fails but the header passes
             if (OverallResult != State.Fail)
             {
@@ -27,7 +27,7 @@ namespace HotPotato.OpenApi.Results
         }
         public void Fail(string path, string method, int statusCode, Reason reason, params ValidationError[] validationErrors)
         {
-            Results.Add(ResultFactory.FailResult(path, method, statusCode, State.Fail, reason, validationErrors));
+            Results.Add(ResultFactory.FailResult(path, method, statusCode, reason, validationErrors));
 
             OverallResult = State.Fail;
         }

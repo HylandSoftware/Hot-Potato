@@ -1,7 +1,8 @@
-﻿using HotPotato.OpenApi.Validators;
+﻿using HotPotato.OpenApi.Models;
+using HotPotato.OpenApi.Validators;
 using System.Collections.Generic;
 
-namespace HotPotato.OpenApi.Models
+namespace HotPotato.OpenApi.Results
 {
     public class FailResult : Result
     {
@@ -9,12 +10,12 @@ namespace HotPotato.OpenApi.Models
         public Reason Reason { get; }
         public List<ValidationError> ValidationErrors { get; }
 
-        public FailResult(string path, string method, int statusCode, State state, Reason reason, List<ValidationError> validationErrors)
+        public FailResult(string path, string method, int statusCode, Reason reason, List<ValidationError> validationErrors)
         {
             Path = path;
             Method = method;
             StatusCode = statusCode;
-            State = state;
+            State = State.Fail;
             Reason = reason;
             ValidationErrors = validationErrors;
         }

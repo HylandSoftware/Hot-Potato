@@ -1,7 +1,6 @@
-﻿using HotPotato.OpenApi.Validators;
-using System.Collections.Generic;
+﻿using HotPotato.OpenApi.Models;
 
-namespace HotPotato.OpenApi.Models
+namespace HotPotato.OpenApi.Results
 {
     public abstract class Result
     {
