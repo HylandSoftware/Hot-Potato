@@ -1,11 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
+﻿
 namespace HotPotato.Core.Http
 {
     public class HttpContentType
     {
+        private const string DefaultCharSet = "utf-8";
+
         public string Type { get; }
         public string CharSet { get; }
 
@@ -22,7 +21,7 @@ namespace HotPotato.Core.Http
             }
             if (string.IsNullOrWhiteSpace(charSet))
             {
-                CharSet = "utf-8";
+                CharSet = DefaultCharSet;
             }
             else
             {
