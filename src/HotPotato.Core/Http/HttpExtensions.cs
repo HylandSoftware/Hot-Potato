@@ -76,6 +76,7 @@ namespace HotPotato.Core.Http
                     headers.Add(item.Key, item.Value);
                 }
             }
+
             if (@this.Content != null)
             {
                 foreach (var item in @this.Content?.Headers)
@@ -83,10 +84,16 @@ namespace HotPotato.Core.Http
                     headers.Add(item.Key, item.Value);
                 }
                 MediaTypeHeaderValue contentType = @this.Content.Headers?.ContentType;
+
+                contentType = contentType ?? new MediaTypeHeaderValue("application/json");
                 byte[] payload = await @this.Content.ReadAsByteArrayAsync();
+
                 return new HttpResponse(@this.StatusCode, headers, payload, contentType);
             }
-            return new HttpResponse(@this.StatusCode, headers);
+            else
+            {
+                return new HttpResponse(@this.StatusCode, headers, new byte[] { }, new MediaTypeHeaderValue("application/json"));
+            }
         }
 
         public static IHttpRequest ToProxyRequest(this MSHTTP.HttpRequest @this, string remoteEndpoint)
@@ -95,9 +102,12 @@ namespace HotPotato.Core.Http
             _ = remoteEndpoint ?? throw new ArgumentNullException(nameof(remoteEndpoint));
 
             HttpRequest request = new HttpRequest(new HttpMethod(@this.Method), @this.BuildUri(remoteEndpoint));
-            foreach (var item in @this?.Headers)
+            if (@this.Headers != null && @this.Headers.Count > 0)
             {
-                request.HttpHeaders.Add(item.Key, item.Value.ToArray());
+                foreach (var item in @this.Headers)
+                {
+                    request.HttpHeaders.Add(item.Key, item.Value.ToArray());
+                }
             }
             if (MethodsWithPayload.Contains(@this.Method.ToUpperInvariant()) && @this.Body != null)
             {
@@ -118,7 +128,6 @@ namespace HotPotato.Core.Http
 
             response.StatusCode = (int)@this.StatusCode;
 
-            response.Headers.Clear();
             if (@this.Headers != null)
             {
                 foreach (var header in @this.Headers)
@@ -129,9 +138,6 @@ namespace HotPotato.Core.Http
                     }
                 }
             }
-
-            // HACK - Since calls are async, we don't need chunking.
-            response.Headers.Remove(transferEncoding);
 
             if (@this.Content.Length > 0)
             {
@@ -152,10 +158,6 @@ namespace HotPotato.Core.Http
             if (@this.Content == null || @this.ContentType == null)
             {
                 return string.Empty;
-            }
-            else if (@this.ContentType.CharSet == null)
-            {
-                @this.ContentType.CharSet = string.Empty;
             }
 
             byte[] bodyContent = @this.Content;

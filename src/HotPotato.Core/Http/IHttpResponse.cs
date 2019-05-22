@@ -8,6 +8,6 @@ namespace HotPotato.Core.Http
         HttpStatusCode StatusCode { get; }
         HttpHeaders Headers { get; }
         byte[] Content { get; }
-        MediaTypeHeaderValue ContentType { get; }
+        HttpContentType ContentType { get; }
     }
 }

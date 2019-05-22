@@ -54,13 +54,14 @@ namespace HotPotato.OpenApi.Validators
 
                     Assert.Equal(State.Pass, result.State);
 
-                } 
+                }
             }
         }
 
         [Theory]
         [ClassData(typeof(SpecBodyInvalidTestData))]
-        public async void BodyValidator_CreatesInvalidResult(string specSubPath, HttpMethod reqMethod, HttpStatusCode statusCode, string endpointURI, string contentType, object bodyJson)
+        public async void BodyValidator_CreatesInvalidResult(string specSubPath, HttpMethod reqMethod, HttpStatusCode statusCode, 
+            string endpointURI, string contentType, object bodyJson, ValidationErrorKind expectedKind1, ValidationErrorKind expectedKind2)
         {
 
             string specPath = SpecPath(specSubPath, "specification.yaml");
@@ -89,11 +90,76 @@ namespace HotPotato.OpenApi.Validators
                     FailResult result = (FailResult)results.ElementAt(0);
 
                     Assert.Equal(Reason.InvalidBody, result.Reason);
-                    Assert.Equal(ValidationErrorKind.DateTimeExpected, result.ValidationErrors[0].Kind);
-                    Assert.Equal(ValidationErrorKind.IntegerExpected, result.ValidationErrors[1].Kind);
+                    Assert.Equal(expectedKind1, result.ValidationErrors[0].Kind);
+                    Assert.Equal(expectedKind2, result.ValidationErrors[1].Kind);
                 }
             }
 
+        }
+
+        [Theory]
+        [ClassData(typeof(CustomSpecTestData))]
+        public async void BodyValidator_CreatesValidResultWithDiffTypes(string specSubPath, HttpMethod reqMethod, HttpStatusCode statusCode, string endpointURI, string contentType, string bodyString)
+        {
+            string specPath = SpecPath(specSubPath, "specification.yaml");
+            ServiceProvider provider = GetServiceProvider(specPath);
+
+            using (HttpResponseMessage testRespMsg = new HttpResponseMessage(statusCode))
+            {
+                testRespMsg.Content = new StringContent(bodyString, Encoding.UTF8, contentType);
+                var testResponse = await testRespMsg.ToClientResponseAsync();
+
+                using (HttpRequest testRequest = new HttpRequest(reqMethod, new Uri(endpointURI)))
+                using (HttpPair testPair = new HttpPair(testRequest, testResponse))
+                {
+                    ISpecificationProvider specPro = provider.GetService<ISpecificationProvider>();
+                    SwaggerDocument swagDoc = specPro.GetSpecDocument();
+
+                    IProcessor processor = provider.GetService<IProcessor>();
+                    processor.Process(testPair);
+
+                    IResultCollector collector = provider.GetService<IResultCollector>();
+
+                    List<Result> results = collector.Results;
+                    Result result = results.ElementAt(0);
+
+                    Assert.Equal(State.Pass, result.State);
+
+                }
+            }
+        }
+
+        [Theory]
+        [ClassData(typeof(CustomSpecNegTestData))]
+        public async void BodyValidator_CreatesInvalidResultWithDiffTypes(string specSubPath, HttpMethod reqMethod, 
+            HttpStatusCode statusCode, string endpointURI, string contentType, string bodyString, ValidationErrorKind errorKind)
+        {
+            string specPath = SpecPath(specSubPath, "specification.yaml");
+            ServiceProvider provider = GetServiceProvider(specPath);
+
+            using (HttpResponseMessage testRespMsg = new HttpResponseMessage(statusCode))
+            {
+                testRespMsg.Content = new StringContent(bodyString, Encoding.UTF8, contentType);
+                var testResponse = await testRespMsg.ToClientResponseAsync();
+
+                using (HttpRequest testRequest = new HttpRequest(reqMethod, new Uri(endpointURI)))
+                using (HttpPair testPair = new HttpPair(testRequest, testResponse))
+                {
+                    ISpecificationProvider specPro = provider.GetService<ISpecificationProvider>();
+                    SwaggerDocument swagDoc = specPro.GetSpecDocument();
+
+                    IProcessor processor = provider.GetService<IProcessor>();
+                    processor.Process(testPair);
+
+                    IResultCollector collector = provider.GetService<IResultCollector>();
+
+                    List<Result> results = collector.Results;
+                    Result result = results.ElementAt(0);
+
+                    Assert.Equal(State.Fail, result.State);
+                    Assert.Equal(errorKind, result.ValidationErrors[0].Kind);
+                }
+            }
         }
     }
 }
