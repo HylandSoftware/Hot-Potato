@@ -15,7 +15,7 @@ namespace HotPotato.Core.Http.Default
             : this(statusCode, headers)
         {
             this.Content = content;
-            this.ContentType = contentType;
+            this.ContentType = new HttpContentType(contentType.MediaType, contentType.CharSet);
         }
         public HttpStatusCode StatusCode { get; }
 
@@ -23,7 +23,7 @@ namespace HotPotato.Core.Http.Default
 
         public byte[] Content { get; }
 
-        public MediaTypeHeaderValue ContentType { get; }
+        public HttpContentType ContentType { get; }
 
     }
 }

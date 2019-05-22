@@ -12,6 +12,7 @@ namespace HotPotato.OpenApi.Validators
         private HttpMethod Method { get; set; }
         private HttpStatusCode StatusCode { get; set; }
         private string Body { get; set; }
+        private HttpContentType ContentType { get; set; }
         private HttpHeaders Headers { get; set; }
 
         private IResultCollector ResultCollector { get; }
@@ -41,9 +42,10 @@ namespace HotPotato.OpenApi.Validators
             return this;
         }
 
-        public ValidationBuilder WithBody(string body)
+        public ValidationBuilder WithBody(string body, HttpContentType contentType)
         {
             Body = body;
+            ContentType = contentType;
             return this;
         }
 
@@ -59,7 +61,7 @@ namespace HotPotato.OpenApi.Validators
             val.PathValidator = new PathValidator(Path);
             val.MethodValidator = new MethodValidator(Method);
             val.StatusCodeValidator = new StatusCodeValidator(StatusCode, Body);
-            val.BodyValidator = new BodyValidator(Body);
+            val.BodyValidator = BodyValidatorFactory.Create(Body, ContentType);
             val.HeaderValidator = new HeaderValidator(Headers);
             return val;
         }

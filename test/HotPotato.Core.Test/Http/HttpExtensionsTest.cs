@@ -110,7 +110,7 @@ namespace HotPotato.Core.Http
 
             IHttpResponse result = await HttpExtensions.ToClientResponseAsync(httpResponseMessage);
 
-            Assert.Null(result.Content);
+            Assert.Empty(result.Content);
         }
 
         [Fact]
@@ -133,7 +133,7 @@ namespace HotPotato.Core.Http
 
             IHttpResponse result = await HttpExtensions.ToClientResponseAsync(httpResponseMessage);
 
-            Assert.Equal(AValidContentType, result.ContentType.MediaType);
+            Assert.Equal(AValidContentType, result.ContentType.Type);
         }
 
         [Fact]
