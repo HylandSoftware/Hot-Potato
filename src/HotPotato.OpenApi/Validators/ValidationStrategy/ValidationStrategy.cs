@@ -40,21 +40,47 @@ namespace HotPotato.OpenApi.Validators
                 AddFail(StatusCodeValidator.FailReason);
                 return;
             }
-            else if(StatusCodeValidator.StatusCode == 204)
-            {
-                AddValidationResult(HeaderValidator.Validate(StatusCodeValidator.Result));
-                return;
-            }
-
-            IValidationResult bodyResult = BodyValidator.Validate(StatusCodeValidator.Result);
-            AddValidationResult(bodyResult);
 
             IValidationResult headerResult = HeaderValidator.Validate(StatusCodeValidator.Result);
-            //BodyValidator and HeaderValidator return identical pass results,
-            //only want to add both if one or both fails
-            if (!bodyResult.Valid || !headerResult.Valid)
+
+            if (StatusCodeValidator.StatusCode == 204)
             {
-                AddValidationResult(headerResult);
+                IValidationResult bodyResult = new ValidResult();
+                AddValidationResult(bodyResult, headerResult);
+            }
+            else
+            {
+                IValidationResult bodyResult = BodyValidator.Validate(StatusCodeValidator.Result);
+                AddValidationResult(bodyResult, headerResult);
+            }
+        }
+
+        public void AddValidationResult(IValidationResult bodyResult, IValidationResult headerResult)
+        {
+            if (bodyResult.Valid && headerResult.Valid)
+            {
+                //only add one pass result
+                AddPass();
+            }
+            else if (!bodyResult.Valid && headerResult.Valid)
+            {
+                //only add a failing result with no pass result
+                InvalidResult invResult = (InvalidResult)bodyResult;
+                AddFail(invResult.Reason, invResult.Errors);
+            }
+            else if (bodyResult.Valid && !headerResult.Valid)
+            {
+                InvalidResult invResult = (InvalidResult)headerResult;
+                AddFail(invResult.Reason, invResult.Errors);
+            }
+            else
+            {
+                //TODO: Combine the two fail results, AUTOTEST-344
+                InvalidResult invalidBody = (InvalidResult)bodyResult;
+                InvalidResult invalidHeader = (InvalidResult)headerResult;
+
+                AddFail(invalidBody.Reason, invalidBody.Errors);
+                AddFail(invalidHeader.Reason, invalidHeader.Errors);
             }
         }
 
@@ -62,23 +88,10 @@ namespace HotPotato.OpenApi.Validators
         {
             resColl.Fail(PathValidator.Path, MethodValidator.Method, StatusCodeValidator.StatusCode, reason, validationErrors);
         }
-        
+
         private void AddPass()
         {
             resColl.Pass(PathValidator.Path, MethodValidator.Method, StatusCodeValidator.StatusCode);
-        }
-
-        private void AddValidationResult(IValidationResult result)
-        {
-            if (result.Valid)
-            {
-                AddPass();
-            }
-            else
-            {
-                InvalidResult invResult = (InvalidResult)result;
-                AddFail(invResult.Reason, invResult.Errors);
-            }
         }
     }
 }
