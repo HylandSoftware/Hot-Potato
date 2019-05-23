@@ -45,9 +45,7 @@ namespace HotPotato.OpenApi.Validators
 
             if (StatusCodeValidator.StatusCode == 204)
             {
-                IValidationResult bodyResult = new ValidResult();
-                //deal with failing cases from the HeaderValidator
-                AddValidationResult(bodyResult, headerResult);
+                AddNoContentValidationResult(headerResult);
             }
             else
             {
@@ -82,6 +80,22 @@ namespace HotPotato.OpenApi.Validators
 
                 AddFail(invalidBody.Reason, invalidBody.Errors);
                 AddFail(invalidHeader.Reason, invalidHeader.Errors);
+            }
+        }
+
+        /// <summary>
+        /// Deal with HeaderValidation results after the body has been checked in StatusCodeValidator
+        /// </summary>
+        internal void AddNoContentValidationResult(IValidationResult headerResult)
+        {
+            if (!headerResult.Valid)
+            {
+                InvalidResult invalidHeader = (InvalidResult)headerResult;
+                AddFail(invalidHeader.Reason, invalidHeader.Errors);
+            }
+            else
+            {
+                AddPass();
             }
         }
 

@@ -85,6 +85,36 @@ namespace HotPotato.OpenApi.Validators
         //}
 
         [Fact]
+        public void AddNoContentValidationResult_CallsPassOnceWithNoBodyAndValidHeader()
+        {
+            Mock<IResultCollector> subject = new Mock<IResultCollector>();
+            subject.Setup(x => x.Pass(AValidPath, AValidMethodString, AValidStatusCodeInt));
+
+            ValidationStrategy valStrat = SetUpValidationStrategy(subject.Object);
+
+            ValidResult passingHeaderResult = new ValidResult();
+
+            valStrat.AddNoContentValidationResult(passingHeaderResult);
+
+            subject.Verify(x => x.Pass(AValidPath, AValidMethodString, AValidStatusCodeInt), Times.Once());
+        }
+
+        [Fact]
+        public void AddNoContentValidationResult_CallsFailOnceWithNoBodyAndInvalidHeader()
+        {
+            Mock<IResultCollector> subject = new Mock<IResultCollector>();
+            subject.Setup(x => x.Fail(AValidPath, AValidMethodString, AValidStatusCodeInt, Reason.InvalidHeaders, null));
+
+            ValidationStrategy valStrat = SetUpValidationStrategy(subject.Object);
+
+            InvalidResult failingHeaderResult = new InvalidResult(Reason.InvalidHeaders);
+
+            valStrat.AddNoContentValidationResult(failingHeaderResult);
+
+            subject.Verify(x => x.Fail(AValidPath, AValidMethodString, AValidStatusCodeInt, Reason.InvalidHeaders, null), Times.Once());
+        }
+
+        [Fact]
         public void Validate_CallsFailWithMissingData()
         {
             Mock<IResultCollector> subject = new Mock<IResultCollector>();
