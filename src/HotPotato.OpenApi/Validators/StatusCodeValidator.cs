@@ -14,6 +14,8 @@ namespace HotPotato.OpenApi.Validators
         public Reason FailReason { get; private set; }
         public SwaggerResponse Result { get; private set; }
 
+        private const string NoContentStatusCode = "204";
+
         public StatusCodeValidator(HttpStatusCode statCode, string bodyString)
         {
             StatusCode = Convert.ToInt32(statCode);
@@ -25,7 +27,7 @@ namespace HotPotato.OpenApi.Validators
             string statCodeStr = StatusCode.ToString();
             if (swagOp.Responses.ContainsKey(statCodeStr))
             {
-                if (statCodeStr == "204" && !string.IsNullOrWhiteSpace(BodyString))
+                if (statCodeStr == NoContentStatusCode && !string.IsNullOrWhiteSpace(BodyString))
                 {
                     FailReason = Reason.UnexpectedBody;
                     return false;

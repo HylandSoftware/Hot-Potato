@@ -17,6 +17,8 @@ namespace HotPotato.OpenApi.Validators
         private IResultCollector resColl { get; }
         private SwaggerDocument swagDoc { get; }
 
+        private const int NoContentStatusCode = 204;
+
         public ValidationStrategy(IResultCollector ResColl, ISpecificationProvider SpecPro)
         {
             resColl = ResColl;
@@ -43,7 +45,7 @@ namespace HotPotato.OpenApi.Validators
 
             IValidationResult headerResult = HeaderValidator.Validate(StatusCodeValidator.Result);
 
-            if (StatusCodeValidator.StatusCode == 204)
+            if (StatusCodeValidator.StatusCode == NoContentStatusCode)
             {
                 AddNoContentValidationResult(headerResult);
             }
@@ -86,7 +88,7 @@ namespace HotPotato.OpenApi.Validators
         /// <summary>
         /// Deal with HeaderValidation results after the body has been checked in StatusCodeValidator
         /// </summary>
-        internal void AddNoContentValidationResult(IValidationResult headerResult)
+        private void AddNoContentValidationResult(IValidationResult headerResult)
         {
             if (!headerResult.Valid)
             {
