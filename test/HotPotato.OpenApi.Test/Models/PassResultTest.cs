@@ -2,7 +2,7 @@
 using Newtonsoft.Json;
 using Xunit;
 
-namespace HotPotato.OpenApi.Results
+namespace HotPotato.OpenApi.Models
 {
     public class PassResultTest
     {

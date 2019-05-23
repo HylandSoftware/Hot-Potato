@@ -2,7 +2,7 @@
 using HotPotato.OpenApi.Validators;
 using System.Collections.Generic;
 
-namespace HotPotato.OpenApi.Results
+namespace HotPotato.OpenApi.Models
 {
     public class FailResult : Result
     {

@@ -1,6 +1,5 @@
-﻿using HotPotato.OpenApi.Models;
-
-namespace HotPotato.OpenApi.Results
+﻿
+namespace HotPotato.OpenApi.Models
 {
     public abstract class Result
     {
