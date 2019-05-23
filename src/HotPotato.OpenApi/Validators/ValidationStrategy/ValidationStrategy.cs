@@ -46,6 +46,7 @@ namespace HotPotato.OpenApi.Validators
             if (StatusCodeValidator.StatusCode == 204)
             {
                 IValidationResult bodyResult = new ValidResult();
+                //deal with failing cases from the HeaderValidator
                 AddValidationResult(bodyResult, headerResult);
             }
             else
@@ -55,7 +56,7 @@ namespace HotPotato.OpenApi.Validators
             }
         }
 
-        public void AddValidationResult(IValidationResult bodyResult, IValidationResult headerResult)
+        internal void AddValidationResult(IValidationResult bodyResult, IValidationResult headerResult)
         {
             if (bodyResult.Valid && headerResult.Valid)
             {
@@ -75,7 +76,7 @@ namespace HotPotato.OpenApi.Validators
             }
             else
             {
-                //TODO: Combine the two fail results, AUTOTEST-344
+                //TODO: Combine the two fail results: AUTOTEST-344
                 InvalidResult invalidBody = (InvalidResult)bodyResult;
                 InvalidResult invalidHeader = (InvalidResult)headerResult;
 
