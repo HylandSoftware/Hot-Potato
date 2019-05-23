@@ -20,15 +20,19 @@ This is an ASP.NETCore host configured to use the HotPotato Middleware. It is st
 This is an ASP.NETCore middleware that can be used in situations where test suites are directly starting up the server startup or using the `TestServer`. It can be consumed via the following methods:
 
 ```csharp
-
 // Example code for TestServer
 
+_server = new TestServer(new WebHostBuilder()
+    .UseMiddleware<HotPotatoMiddleware>());
 ```
 
 ```csharp
-
 // Example code for direct startup
 
+public void Configure(ILoggerFactory loggerFactory, IApplicationBuilder builder, IHostingEnvironment env)
+        {
+            builder.UseMiddleware<HotPotatoMiddleware>();
+        }
 ```
 
 ### HotPotato.Core
