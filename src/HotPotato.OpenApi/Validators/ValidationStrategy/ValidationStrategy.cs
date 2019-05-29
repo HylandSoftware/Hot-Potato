@@ -3,6 +3,7 @@ using HotPotato.OpenApi.Models;
 using HotPotato.OpenApi.Results;
 using HotPotato.OpenApi.SpecificationProvider;
 using NSwag;
+using System.Linq;
 
 namespace HotPotato.OpenApi.Validators
 {
@@ -76,12 +77,10 @@ namespace HotPotato.OpenApi.Validators
             }
             else
             {
-                //TODO: Combine the two fail results: AUTOTEST-344
                 InvalidResult invalidBody = (InvalidResult)bodyResult;
                 InvalidResult invalidHeader = (InvalidResult)headerResult;
 
-                AddFail(invalidBody.Reason, invalidBody.Errors);
-                AddFail(invalidHeader.Reason, invalidHeader.Errors);
+                AddFail(new Reason[2] { invalidBody.Reason, invalidHeader.Reason}, invalidBody.Errors?.Concat(invalidHeader.Errors).ToArray());
             }
         }
 
@@ -103,7 +102,12 @@ namespace HotPotato.OpenApi.Validators
 
         private void AddFail(Reason reason, params ValidationError[] validationErrors)
         {
-            resColl.Fail(PathValidator.Path, MethodValidator.Method, StatusCodeValidator.StatusCode, reason, validationErrors);
+            resColl.Fail(PathValidator.Path, MethodValidator.Method, StatusCodeValidator.StatusCode, new Reason[1] { reason }, validationErrors);
+        }
+
+        private void AddFail(Reason[] reasons, params ValidationError[] validationErrors)
+        {
+            resColl.Fail(PathValidator.Path, MethodValidator.Method, StatusCodeValidator.StatusCode, reasons, validationErrors);
         }
 
         private void AddPass()
