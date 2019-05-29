@@ -17,6 +17,8 @@ namespace HotPotato.OpenApi.Validators
         private IResultCollector resColl { get; }
         private SwaggerDocument swagDoc { get; }
 
+        private const int NoContentStatusCode = 204;
+
         public ValidationStrategy(IResultCollector ResColl, ISpecificationProvider SpecPro)
         {
             resColl = ResColl;
@@ -40,37 +42,73 @@ namespace HotPotato.OpenApi.Validators
                 AddFail(StatusCodeValidator.FailReason);
                 return;
             }
-            else if(StatusCodeValidator.StatusCode == 204)
-            {
-                AddValidationResult(HeaderValidator.Validate(StatusCodeValidator.Result));
-                return;
-            }
 
-            AddValidationResult(BodyValidator.Validate(StatusCodeValidator.Result));
-            AddValidationResult(HeaderValidator.Validate(StatusCodeValidator.Result));
+            IValidationResult headerResult = HeaderValidator.Validate(StatusCodeValidator.Result);
+
+            if (StatusCodeValidator.StatusCode == NoContentStatusCode)
+            {
+                AddNoContentValidationResult(headerResult);
+            }
+            else
+            {
+                IValidationResult bodyResult = BodyValidator.Validate(StatusCodeValidator.Result);
+                AddValidationResult(bodyResult, headerResult);
+            }
+        }
+
+        internal void AddValidationResult(IValidationResult bodyResult, IValidationResult headerResult)
+        {
+            if (bodyResult.Valid && headerResult.Valid)
+            {
+                //only add one pass result
+                AddPass();
+            }
+            else if (!bodyResult.Valid && headerResult.Valid)
+            {
+                //only add a failing result with no pass result
+                InvalidResult invResult = (InvalidResult)bodyResult;
+                AddFail(invResult.Reason, invResult.Errors);
+            }
+            else if (bodyResult.Valid && !headerResult.Valid)
+            {
+                InvalidResult invResult = (InvalidResult)headerResult;
+                AddFail(invResult.Reason, invResult.Errors);
+            }
+            else
+            {
+                //TODO: Combine the two fail results: AUTOTEST-344
+                InvalidResult invalidBody = (InvalidResult)bodyResult;
+                InvalidResult invalidHeader = (InvalidResult)headerResult;
+
+                AddFail(invalidBody.Reason, invalidBody.Errors);
+                AddFail(invalidHeader.Reason, invalidHeader.Errors);
+            }
+        }
+
+        /// <summary>
+        /// Deal with HeaderValidation results after the body has been checked in StatusCodeValidator
+        /// </summary>
+        private void AddNoContentValidationResult(IValidationResult headerResult)
+        {
+            if (!headerResult.Valid)
+            {
+                InvalidResult invalidHeader = (InvalidResult)headerResult;
+                AddFail(invalidHeader.Reason, invalidHeader.Errors);
+            }
+            else
+            {
+                AddPass();
+            }
         }
 
         private void AddFail(Reason reason, params ValidationError[] validationErrors)
         {
             resColl.Fail(PathValidator.Path, MethodValidator.Method, StatusCodeValidator.StatusCode, reason, validationErrors);
         }
-        
+
         private void AddPass()
         {
             resColl.Pass(PathValidator.Path, MethodValidator.Method, StatusCodeValidator.StatusCode);
-        }
-
-        private void AddValidationResult(IValidationResult result)
-        {
-            if (result.Valid)
-            {
-                AddPass();
-            }
-            else
-            {
-                InvalidResult invResult = (InvalidResult)result;
-                AddFail(invResult.Reason, invResult.Errors);
-            }
         }
     }
 }
