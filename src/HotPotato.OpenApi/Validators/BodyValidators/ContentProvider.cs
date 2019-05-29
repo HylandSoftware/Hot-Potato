@@ -15,7 +15,7 @@ namespace HotPotato.OpenApi.Validators
                 specBody = swagResp.ActualResponse.Schema;
             }
             //Conditional for matching schemas with multiple content-type returns
-            else if (swagResp.Content != null && swagResp.Content.Count > 0)
+            else if (swagResp?.Content != null && swagResp.Content?.Count > 0)
             {
                 Dictionary<string, OpenApiMediaType> contentSchemas = swagResp.Content.SanitizeContentTypes();
                 if (contentSchemas.ContainsKey(contentType))
@@ -28,7 +28,7 @@ namespace HotPotato.OpenApi.Validators
 
         public static ValidationError[] GenerateContentError(string contentType)
         {
-            ValidationError contentError = new ValidationError("Content-Type missing in spec, or content is null",
+            ValidationError contentError = new ValidationError($"Content-Type '{contentType}' is missing in spec, or content is null",
                 ValidationErrorKind.MissingContent, "Content-Type", 0, 0);
             return new ValidationError[1]{ contentError };
         }
