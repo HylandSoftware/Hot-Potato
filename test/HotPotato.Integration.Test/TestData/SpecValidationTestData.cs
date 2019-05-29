@@ -83,11 +83,6 @@ namespace HotPotato.Http.Default
                     instance = "https://example.net/example-resource"
                 }
             };
-            yield return new object[] { "specs/document/", HttpMethod.Post,
-                HttpStatusCode.Created, "http://api.docs.hyland.io/document/documents/", "application/json", new {
-                    id = "string"
-                }
-            };
 
             yield return new object[] { "specs/rdds/configurationservice/", HttpMethod.Get,
                 HttpStatusCode.OK, "https://api.hyland.com/ibpaf/rdds/configurations", "application/json", new {

@@ -1,16 +1,9 @@
-﻿using HotPotato.Core.Http;
-using HotPotato.Core.Http.Default;
-using HotPotato.Core.Models;
-using HotPotato.OpenApi.Models;
-using HotPotato.OpenApi.Results;
+﻿using HotPotato.OpenApi.Models;
 using HotPotato.OpenApi.Validators;
-using System;
 using System.Collections.Generic;
-using System.Net;
-using System.Net.Http;
 using Xunit;
 
-namespace HotPotato.Results
+namespace HotPotato.OpenApi.Results
 {
     public class ResultCollectorTest
     {
@@ -23,7 +16,7 @@ namespace HotPotato.Results
         [Fact]
         public void CanIAddAPassResultToResultsList()
         {
-            OpenApi.Models.Result expected = new OpenApi.Models.Result(Path, Get, OkStatusCode, State.Pass);
+            PassResult expected = new PassResult(Path, Get, OkStatusCode);
 
             ResultCollector subject = new ResultCollector();
 
@@ -43,7 +36,7 @@ namespace HotPotato.Results
             var err = new ValidationError("Error", ValidationErrorKind.Unknown, "Property", 5, 10);
             var validationErrors = new List<ValidationError> { err };
 
-            OpenApi.Models.Result expected = new OpenApi.Models.Result(Path, Get, NotFoundStatusCode, State.Fail, Reason.Unknown, validationErrors);
+            FailResult expected = new FailResult(Path, Get, NotFoundStatusCode, Reason.Unknown, validationErrors);
 
             ResultCollector subject = new ResultCollector();
 
@@ -51,12 +44,36 @@ namespace HotPotato.Results
 
             Assert.NotEmpty(subject.Results);
             Assert.Single(subject.Results);
-            Assert.Equal(expected.Path, subject.Results[0].Path);
-            Assert.Equal(expected.Method, subject.Results[0].Method);
-            Assert.Equal(expected.StatusCode, subject.Results[0].StatusCode);
-            Assert.Equal(expected.State, subject.Results[0].State);
-            Assert.Equal(expected.Reason, subject.Results[0].Reason);
-            Assert.Equal(expected.ValidationErrors, subject.Results[0].ValidationErrors);
+
+            FailResult result = (FailResult)subject.Results[0];
+
+            Assert.Equal(expected.Path, result.Path);
+            Assert.Equal(expected.Method, result.Method);
+            Assert.Equal(expected.StatusCode, result.StatusCode);
+            Assert.Equal(expected.State, result.State);
+            Assert.Equal(expected.Reason, result.Reason);
+            Assert.Equal(expected.ValidationErrors, result.ValidationErrors);
+        }
+
+        [Fact]
+        public void ResultCollector_OverallResult_ReflectsFail()
+        {
+            ResultCollector subject = new ResultCollector();
+
+            subject.Pass(Path, Get, OkStatusCode);
+            subject.Fail(Path, Get, NotFoundStatusCode, Reason.Unknown, null);
+
+            Assert.Equal(State.Fail, subject.OverallResult);
+        }
+
+        [Fact]
+        public void ResultCollector_OverallResult_ReflectsPass()
+        {
+            ResultCollector subject = new ResultCollector();
+
+            subject.Pass(Path, Get, OkStatusCode);
+
+            Assert.Equal(State.Pass, subject.OverallResult);
         }
     }
 }

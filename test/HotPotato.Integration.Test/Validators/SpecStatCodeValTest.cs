@@ -109,7 +109,7 @@ namespace HotPotato.OpenApi.Validators
                     IResultCollector collector = provider.GetService<IResultCollector>();
 
                     List<Result> results = collector.Results;
-                    Result result = results.ElementAt(0);
+                    FailResult result = (FailResult)results.ElementAt(0);
 
                     Assert.Equal(State.Fail, result.State);
                     Assert.Equal(Reason.UnexpectedBody, result.Reason);
