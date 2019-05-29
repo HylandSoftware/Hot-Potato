@@ -9,7 +9,7 @@
         MissingHeaders,
         MissingMethod,
         MissingPath,
-        MissingSpecBody,
+        MissingContent,
         MissingStatusCode,
         UnexpectedBody
     }
