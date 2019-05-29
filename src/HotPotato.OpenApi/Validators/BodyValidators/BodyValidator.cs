@@ -11,25 +11,5 @@ namespace HotPotato.OpenApi.Validators
         public HttpContentType ContentType { get; protected set; }
 
         public abstract IValidationResult Validate(SwaggerResponse swagResp);
-
-        protected virtual JsonSchema4 GetSchema(SwaggerResponse swagResp)
-        {
-            JsonSchema4 specBody = swagResp.ActualResponse.Schema;
-
-            //Conditional for matching schemas with multiple content-type returns
-            if (swagResp.Content != null && swagResp.Content.Count > 0)
-            {
-                Dictionary<string, OpenApiMediaType> contentSchemas = swagResp.Content.SanitizeContentTypes();
-                if (contentSchemas.ContainsKey(ContentType.Type))
-                {
-                    specBody = contentSchemas[ContentType.Type].Schema;
-                }
-                return specBody;
-            }
-            else
-            {
-                return specBody;
-            }
-        }
     }
 }
