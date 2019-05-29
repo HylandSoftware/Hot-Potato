@@ -1,6 +1,7 @@
 ﻿using HotPotato.OpenApi.Models;
 using HotPotato.OpenApi.Validators;
 using System.Collections.Generic;
+using System.Linq;
 using Xunit;
 
 namespace HotPotato.OpenApi.Results
@@ -51,7 +52,7 @@ namespace HotPotato.OpenApi.Results
             Assert.Equal(expected.Method, result.Method);
             Assert.Equal(expected.StatusCode, result.StatusCode);
             Assert.Equal(expected.State, result.State);
-            Assert.Equal(expected.Reason, result.Reason);
+            Assert.Equal(expected.Reasons.ElementAt(0), result.Reasons.ElementAt(0));
             Assert.Equal(expected.ValidationErrors, result.ValidationErrors);
         }
 

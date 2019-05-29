@@ -11,5 +11,6 @@ namespace HotPotato.OpenApi.Results
         List<Result> Results { get; }
         void Pass(string path, string method, int statusCode);
         void Fail(string path, string method, int StatusCode, Reason reason, params ValidationError[] validationErrors);
+        void Fail(string path, string method, int StatusCode, Reason[] reasons, params ValidationError[] validationErrors);
     }
 }

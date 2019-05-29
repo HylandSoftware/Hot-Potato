@@ -25,9 +25,17 @@ namespace HotPotato.OpenApi.Results
                 OverallResult = State.Pass;
             }
         }
+
         public void Fail(string path, string method, int statusCode, Reason reason, params ValidationError[] validationErrors)
         {
-            Results.Add(ResultFactory.FailResult(path, method, statusCode, reason, validationErrors));
+            Results.Add(ResultFactory.FailResult(path, method, statusCode, new Reason[1] { reason }, validationErrors));
+
+            OverallResult = State.Fail;
+        }
+
+        public void Fail(string path, string method, int statusCode, Reason[] reasons, params ValidationError[] validationErrors)
+        {
+            Results.Add(ResultFactory.FailResult(path, method, statusCode, reasons, validationErrors));
 
             OverallResult = State.Fail;
         }

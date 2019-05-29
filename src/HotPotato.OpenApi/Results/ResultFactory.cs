@@ -8,7 +8,7 @@ namespace HotPotato.OpenApi.Results
     {
         public static Result PassResult(string path, string method, int statusCode) =>
             new PassResult(path, method, statusCode);
-        public static Result FailResult(string path, string method, int statusCode, Reason reason, params ValidationError[] validationErrors) =>
-            new FailResult(path, method, statusCode, reason, validationErrors?.ToList());
+        public static Result FailResult(string path, string method, int statusCode, Reason[] reasons, params ValidationError[] validationErrors) =>
+            new FailResult(path, method, statusCode, reasons?.ToList(), validationErrors?.ToList());
     }
 }
