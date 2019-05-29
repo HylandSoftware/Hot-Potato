@@ -16,11 +16,11 @@ namespace HotPotato.OpenApi.Validators
 
         public override IValidationResult Validate(SwaggerResponse swagResp)
         {
-            JsonSchema4 specBody = GetSchema(swagResp);
+            JsonSchema4 specBody = ContentProvider.GetSchema(swagResp, ContentType.Type);
 
             if (specBody == null)
             {
-                return new InvalidResult(Reason.MissingSpecBody);
+                return new InvalidResult(Reason.MissingContent, ContentProvider.GenerateContentError(ContentType.Type));
             }
             else if (string.IsNullOrWhiteSpace(BodyString))
             {

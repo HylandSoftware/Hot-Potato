@@ -182,6 +182,10 @@ namespace HotPotato.OpenApi.Validators
         /// <summary>
         /// Xml body cannot be parsed
         /// </summary>
-        InvalidXml
+        InvalidXml,
+        /// <summary>
+        /// Content-Type not found in spec or content is null
+        /// </summary>
+        MissingContent
     }
 }

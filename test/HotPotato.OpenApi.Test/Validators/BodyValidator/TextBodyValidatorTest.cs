@@ -14,9 +14,13 @@ namespace HotPotato.OpenApi.Validators
         [Fact]
         public void BodyValidator_ReturnsTrueWithValidText()
         {
-            JsonSchema4 schema = JsonSchema4.CreateAnySchema();
             SwaggerResponse swagResp = new SwaggerResponse();
-            swagResp.ActualResponse.Schema = schema;
+
+            JsonSchema4 schema = JsonSchema4.CreateAnySchema();
+            OpenApiMediaType mediaType = new OpenApiMediaType();
+            mediaType.Schema = schema;
+
+            swagResp.Content.Add("text/plain", mediaType);
 
             BodyValidator subject = BodyValidatorFactory.Create(AValidBody, new HttpContentType("text/plain"));
 
@@ -26,9 +30,13 @@ namespace HotPotato.OpenApi.Validators
         [Fact]
         public void BodyValidator_ReturnsFalseWithEmptyText()
         {
-            JsonSchema4 schema = JsonSchema4.CreateAnySchema();
             SwaggerResponse swagResp = new SwaggerResponse();
-            swagResp.ActualResponse.Schema = schema;
+
+            JsonSchema4 schema = JsonSchema4.CreateAnySchema();
+            OpenApiMediaType mediaType = new OpenApiMediaType();
+            mediaType.Schema = schema;
+
+            swagResp.Content.Add("text/plain", mediaType);
 
             TextBodyValidator subject = new TextBodyValidator(AnInvalidBody, new HttpContentType("text/plain"));
             InvalidResult result = (InvalidResult)subject.Validate(swagResp);
