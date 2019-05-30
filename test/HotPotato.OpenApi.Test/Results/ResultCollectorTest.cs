@@ -14,6 +14,7 @@ namespace HotPotato.OpenApi.Results
         private const int NotFoundStatusCode = 404;
         private const string Uri = "http://localhost/endpoint";
 
+        private readonly Reason[] inputReason = new Reason[] { Reason.Unknown };
         private readonly List<Reason> expectedReason = new List<Reason>() { Reason.Unknown };
 
         [Fact]
@@ -43,7 +44,7 @@ namespace HotPotato.OpenApi.Results
 
             ResultCollector subject = new ResultCollector();
 
-            subject.Fail(Path, Get, NotFoundStatusCode, Reason.Unknown, validationErrors.ToArray());
+            subject.Fail(Path, Get, NotFoundStatusCode, inputReason, validationErrors.ToArray());
 
             Assert.NotEmpty(subject.Results);
             Assert.Single(subject.Results);
@@ -64,7 +65,7 @@ namespace HotPotato.OpenApi.Results
             ResultCollector subject = new ResultCollector();
 
             subject.Pass(Path, Get, OkStatusCode);
-            subject.Fail(Path, Get, NotFoundStatusCode, Reason.Unknown, null);
+            subject.Fail(Path, Get, NotFoundStatusCode, inputReason, null);
 
             Assert.Equal(State.Fail, subject.OverallResult);
         }
