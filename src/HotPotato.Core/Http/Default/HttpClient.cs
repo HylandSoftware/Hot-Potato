@@ -10,13 +10,13 @@ namespace HotPotato.Core.Http.Default
         private readonly System.Net.Http.HttpClient client;
         //public HttpClient(System.Net.Http.HttpClient client)
         //{
-        //    _ = client ?? throw new ArgumentNullException(nameof(client));
+        //    _ = client ?? throw Exceptions.ArgumentNull(nameof(client));
         //    this.client = client;
 
         //}
         public HttpClient(System.Net.Http.HttpClient client, IWebProxy proxy = null, ForwardProxy.HttpForwardProxyConfig proxyConfig = null)
         {
-            _ = client ?? throw new ArgumentNullException(nameof(client));
+            _ = client ?? throw Exceptions.ArgumentNull(nameof(client));
             if (proxyConfig != null && proxyConfig.Enabled)
             { 
                 System.Net.Http.HttpClientHandler handler = new System.Net.Http.HttpClientHandler

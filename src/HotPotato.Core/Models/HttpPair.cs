@@ -10,8 +10,8 @@ namespace HotPotato.Core.Models
         private bool disposed = false;
         public HttpPair(IHttpRequest request, IHttpResponse response)
         {
-            _ = request ?? throw new ArgumentNullException(nameof(request));
-            _ = response ?? throw new ArgumentNullException(nameof(response));
+            _ = request ?? throw Exceptions.ArgumentNull(nameof(request));
+            _ = response ?? throw Exceptions.ArgumentNull(nameof(response));
 
             this.Request = request;
             this.Response = response;

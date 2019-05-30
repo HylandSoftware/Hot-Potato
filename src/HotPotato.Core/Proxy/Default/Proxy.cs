@@ -17,9 +17,9 @@ namespace HotPotato.Core.Proxy.Default
 
         public Proxy(IHttpClient client, ILogger<Proxy> logger, IProcessor processor)
         {
-            _ = client ?? throw new ArgumentNullException(nameof(client));
-            _ = logger ?? throw new ArgumentNullException(nameof(logger));
-            _ = processor ?? throw new ArgumentNullException(nameof(processor));
+            _ = client ?? throw Exceptions.ArgumentNull(nameof(client));
+            _ = logger ?? throw Exceptions.ArgumentNull(nameof(logger));
+            _ = processor ?? throw Exceptions.ArgumentNull(nameof(processor));
 
             this.Client = client;
             this.Logger = logger;

@@ -45,7 +45,7 @@ namespace HotPotato.Core.Http
 
         public static HttpRequestMessage ToClientRequestMessage(this IHttpRequest @this)
         {
-            _ = @this ?? throw new ArgumentNullException(nameof(@this));
+            _ = @this ?? throw Exceptions.ArgumentNull(nameof(@this));
 
             HttpRequestMessage message = new HttpRequestMessage(@this.Method, @this.Uri);
             if (@this.Content != null)
@@ -66,7 +66,7 @@ namespace HotPotato.Core.Http
         }
         public static async Task<IHttpResponse> ToClientResponseAsync(this HttpResponseMessage @this)
         {
-            _ = @this ?? throw new ArgumentNullException(nameof(@this));
+            _ = @this ?? throw Exceptions.ArgumentNull(nameof(@this));
 
             HttpHeaders headers = new HttpHeaders();
             if (@this.Headers != null)
@@ -98,8 +98,8 @@ namespace HotPotato.Core.Http
 
         public static IHttpRequest ToProxyRequest(this MSHTTP.HttpRequest @this, string remoteEndpoint)
         {
-            _ = @this ?? throw new ArgumentNullException(nameof(@this));
-            _ = remoteEndpoint ?? throw new ArgumentNullException(nameof(remoteEndpoint));
+            _ = @this ?? throw Exceptions.ArgumentNull(nameof(@this));
+            _ = remoteEndpoint ?? throw Exceptions.ArgumentNull(nameof(remoteEndpoint));
 
             HttpRequest request = new HttpRequest(new HttpMethod(@this.Method), @this.BuildUri(remoteEndpoint));
             if (@this.Headers != null && @this.Headers.Count > 0)
@@ -123,8 +123,8 @@ namespace HotPotato.Core.Http
 
         public static async Task ToProxyResponseAsync(this IHttpResponse @this, MSHTTP.HttpResponse response)
         {
-            _ = @this ?? throw new ArgumentNullException(nameof(@this));
-            _ = response ?? throw new ArgumentNullException(nameof(response));
+            _ = @this ?? throw Exceptions.ArgumentNull(nameof(@this));
+            _ = response ?? throw Exceptions.ArgumentNull(nameof(response));
 
             response.StatusCode = (int)@this.StatusCode;
 
@@ -147,8 +147,8 @@ namespace HotPotato.Core.Http
 
         public static Uri BuildUri(this MSHTTP.HttpRequest @this, string remoteEndpoint)
         {
-            _ = @this ?? throw new ArgumentNullException(nameof(@this));
-            _ = remoteEndpoint ?? throw new ArgumentNullException(nameof(remoteEndpoint));
+            _ = @this ?? throw Exceptions.ArgumentNull(nameof(@this));
+            _ = remoteEndpoint ?? throw Exceptions.ArgumentNull(nameof(remoteEndpoint));
 
             return new Uri($"{remoteEndpoint}{@this.Path.Value}{@this.QueryString}");
         }
@@ -167,7 +167,7 @@ namespace HotPotato.Core.Http
                 string contentEncoding = @this.Headers["Content-Encoding"][0];
                 if (@this.Headers["Content-Encoding"].Count > 1)
                 {
-                    throw new NotImplementedException("Multiple values for Content-Encoding were received on the response, and the response could not be decoded.");
+                    throw Exceptions.NotImplemented("Multiple values for Content-Encoding were received on the response, and the response could not be decoded.");
                 }
                 bodyContent = DecodeCompressedContent(@this.Content, contentEncoding);
             }
@@ -226,7 +226,7 @@ namespace HotPotato.Core.Http
                             break;
 
                         default:
-                            throw new NotImplementedException(string.Format(
+                            throw Exceptions.NotImplemented(string.Format(
                                 "The response encoding \"{0}\" was not recognized and is not supported, and the response could not be read.", contentEncoding));
                     }
                 }
