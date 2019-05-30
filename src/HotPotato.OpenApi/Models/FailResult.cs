@@ -12,16 +12,6 @@ namespace HotPotato.OpenApi.Models
         public List<Reason> Reasons { get; }
         public List<ValidationError> ValidationErrors { get; }
 
-        public FailResult(string path, string method, int statusCode, Reason reason, List<ValidationError> validationErrors)
-        {
-            Path = path;
-            Method = method;
-            StatusCode = statusCode;
-            State = State.Fail;
-            Reasons = new List<Reason>() { reason };
-            ValidationErrors = validationErrors;
-        }
-
         public FailResult(string path, string method, int statusCode, List<Reason> reasons, List<ValidationError> validationErrors)
         {
             Path = path;

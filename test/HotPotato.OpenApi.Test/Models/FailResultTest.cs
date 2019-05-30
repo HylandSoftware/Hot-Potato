@@ -15,7 +15,7 @@ namespace HotPotato.OpenApi.Models
         private const string path = "/path";
         private const string method = "trace";
         private const int statusCode = 200;
-        private const Reason reason = Reason.InvalidBody;
+        private readonly List<Reason> reason = new List<Reason>() { Reason.InvalidBody };
         private readonly List<Reason> reasons = new List<Reason>() { Reason.InvalidBody, Reason.InvalidHeaders };
         private readonly List<ValidationError> validationErrors = new List<ValidationError>(){
             new ValidationError("message", ValidationErrorKind.ArrayExpected, "property", 0, 0),
