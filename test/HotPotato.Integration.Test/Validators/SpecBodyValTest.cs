@@ -89,7 +89,7 @@ namespace HotPotato.OpenApi.Validators
                     List<Result> results = collector.Results;
                     FailResult result = (FailResult)results.ElementAt(0);
 
-                    Assert.Equal(Reason.InvalidBody, result.Reason);
+                    Assert.Equal(Reason.InvalidBody, result.Reasons.ElementAt(0));
                     Assert.Equal(expectedKind1, result.ValidationErrors[0].Kind);
                     Assert.Equal(expectedKind2, result.ValidationErrors[1].Kind);
                 }

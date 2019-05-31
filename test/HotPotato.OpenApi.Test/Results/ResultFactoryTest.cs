@@ -1,5 +1,6 @@
 ﻿using HotPotato.OpenApi.Models;
 using HotPotato.OpenApi.Validators;
+using System.Linq;
 using Xunit;
 
 namespace HotPotato.OpenApi.Results
@@ -32,14 +33,14 @@ namespace HotPotato.OpenApi.Results
             var err = new ValidationError("Error", ValidationErrorKind.Unknown, "Property", 5, 10);
             var validationErrors = new ValidationError[] { err };
 
-            FailResult subject = (FailResult)ResultFactory.FailResult(Path, Method, FailStatusCode, FailReason, validationErrors);
+            FailResult subject = (FailResult)ResultFactory.FailResult(Path, Method, FailStatusCode, new Reason[1] { FailReason }, validationErrors);
 
             Assert.NotNull(subject);
             Assert.Equal(Path, subject.Path);
             Assert.Equal(Method, subject.Method);
             Assert.Equal(FailStatusCode, subject.StatusCode);
             Assert.Equal(FailState, subject.State);
-            Assert.Equal(FailReason, subject.Reason);
+            Assert.Equal(FailReason, subject.Reasons.ElementAt(0));
             Assert.Equal(validationErrors, subject.ValidationErrors);
         }
     }

@@ -1,6 +1,7 @@
 ﻿using HotPotato.OpenApi.Models;
 using HotPotato.OpenApi.Validators;
 using System.Collections.Generic;
+using System.Linq;
 using Xunit;
 
 namespace HotPotato.OpenApi.Results
@@ -12,6 +13,9 @@ namespace HotPotato.OpenApi.Results
         private const int OkStatusCode = 200;
         private const int NotFoundStatusCode = 404;
         private const string Uri = "http://localhost/endpoint";
+
+        private readonly Reason[] inputReason = new Reason[] { Reason.Unknown };
+        private readonly List<Reason> expectedReason = new List<Reason>() { Reason.Unknown };
 
         [Fact]
         public void CanIAddAPassResultToResultsList()
@@ -36,11 +40,11 @@ namespace HotPotato.OpenApi.Results
             var err = new ValidationError("Error", ValidationErrorKind.Unknown, "Property", 5, 10);
             var validationErrors = new List<ValidationError> { err };
 
-            FailResult expected = new FailResult(Path, Get, NotFoundStatusCode, Reason.Unknown, validationErrors);
+            FailResult expected = new FailResult(Path, Get, NotFoundStatusCode, expectedReason, validationErrors);
 
             ResultCollector subject = new ResultCollector();
 
-            subject.Fail(Path, Get, NotFoundStatusCode, Reason.Unknown, validationErrors.ToArray());
+            subject.Fail(Path, Get, NotFoundStatusCode, inputReason, validationErrors.ToArray());
 
             Assert.NotEmpty(subject.Results);
             Assert.Single(subject.Results);
@@ -51,7 +55,7 @@ namespace HotPotato.OpenApi.Results
             Assert.Equal(expected.Method, result.Method);
             Assert.Equal(expected.StatusCode, result.StatusCode);
             Assert.Equal(expected.State, result.State);
-            Assert.Equal(expected.Reason, result.Reason);
+            Assert.Equal(expected.Reasons.ElementAt(0), result.Reasons.ElementAt(0));
             Assert.Equal(expected.ValidationErrors, result.ValidationErrors);
         }
 
@@ -61,7 +65,7 @@ namespace HotPotato.OpenApi.Results
             ResultCollector subject = new ResultCollector();
 
             subject.Pass(Path, Get, OkStatusCode);
-            subject.Fail(Path, Get, NotFoundStatusCode, Reason.Unknown, null);
+            subject.Fail(Path, Get, NotFoundStatusCode, inputReason, null);
 
             Assert.Equal(State.Fail, subject.OverallResult);
         }
