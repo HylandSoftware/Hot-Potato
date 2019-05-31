@@ -5,8 +5,8 @@ namespace HotPotato.OpenApi.Validators
     public class InvalidResult : IValidationResult
     {
         public bool Valid { get; }
-        public Reason Reason { get; }
         public ValidationError[] Errors { get; }
+        public Reason Reason { get; }
 
         public InvalidResult(Reason reason)
         {

@@ -1,38 +1,35 @@
 ﻿
 using HotPotato.OpenApi.Models;
+using HotPotato.Core.Http;
 using NJsonSchema;
 using NSwag;
 using System.Collections.Generic;
 
 namespace HotPotato.OpenApi.Validators
 {
-    internal class BodyValidator
+    internal class TextBodyValidator : BodyValidator
     {
-        public string BodyString { get; }
-
-        public BodyValidator(string bodyString)
+        public TextBodyValidator(string bodyString, HttpContentType contentType)
         {
-            if (string.IsNullOrWhiteSpace(bodyString))
-            {
-                BodyString = "";
-            }
-            else
-            {
-                BodyString = bodyString;
-            }
+            BodyString = bodyString;
+            ContentType = contentType;
         }
 
-        public IValidationResult Validate(SwaggerResponse swagResp)
+        public override IValidationResult Validate(SwaggerResponse swagResp)
         {
-            if (swagResp.ActualResponse == null || swagResp.ActualResponse.Schema == null)
+            JsonSchema4 specBody = ContentProvider.GetSchema(swagResp, ContentType.Type);
+
+            if (specBody == null)
             {
-                return new InvalidResult(Reason.MissingSpecBody);
+                return new InvalidResult(Reason.MissingContent, ContentProvider.GenerateContentError(ContentType.Type));
             }
-            else if(BodyString == "")
+            else if (string.IsNullOrWhiteSpace(BodyString))
             {
                 return new InvalidResult(Reason.MissingBody);
             }
-            JsonSchema4 specBody = swagResp.ActualResponse.Schema;
+
+            BodyString = BodyString.ToJsonText();
+
             ICollection<NJsonSchema.Validation.ValidationError> errors = specBody.Validate(BodyString);
             if (errors == null || errors.Count == 0)
             {

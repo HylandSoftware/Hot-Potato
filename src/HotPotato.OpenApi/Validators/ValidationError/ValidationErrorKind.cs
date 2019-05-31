@@ -112,7 +112,7 @@ namespace HotPotato.OpenApi.Validators
         /// </summary>
         NotAnyOf,
         /// <summary>
-        /// The obeject is not all of the given schemas
+        /// The object is not all of the given schemas
         /// </summary>
         NotAllOf,
         /// <summary>
@@ -178,7 +178,14 @@ namespace HotPotato.OpenApi.Validators
         /// <summary>
         /// No type of the types validates (check error details in <see cref="cref="MultiTypeValidationError"/>).
         /// </summary>
-        NoTypeValidates
-
+        NoTypeValidates,
+        /// <summary>
+        /// Xml body cannot be parsed
+        /// </summary>
+        InvalidXml,
+        /// <summary>
+        /// Content-Type not found in spec or content is null
+        /// </summary>
+        MissingContent
     }
 }

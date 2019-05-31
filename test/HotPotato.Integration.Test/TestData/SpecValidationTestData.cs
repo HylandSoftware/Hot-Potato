@@ -1,4 +1,4 @@
-﻿
+﻿using HotPotato.OpenApi.Validators;
 using System.Collections;
 using System.Collections.Generic;
 using System.Net;
@@ -83,12 +83,7 @@ namespace HotPotato.Http.Default
                     instance = "https://example.net/example-resource"
                 }
             };
-            yield return new object[] { "specs/document/", HttpMethod.Post,
-                HttpStatusCode.Created, "http://api.docs.hyland.io/document/documents/", "application/json", new {
-                    id = "string"
-                }
-            };
-            
+
             yield return new object[] { "specs/rdds/configurationservice/", HttpMethod.Get,
                 HttpStatusCode.OK, "https://api.hyland.com/ibpaf/rdds/configurations", "application/json", new {
                 configurationCollection = new[]{
@@ -100,7 +95,7 @@ namespace HotPotato.Http.Default
                     }
                 }
             };
-            
+
             yield return new object[] { "specs/rdds/messagestorageservice/", HttpMethod.Delete,
                 HttpStatusCode.NotFound, "https://api.hyland.com/ibpaf/rdds/messages/78", "application/problem+json", new {
                     type = "https://example.net/validation_error",
@@ -110,7 +105,7 @@ namespace HotPotato.Http.Default
                     instance = "https://example.net/example-resource"
                 }
             };
-            
+
             yield return new object[] { "specs/workflow/", HttpMethod.Get,
                 HttpStatusCode.OK, "https://api.hyland.com/workflow/life-cycles/48/", "application/json", new {
                     id = "string",
@@ -126,6 +121,16 @@ namespace HotPotato.Http.Default
     {
         public IEnumerator<object[]> GetEnumerator()
         {
+            yield return new object[] { "specs/rdds/messagestorageservice/", HttpMethod.Delete,
+                HttpStatusCode.NotFound, "https://api.hyland.com/ibpaf/rdds/messages/78", "application/problem+json", new {
+                    type = "https://example.net/validation_error",
+                    title = false,
+                    status = "not an int",
+                    detail = "message was not found for the given messageId, hence nothing will be deleted",
+                    instance = "https://example.net/example-resource"
+                }, ValidationErrorKind.StringExpected, ValidationErrorKind.IntegerExpected
+            };
+
             yield return new object[] { "specs/ccm/", HttpMethod.Get,
             HttpStatusCode.OK, "https://api.hyland.com/sms/messages/41", "application/json", new {
                 id = "SM4262411b90e5464b98a4f66a49c57a97",
@@ -138,7 +143,7 @@ namespace HotPotato.Http.Default
                 body = "Test",
                 status = "accepted",
                 direction = "inbound",
-                }
+                }, ValidationErrorKind.DateTimeExpected, ValidationErrorKind.IntegerExpected
             };
         }
         IEnumerator IEnumerable.GetEnumerator() => GetEnumerator();
@@ -172,6 +177,61 @@ namespace HotPotato.Http.Default
 
             yield return new object[] { "specs/rdds/onrampservice/", HttpMethod.Post,
             HttpStatusCode.NoContent, "https://api.hyland.com/ibpaf/rdds/notifications"};
+        }
+        IEnumerator IEnumerable.GetEnumerator() => GetEnumerator();
+    }
+
+    public class CustomSpecTestData : IEnumerable<object[]>
+    {
+        public IEnumerator<object[]> GetEnumerator()
+        {
+            yield return new object[] { "specs/rawpotato/", HttpMethod.Delete,
+            HttpStatusCode.OK, "https://api.hyland.com/v1/48/plans/48", "application/xml",
+                @"<BaseResponse><Code>48</Code><Message>Deleted with a valid xml</Message></BaseResponse>" };
+
+            yield return new object[] { "specs/rawpotato/", HttpMethod.Get,
+                    HttpStatusCode.OK, "https://api.hyland.com/risks/48/accountSnapshot", "application/octet-stream",
+                    "ByteStringsAreBase64"};
+
+            yield return new object[] { "specs/rawpotato/", HttpMethod.Get,
+                    HttpStatusCode.OK, "https://api.hyland.com/risks/48/accountSnapshot", "text/csv",
+                        @"booking_date;purpose;amount;currency;counter_iban;counter_bic;counter_holder;tags;category_id" +
+                        @"26.07.2007; 'CONCLUSION NO INFORMATION, SEE GGF. STATEMENT OF ACCOUNT'; -7.32; EUR; ; ; ; ;" };
+
+            yield return new object[] { "specs/rawpotato/", HttpMethod.Get,
+                    HttpStatusCode.OK, "https://api.hyland.com/order/4/finishedFile/8", "application/pdf",
+                        "101" };
+
+            yield return new object[] { "specs/rawpotato/", HttpMethod.Get,
+                    HttpStatusCode.OK, "https://api.hyland.com/order/4/finishedFile/8", "image/jpg",
+                        "10101" };
+
+            yield return new object[] { "specs/rdds/configurationservice/", HttpMethod.Get,
+            HttpStatusCode.OK, "https://api.hyland.com/ibpaf/rdds/configurations/48/content", "text/plain", "Configuration Content"};
+        }
+        IEnumerator IEnumerable.GetEnumerator() => GetEnumerator();
+    }
+
+    public class CustomSpecNegTestData : IEnumerable<object[]>
+    {
+        public IEnumerator<object[]> GetEnumerator()
+        {
+            yield return new object[] { "specs/rawpotato/", HttpMethod.Delete,
+            HttpStatusCode.OK, "https://api.hyland.com/v1/48/plans/48", "application/xml",
+                @"<BaseResponse><Code>48</Code><Message>Deleted with a malformed xml</Message>", ValidationErrorKind.InvalidXml };
+
+            yield return new object[] { "specs/rawpotato/", HttpMethod.Delete,
+            HttpStatusCode.OK, "https://api.hyland.com/v1/48/plans/48", "application/xml",
+                @"<BaseResponse><Message>Deleted with a missing required property</Message></BaseResponse>", ValidationErrorKind.PropertyRequired };
+
+            yield return new object[] { "specs/rawpotato/", HttpMethod.Get,
+                    HttpStatusCode.OK, "https://api.hyland.com/risks/48/accountSnapshot", "application/octet-stream",
+                    "Byte Strings Are Base64", ValidationErrorKind.Base64Expected};
+
+            yield return new object[] { "specs/rawpotato/", HttpMethod.Get,
+                    HttpStatusCode.OK, "https://api.hyland.com/risks/48/accountSnapshot", "application/pdf",
+                    "'ByteStringsAreBase64'", ValidationErrorKind.Base64Expected};
+
         }
         IEnumerator IEnumerable.GetEnumerator() => GetEnumerator();
     }

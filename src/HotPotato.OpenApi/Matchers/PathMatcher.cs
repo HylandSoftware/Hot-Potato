@@ -21,7 +21,7 @@ namespace HotPotato.OpenApi.Matchers
                 string[] specPathPieces = preparePathPieces(specPath);
 
                 int i = 0;
-                bool match = true;
+                bool match = false;
                 Stack<string> pathStack = new Stack<string>();
 
                 while (i < specPathPieces.Length && i < reqPathPieces.Length)
@@ -29,6 +29,7 @@ namespace HotPotato.OpenApi.Matchers
                     if (isParam(specPathPieces[i]) || (specPathPieces[i] == reqPathPieces[i]))
                     {
                         pathStack.Push(specPathPieces[i]);
+                        match = true;
                     }
                     else
                     {

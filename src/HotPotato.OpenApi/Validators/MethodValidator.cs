@@ -13,7 +13,7 @@ namespace HotPotato.OpenApi.Validators
         {
             if (method == null)
             {
-                Method = "";
+                Method = string.Empty;
             }
             else
             {
