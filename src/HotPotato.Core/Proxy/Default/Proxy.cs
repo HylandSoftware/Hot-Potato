@@ -3,7 +3,6 @@ using HotPotato.Core.Models;
 using HotPotato.Core.Processor;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Logging;
-using System;
 using System.Threading.Tasks;
 
 namespace HotPotato.Core.Proxy.Default
