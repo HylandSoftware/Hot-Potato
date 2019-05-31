@@ -14,7 +14,7 @@ We invite all Hylanders to contribute to our repositories. We ask that any chang
 
 We expect all pull requests to have some amount of automated testing. Moreso, this repository uses a trunk based branching model, so it is imperitive that all changes be appropriately and completely tested before merging into master. Any pull request without automated tests may be declined immediately.
 
-All of our test projects use the `XUnit` test framework, `Moq` for mocking, `WireMock.Net` for HTTP server mocking in our system tests.
+All of our test projects use the [XUnit](https://xunit.net/) test framework, [Moq](https://github.com/moq/moq) for mocking, [WireMock.Net](http://wiremock.org/) for HTTP server mocking in our system tests.
 
 ### Unit Tests
 
