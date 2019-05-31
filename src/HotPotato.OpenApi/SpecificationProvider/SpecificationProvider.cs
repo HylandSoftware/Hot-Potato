@@ -1,4 +1,5 @@
-﻿using Microsoft.Extensions.Configuration;
+﻿using HotPotato.Core;
+using Microsoft.Extensions.Configuration;
 using NSwag;
 using static NSwag.SwaggerYamlDocument;
 using System;
@@ -12,7 +13,7 @@ namespace HotPotato.OpenApi.SpecificationProvider
         private readonly string SpecLocation;
         public SpecificationProvider(IConfiguration config)
         {
-            _ = config ?? throw new ArgumentNullException(nameof(config));
+            _ = config ?? throw Exceptions.ArgumentNull(nameof(config));
             this.SpecLocation = config["SpecLocation"];
         }
         public SwaggerDocument GetSpecDocument()
@@ -28,7 +29,7 @@ namespace HotPotato.OpenApi.SpecificationProvider
             }
             else
             {
-                throw new InvalidOperationException("AppSettings does not contain a valid Spec Location");
+                throw Exceptions.InvalidOperation("AppSettings does not contain a valid Spec Location");
             }
             return swagTask.Result;
         }

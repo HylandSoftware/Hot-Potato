@@ -1,4 +1,5 @@
 using HotPotato.AspNetCore.Middleware;
+using HotPotato.Core;
 using HotPotato.Core.Http;
 using HotPotato.Core.Http.ForwardProxy;
 using HotPotato.Core.Processor;
@@ -23,8 +24,8 @@ namespace HotPotato.AspNetCore.Host
 
         public Startup(IConfiguration configuration, ILogger<Startup> log)
         {
-            _ = configuration ?? throw new ArgumentException(nameof(configuration));
-            _ = log ?? throw new ArgumentException(nameof(log));
+            _ = configuration ?? throw Exceptions.ArgumentNull(nameof(configuration));
+            _ = log ?? throw Exceptions.ArgumentNull(nameof(log));
 
             Configuration = configuration;
             Log = log;

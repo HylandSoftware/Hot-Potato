@@ -1,4 +1,5 @@
-﻿using HotPotato.Core.Proxy;
+﻿using HotPotato.Core;
+using HotPotato.Core.Proxy;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
@@ -20,9 +21,9 @@ namespace HotPotato.AspNetCore.Middleware
         
         public HotPotatoMiddleware(RequestDelegate next, IProxy proxy, IConfiguration configuration, ILogger<HotPotatoMiddleware> log)
         {
-            _ = proxy ?? throw new ArgumentNullException(nameof(proxy));
-            _ = configuration ?? throw new ArgumentNullException(nameof(configuration));
-            _ = log ?? throw new ArgumentNullException(nameof(log));
+            _ = proxy ?? throw Exceptions.ArgumentNull(nameof(proxy));
+            _ = configuration ?? throw Exceptions.ArgumentNull(nameof(configuration));
+            _ = log ?? throw Exceptions.ArgumentNull(nameof(log));
 
             this.proxy = proxy;
             this.log = log;
