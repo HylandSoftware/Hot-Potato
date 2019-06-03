@@ -1,0 +1,179 @@
+openapi: '3.0.0'
+info:
+  version: 1.0.0
+  title: Raw Potato Test API
+paths:
+  '/':
+    get:
+      summary: landing page of this API
+      description: >-
+        The landing page provides links to the API definition, the Conformance
+        statements and the metadata about the feature data in this dataset.
+      operationId: getLandingPage
+      tags:
+        - Capabilities
+      responses:
+        '200':
+          description: links to the API capabilities
+          content:
+            text/html:
+              schema:
+                type: string
+  /order/{id}/items/{itemId}:
+    get:
+      tags:
+        - order
+      summary: Returns item with specific id
+      description: Returns item with id from an order with id.
+      operationId: getItemWithId
+      parameters:
+        - name: id
+          in: path
+          description: ID of order to fetch the items
+          required: true
+          schema:
+            type: integer
+        - name: itemId
+          in: path
+          description: ID of an item to fetch in a specific order
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: Returns the item
+          content:
+            application/pdf:
+              schema:
+                type: string
+                format: binary
+		'404':
+		  description: Not Found. Oder or item with certain ID does not exist.
+		    content:
+			  text:
+			    schema:
+				  type: string
+	delete:
+	  summary: Deletes item with specific id
+	  operationId: deleteItemWithId
+	  parameters:
+	    - name: id
+          in: path
+          description: ID of order to fetch the items
+          required: true
+          schema:
+            type: integer
+        - name: itemId
+          in: path
+          description: ID of an item to fetch in a specific order
+          required: true
+          schema:
+            type: integer
+	  responses:
+	    '204':
+		  description: No Content
+		'401':
+		  description: Unauthorized
+		    content:
+			  text:
+			    schema:
+				  type: string
+  /order/{id}/price:
+    get:
+      summary: Returns price of an order
+      description: >-
+        Returns the price of an order found by the order's ID.
+      parameters:
+        - in: path
+          name: id
+          description: ID of the order to be retrieved.
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: Request successfully processed
+          content:
+            text/csv; charset=UTF-8:
+              schema:
+                type: string
+              example:
+                '$52.00'
+		'404':
+		  description: Not Found. Oder or item with certain ID does not exist.
+		    content:
+			  text:
+			    schema:
+				  type: string
+  /order/{id}/items:
+    get:
+      summary: Returns all items in an order
+      parameters:
+        - in: path
+          name: id
+          description: ID of the order to be retrieved.
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Request successfully processed
+          content:
+            application/json:
+			  schema:
+			    $ref: '#/components/schemas/ItemsList'
+        '404':
+		  description: Not Found. Oder or item with certain ID does not exist.
+		    content:
+			  text:
+			    schema:
+				  type: string
+  /order:
+    post:
+	  summary: Add a new order
+	  requestBody:
+	    description: Creating a new order with all properties
+		required: true
+		content:
+		  application/json:
+		    schema:
+			  $ref: 'components/schemas/Order'
+	  responses:
+	    '201':
+		  description: Order created successfully
+		  content:
+		    text:
+			  schema:
+			    type: string
+		'400':
+		  description: Bad Request
+		    content:
+			  text:
+			    schema:
+				  type: string
+		'500':
+		  description: Internal Sever Error
+		    content:
+			  text:
+			    schema:
+				  type: string
+components:
+  schemas:
+    Order:
+	  required:
+	    - id
+		- price
+		- items
+	  properties:
+	    id:
+		  type: integer
+		price:
+		  type: string
+		items:
+		  type:
+		    schema:
+			  $ref: 'components/schemas/ItemsList'
+	ItemsList:
+	  type: array
+	  items:
+	    type: string
