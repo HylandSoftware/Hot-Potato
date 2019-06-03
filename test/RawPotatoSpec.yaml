@@ -69,6 +69,12 @@ paths:
                 $ref: '#/components/schemas/Problem-Detail'
 	put:
 	  summary: Replace existing order with certain ID
+	  requestBody:
+	    required: true
+		content:
+		  application/json:
+		    schema:
+			  $ref: 'components/schemas/Order'
 	  responses:
 	    '201':
 		  description: Created new order for ID
