@@ -32,6 +32,42 @@ hotpotato --RemoteEndpoint http://hyland.io/my/api --SpecLocation http://hyland.
 
 In order to retrieve results from the proxy, we have exposed a `/results` endpoint. This endpoint will return a JSON-formatted object that shows all of the requests that have come through and whether or not they're conformant. The response will also include a `X-Status` header which will be either `Pass`, `Fail`, or `Inconclusive`.
 
+__Pass Result__
+```json
+[
+    {
+        "Path":"/endpoint",
+        "Method":"GET",
+        "StatusCode":200,
+        "State":"Pass"
+    }
+]
+```
+
+__Fail Result__
+```json
+[
+    {
+        "Reason":"InvalidBody",
+        
+        "Path":"/endpoint",
+        "Method":"GET",
+        "StatusCode":404,
+        "State":"Fail",
+        "ValidationErrors":
+        [
+            {
+                "Message":"Error",
+                "Kind":"Unknown",
+                "Property":"Property",
+                "LineNumber":5,
+                "LinePosition":10
+            }
+        ]
+    }
+]
+```
+
 ## Structure
 
 The proxy is broken down into a number of components to allow flexibility for developers.
