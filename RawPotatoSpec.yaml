@@ -151,12 +151,6 @@ paths:
 			  text:
 			    schema:
 				  type: string
-		'500':
-		  description: Internal Sever Error
-		    content:
-			  text:
-			    schema:
-				  type: string
 components:
   schemas:
     Order:
