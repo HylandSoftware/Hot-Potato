@@ -31,6 +31,16 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "HotPotato.System.NotInSpec.
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HotPotato.System.Utilities", "test\HotPotato.System.Utilities\HotPotato.System.Utilities.csproj", "{5C020171-1B4A-4AB3-8429-52D209547E44}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "(meta)", "(meta)", "{F2D187CB-4BFD-4DE5-911E-1D7D06B63C8D}"
+	ProjectSection(SolutionItems) = preProject
+		.gitignore = .gitignore
+		build-spec.yml = build-spec.yml
+		CONTRIBUTING.md = CONTRIBUTING.md
+		GitVersion.yml = GitVersion.yml
+		Jenkinsfile = Jenkinsfile
+		README.md = README.md
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
