@@ -28,6 +28,10 @@ You can now start the tool by using the command `HotPotato`. Add the arguments f
 hotpotato --RemoteEndpoint http://hyland.io/my/api --SpecLocation http://hyland.io/my/spec.json
 ```
 
+## Results
+
+In order to retrieve results from the proxy, we have exposed a `/results` endpoint. This endpoint will return a JSON-formatted object that shows all of the requests that have come through and whether or not they're conformant. The response will also include a `X-Status` header which will be either `Pass`, `Fail`, or `Inconclusive`.
+
 ## Structure
 
 The proxy is broken down into a number of components to allow flexibility for developers.
@@ -38,7 +42,7 @@ This is an ASP.NETCore host configured to use the HotPotato Middleware. It is st
 
 `hotpotato --RemoteEndpoint http://hyland.io/my/api --SpecLocation http://hyland.io/my/spec.json`
 
-### HotPotato.AspNetCore.Middlware
+### HotPotato.AspNetCore.Middleware
 
 This is an ASP.NETCore middleware that can be used in situations where test suites are directly starting up the server startup or using the [`TestServer`](https://docs.microsoft.com/en-us/dotnet/api/microsoft.aspnetcore.testhost.testserver). It can be consumed via the following methods:
 
