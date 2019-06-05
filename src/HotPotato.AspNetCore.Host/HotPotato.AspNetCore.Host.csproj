@@ -1,0 +1,46 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <TargetFramework>netcoreapp2.1</TargetFramework>
+    <PackAsTool>true</PackAsTool>
+    <ToolCommandName>HotPotato</ToolCommandName>
+    <PackageVersion></PackageVersion>
+    <Title>HotPotato.AspNetCore.Host</Title>
+    <Authors>Test Automation Team | GRP-AutomatedTesting@.hyland.com</Authors>
+    <Description>
+      This is an ASP.NETCore host configured to use the HotPotato Middleware. It is stood up as a separate server that listens by default on port 3232. There is an appsettings.json to allow the developer to set the remote endpoing to forward requests to and the specification location of the OpenAPI spec to validate conformance. These values can also be passed into the command line via the following command
+
+      hotpotato --RemoteEndpoint http://hyland.io/my/api --SpecLocation http://hyland.io/my/spec.json
+    </Description>
+    <RepositoryUrl>https://bitbucket.hylandqa.net/projects/AUTOTEST/repos/hot-potato-.net/browse</RepositoryUrl>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.AspNetCore.Buffering" Version="0.2.2" />
+    <PackageReference Include="Microsoft.AspNetCore.Hosting" Version="2.2.0" />
+    <PackageReference Include="Microsoft.AspNetCore.Mvc" Version="2.2.0" />
+    <PackageReference Include="Microsoft.AspNetCore.Mvc.Core" Version="2.2.2" />
+    <PackageReference Include="Microsoft.AspNetCore.Mvc.Formatters.Json" Version="2.2.0" />
+    <PackageReference Include="Microsoft.AspNetCore.Server.Kestrel" Version="2.2.0" />
+    <PackageReference Include="Microsoft.AspNetCore.Server.Kestrel.Transport.Libuv" Version="2.2.0" />
+    <PackageReference Include="Microsoft.Extensions.Configuration.CommandLine" Version="2.2.0" />
+    <PackageReference Include="Microsoft.Extensions.Configuration.Json" Version="2.2.0" />
+    <PackageReference Include="Microsoft.Extensions.Logging.Configuration" Version="2.2.0" />
+    <PackageReference Include="Microsoft.Extensions.Logging.Console" Version="2.2.0" />
+    <PackageReference Include="Microsoft.Extensions.Logging.Debug" Version="2.2.0" />
+    <PackageReference Include="System.Net.Primitives" Version="4.3.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\HotPotato.AspNetCore.Middleware\HotPotato.AspNetCore.Middleware.csproj" />
+    <ProjectReference Include="..\HotPotato.OpenApi\HotPotato.OpenApi.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Update="appsettings.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
+
+</Project>
