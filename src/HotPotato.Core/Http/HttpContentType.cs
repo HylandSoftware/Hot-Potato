@@ -8,7 +8,7 @@ namespace HotPotato.Core.Http
         public string Type { get; }
         public string CharSet { get; }
 
-        public HttpContentType(string type, string charSet)
+        public HttpContentType(string type, string charSet = DefaultCharSet)
         {
             if (type.Contains(";"))
             {
@@ -19,6 +19,7 @@ namespace HotPotato.Core.Http
             {
                 Type = type;
             }
+
             if (string.IsNullOrWhiteSpace(charSet))
             {
                 CharSet = DefaultCharSet;
@@ -27,20 +28,6 @@ namespace HotPotato.Core.Http
             {
                 CharSet = charSet;
             }
-        }
-
-        public HttpContentType(string type)
-        {
-            if (type.Contains(";"))
-            {
-                //Sanitize content-types for uniform matching later on
-                Type = type.Split(";")[0];
-            }
-            else
-            {
-                Type = type;
-            }
-            CharSet = "utf-8";
         }
     }
 }
