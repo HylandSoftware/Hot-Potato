@@ -1,8 +1,5 @@
 ﻿using HotPotato.Api.Models;
-using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 
 namespace HotPotato.Api
 {
@@ -57,6 +54,20 @@ namespace HotPotato.Api
                             ItemId = 5,
                             Name = "Markers",
                             Price = 10.00
+                        }
+                    }
+                },
+                new Order()
+                {
+                    Id = 3,
+                    Price = 5.00,
+                    Items = new List<Item>()
+                    {
+                        new Item()
+                        {
+                            ItemId = 4,
+                            Name = "Post-Its",
+                            Price = 5.00
                         }
                     }
                 }
