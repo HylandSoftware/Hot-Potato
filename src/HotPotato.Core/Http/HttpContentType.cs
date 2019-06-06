@@ -10,24 +10,8 @@ namespace HotPotato.Core.Http
 
         public HttpContentType(string type, string charSet = DefaultCharSet)
         {
-            if (type.Contains(";"))
-            {
-                //Sanitize content-types for uniform matching later on
-                Type = type.Split(";")[0];
-            }
-            else
-            {
-                Type = type;
-            }
-
-            if (string.IsNullOrWhiteSpace(charSet))
-            {
-                CharSet = DefaultCharSet;
-            }
-            else
-            {
-                CharSet = charSet;
-            }
+            Type = type;
+            CharSet = charSet;
         }
     }
 }
