@@ -4,6 +4,9 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 VisualStudioVersion = 15.0.28010.2050
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tests", "Tests", "{18D73CFF-6ECA-4A0C-8A6A-97F84BC3E1C8}"
+	ProjectSection(SolutionItems) = preProject
+		test\RawPotatoSpec.yaml = test\RawPotatoSpec.yaml
+	EndProjectSection
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "HotPotato.Integration.Test", "test\HotPotato.Integration.Test\HotPotato.Integration.Test.csproj", "{23CDAEF7-947F-463C-9162-3C8692FC103D}"
 EndProject
@@ -31,7 +34,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "HotPotato.System.NotInSpec.
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "HotPotato.System.Utilities", "test\HotPotato.System.Utilities\HotPotato.System.Utilities.csproj", "{5C020171-1B4A-4AB3-8429-52D209547E44}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HotPotato.Api", "HotPotato.Api\HotPotato.Api.csproj", "{EF40B0DC-D2C9-42AD-A0C1-D3A0465C5726}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "HotPotato.Api", "test\HotPotato.Api\HotPotato.Api.csproj", "{3F43A4A8-1F5E-48E6-9531-5EE3CAF53D15}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -91,10 +94,10 @@ Global
 		{5C020171-1B4A-4AB3-8429-52D209547E44}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{5C020171-1B4A-4AB3-8429-52D209547E44}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{5C020171-1B4A-4AB3-8429-52D209547E44}.Release|Any CPU.Build.0 = Release|Any CPU
-		{EF40B0DC-D2C9-42AD-A0C1-D3A0465C5726}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{EF40B0DC-D2C9-42AD-A0C1-D3A0465C5726}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{EF40B0DC-D2C9-42AD-A0C1-D3A0465C5726}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{EF40B0DC-D2C9-42AD-A0C1-D3A0465C5726}.Release|Any CPU.Build.0 = Release|Any CPU
+		{3F43A4A8-1F5E-48E6-9531-5EE3CAF53D15}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{3F43A4A8-1F5E-48E6-9531-5EE3CAF53D15}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{3F43A4A8-1F5E-48E6-9531-5EE3CAF53D15}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{3F43A4A8-1F5E-48E6-9531-5EE3CAF53D15}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -109,7 +112,7 @@ Global
 		{75BECD33-1AD9-46A8-8DD9-D08DCEA143B3} = {18D73CFF-6ECA-4A0C-8A6A-97F84BC3E1C8}
 		{336A4088-5BFD-4A9E-B7B6-8E3E20F965DC} = {18D73CFF-6ECA-4A0C-8A6A-97F84BC3E1C8}
 		{5C020171-1B4A-4AB3-8429-52D209547E44} = {18D73CFF-6ECA-4A0C-8A6A-97F84BC3E1C8}
-		{EF40B0DC-D2C9-42AD-A0C1-D3A0465C5726} = {18D73CFF-6ECA-4A0C-8A6A-97F84BC3E1C8}
+		{3F43A4A8-1F5E-48E6-9531-5EE3CAF53D15} = {18D73CFF-6ECA-4A0C-8A6A-97F84BC3E1C8}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {2836D304-9C78-41F8-9A22-517D86241D2C}

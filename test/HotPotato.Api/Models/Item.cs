@@ -5,10 +5,10 @@ using System.Threading.Tasks;
 
 namespace HotPotato.Api.Models
 {
-    public class Order
+    public class Item
     {
-        public int Id { get; set; }
-        public string Price { get; set; }
-        public string[] Items { get; set; }
+        public int ItemId { get; set; }
+        public string Name { get; set; }
+        public double Price { get; set; }
     }
 }
