@@ -21,8 +21,6 @@ namespace HotPotato.Api.Controllers
             return Ok(OrderDataStore.Current.Orders);
         }
 
-        //What if an Order with the ID given already exists???
-        //How are we going to continually test this?
         [HttpPost("/order")]
         public IActionResult PostOrder([FromBody] Order order)
         {
