@@ -50,7 +50,7 @@ paths:
           content:
             application/json:
 			  schema:
-			    $ref: '#/components/schemas/ItemsList'
+			    $ref: '#/components/schemas/OrderList'
   /order/{id}:
     get:
 	  summary: Returns order with certain ID
