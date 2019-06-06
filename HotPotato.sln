@@ -5,6 +5,7 @@ VisualStudioVersion = 15.0.28010.2050
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tests", "Tests", "{18D73CFF-6ECA-4A0C-8A6A-97F84BC3E1C8}"
 	ProjectSection(SolutionItems) = preProject
+		test\HappyPathTests.postman_collection.json = test\HappyPathTests.postman_collection.json
 		test\RawPotatoSpec.yaml = test\RawPotatoSpec.yaml
 	EndProjectSection
 EndProject
