@@ -1,8 +1,10 @@
-﻿using HotPotato.Core.Http;
+﻿
+using HotPotato.Core.Http;
 using HotPotato.Core.Processor;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Logging;
 using Moq;
+using System;
 using System.Threading.Tasks;
 using Xunit;
 
@@ -19,6 +21,27 @@ namespace HotPotato.Core.Proxy.Default
         private const string PATCH = "PATCH";
         private const string POST = "POST";
         private const string PUT = "PUT";
+
+        [Fact]
+        public void Proxy_Constructor_ThrowsArgumentNullExceptionWithClient()
+        {
+            Action subject = () => new Proxy(null, null, null);
+            Assert.Throws<ArgumentNullException>(subject);
+        }
+
+        [Fact]
+        public void Proxy_Constructor_ThrowsArgumentNullExceptionWithConfig()
+        {
+            Action subject = () => new Proxy(Mock.Of<IHttpClient>(), null, null);
+            Assert.Throws<ArgumentNullException>(subject);
+        }
+
+        [Fact]
+        public void Proxy_Constructor_ThrowsArgumentNullExceptionWithLogger()
+        {
+            Action subject = () => new Proxy(null, Mock.Of<ILogger<Proxy>>(), Mock.Of<IProcessor>());
+            Assert.Throws<ArgumentNullException>(subject);
+        }
 
         [Theory]
         [InlineData(DELETE)]
