@@ -1,7 +1,5 @@
 ﻿using System;
 using Microsoft.Extensions.Logging;
-using System.Collections.Generic;
-using System.Text;
 using System.Net;
 
 namespace HotPotato.Core.Http.ForwardProxy.Default

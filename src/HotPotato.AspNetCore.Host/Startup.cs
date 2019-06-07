@@ -44,17 +44,16 @@ namespace HotPotato.AspNetCore.Host
             services.AddScoped<IProxy, HotPotato.Core.Proxy.Default.Proxy>();
             services.AddScoped<IHttpClient, HotPotato.Core.Http.Default.HttpClient>();
             services.AddMvcCore().AddJsonFormatters();
-            services.AddSingleton<HttpForwardProxyConfig>(Configuration.GetSection("ForwardProxy").Get<HttpForwardProxyConfig>());
             services.AddSingleton<IWebProxy, Core.Http.ForwardProxy.Default.HttpForwardProxy>();
-
+            services.AddSingleton(Configuration.GetSection("ForwardProxy").Get<HttpForwardProxyConfig>());
             services.AddHttpClient<IHttpClient, HotPotato.Core.Http.Default.HttpClient>(client =>
             {
                 client.BaseAddress = new Uri(Configuration["RemoteEndpoint"]);
             })
-            .ConfigurePrimaryHttpMessageHandler(() => new HttpClientHandler
+            .ConfigurePrimaryHttpMessageHandler(sp => new HttpClientHandler
             {
-                AutomaticDecompression = DecompressionMethods.Deflate | DecompressionMethods.GZip
-                
+                AutomaticDecompression = DecompressionMethods.Deflate | DecompressionMethods.GZip,
+                Proxy = sp.GetService<HttpForwardProxyConfig>().Enabled ? sp.GetService<IWebProxy>() : null
             });
 
             services.AddSingleton<ISpecificationProvider, SpecificationProvider>();
