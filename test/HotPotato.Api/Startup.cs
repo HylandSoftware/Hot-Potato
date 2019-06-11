@@ -27,11 +27,6 @@ namespace HotPotato.Api
             }
 
             app.UseMvc();
-
-            //app.Run(async (context) =>
-            //{
-            //    await context.Response.WriteAsync("Hello World!");
-            //});
         }
     }
 }
