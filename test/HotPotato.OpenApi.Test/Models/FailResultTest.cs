@@ -1,5 +1,6 @@
 ﻿using HotPotato.OpenApi.Validators;
 using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 using System.Collections.Generic;
 using Xunit;
 
@@ -7,7 +8,7 @@ namespace HotPotato.OpenApi.Models
 {
     public class FailResultTest
     {
-        private readonly string[] singleExpectedKeys = { "Path", "Method", "StatusCode", "State", "Reasons", "ValidationErrors" };
+        private readonly string[] expectedKeys = { "State", "Path", "Method", "StatusCode", "Reasons", "ValidationErrors" };
         private readonly string singleExpectedReason = "[\"InvalidBody\"]";
         private readonly string multipleExpectedReasons = "[\"InvalidBody\",\"InvalidHeaders\"]";
         private readonly string expectedErrors = "\"ValidationErrors\":[{\"Message\":\"message\",\"Kind\":\"ArrayExpected\",\"Property\":\"property\",\"LineNumber\":0,\"LinePosition\":0},{\"Message\":\"anothermessage\",\"Kind\":\"BooleanExpected\",\"Property\":\"anotherproperty\",\"LineNumber\":0,\"LinePosition\":0}]";
@@ -23,15 +24,17 @@ namespace HotPotato.OpenApi.Models
         };
 
         [Fact]
-        public void FailResult_SerializesWithExpectedKeys()
+        public void FailResult_SerializesWithExpectedKeysInOrder()
         {
             FailResult subject = new FailResult(path, method, statusCode, reason, validationErrors);
 
-            string result = JsonConvert.SerializeObject(subject);
+            JObject result = JObject.FromObject(subject);
+            JToken property = result.First;          
 
-            foreach (string expectedKey in singleExpectedKeys)
+            foreach (string expectedKey in expectedKeys)
             {
-                Assert.Contains(expectedKey, result);
+                Assert.Equal(expectedKey, property.Path);
+                property = property.Next;
             }
         }
 
