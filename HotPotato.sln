@@ -5,7 +5,6 @@ VisualStudioVersion = 15.0.28010.2050
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tests", "Tests", "{18D73CFF-6ECA-4A0C-8A6A-97F84BC3E1C8}"
 	ProjectSection(SolutionItems) = preProject
-		test\HappyPathTests.postman_collection.json = test\HappyPathTests.postman_collection.json
 		test\RawPotatoSpec.yaml = test\RawPotatoSpec.yaml
 	EndProjectSection
 EndProject
@@ -36,6 +35,16 @@ EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "HotPotato.System.Utilities", "test\HotPotato.System.Utilities\HotPotato.System.Utilities.csproj", "{5C020171-1B4A-4AB3-8429-52D209547E44}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "HotPotato.Api", "test\HotPotato.Api\HotPotato.Api.csproj", "{573BE9CC-36D6-40C9-A005-2DAB411861BA}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "(meta)", "(meta)", "{F2D187CB-4BFD-4DE5-911E-1D7D06B63C8D}"
+	ProjectSection(SolutionItems) = preProject
+		.gitignore = .gitignore
+		build-spec.yml = build-spec.yml
+		CONTRIBUTING.md = CONTRIBUTING.md
+		GitVersion.yml = GitVersion.yml
+		Jenkinsfile = Jenkinsfile
+		README.md = README.md
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
