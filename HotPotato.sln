@@ -4,6 +4,9 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 VisualStudioVersion = 15.0.28010.2050
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tests", "Tests", "{18D73CFF-6ECA-4A0C-8A6A-97F84BC3E1C8}"
+	ProjectSection(SolutionItems) = preProject
+		test\RawPotatoSpec.yaml = test\RawPotatoSpec.yaml
+	EndProjectSection
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "HotPotato.Integration.Test", "test\HotPotato.Integration.Test\HotPotato.Integration.Test.csproj", "{23CDAEF7-947F-463C-9162-3C8692FC103D}"
 EndProject
@@ -23,13 +26,13 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "HotPotato.OpenApi", "src\Ho
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "HotPotato.E2E.Test", "test\HotPotato.E2E.Test\HotPotato.E2E.Test.csproj", "{9F37DBB8-2971-4155-BCBD-D82DB5C8D1DC}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HotPotato.System.HappyPath.Test", "test\HotPotato.System.HappyPath.Test\HotPotato.System.HappyPath.Test.csproj", "{B448C8DC-8DBF-443A-A708-61C80D30EC05}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "HotPotato.System.HappyPath.Test", "test\HotPotato.System.HappyPath.Test\HotPotato.System.HappyPath.Test.csproj", "{B448C8DC-8DBF-443A-A708-61C80D30EC05}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HotPotato.System.NonConformant.Test", "test\HotPotato.System.NonConformant.Test\HotPotato.System.NonConformant.Test.csproj", "{75BECD33-1AD9-46A8-8DD9-D08DCEA143B3}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "HotPotato.System.NonConformant.Test", "test\HotPotato.System.NonConformant.Test\HotPotato.System.NonConformant.Test.csproj", "{75BECD33-1AD9-46A8-8DD9-D08DCEA143B3}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "HotPotato.System.NotInSpec.Test", "test\HotPotato.System.NotInSpec.Test\HotPotato.System.NotInSpec.Test.csproj", "{336A4088-5BFD-4A9E-B7B6-8E3E20F965DC}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HotPotato.System.Utilities", "test\HotPotato.System.Utilities\HotPotato.System.Utilities.csproj", "{5C020171-1B4A-4AB3-8429-52D209547E44}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "HotPotato.System.Utilities", "test\HotPotato.System.Utilities\HotPotato.System.Utilities.csproj", "{5C020171-1B4A-4AB3-8429-52D209547E44}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "(meta)", "(meta)", "{F2D187CB-4BFD-4DE5-911E-1D7D06B63C8D}"
 	ProjectSection(SolutionItems) = preProject
