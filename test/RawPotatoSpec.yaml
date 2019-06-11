@@ -206,6 +206,33 @@ paths:
 			application/problem+json:
               schema:
                 $ref: '#/components/schemas/Problem-Detail'
+
+#### Not in Spec paths ####
+
+  /missingmethod:
+    post:
+	  summary: Add a new something...
+	  requestBody:
+	    description: Creating something...
+		required: true
+		content:
+		  text/html:
+            schema:
+              type: string
+	  responses:
+	    '201':
+		  description: Order created successfully
+		  content:
+		    text/html:
+              schema:
+                type: string 
+  /missingcode:
+    get:
+	  summary: Gets something...
+      responses:
+	    '204':
+		  description: Returns No Content
+    
 components:
   schemas:
     Order:
