@@ -19,13 +19,10 @@ namespace HotPotato.OpenApi.Validators
         {
             JsonSchema4 specBody = ContentProvider.GetSchema(swagResp, ContentType.Type);
 
-            if (specBody == null)
+            IValidationResult missingContentResult = ValidateMissingContent(specBody);
+            if (missingContentResult != null)
             {
-                return new InvalidResult(Reason.MissingContent, ContentProvider.GenerateContentError(ContentType.Type));
-            }
-            else if (string.IsNullOrWhiteSpace(BodyString))
-            {
-                return new InvalidResult(Reason.MissingBody);
+                return missingContentResult;
             }
 
             BodyString = BodyString.ToJsonText();
