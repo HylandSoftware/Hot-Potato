@@ -71,7 +71,7 @@ namespace HotPotato.OpenApi.Validators
             ValidationError result = results[0];
 
             Assert.Contains(AValidJsonContentType, result.Message);
-            Assert.Equal(ValidationErrorKind.MissingContent, result.Kind);
+            Assert.Equal(ValidationErrorKind.MissingContentType, result.Kind);
 
         }
     }

@@ -24,7 +24,7 @@ namespace HotPotato.OpenApi.Validators
             }
             else if (specBody == null)
             {
-                return new InvalidResult(Reason.MissingContent, ContentProvider.GenerateContentError(ContentType.Type));
+                return new InvalidResult(Reason.MissingContentType, ContentProvider.GenerateContentError(ContentType.Type));
             }
             else if (string.IsNullOrWhiteSpace(BodyString))
             {
