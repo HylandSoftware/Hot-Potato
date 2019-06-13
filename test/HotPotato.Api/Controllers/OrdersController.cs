@@ -7,6 +7,8 @@ namespace HotPotato.Api.Controllers
 {
     public class OrdersController : Controller
     {
+        #region HAPPY PATHS
+
         [HttpGet("/")]
         public IActionResult getLandingPage()
         {
@@ -216,5 +218,44 @@ namespace HotPotato.Api.Controllers
 
             return NoContent();
         }
+
+        #endregion
+
+        #region NOT IN SPEC PATHS
+
+        /// <summary>
+        /// PATH NOT IN SPEC! HotPotato should catch this call and return an error.
+        /// </summary>
+        /// <returns></returns>
+        [HttpGet("/missingpath")]
+        public IActionResult GetMissingPath()
+        {
+            var path = "This PATH is missing in the spec!";
+            return Ok(path);
+        }
+
+        /// <summary>
+        /// METHOD NOT IN SPEC! HotPotato should catch this call and return an error.
+        /// </summary>
+        /// <returns></returns>
+        [HttpGet("/missingmethod")]
+        public IActionResult GetMissingMethod()
+        {
+            var method = "This METHOD is missing in the spec!";
+            return Ok(method);
+        }
+
+        /// <summary>
+        /// STATUS CODE NOT IN SPEC! HotPotato should catch this call and return an error.
+        /// </summary>
+        /// <returns></returns>
+        [HttpGet("/missingcode")]
+        public IActionResult GetMissingStatusCode()
+        {
+            var code = "This STATUS CODE is missing in the spec!";
+            return Ok(code);
+        }
+
+        #endregion
     }
 }
