@@ -1,6 +1,6 @@
 {
 	"info": {
-		"_postman_id": "fa8eb01b-45a4-4aca-856d-89d98f692f1d",
+		"_postman_id": "da330330-3c1e-442b-8dbe-0502287cb8a6",
 		"name": "HappyPathTests",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
 	},
@@ -31,12 +31,10 @@
 				"method": "GET",
 				"header": [],
 				"url": {
-					"raw": "https://localhost:44366/",
-					"protocol": "https",
+					"raw": "{{endpoint}}/",
 					"host": [
-						"localhost"
+						"{{endpoint}}"
 					],
-					"port": "44366",
 					"path": [
 						""
 					]
@@ -109,12 +107,10 @@
 				"method": "GET",
 				"header": [],
 				"url": {
-					"raw": "https://localhost:44366/order",
-					"protocol": "https",
+					"raw": "{{endpoint}}/order",
 					"host": [
-						"localhost"
+						"{{endpoint}}"
 					],
-					"port": "44366",
 					"path": [
 						"order"
 					]
@@ -160,12 +156,10 @@
 					"raw": "{\"id\":\"5\",\"price\":\"20.00\",\"items\":[{\"itemId\":\"1\",\"name\":\"Paper\",\"price\":\"10.00\"},{\"itemId\":\"2\",\"name\":\"Pencils\",\"price\":\"10.00\"}]}"
 				},
 				"url": {
-					"raw": "https://localhost:44366/order",
-					"protocol": "https",
+					"raw": "{{endpoint}}/order",
 					"host": [
-						"localhost"
+						"{{endpoint}}"
 					],
-					"port": "44366",
 					"path": [
 						"order"
 					]
@@ -216,12 +210,10 @@
 					"raw": "{\"price\":\"20.00\",\"items\":[{\"itemId\":\"1\",\"name\":\"Paper\",\"price\":\"10.00\"},{\"itemId\":\"2\",\"name\":\"Pencils\",\"price\":\"10.00\"}]}"
 				},
 				"url": {
-					"raw": "https://localhost:44366/order",
-					"protocol": "https",
+					"raw": "{{endpoint}}/order",
 					"host": [
-						"localhost"
+						"{{endpoint}}"
 					],
-					"port": "44366",
 					"path": [
 						"order"
 					]
@@ -256,12 +248,10 @@
 				"method": "GET",
 				"header": [],
 				"url": {
-					"raw": "https://localhost:44366/order/2",
-					"protocol": "https",
+					"raw": "{{endpoint}}/order/2",
 					"host": [
-						"localhost"
+						"{{endpoint}}"
 					],
-					"port": "44366",
 					"path": [
 						"order",
 						"2"
@@ -302,12 +292,10 @@
 				"method": "GET",
 				"header": [],
 				"url": {
-					"raw": "https://localhost:44366/order/84985",
-					"protocol": "https",
+					"raw": "{{endpoint}}/order/84985",
 					"host": [
-						"localhost"
+						"{{endpoint}}"
 					],
-					"port": "44366",
 					"path": [
 						"order",
 						"84985"
@@ -354,12 +342,10 @@
 					"raw": "{\"id\":\"3\",\"price\":\"10.00\",\"items\":[{\"itemId\":\"1\",\"name\":\"Paper\",\"price\":\"10.00\"}]}"
 				},
 				"url": {
-					"raw": "https://localhost:44366/order/3",
-					"protocol": "https",
+					"raw": "{{endpoint}}/order/3",
 					"host": [
-						"localhost"
+						"{{endpoint}}"
 					],
-					"port": "44366",
 					"path": [
 						"order",
 						"3"
@@ -411,12 +397,10 @@
 					"raw": "{\"id\":\"3\",\"price\":\"10.00\",\"items\":[{\"itemId\":\"1\",\"name\":\"Paper\",\"price\":\"10.00\"}]}"
 				},
 				"url": {
-					"raw": "https://localhost:44366/order/83475643",
-					"protocol": "https",
+					"raw": "{{endpoint}}/order/83475643",
 					"host": [
-						"localhost"
+						"{{endpoint}}"
 					],
-					"port": "44366",
 					"path": [
 						"order",
 						"83475643"
@@ -451,12 +435,10 @@
 				"method": "GET",
 				"header": [],
 				"url": {
-					"raw": "https://localhost:44366/order/1/price",
-					"protocol": "https",
+					"raw": "{{endpoint}}/order/1/price",
 					"host": [
-						"localhost"
+						"{{endpoint}}"
 					],
-					"port": "44366",
 					"path": [
 						"order",
 						"1",
@@ -512,12 +494,10 @@
 					"raw": ""
 				},
 				"url": {
-					"raw": "https://localhost:44366/order/7346786356/price",
-					"protocol": "https",
+					"raw": "{{endpoint}}/order/7346786356/price",
 					"host": [
-						"localhost"
+						"{{endpoint}}"
 					],
-					"port": "44366",
 					"path": [
 						"order",
 						"7346786356",
@@ -570,12 +550,10 @@
 				"method": "GET",
 				"header": [],
 				"url": {
-					"raw": "https://localhost:44366/order/1/items",
-					"protocol": "https",
+					"raw": "{{endpoint}}/order/1/items",
 					"host": [
-						"localhost"
+						"{{endpoint}}"
 					],
-					"port": "44366",
 					"path": [
 						"order",
 						"1",
@@ -617,12 +595,10 @@
 				"method": "GET",
 				"header": [],
 				"url": {
-					"raw": "https://localhost:44366/order/38758375/items",
-					"protocol": "https",
+					"raw": "{{endpoint}}/order/38758375/items",
 					"host": [
-						"localhost"
+						"{{endpoint}}"
 					],
-					"port": "44366",
 					"path": [
 						"order",
 						"38758375",
@@ -658,12 +634,10 @@
 				"method": "GET",
 				"header": [],
 				"url": {
-					"raw": "https://localhost:44366/order/1/items/1",
-					"protocol": "https",
+					"raw": "{{endpoint}}/order/1/items/1",
 					"host": [
-						"localhost"
+						"{{endpoint}}"
 					],
-					"port": "44366",
 					"path": [
 						"order",
 						"1",
@@ -705,12 +679,10 @@
 				"method": "GET",
 				"header": [],
 				"url": {
-					"raw": "https://localhost:44366/order/1/items/387537",
-					"protocol": "https",
+					"raw": "{{endpoint}}/order/1/items/387537",
 					"host": [
-						"localhost"
+						"{{endpoint}}"
 					],
-					"port": "44366",
 					"path": [
 						"order",
 						"1",
@@ -741,12 +713,10 @@
 				"method": "DELETE",
 				"header": [],
 				"url": {
-					"raw": "https://localhost:44366/order/1/items/3",
-					"protocol": "https",
+					"raw": "{{endpoint}}/order/1/items/3",
 					"host": [
-						"localhost"
+						"{{endpoint}}"
 					],
-					"port": "44366",
 					"path": [
 						"order",
 						"1",
@@ -788,12 +758,10 @@
 				"method": "DELETE",
 				"header": [],
 				"url": {
-					"raw": "https://localhost:44366/order/1/items/383753729",
-					"protocol": "https",
+					"raw": "{{endpoint}}/order/1/items/383753729",
 					"host": [
-						"localhost"
+						"{{endpoint}}"
 					],
-					"port": "44366",
 					"path": [
 						"order",
 						"1",
@@ -803,6 +771,54 @@
 				}
 			},
 			"response": []
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"id": "40479a47-fc78-454e-9df9-612a6af33baf",
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"id": "d64909e4-4226-4e01-8e9e-2c540ac99083",
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"id": "898b8d06-ce1e-4620-9852-7f3b8d055f41",
+			"key": "proto",
+			"value": "http",
+			"type": "string"
+		},
+		{
+			"id": "7a0108a4-506c-4b94-9cba-b379ad07082e",
+			"key": "host",
+			"value": "localhost",
+			"type": "string"
+		},
+		{
+			"id": "e079d4ec-dbfd-4fa8-ac59-0012ec1c9f4c",
+			"key": "port",
+			"value": "5000",
+			"type": "string"
+		},
+		{
+			"id": "46cc3ebd-2883-4b22-bef6-e8087b01b6cc",
+			"key": "endpoint",
+			"value": "{{proto}}://{{host}}:{{port}}",
+			"type": "string"
 		}
 	]
 }
