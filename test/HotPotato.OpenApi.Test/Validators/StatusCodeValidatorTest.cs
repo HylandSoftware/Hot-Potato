@@ -45,13 +45,17 @@ namespace HotPotato.OpenApi.Validators
             Assert.False(subject.Validate(swagOp));
             Assert.Equal(Reason.MissingStatusCode, subject.FailReason);
         }
-        [Fact]
-        public void StatCodeValidator_ReturnsFalseWithUnexpectedBody()
+
+        [Theory]
+        [InlineData("204", HttpStatusCode.NoContent)]
+        [InlineData("205", HttpStatusCode.ResetContent)]
+        [InlineData("304", HttpStatusCode.NotModified)]
+        public void StatCodeValidator_ReturnsFalseWithUnexpectedBody(string NoContentStatusCode, HttpStatusCode StatusCode)
         {
             SwaggerOperation swagOp = new SwaggerOperation();
-            swagOp.Responses.Add("204", Mock.Of<SwaggerResponse>());
+            swagOp.Responses.Add(NoContentStatusCode, Mock.Of<SwaggerResponse>());
 
-            StatusCodeValidator subject = new StatusCodeValidator(HttpStatusCode.NoContent, "{'perfectSquare': '4'}");
+            StatusCodeValidator subject = new StatusCodeValidator(StatusCode, "{'perfectSquare': '4'}");
 
             Assert.False(subject.Validate(swagOp));
             Assert.Equal(Reason.UnexpectedBody, subject.FailReason);

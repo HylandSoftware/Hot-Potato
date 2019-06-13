@@ -18,8 +18,6 @@ namespace HotPotato.OpenApi.Validators
         private IResultCollector resColl { get; }
         private SwaggerDocument swagDoc { get; }
 
-        private const int NoContentStatusCode = 204;
-
         public ValidationStrategy(IResultCollector ResColl, ISpecificationProvider SpecPro)
         {
             resColl = ResColl;
