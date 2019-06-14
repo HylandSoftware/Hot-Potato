@@ -64,7 +64,7 @@ namespace HotPotato.OpenApi.Validators
             InvalidResult result = (InvalidResult)subject.Validate(swagResp);
 
             Assert.False(result.Valid);
-            Assert.Equal(Reason.MissingContent, result.Reason);
+            Assert.Equal(Reason.MissingContentType, result.Reason);
         }
     }
 }
