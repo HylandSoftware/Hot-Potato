@@ -1,7 +1,7 @@
 # Hot Potato Proxy 
 ### Develop
-[![Build Status](https://autotest.jenkins.hylandqa.net/job/Test%20Automation%20Team/job/hot-potato-.net/job/develop/badge/icon)](https://autotest.jenkins.hylandqa.net/job/Test%20Automation%20Team/job/hot-potato-.net/job/develop/) 
-[![Coverage](http://shields.hyland.io/jenkins/c/https/autotest.jenkins.hylandqa.net/job/Test%20Automation%20Team/job/hot-potato-.net/job/develop.svg)](https://autotest.jenkins.hylandqa.net/job/Test%20Automation%20Team/job/hot-potato-.net/job/develop/lastSuccessfulBuild/cobertura/)
+[![Build Status](https://autotest.jenkins.hylandqa.net/job/Test%20Automation%20Team/job/hot-potato/job/master/badge/icon)](https://autotest.jenkins.hylandqa.net/job/Test%20Automation%20Team/job/hot-potato/job/master/) 
+[![Coverage](http://shields.hyland.io/jenkins/c/https/autotest.jenkins.hylandqa.net/job/Test%20Automation%20Team/job/hot-potato/job/master.svg)](https://autotest.jenkins.hylandqa.net/job/Test%20Automation%20Team/job/hot-potato/job/master/lastSuccessfulBuild/cobertura/)
 
 The Hot Potato Proxy intends to function as an ASP.NETCore proxy that will validate an API's conformance to an OpenAPI spec.
 
@@ -12,7 +12,7 @@ To use the complete tool you will need to download the `HotPotato.AspNetCore.Hos
 ### Install
 To install `HotPotato` use the following command:
 ```sh
-dotnet tool install -g hotpotato.aspnetcore.host --add-source https://proget.onbase.net/feeds/NuGet/HotPotato.AspNetCore.Host/
+dotnet tool install -g hotpotato.aspnetcore.host --add-source https://proget.onbase.net/nuget/NuGet/
 ```
 There are other options that can be utilized when downloading a dotnet tool. A complete list of options can be found here: https://docs.microsoft.com/en-us/dotnet/core/tools/dotnet-tool-install
 
