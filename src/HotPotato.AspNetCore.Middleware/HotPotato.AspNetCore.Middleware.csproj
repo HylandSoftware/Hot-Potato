@@ -12,6 +12,11 @@
     <RepositoryUrl>https://bitbucket.hylandqa.net/projects/AUTOTEST/repos/hot-potato-.net/browse</RepositoryUrl>
   </PropertyGroup>
 
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
+    <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
+    <WarningsAsErrors />
+  </PropertyGroup>
+
   <ItemGroup>
     <PackageReference Include="Microsoft.AspNetCore.Hosting" Version="2.2.0" />
   </ItemGroup>
