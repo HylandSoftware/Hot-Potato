@@ -28,7 +28,7 @@ namespace HotPotato.OpenApi.Validators
 
         public static ValidationError[] GenerateContentError(string contentType)
         {
-            ValidationError contentError = new ValidationError($"Content-Type '{contentType}' and its corresponding is missing in spec",
+            ValidationError contentError = new ValidationError($"Content-Type '{contentType}' and its corresponding schema is missing in spec",
                 ValidationErrorKind.MissingContentType, "Content-Type", 0, 0);
             return new ValidationError[1]{ contentError };
         }

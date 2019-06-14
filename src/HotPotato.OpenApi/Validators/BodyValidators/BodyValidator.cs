@@ -13,7 +13,7 @@ namespace HotPotato.OpenApi.Validators
         public abstract IValidationResult Validate(SwaggerResponse swagResp);
 
         /// <summary>
-        /// If both spec body and response body are empty, then an empty body should be expected
+        /// In the case of an empty schema in the spec, an empty response body should be expected
         /// However, if one is empty and the other is populated, then an error should be thrown
         /// </summary>
         protected IValidationResult ValidateMissingContent(JsonSchema4 specBody)
