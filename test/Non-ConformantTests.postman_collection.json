@@ -1,0 +1,243 @@
+{
+	"info": {
+		"_postman_id": "5030f71f-bb20-4ccb-a78b-eba2f2a02844",
+		"name": "Non-ConformantTests",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "GET /order/{555} Invalid Body",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "8206086a-f293-4b47-b3bc-7a87a68cbf05",
+						"exec": [
+							"pm.test(\"order/555 returns 200 OK\", function () {",
+							"    pm.response.to.have.status(200);",
+							"});",
+							"",
+							"pm.test(\"order/555 returns expected body \", function () {",
+							"    pm.response.to.have.jsonBody(body);",
+							"});",
+							"",
+							"var body = {",
+							"    \"price\": 20.5",
+							"};"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "https://localhost:44366/order/555",
+					"protocol": "https",
+					"host": [
+						"localhost"
+					],
+					"port": "44366",
+					"path": [
+						"order",
+						"555"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "GET /order/{777} Missing Body",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "8206086a-f293-4b47-b3bc-7a87a68cbf05",
+						"exec": [
+							"pm.test(\"order/777 returns 200 OK\", function () {",
+							"    pm.response.to.have.status(200);",
+							"});",
+							"",
+							"pm.test(\"order/777 returns expected body \", function () {",
+							"    pm.response.to.have.body(\"\");",
+							"});",
+							"",
+							"pm.test(\"order/777 returns undefined body\", function () {",
+							"   pm.expect(pm.response.body).to.eql(undefined); ",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "https://localhost:44366/order/777",
+					"protocol": "https",
+					"host": [
+						"localhost"
+					],
+					"port": "44366",
+					"path": [
+						"order",
+						"777"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "GET /order/{888} Missing Content",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "8206086a-f293-4b47-b3bc-7a87a68cbf05",
+						"exec": [
+							"pm.test(\"order/888 returns 200 OK\", function () {",
+							"    pm.response.to.have.status(200);",
+							"});",
+							"",
+							"pm.test(\"order/888 returns expected body \", function () {",
+							"    pm.response.to.have.body(\"Wrong Content-Type\");",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "https://localhost:44366/order/888",
+					"protocol": "https",
+					"host": [
+						"localhost"
+					],
+					"port": "44366",
+					"path": [
+						"order",
+						"888"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "DELETE /order/{555}/items/555 Unexpected Body",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "8206086a-f293-4b47-b3bc-7a87a68cbf05",
+						"exec": [
+							"pm.test(\"order/555/items/555 returns expected body \", function () {",
+							"    pm.response.to.have.body(\"Unexpected Body\");",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"url": {
+					"raw": "https://localhost:44366/order/555/items/555",
+					"protocol": "https",
+					"host": [
+						"localhost"
+					],
+					"port": "44366",
+					"path": [
+						"order",
+						"555",
+						"items",
+						"555"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "DELETE /order/{666}/items/666 Invalid Headers",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "8206086a-f293-4b47-b3bc-7a87a68cbf05",
+						"exec": [
+							"pm.test(\"order/666/items/666 returns 204 \", function () {",
+							"    pm.response.to.have.status(204);",
+							"});",
+							"",
+							"pm.test(\"order/666/items/666 contains header \", function () {",
+							"    pm.response.to.have.header(\"X-header\", \"&*(&^&%%##@\")",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"url": {
+					"raw": "https://localhost:44366/order/666/items/666",
+					"protocol": "https",
+					"host": [
+						"localhost"
+					],
+					"port": "44366",
+					"path": [
+						"order",
+						"666",
+						"items",
+						"666"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "DELETE /order/{777}/items/777 Missing Headers",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "8206086a-f293-4b47-b3bc-7a87a68cbf05",
+						"exec": [
+							"pm.test(\"order/777/items/777 returns 204 \", function () {",
+							"    pm.response.to.have.status(204);",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"url": {
+					"raw": "https://localhost:44366/order/777/items/777",
+					"protocol": "https",
+					"host": [
+						"localhost"
+					],
+					"port": "44366",
+					"path": [
+						"order",
+						"777",
+						"items",
+						"777"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}

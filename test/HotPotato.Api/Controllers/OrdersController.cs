@@ -1,5 +1,6 @@
 ﻿using HotPotato.Api.Models;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Net.Http.Headers;
 using System;
 using System.Linq;
 
@@ -63,6 +64,26 @@ namespace HotPotato.Api.Controllers
         [HttpGet("/order/{id}")]
         public IActionResult GetOrderWithId(int id)
         {
+            //Invalid Body condition -- Missing properties
+            if (id == 555)
+            {
+                var t = new { Price = 20.50 };
+
+                return Ok(t);
+            }
+
+            //Missing Body -- return Empty Body
+            if(id == 777)
+            {
+                return Ok();
+            }
+
+            //MissingContent -- return content-type not listed
+            if(id == 888)
+            {
+                return Ok("Wrong Content-Type");
+            }
+
             var order = OrderDataStore.Current.Orders.FirstOrDefault(r => r.Id == id);
 
             if(order == null)
@@ -110,9 +131,17 @@ namespace HotPotato.Api.Controllers
             return NoContent();
         }
 
+        [HttpOptions("/order/{id}")]
+        public IActionResult OptionsForPath()
+        {
+            Response.Headers.Add("Allow", "Allow");
+            return Ok("GET, PUT");
+        }
+
         [HttpGet("/order/{id}/price")]
         public IActionResult GetPriceWithId(int id)
         {
+
             var order = OrderDataStore.Current.Orders.FirstOrDefault(r => r.Id == id);
 
             if (order == null)
@@ -195,6 +224,31 @@ namespace HotPotato.Api.Controllers
         [HttpDelete("/order/{id}/items/{itemId}")]
         public IActionResult DeleteItemWithItemIdInOrder(int id, int itemId)
         {
+            //UnexpectedBody -- return unexpected body on 204 No Content
+            if(id == 555 && itemId == 555)
+            {
+                var res = new ContentResult()
+                {
+                    ContentType = "text/plain",
+                    Content = "Unexpected Body",
+                };
+                return res;
+            }
+
+            //InValidHeaders -- strings not formatted correctly
+            if (id == 666 && itemId == 666)
+            {
+                Response.Headers.Add("X-header", "&*(&^&%%##@");
+                return NoContent();
+            }
+
+            //MissingHeaders -- Omit Header defined in spec
+            if(id == 777 && itemId == 777)
+            {
+                Response.Headers.Clear();
+                return NoContent();    
+            }
+
             var order = OrderDataStore.Current.Orders.FirstOrDefault(r => r.Id == id);
             var item = OrderDataStore.Current.Orders.FirstOrDefault(r => r.Id == id).Items.FirstOrDefault(r => r.ItemId == itemId);
 
@@ -215,6 +269,8 @@ namespace HotPotato.Api.Controllers
             }
 
             OrderDataStore.Current.Orders.FirstOrDefault(r => r.Id == id).Items.Remove(item);
+
+            Response.Headers.Add("X-header", "HEADER");
 
             return NoContent();
         }
