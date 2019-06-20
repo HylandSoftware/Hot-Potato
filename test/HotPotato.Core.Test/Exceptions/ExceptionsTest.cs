@@ -29,15 +29,5 @@ namespace HotPotato.Core
             Assert.IsType(InvalidOperationExceptionType, result);
             Assert.Equal(AValidMessage, result.Message);
         }
-
-
-        [Fact]
-        public void NotImplemented_ReturnsNotImplementedExceptionType()
-        {
-            var result = Exceptions.NotImplemented(AValidMessage);
-
-            Assert.IsType(NotImplementedExceptionType, result);
-            Assert.Equal(AValidMessage, result.Message);
-        }
     }
 }

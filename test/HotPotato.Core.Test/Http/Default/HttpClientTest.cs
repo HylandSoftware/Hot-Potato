@@ -12,6 +12,13 @@ namespace HotPotato.Core.Http.Default
         private const string AValidEndpoint = "http://localhost/api";
 
         [Fact]
+        public void Constructor_ThrowsArgumentNullExceptionWithClient()
+        {
+            Action subject = () => new HttpClient(null);
+            Assert.Throws<ArgumentNullException>(subject);
+        }
+
+        [Fact]
         public async void SendAsync_ExecutesRequest()
         {
             var mockHttp = new MockHttpMessageHandler();
