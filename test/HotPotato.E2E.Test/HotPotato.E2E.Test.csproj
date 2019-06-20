@@ -14,16 +14,21 @@
     <PackageReference Include="Microsoft.AspNetCore.Mvc.Core" Version="2.2.5" />
     <PackageReference Include="Microsoft.AspNetCore.Mvc.Formatters.Json" Version="2.2.0" />
     <PackageReference Include="Microsoft.Extensions.Http" Version="2.2.0" />
-    <PackageReference Include="Microsoft.NET.Test.Sdk" Version="15.9.0" />
-    <PackageReference Include="NSwag.Core" Version="12.2.5" />
-    <PackageReference Include="NSwag.Core.Yaml" Version="12.2.5" />
+    <PackageReference Include="Microsoft.NET.Test.Sdk" Version="16.1.0" />
+    <PackageReference Include="Moq" Version="4.10.1" />
+    <PackageReference Include="NSwag.Core" Version="12.0.15" />
+    <PackageReference Include="NSwag.Core.Yaml" Version="12.0.15" />
     <PackageReference Include="WireMock.Net" Version="1.0.7" />
-    <PackageReference Include="xunit" Version="2.4.0" />
-    <PackageReference Include="xunit.runner.visualstudio" Version="2.4.0" />
+    <PackageReference Include="xunit" Version="2.4.1" />
+    <PackageReference Include="xunit.runner.visualstudio" Version="2.4.1">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers</IncludeAssets>
+    </PackageReference>
   </ItemGroup>
 
   <ItemGroup>
     <ProjectReference Include="..\..\src\HotPotato.AspNetCore.Host\HotPotato.AspNetCore.Host.csproj" />
+    <ProjectReference Include="..\..\src\HotPotato.Core\HotPotato.Core.csproj" />
   </ItemGroup>
 
 </Project>

@@ -27,8 +27,22 @@ namespace HotPotato.Core.Http
         private const string AValidContentType = "application/json";
         private const string GET = "GET";
         private const string POST = "POST";
-            
 
+        [Fact]
+        public void BuildUri_ThrowsArgumentNullExceptionWithMsHttpRequest()
+        {
+            MSHTTP.HttpRequest request = null;
+            Action subject = () => request.BuildUri(null);
+            Assert.Throws<ArgumentNullException>(subject);
+        }
+
+        [Fact]
+        public void BuildUri_ThrowsArgumentNullExceptionWithRemoteEndpoint()
+        {
+            MSHTTP.HttpRequest request = Mock.Of<MSHTTP.HttpRequest>();
+            Action subject = () => request.BuildUri(null);
+            Assert.Throws<ArgumentNullException>(subject);
+        }
 
         [Theory]
         [InlineData("connection")]
@@ -85,6 +99,14 @@ namespace HotPotato.Core.Http
             HttpRequestMessage result = HttpExtensions.ToClientRequestMessage(request);
 
             Assert.Equal(request.Content, result.Content);
+        }
+
+        [Fact]
+        public void ToClientRequestMessage_ThrowsArgumentNullExceptionWithRequest()
+        {
+            IHttpRequest request = null;
+            Action subject = () => request.ToClientRequestMessage();
+            Assert.Throws<ArgumentNullException>(subject);
         }
 
         [Theory]
@@ -147,6 +169,13 @@ namespace HotPotato.Core.Http
 
             Assert.True(result.Headers.ContainsKey(AValidKey));
             Assert.Equal(AVAlidHeaderValue, result.Headers[AValidKey][0]);
+        }
+
+        [Fact]
+        public void ToClientResponseMessage_ThrowsArgumentNullExceptionWithResponseMessage()
+        {
+            HttpResponseMessage respMsg = null;
+            Assert.ThrowsAsync<ArgumentNullException>(async () => await respMsg.ToClientResponseAsync());
         }
 
         [Fact]
@@ -213,6 +242,22 @@ namespace HotPotato.Core.Http
             IHttpRequest result = HttpExtensions.ToProxyRequest(request, AValidUri);
 
             Assert.Null(result.Content);
+        }
+
+        [Fact]
+        public void ToProxyRequest_ThrowsArgumentNullExceptionWithMsHttpRequest()
+        {
+            MSHTTP.HttpRequest request = null;
+            Action subject = () => request.ToProxyRequest(null);
+            Assert.Throws<ArgumentNullException>(subject);
+        }
+
+        [Fact]
+        public void ToProxyRequest_ThrowsArgumentNullExceptionWithRemoteEndpoint()
+        {
+            MSHTTP.HttpRequest request = Mock.Of<MSHTTP.HttpRequest>();
+            Action subject = () => request.ToProxyRequest(null);
+            Assert.Throws<ArgumentNullException>(subject);
         }
 
         [Fact]
@@ -294,6 +339,20 @@ namespace HotPotato.Core.Http
 
             response.VerifyAll();
             
+        }
+
+        [Fact]
+        public void ToProxyResponseAsync_ThrowsArgumentNullExceptionWithIHttpResponse()
+        {
+            IHttpResponse response = null;
+            Assert.ThrowsAsync<ArgumentNullException>(async () => await response.ToProxyResponseAsync(null));
+        }
+
+        [Fact]
+        public void ToProxyResponseAsync_ThrowsArgumentNullExceptionWithMsHttpResponse()
+        {
+            IHttpResponse response = Mock.Of<IHttpResponse>();
+            Assert.ThrowsAsync<ArgumentNullException>(async () => await response.ToProxyResponseAsync(null));
         }
     }
 }

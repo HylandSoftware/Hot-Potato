@@ -8,7 +8,5 @@ namespace HotPotato.Core
             new ArgumentNullException(paramName);
         public static InvalidOperationException InvalidOperation(string message) =>
             new InvalidOperationException(message);
-        public static NotImplementedException NotImplemented(string message) =>
-            new NotImplementedException(message);
     }
 }
