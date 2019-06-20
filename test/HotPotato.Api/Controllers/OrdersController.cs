@@ -53,7 +53,7 @@ namespace HotPotato.Api.Controllers
                 };
             }
 
-            OrderDataStore.Current.Orders.Add(order);
+            //OrderDataStore.Current.Orders.Add(order);
 
             var uri = $"https://localhost:44366/order/{order.Id}";
 
@@ -105,7 +105,7 @@ namespace HotPotato.Api.Controllers
                 };
             }
 
-            OrderDataStore.Current.Orders[OrderDataStore.Current.Orders.FindIndex(r => r.Id == id)] = oldOrder;
+           OrderDataStore.Current.Orders[OrderDataStore.Current.Orders.FindIndex(r => r.Id == id)] = oldOrder;
 
             return NoContent();
         }
@@ -214,7 +214,7 @@ namespace HotPotato.Api.Controllers
                 };
             }
 
-            OrderDataStore.Current.Orders.FirstOrDefault(r => r.Id == id).Items.Remove(item);
+            //OrderDataStore.Current.Orders.FirstOrDefault(r => r.Id == id).Items.Remove(item);
 
             return NoContent();
         }

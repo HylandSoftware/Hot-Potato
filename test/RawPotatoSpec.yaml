@@ -3,7 +3,7 @@ info:
   version: 1.0.0
   title: Raw Potato Test API
 paths:
-  '/':
+  /:
     get:
       summary: landing page of this API
       description: >-
@@ -139,8 +139,8 @@ paths:
           description: Request successfully processed
           content:
             application/json:
-            schema:
-              $ref: '#/components/schemas/ItemsList'
+              schema:
+                $ref: '#/components/schemas/ItemsList'
         '404':
           description: Not Found. Oder or item with certain ID does not exist.
           content:
@@ -211,27 +211,27 @@ paths:
 
   /missingmethod:
     post:
-	  summary: Add a new something...
-	  requestBody:
-	    description: Creating something...
-		required: true
-		content:
-		  text/html:
-            schema:
-              type: string
-	  responses:
-	    '201':
-		  description: Order created successfully
-		  content:
-		    text/html:
+      summary: Add a new something...
+      requestBody:
+        description: Creating something...
+        required: true
+      content:
+        text/html:
+          schema:
+            type: string
+      responses:
+        '201':
+          description: Order created successfully
+          content:
+            text/html:
               schema:
                 type: string 
   /missingcode:
     get:
-	  summary: Gets something...
+      summary: Gets something...
       responses:
-	    '204':
-		  description: Returns No Content
+        '204':
+          description: Returns No Content
     
 components:
   schemas:

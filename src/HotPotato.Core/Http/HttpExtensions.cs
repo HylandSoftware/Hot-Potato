@@ -56,7 +56,7 @@ namespace HotPotato.Core.Http
             {
                 if (!ExcludedRequestHeaders.Contains(item.Key.ToLowerInvariant()))
                 {
-                    if (!message.Headers.TryAddWithoutValidation(item.Key, item.Value))
+                    if (!message.Headers.TryAddWithoutValidation(item.Key, item.Value) && message.Content != null)
                     {
                         message.Content.Headers.TryAddWithoutValidation(item.Key, item.Value);
                     }
