@@ -8,6 +8,11 @@ namespace HotPotato.OpenApi.Models
 {
     public class FailResult : Result
     {
+        [JsonConverter(typeof(StringEnumConverter))]
+        public override State State => State.Fail;
+        public override string Path { get; protected set; }
+        public override string Method { get; protected set; }
+        public override int StatusCode { get; protected set; }
         [JsonProperty(ItemConverterType = typeof(StringEnumConverter))]
         public List<Reason> Reasons { get; }
         public List<ValidationError> ValidationErrors { get; }
@@ -17,7 +22,6 @@ namespace HotPotato.OpenApi.Models
             Path = path;
             Method = method;
             StatusCode = statusCode;
-            State = State.Fail;
             Reasons = reasons;
             ValidationErrors = validationErrors;
         }
