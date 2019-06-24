@@ -23,7 +23,7 @@ namespace HotPotato.E2E.Test
     {
         private IWebHost host;
 
-        private const string ApiLocation = "http://localhost:9191";
+        private const string ApiLocation = "http://localhost:5000";
         private const string Endpoint = "/endpoint";
         private const string ProxyEndpoint = "http://localhost:3232/endpoint";
         private const string GetMethodCall = "GET";
