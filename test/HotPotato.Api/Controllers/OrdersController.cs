@@ -1,5 +1,7 @@
 ﻿using HotPotato.Api.Models;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Net.Http.Headers;
 using System;
 using System.Linq;
 
@@ -28,10 +30,11 @@ namespace HotPotato.Api.Controllers
         {
             ProblemDetails problemDetails = new ProblemDetails()
             {
-                Type = "Bad Request",
+                Type = "https://tools.ietf.org/html/rfc7231#section-6.5.1",
                 Status = 400,
                 Title = "400 Bad Request",
-                Detail = "Order needs an ID, Price, and Items[]"
+                Detail = "Order needs an ID, Price, and Items[]",
+                Instance = GetInstance(HttpContext.Request)
             };
 
             if (OrderDataStore.Current.Orders.FirstOrDefault(r => r.Id == order.Id) != null)
@@ -39,7 +42,8 @@ namespace HotPotato.Api.Controllers
                 problemDetails.Detail = $"Order with ID: {order.Id} already exists";
                 return new ObjectResult(problemDetails)
                 {
-                    StatusCode = problemDetails.Status
+                    StatusCode = problemDetails.Status,
+                    ContentTypes = new Microsoft.AspNetCore.Mvc.Formatters.MediaTypeCollection() { new MediaTypeHeaderValue("application/problem+json") }
                 };
             }
 
@@ -49,7 +53,8 @@ namespace HotPotato.Api.Controllers
 
                 return new ObjectResult(problemDetails)
                 {
-                    StatusCode = problemDetails.Status
+                    StatusCode = problemDetails.Status,
+                    ContentTypes = new Microsoft.AspNetCore.Mvc.Formatters.MediaTypeCollection() { new MediaTypeHeaderValue("application/problem+json") }
                 };
             }
 
@@ -69,15 +74,17 @@ namespace HotPotato.Api.Controllers
             {
                 ProblemDetails problemDetails = new ProblemDetails()
                 {
-                    Type = "Not Found",
+                    Type = "https://tools.ietf.org/html/rfc7231#section-6.5.4",
                     Status = 404,
                     Title = "404 Not Found",
-                    Detail = $"Order with ID: {id} was not found"
+                    Detail = $"Order with ID: {id} was not found",
+                    Instance = GetInstance(HttpContext.Request)
                 };
 
                 return new ObjectResult(problemDetails)
                 {
-                    StatusCode = problemDetails.Status
+                    StatusCode = problemDetails.Status,
+                    ContentTypes = new Microsoft.AspNetCore.Mvc.Formatters.MediaTypeCollection() { new MediaTypeHeaderValue("application/problem+json") }
                 };
             }
 
@@ -93,15 +100,17 @@ namespace HotPotato.Api.Controllers
             {
                 ProblemDetails problemDetails = new ProblemDetails()
                 {
-                    Type = "Not Found",
+                    Type = "https://tools.ietf.org/html/rfc7231#section-6.5.4",
                     Status = 404,
                     Title = "404 Not Found",
-                    Detail = $"Order with ID: {id} was not found"
+                    Detail = $"Order with ID: {id} was not found",
+                    Instance = GetInstance(HttpContext.Request)
                 };
 
                 return new ObjectResult(problemDetails)
                 {
-                    StatusCode = problemDetails.Status
+                    StatusCode = problemDetails.Status,
+                    ContentTypes = new Microsoft.AspNetCore.Mvc.Formatters.MediaTypeCollection() { new MediaTypeHeaderValue("application/problem+json") }
                 };
             }
 
@@ -119,15 +128,17 @@ namespace HotPotato.Api.Controllers
             {
                 ProblemDetails problemDetails = new ProblemDetails()
                 {
-                    Type = "Not Found",
+                    Type = "https://tools.ietf.org/html/rfc7231#section-6.5.4",
                     Status = 404,
                     Title = "404 Not Found",
-                    Detail = $"Order with ID: {id} was not found"
+                    Detail = $"Order with ID: {id} was not found",
+                    Instance = GetInstance(HttpContext.Request)
                 };
 
                 return new ObjectResult(problemDetails)
                 {
-                    StatusCode = problemDetails.Status
+                    StatusCode = problemDetails.Status,
+                    ContentTypes = new Microsoft.AspNetCore.Mvc.Formatters.MediaTypeCollection() { new MediaTypeHeaderValue("application/problem+json") }
                 };
             }
 
@@ -145,15 +156,17 @@ namespace HotPotato.Api.Controllers
             {
                 ProblemDetails problemDetails = new ProblemDetails()
                 {
-                    Type = "Not Found",
+                    Type = "https://tools.ietf.org/html/rfc7231#section-6.5.4",
                     Status = 404,
                     Title = "404 Not Found",
-                    Detail = $"Order with ID: {id} was not found"
+                    Detail = $"Order with ID: {id} was not found",
+                    Instance = GetInstance(HttpContext.Request)
                 };
 
                 return new ObjectResult(problemDetails)
                 {
-                    StatusCode = problemDetails.Status
+                    StatusCode = problemDetails.Status,
+                    ContentTypes = new Microsoft.AspNetCore.Mvc.Formatters.MediaTypeCollection() { new MediaTypeHeaderValue("application/problem+json") }
                 };
             }
 
@@ -170,15 +183,17 @@ namespace HotPotato.Api.Controllers
             {
                 ProblemDetails problemDetails = new ProblemDetails()
                 {
-                    Type = "Not Found",
+                    Type = "https://tools.ietf.org/html/rfc7231#section-6.5.4",
                     Status = 404,
                     Title = "404 Not Found",
-                    Detail = $"Order with ID: {id} was not found or Item with ID: {itemId} was not found"
+                    Detail = $"Order with ID: {id} was not found or Item with ID: {itemId} was not found",
+                    Instance = GetInstance(HttpContext.Request)
                 };
 
                 return new ObjectResult(problemDetails)
                 {
-                    StatusCode = problemDetails.Status
+                    StatusCode = problemDetails.Status,
+                    ContentTypes = new Microsoft.AspNetCore.Mvc.Formatters.MediaTypeCollection() { new MediaTypeHeaderValue("application/problem+json") }
                 };
             }
 
@@ -202,15 +217,17 @@ namespace HotPotato.Api.Controllers
             {
                 ProblemDetails problemDetails = new ProblemDetails()
                 {
-                    Type = "Not Found",
+                    Type = "https://tools.ietf.org/html/rfc7231#section-6.5.4",
                     Status = 404,
                     Title = "404 Not Found",
-                    Detail = $"Order with ID: {id} was not found or Item with ID: {itemId} was not found"
+                    Detail = $"Order with ID: {id} was not found or Item with ID: {itemId} was not found",
+                    Instance = GetInstance(HttpContext.Request)
                 };
 
                 return new ObjectResult(problemDetails)
                 {
-                    StatusCode = problemDetails.Status
+                    StatusCode = problemDetails.Status,
+                    ContentTypes = new Microsoft.AspNetCore.Mvc.Formatters.MediaTypeCollection() { new MediaTypeHeaderValue("application/problem+json") }
                 };
             }
 
@@ -257,5 +274,10 @@ namespace HotPotato.Api.Controllers
         }
 
         #endregion
+
+        private string GetInstance(HttpRequest request)
+        {
+            return $"{request.Scheme}://{request.Host.ToUriComponent()}{request.Path.Value}";
+        }
     }
 }

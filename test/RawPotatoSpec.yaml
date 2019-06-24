@@ -60,14 +60,14 @@ paths:
           description: ID of the order to be retrieved. 
           required: true 
           schema: 
-          type: integer
+            type: integer
       responses:
         '200':
           description: Returns order OK
           content: 
             application/json:
               schema:
-              $ref: '#/components/schemas/Order'
+                $ref: '#/components/schemas/Order'
         '404':
           description: Returns 404 Not Found
           content:
@@ -115,7 +115,7 @@ paths:
           content:
             text/plain:
               schema:
-                type: number
+                type: string
               example:
                 '52.00'
         '404':
