@@ -1,6 +1,6 @@
 {
 	"info": {
-		"_postman_id": "da330330-3c1e-442b-8dbe-0502287cb8a6",
+		"_postman_id": "5cf21fe0-7a4c-4b22-b41c-f919a0585a63",
 		"name": "HappyPathTests",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
 	},
@@ -31,12 +31,9 @@
 				"method": "GET",
 				"header": [],
 				"url": {
-					"raw": "{{endpoint}}/",
+					"raw": "{{endpoint}}",
 					"host": [
 						"{{endpoint}}"
-					],
-					"path": [
-						""
 					]
 				},
 				"description": "[GET]\nLanding Page Tests"
@@ -771,6 +768,46 @@
 				}
 			},
 			"response": []
+		},
+		{
+			"name": "OPTIONS /order/{id} 200",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "d7049e7d-c671-4813-ae7e-9832035a3959",
+						"exec": [
+							"pm.test(\"OPTIONS /order/{id} returns 200 OK\", function () {",
+							"    pm.response.to.have.status(200);",
+							"});",
+							"",
+							"pm.test(\"OPTIONS /order/{id}/price returns expected body \", function () {",
+							"    pm.response.to.have.body(\"GET, PUT\");",
+							"});",
+							"",
+							"pm.test(\"OPTIONS /order/{id} returns expected header\", function () {",
+							"\tpm.response.to.have.header(\"Allow\", \"Allow\");",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "OPTIONS",
+				"header": [],
+				"url": {
+					"raw": "{{endpoint}}/order/2",
+					"host": [
+						"{{endpoint}}"
+					],
+					"path": [
+						"order",
+						"2"
+					]
+				}
+			},
+			"response": []
 		}
 	],
 	"event": [
@@ -797,25 +834,25 @@
 	],
 	"variable": [
 		{
-			"id": "898b8d06-ce1e-4620-9852-7f3b8d055f41",
+			"id": "45d1df6f-12e9-4fa9-87ae-7ead9564921e",
 			"key": "proto",
 			"value": "http",
 			"type": "string"
 		},
 		{
-			"id": "7a0108a4-506c-4b94-9cba-b379ad07082e",
+			"id": "64036361-3d0d-41b1-a04c-0e7bb7217302",
 			"key": "host",
 			"value": "localhost",
 			"type": "string"
 		},
 		{
-			"id": "e079d4ec-dbfd-4fa8-ac59-0012ec1c9f4c",
+			"id": "46817050-79bc-4a51-9fe6-eb95c8890db7",
 			"key": "port",
 			"value": "5000",
 			"type": "string"
 		},
 		{
-			"id": "46cc3ebd-2883-4b22-bef6-e8087b01b6cc",
+			"id": "b54f8405-f066-483b-b060-40699f308cf3",
 			"key": "endpoint",
 			"value": "{{proto}}://{{host}}:{{port}}",
 			"type": "string"

@@ -1,0 +1,279 @@
+{
+	"info": {
+		"_postman_id": "5030f71f-bb20-4ccb-a78b-eba2f2a02844",
+		"name": "Non-ConformantTests",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "GET /order/{555} Invalid Body",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "8206086a-f293-4b47-b3bc-7a87a68cbf05",
+						"exec": [
+							"pm.test(\"order/555 returns 200 OK\", function () {",
+							"    pm.response.to.have.status(200);",
+							"});",
+							"",
+							"pm.test(\"order/555 returns expected body \", function () {",
+							"    pm.response.to.have.jsonBody(body);",
+							"});",
+							"",
+							"var body = {",
+							"    \"price\": 20.5",
+							"};"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{endpoint}}/order/555",
+					"host": [
+						"{{endpoint}}"
+					],
+					"path": [
+						"order",
+						"555"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "GET /order/{777} Missing Body",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "8206086a-f293-4b47-b3bc-7a87a68cbf05",
+						"exec": [
+							"pm.test(\"order/777 returns 200 OK\", function () {",
+							"    pm.response.to.have.status(200);",
+							"});",
+							"",
+							"pm.test(\"order/777 returns expected body \", function () {",
+							"    pm.response.to.have.body(\"\");",
+							"});",
+							"",
+							"pm.test(\"order/777 returns undefined body\", function () {",
+							"   pm.expect(pm.response.body).to.eql(undefined); ",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{endpoint}}/order/777",
+					"host": [
+						"{{endpoint}}"
+					],
+					"path": [
+						"order",
+						"777"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "GET /order/{888} Missing Content",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "8206086a-f293-4b47-b3bc-7a87a68cbf05",
+						"exec": [
+							"pm.test(\"order/888 returns 200 OK\", function () {",
+							"    pm.response.to.have.status(200);",
+							"});",
+							"",
+							"pm.test(\"order/888 returns expected body \", function () {",
+							"    pm.response.to.have.body(\"Wrong Content-Type\");",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{endpoint}}/order/888",
+					"host": [
+						"{{endpoint}}"
+					],
+					"path": [
+						"order",
+						"888"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "DELETE /order/{555}/items/555 Unexpected Body",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "8206086a-f293-4b47-b3bc-7a87a68cbf05",
+						"exec": [
+							"pm.test(\"order/555/items/555 returns expected body \", function () {",
+							"    pm.response.to.have.body(\"Unexpected Body\");",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"url": {
+					"raw": "{{endpoint}}/order/555/items/555",
+					"host": [
+						"{{endpoint}}"
+					],
+					"path": [
+						"order",
+						"555",
+						"items",
+						"555"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "DELETE /order/{666}/items/666 Invalid Headers",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "8206086a-f293-4b47-b3bc-7a87a68cbf05",
+						"exec": [
+							"pm.test(\"order/666/items/666 returns 204 \", function () {",
+							"    pm.response.to.have.status(204);",
+							"});",
+							"",
+							"pm.test(\"order/666/items/666 contains header \", function () {",
+							"    pm.response.to.have.header(\"X-header\", \"&*(&^&%%##@\")",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"url": {
+					"raw": "{{endpoint}}/order/666/items/666",
+					"host": [
+						"{{endpoint}}"
+					],
+					"path": [
+						"order",
+						"666",
+						"items",
+						"666"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "DELETE /order/{777}/items/777 Missing Headers",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "8206086a-f293-4b47-b3bc-7a87a68cbf05",
+						"exec": [
+							"pm.test(\"order/777/items/777 returns 204 \", function () {",
+							"    pm.response.to.have.status(204);",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"url": {
+					"raw": "{{endpoint}}/order/777/items/777",
+					"host": [
+						"{{endpoint}}"
+					],
+					"path": [
+						"order",
+						"777",
+						"items",
+						"777"
+					]
+				}
+			},
+			"response": []
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"id": "806f6324-a182-4d15-a083-f06f67b0b4bc",
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"id": "6674b5ca-d014-4ac7-a053-e4f118834809",
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"id": "eae0a485-d851-4b17-90a2-45aa929df4be",
+			"key": "proto",
+			"value": "http",
+			"type": "string"
+		},
+		{
+			"id": "39a4b212-e848-447c-a88c-e9d97d09a9d0",
+			"key": "host",
+			"value": "localhost",
+			"type": "string"
+		},
+		{
+			"id": "7acfc676-d7c0-4f90-be02-8a5003971860",
+			"key": "port",
+			"value": "5000",
+			"type": "string"
+		},
+		{
+			"id": "80a5ee11-f6b5-44df-9e48-0dbb51f5d156",
+			"key": "endpoint",
+			"value": "{{proto}}://{{host}}:{{port}}",
+			"type": "string"
+		}
+	]
+}

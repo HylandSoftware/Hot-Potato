@@ -30,12 +30,10 @@
 				"method": "GET",
 				"header": [],
 				"url": {
-					"raw": "https://localhost:44366/missingpath",
-					"protocol": "https",
+					"raw": "{{endpoint}}/missingpath",
 					"host": [
-						"localhost"
+						"{{endpoint}}"
 					],
-					"port": "44366",
 					"path": [
 						"missingpath"
 					]
@@ -67,12 +65,10 @@
 				"method": "GET",
 				"header": [],
 				"url": {
-					"raw": "https://localhost:44366/missingmethod",
-					"protocol": "https",
+					"raw": "{{endpoint}}/missingmethod",
 					"host": [
-						"localhost"
+						"{{endpoint}}"
 					],
-					"port": "44366",
 					"path": [
 						"missingmethod"
 					]
@@ -104,18 +100,64 @@
 				"method": "GET",
 				"header": [],
 				"url": {
-					"raw": "https://localhost:44366/missingcode",
-					"protocol": "https",
+					"raw": "{{endpoint}}/missingcode",
 					"host": [
-						"localhost"
+						"{{endpoint}}"
 					],
-					"port": "44366",
 					"path": [
 						"missingcode"
 					]
 				}
 			},
 			"response": []
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"id": "3f689b74-98e7-4563-84a8-2384b2763087",
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"id": "ca8d3f23-f5ed-403f-b3c7-916fff13854d",
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"id": "8ca09a1b-7f06-4527-be17-24dd2c0abbc9",
+			"key": "proto",
+			"value": "http",
+			"type": "string"
+		},
+		{
+			"id": "4bf8b22b-a5c5-4e70-a33f-b1cfd5925f47",
+			"key": "host",
+			"value": "localhost",
+			"type": "string"
+		},
+		{
+			"id": "bda04f4c-8055-463b-a73e-67d8ff04b5ed",
+			"key": "port",
+			"value": "5000",
+			"type": "string"
+		},
+		{
+			"id": "09841465-6dc9-441e-aef4-e427221d67f2",
+			"key": "endpoint",
+			"value": "{{proto}}://{{host}}:{{port}}",
+			"type": "string"
 		}
 	]
 }
