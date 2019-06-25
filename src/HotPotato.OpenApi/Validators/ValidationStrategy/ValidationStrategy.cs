@@ -1,7 +1,9 @@
 ﻿
+using HotPotato.Core.Http;
 using HotPotato.OpenApi.Models;
 using HotPotato.OpenApi.Results;
 using HotPotato.OpenApi.SpecificationProvider;
+using NJsonSchema;
 using NSwag;
 using System.Linq;
 
@@ -12,16 +14,19 @@ namespace HotPotato.OpenApi.Validators
         internal PathValidator PathValidator { get; set; }
         internal MethodValidator MethodValidator { get; set; }
         internal StatusCodeValidator StatusCodeValidator { get; set; }
+        internal ContentValidator ContentValidator { get; set; }
         internal BodyValidator BodyValidator { get; set; }
         internal HeaderValidator HeaderValidator { get; set; }
 
         private IResultCollector resColl { get; }
         private SwaggerDocument swagDoc { get; }
+        private HttpContentType contentType { get; }
 
-        public ValidationStrategy(IResultCollector ResColl, ISpecificationProvider SpecPro)
+        public ValidationStrategy(IResultCollector ResColl, ISpecificationProvider SpecPro, HttpContentType ContentType)
         {
             resColl = ResColl;
             swagDoc = SpecPro.GetSpecDocument();
+            contentType = ContentType;
         }
 
         public void Validate()
@@ -42,7 +47,15 @@ namespace HotPotato.OpenApi.Validators
                 return;
             }
 
-            IValidationResult bodyResult = BodyValidator.Validate(StatusCodeValidator.Result);
+            JsonSchema4 schema = ContentProvider.GetSchema(StatusCodeValidator.Result, contentType.Type);
+
+            IValidationResult bodyResult = ContentValidator.Validate(schema);
+
+            if (bodyResult == null)
+            {
+                bodyResult = BodyValidator.Validate(schema);
+            }
+
             IValidationResult headerResult = HeaderValidator.Validate(StatusCodeValidator.Result);
 
             AddValidationResult(bodyResult, headerResult);

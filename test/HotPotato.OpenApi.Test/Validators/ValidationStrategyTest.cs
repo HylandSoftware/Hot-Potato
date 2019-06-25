@@ -1,4 +1,5 @@
-﻿using HotPotato.OpenApi.Models;
+﻿using HotPotato.Core.Http;
+using HotPotato.OpenApi.Models;
 using HotPotato.OpenApi.Results;
 using HotPotato.OpenApi.SpecificationProvider;
 using Moq;
@@ -185,7 +186,7 @@ namespace HotPotato.OpenApi.Validators
 
         private ValidationStrategy SetUpValidationStrategy(IResultCollector resColl, string path = AValidPath)
         {
-            ValidationStrategy valStrat = new ValidationStrategy(resColl, Mock.Of<ISpecificationProvider>());
+            ValidationStrategy valStrat = new ValidationStrategy(resColl, Mock.Of<ISpecificationProvider>(), new HttpContentType("application/json"));
             valStrat.PathValidator = new PathValidator(path);
             valStrat.MethodValidator = new MethodValidator(AValidMethod);
             valStrat.StatusCodeValidator = new StatusCodeValidator(AValidStatusCode, "");

@@ -8,23 +8,14 @@ namespace HotPotato.OpenApi.Validators
 {
     internal class XmlBodyValidator : BodyValidator
     {
-        public XmlBodyValidator(string bodyString, HttpContentType contentType)
+        public XmlBodyValidator(string bodyString)
         {
             BodyString = bodyString;
-            ContentType = contentType;
         }
 
-        public override IValidationResult Validate(SwaggerResponse swagResp)
+        public override IValidationResult Validate(JsonSchema4 schema)
         {
-            JsonSchema4 specBody = ContentProvider.GetSchema(swagResp, ContentType.Type);
-
-            IValidationResult missingContentResult = ValidateMissingContent(specBody);
-            if (missingContentResult != null)
-            {
-                return missingContentResult;
-            }
-
-            var xmlErrList = specBody.ValidateXml(BodyString);
+            var xmlErrList = schema.ValidateXml(BodyString);
             if (xmlErrList.Count == 0)
             {
                 return new ValidResult();

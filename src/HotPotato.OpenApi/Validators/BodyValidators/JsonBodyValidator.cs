@@ -1,30 +1,20 @@
 ﻿using HotPotato.OpenApi.Models;
 using HotPotato.Core.Http;
 using NJsonSchema;
-using NSwag;
 using System.Collections.Generic;
 
 namespace HotPotato.OpenApi.Validators
 {
     internal class JsonBodyValidator : BodyValidator
     {
-        public JsonBodyValidator(string bodyString, HttpContentType contentType)
+        public JsonBodyValidator(string bodyString)
         {
             BodyString = bodyString;
-            ContentType = contentType;
         }
 
-        public override IValidationResult Validate(SwaggerResponse swagResp)
+        public override IValidationResult Validate(JsonSchema4 schema)
         {
-            JsonSchema4 specBody = ContentProvider.GetSchema(swagResp, ContentType.Type);
-
-            IValidationResult missingContentResult = ValidateMissingContent(specBody);
-            if (missingContentResult != null)
-            {
-                return missingContentResult;
-            }
-
-            ICollection<NJsonSchema.Validation.ValidationError> errors = specBody.Validate(BodyString);
+            ICollection<NJsonSchema.Validation.ValidationError> errors = schema.Validate(BodyString);
             if (errors == null || errors.Count == 0)
             {
                 return new ValidResult();
