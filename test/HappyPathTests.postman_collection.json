@@ -1,0 +1,824 @@
+{
+	"info": {
+		"_postman_id": "da330330-3c1e-442b-8dbe-0502287cb8a6",
+		"name": "HappyPathTests",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "GET Landing Page 200",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "79f61673-e145-4ffd-b539-e67f89d07e4d",
+						"exec": [
+							"pm.test(\"LandingPage returns 200 OK\", function () {",
+							"    pm.response.to.have.status(200);",
+							"});",
+							"",
+							"pm.test(\"LandingPage returns expected body \", function () {",
+							"    pm.response.to.have.body(\"https://bitbucket.hylandqa.net/projects/AUTOTEST/repos/hot-potato/browse\");",
+							"});",
+							"",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{endpoint}}/",
+					"host": [
+						"{{endpoint}}"
+					],
+					"path": [
+						""
+					]
+				},
+				"description": "[GET]\nLanding Page Tests"
+			},
+			"response": []
+		},
+		{
+			"name": "GET /order 200",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "a4987ed2-3b25-4f4f-9421-1bca2f0080f9",
+						"exec": [
+							"pm.test(\"/order returns 200 OK\", function () {",
+							"    pm.response.to.have.status(200);",
+							"});",
+							"",
+							"pm.test(\"/order returns expected body \", function () {",
+							"    pm.response.to.have.jsonBody(body);",
+							"});",
+							"",
+							"var body = [",
+							"    {",
+							"        \"id\": 1,",
+							"        \"price\": 30,",
+							"        \"items\": [",
+							"            {",
+							"                \"itemId\": 1,",
+							"                \"name\": \"Paper\",",
+							"                \"price\": 10",
+							"            },",
+							"            {",
+							"                \"itemId\": 2,",
+							"                \"name\": \"Pencils\",",
+							"                \"price\": 10",
+							"            },",
+							"            {",
+							"                \"itemId\": 3,",
+							"                \"name\": \"Pens\",",
+							"                \"price\": 10",
+							"            }",
+							"        ]",
+							"    },",
+							"    {",
+							"        \"id\": 2,",
+							"        \"price\": 15,",
+							"        \"items\": [",
+							"            {",
+							"                \"itemId\": 4,",
+							"                \"name\": \"Post-Its\",",
+							"                \"price\": 5",
+							"            },",
+							"            {",
+							"                \"itemId\": 5,",
+							"                \"name\": \"Markers\",",
+							"                \"price\": 10",
+							"            }",
+							"        ]",
+							"    }",
+							"];"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{endpoint}}/order",
+					"host": [
+						"{{endpoint}}"
+					],
+					"path": [
+						"order"
+					]
+				},
+				"description": "Returns Orders collection"
+			},
+			"response": []
+		},
+		{
+			"name": "POST /order 201",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "943d6952-34cb-4709-bfad-ae197e51ab06",
+						"exec": [
+							"pm.test(\"Post /order returns 201 Created\", function () {",
+							"    pm.response.to.have.status(201);",
+							"});",
+							"",
+							"pm.test(\"Post /order returns expected body \", function () {",
+							"    pm.response.to.have.jsonBody(order);",
+							"});",
+							"",
+							"var order = {\"id\":\"5\",\"price\":\"20.00\",\"items\":[{\"itemId\":\"1\",\"name\":\"Paper\",\"price\":\"10.00\"},{\"itemId\":\"2\",\"name\":\"Pencils\",\"price\":\"10.00\"}]};"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"name": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\"id\":\"5\",\"price\":\"20.00\",\"items\":[{\"itemId\":\"1\",\"name\":\"Paper\",\"price\":\"10.00\"},{\"itemId\":\"2\",\"name\":\"Pencils\",\"price\":\"10.00\"}]}"
+				},
+				"url": {
+					"raw": "{{endpoint}}/order",
+					"host": [
+						"{{endpoint}}"
+					],
+					"path": [
+						"order"
+					]
+				},
+				"description": "POST /order 201 Created"
+			},
+			"response": []
+		},
+		{
+			"name": "POST /order 400",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "d2558bd2-dd56-4c13-9d0a-f183dd18742a",
+						"exec": [
+							"pm.test(\"Post /order returns 400 Bad Request\", function () {",
+							"    pm.response.to.have.status(400);",
+							"});",
+							"",
+							"pm.test(\"Post /order returns expected body \", function () {",
+							"    pm.response.to.have.jsonBody(body);",
+							"});",
+							"",
+							"var body = {",
+							"    \"type\": \"Bad Request\",",
+							"    \"title\": \"400 Bad Request\",",
+							"    \"status\": 400,",
+							"    \"detail\": \"Order needs an ID, Price, and Items[]\"",
+							"};"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"name": "Content-Type",
+						"type": "text",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\"price\":\"20.00\",\"items\":[{\"itemId\":\"1\",\"name\":\"Paper\",\"price\":\"10.00\"},{\"itemId\":\"2\",\"name\":\"Pencils\",\"price\":\"10.00\"}]}"
+				},
+				"url": {
+					"raw": "{{endpoint}}/order",
+					"host": [
+						"{{endpoint}}"
+					],
+					"path": [
+						"order"
+					]
+				},
+				"description": "POST /order 201 Created"
+			},
+			"response": []
+		},
+		{
+			"name": "GET /order/{id} 200",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "4720f309-8c41-4fe5-9668-a79190a0173f",
+						"exec": [
+							"pm.test(\"Get /order/{id} returns 200 OK\", function () {",
+							"    pm.response.to.have.status(200);",
+							"});",
+							"",
+							"pm.test(\"Get /order/{id} returns expected body \", function () {",
+							"    pm.response.to.have.jsonBody(order);",
+							"});",
+							"",
+							"var order = {\"id\":\"2\",\"price\":\"15.00\",\"items\":[{\"itemId\":\"4\",\"name\":\"Post-Its\",\"price\":\"5.00\"},{\"itemId\":\"5\",\"name\":\"Markers\",\"price\":\"10.00\"}]};"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{endpoint}}/order/2",
+					"host": [
+						"{{endpoint}}"
+					],
+					"path": [
+						"order",
+						"2"
+					]
+				},
+				"description": "GET /order/{id} 200"
+			},
+			"response": []
+		},
+		{
+			"name": "GET /order/{id} 404",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "4720f309-8c41-4fe5-9668-a79190a0173f",
+						"exec": [
+							"pm.test(\"Get /order/{id} returns 404 Not Found\", function () {",
+							"    pm.response.to.have.status(404);",
+							"});",
+							"",
+							"pm.test(\"Get /order/{id} returns expected body \", function () {",
+							"    pm.response.to.have.jsonBody(body);",
+							"});",
+							"",
+							"var body = {",
+							"    \"type\": \"Not Found\",",
+							"    \"title\": \"404 Not Found\",",
+							"    \"status\": 404,",
+							"    \"detail\": \"Order with ID: 84985 was not found\"",
+							"};"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{endpoint}}/order/84985",
+					"host": [
+						"{{endpoint}}"
+					],
+					"path": [
+						"order",
+						"84985"
+					]
+				},
+				"description": "GET /order/{id} 200"
+			},
+			"response": []
+		},
+		{
+			"name": "PUT /order/{id} 204",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "718e68c5-6a6d-42e3-88a9-46cbef3c0da4",
+						"exec": [
+							"pm.test(\"Put /order/{id} returns 204 No Content\", function () {",
+							"    pm.response.to.have.status(204);",
+							"});",
+							"",
+							"pm.test(\"Put /order/{id} returns expected body \", function () {",
+							"    pm.response.to.have.jsonBody(order);",
+							"});",
+							"",
+							"var order = {\"id\":\"3\",\"price\":\"10.00\",\"items\":[{\"itemId\":\"1\",\"name\":\"Paper\",\"price\":\"10.00\"}]};"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "PUT",
+				"header": [
+					{
+						"key": "Content-Type",
+						"name": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\"id\":\"3\",\"price\":\"10.00\",\"items\":[{\"itemId\":\"1\",\"name\":\"Paper\",\"price\":\"10.00\"}]}"
+				},
+				"url": {
+					"raw": "{{endpoint}}/order/3",
+					"host": [
+						"{{endpoint}}"
+					],
+					"path": [
+						"order",
+						"3"
+					]
+				},
+				"description": "Put /order/{id} 204"
+			},
+			"response": []
+		},
+		{
+			"name": "PUT /order/{id} 404",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "fcf3d027-ee2b-43c6-952a-5ec17a589c6a",
+						"exec": [
+							"pm.test(\"Put /order/{id} returns 404 Not Found\", function () {",
+							"    pm.response.to.have.status(404);",
+							"});",
+							"",
+							"pm.test(\"Put /order/{id} returns expected body \", function () {",
+							"    pm.response.to.have.jsonBody(body);",
+							"});",
+							"",
+							"var body = {",
+							"    \"type\": \"Not Found\",",
+							"    \"title\": \"404 Not Found\",",
+							"    \"status\": 404,",
+							"    \"detail\": \"Order with ID: 83475643 was not found\"",
+							"}"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "PUT",
+				"header": [
+					{
+						"key": "Content-Type",
+						"name": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\"id\":\"3\",\"price\":\"10.00\",\"items\":[{\"itemId\":\"1\",\"name\":\"Paper\",\"price\":\"10.00\"}]}"
+				},
+				"url": {
+					"raw": "{{endpoint}}/order/83475643",
+					"host": [
+						"{{endpoint}}"
+					],
+					"path": [
+						"order",
+						"83475643"
+					]
+				},
+				"description": "Put /order/{id} 204"
+			},
+			"response": []
+		},
+		{
+			"name": "GET /order/{id}/price 200",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "337a02c3-8060-4d76-b28c-1b055c8fa720",
+						"exec": [
+							"pm.test(\"Get /order/{id}/price returns 200 OK\", function () {",
+							"    pm.response.to.have.status(200);",
+							"});",
+							"",
+							"pm.test(\"Get /order/{id}/price returns expected body \", function () {",
+							"    pm.response.to.have.body('30.00');",
+							"});",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{endpoint}}/order/1/price",
+					"host": [
+						"{{endpoint}}"
+					],
+					"path": [
+						"order",
+						"1",
+						"price"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "GET /order/{id}/price 404",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "337a02c3-8060-4d76-b28c-1b055c8fa720",
+						"exec": [
+							"pm.test(\"Get /order/{id}/price returns 404 Not Found\", function () {",
+							"    pm.response.to.have.status(404);",
+							"});",
+							"",
+							"pm.test(\"Get /order/{id}/price returns expected body \", function () {",
+							"    pm.response.to.have.jsonBody(body);",
+							"});",
+							"",
+							"",
+							"var body = {",
+							"    \"type\": \"Not Found\",",
+							"    \"title\": \"404 Not Found\",",
+							"    \"status\": 404,",
+							"    \"detail\": \"Order with ID: 83475643 was not found\"",
+							"};"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Content-Type",
+						"name": "Content-Type",
+						"value": "text/plain",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"url": {
+					"raw": "{{endpoint}}/order/7346786356/price",
+					"host": [
+						"{{endpoint}}"
+					],
+					"path": [
+						"order",
+						"7346786356",
+						"price"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "GET /order/{id}/items 200",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "126534b1-0607-4d13-bf5b-3a6349d34ab6",
+						"exec": [
+							"pm.test(\"Get /order/{id}/items returns 200 OK\", function () {",
+							"    pm.response.to.have.status(200);",
+							"});",
+							"",
+							"pm.test(\"Get /order/{id}/items returns expected body \", function () {",
+							"    pm.response.to.have.jsonBody(body);",
+							"});",
+							"",
+							"var body = [",
+							"    {",
+							"        \"itemId\": 1,",
+							"        \"name\": \"Paper\",",
+							"        \"price\": 10",
+							"    },",
+							"    {",
+							"        \"itemId\": 2,",
+							"        \"name\": \"Pencils\",",
+							"        \"price\": 10",
+							"    },",
+							"    {",
+							"        \"itemId\": 3,",
+							"        \"name\": \"Pens\",",
+							"        \"price\": 10",
+							"    }",
+							"];",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{endpoint}}/order/1/items",
+					"host": [
+						"{{endpoint}}"
+					],
+					"path": [
+						"order",
+						"1",
+						"items"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "GET /order/{id}/items 404",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "126534b1-0607-4d13-bf5b-3a6349d34ab6",
+						"exec": [
+							"pm.test(\"Get /order/{id}/items returns 404 Not Found\", function () {",
+							"    pm.response.to.have.status(404);",
+							"});",
+							"",
+							"pm.test(\"Get /order/{id}/items returns expected body \", function () {",
+							"    pm.response.to.have.jsonBody(body);",
+							"});",
+							"",
+							"var body = {",
+							"    \"type\": \"Not Found\",",
+							"    \"title\": \"404 Not Found\",",
+							"    \"status\": 404,",
+							"    \"detail\": \"Order with ID: 38758375 was not found\"",
+							"};",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{endpoint}}/order/38758375/items",
+					"host": [
+						"{{endpoint}}"
+					],
+					"path": [
+						"order",
+						"38758375",
+						"items"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "GET /order/{id}/items{itemId} 200",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "126534b1-0607-4d13-bf5b-3a6349d34ab6",
+						"exec": [
+							"pm.test(\"Get /order/{id}/items/{itemId} returns 200 OK\", function () {",
+							"    pm.response.to.have.status(200);",
+							"});",
+							"",
+							"pm.test(\"Get /order/{id}/items returns expected body \", function () {",
+							"    pm.response.to.have.header(\"Content-type\", \"application/pdf\");",
+							"});",
+							"",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{endpoint}}/order/1/items/1",
+					"host": [
+						"{{endpoint}}"
+					],
+					"path": [
+						"order",
+						"1",
+						"items",
+						"1"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "GET /order/{id}/items{itemId} 404",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "126534b1-0607-4d13-bf5b-3a6349d34ab6",
+						"exec": [
+							"pm.test(\"Get /order/{id}/items/{itemId} returns 404 Not Found\", function () {",
+							"    pm.response.to.have.status(404);",
+							"});",
+							"",
+							"pm.test(\"Get /order/{id}/items returns expected body \", function () {",
+							"    pm.response.to.have.jsonBody(body);",
+							"});",
+							"",
+							"var body = {",
+							"    \"type\": \"Not Found\",",
+							"    \"title\": \"404 Not Found\",",
+							"    \"status\": 404,",
+							"    \"detail\": \"Order with ID: 1 was not found or Item with ID: 387537 was not found\"",
+							"};"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{endpoint}}/order/1/items/387537",
+					"host": [
+						"{{endpoint}}"
+					],
+					"path": [
+						"order",
+						"1",
+						"items",
+						"387537"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "DELETE /orders/{id}/items/{itemId} 204",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "489cde81-c013-43e7-81a9-85ba30c788ab",
+						"exec": [
+							"pm.test(\"Delete /order/{id}/items/{itemId} returns 204 No Content\", function () {",
+							"    pm.response.to.have.status(204);",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"url": {
+					"raw": "{{endpoint}}/order/1/items/3",
+					"host": [
+						"{{endpoint}}"
+					],
+					"path": [
+						"order",
+						"1",
+						"items",
+						"3"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "DELETE /orders/{id}/items/{itemId} 404",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "f7292aa3-9a60-4a7d-9854-cefb9d9c374a",
+						"exec": [
+							"pm.test(\"Delete /order/{id}/items/{itemId} returns 404 Not Found\", function () {",
+							"    pm.response.to.have.status(404);",
+							"});",
+							"",
+							"pm.test(\"Delete /order/{id}/items returns expected body \", function () {",
+							"    pm.response.to.have.jsonBody(body);",
+							"});",
+							"",
+							"var body = {",
+							"    \"type\": \"Not Found\",",
+							"    \"title\": \"404 Not Found\",",
+							"    \"status\": 404,",
+							"    \"detail\": \"Order with ID: 1 was not found or Item with ID: 387537 was not found\"",
+							"};"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"url": {
+					"raw": "{{endpoint}}/order/1/items/383753729",
+					"host": [
+						"{{endpoint}}"
+					],
+					"path": [
+						"order",
+						"1",
+						"items",
+						"383753729"
+					]
+				}
+			},
+			"response": []
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"id": "40479a47-fc78-454e-9df9-612a6af33baf",
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"id": "d64909e4-4226-4e01-8e9e-2c540ac99083",
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"id": "898b8d06-ce1e-4620-9852-7f3b8d055f41",
+			"key": "proto",
+			"value": "http",
+			"type": "string"
+		},
+		{
+			"id": "7a0108a4-506c-4b94-9cba-b379ad07082e",
+			"key": "host",
+			"value": "localhost",
+			"type": "string"
+		},
+		{
+			"id": "e079d4ec-dbfd-4fa8-ac59-0012ec1c9f4c",
+			"key": "port",
+			"value": "5000",
+			"type": "string"
+		},
+		{
+			"id": "46cc3ebd-2883-4b22-bef6-e8087b01b6cc",
+			"key": "endpoint",
+			"value": "{{proto}}://{{host}}:{{port}}",
+			"type": "string"
+		}
+	]
+}

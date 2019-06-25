@@ -1,0 +1,121 @@
+{
+	"info": {
+		"_postman_id": "e88eddb4-2690-47c8-b4dd-ebec3f6524e2",
+		"name": "NotInSpecTests",
+		"description": "This collection will cover the \"Not In Spec\" paths in HotPotato.Api",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "GET /missingpath 200",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "0b6a111a-506c-4d76-ab43-1fe11a2c5e24",
+						"exec": [
+							"pm.test(\"missingpath returns 200 OK\", function () {",
+							"    pm.response.to.have.status(200);",
+							"});",
+							"",
+							"pm.test(\"missingpath returns expected body \", function () {",
+							"    pm.response.to.have.body(\"This PATH is missing in the spec!\");",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "https://localhost:44366/missingpath",
+					"protocol": "https",
+					"host": [
+						"localhost"
+					],
+					"port": "44366",
+					"path": [
+						"missingpath"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "GET /missingmethod 200",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "0bc55a99-307d-4347-b5f2-ff8755af40b7",
+						"exec": [
+							"pm.test(\"missingmethod returns 200 OK\", function () {",
+							"    pm.response.to.have.status(200);",
+							"});",
+							"",
+							"pm.test(\"missingmethod returns expected body \", function () {",
+							"    pm.response.to.have.body(\"This METHOD is missing in the spec!\");",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "https://localhost:44366/missingmethod",
+					"protocol": "https",
+					"host": [
+						"localhost"
+					],
+					"port": "44366",
+					"path": [
+						"missingmethod"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "GET /missingcode 200",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "86b36aee-f904-4ad6-9f94-137dfee39b29",
+						"exec": [
+							"pm.test(\"missingcode returns 200 OK\", function () {",
+							"    pm.response.to.have.status(200);",
+							"});",
+							"",
+							"pm.test(\"missingcode returns expected body \", function () {",
+							"    pm.response.to.have.body(\"This STATUS CODE is missing in the spec!\");",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "https://localhost:44366/missingcode",
+					"protocol": "https",
+					"host": [
+						"localhost"
+					],
+					"port": "44366",
+					"path": [
+						"missingcode"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}
