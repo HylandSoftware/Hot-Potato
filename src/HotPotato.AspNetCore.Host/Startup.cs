@@ -20,9 +20,6 @@ namespace HotPotato.AspNetCore.Host
 {
     public class Startup
     {
-        private const string SpecLocationKey = "SpecLocation";
-		private const string ForwardProxyAddressKey = "ForwardProxy:ProxyAddress";
-
         public IConfiguration Configuration { get; private set; }
         public ILogger Log { get; }
 
@@ -37,9 +34,6 @@ namespace HotPotato.AspNetCore.Host
 
         public void Configure(ILoggerFactory loggerFactory, IApplicationBuilder builder, IHostingEnvironment env)
         {
-            Log.LogInformation($"Spec located at {Configuration[SpecLocationKey]}");
-            Log.LogInformation($"Forwarding from {Configuration[ForwardProxyAddressKey]}");
-
             builder.UseResponseBuffering();
             builder.UseMiddleware<HotPotatoMiddleware>();
             builder.UseMvc();
