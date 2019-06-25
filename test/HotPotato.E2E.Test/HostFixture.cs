@@ -10,7 +10,7 @@ namespace HotPotato.E2E.Test
     {
         public IWebHost host { get; }
 
-        private const string ApiLocation = "http://localhost:9191";
+        private const string ApiLocation = "http://localhost:5000";
 
         public HostFixture()
         {

@@ -1,0 +1,163 @@
+{
+	"info": {
+		"_postman_id": "e88eddb4-2690-47c8-b4dd-ebec3f6524e2",
+		"name": "NotInSpecTests",
+		"description": "This collection will cover the \"Not In Spec\" paths in HotPotato.Api",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "GET /missingpath 200",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "0b6a111a-506c-4d76-ab43-1fe11a2c5e24",
+						"exec": [
+							"pm.test(\"missingpath returns 200 OK\", function () {",
+							"    pm.response.to.have.status(200);",
+							"});",
+							"",
+							"pm.test(\"missingpath returns expected body \", function () {",
+							"    pm.response.to.have.body(\"This PATH is missing in the spec!\");",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{endpoint}}/missingpath",
+					"host": [
+						"{{endpoint}}"
+					],
+					"path": [
+						"missingpath"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "GET /missingmethod 200",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "0bc55a99-307d-4347-b5f2-ff8755af40b7",
+						"exec": [
+							"pm.test(\"missingmethod returns 200 OK\", function () {",
+							"    pm.response.to.have.status(200);",
+							"});",
+							"",
+							"pm.test(\"missingmethod returns expected body \", function () {",
+							"    pm.response.to.have.body(\"This METHOD is missing in the spec!\");",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{endpoint}}/missingmethod",
+					"host": [
+						"{{endpoint}}"
+					],
+					"path": [
+						"missingmethod"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "GET /missingcode 200",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "86b36aee-f904-4ad6-9f94-137dfee39b29",
+						"exec": [
+							"pm.test(\"missingcode returns 200 OK\", function () {",
+							"    pm.response.to.have.status(200);",
+							"});",
+							"",
+							"pm.test(\"missingcode returns expected body \", function () {",
+							"    pm.response.to.have.body(\"This STATUS CODE is missing in the spec!\");",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{endpoint}}/missingcode",
+					"host": [
+						"{{endpoint}}"
+					],
+					"path": [
+						"missingcode"
+					]
+				}
+			},
+			"response": []
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"id": "3f689b74-98e7-4563-84a8-2384b2763087",
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"id": "ca8d3f23-f5ed-403f-b3c7-916fff13854d",
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"id": "8ca09a1b-7f06-4527-be17-24dd2c0abbc9",
+			"key": "proto",
+			"value": "http",
+			"type": "string"
+		},
+		{
+			"id": "4bf8b22b-a5c5-4e70-a33f-b1cfd5925f47",
+			"key": "host",
+			"value": "localhost",
+			"type": "string"
+		},
+		{
+			"id": "bda04f4c-8055-463b-a73e-67d8ff04b5ed",
+			"key": "port",
+			"value": "5000",
+			"type": "string"
+		},
+		{
+			"id": "09841465-6dc9-441e-aef4-e427221d67f2",
+			"key": "endpoint",
+			"value": "{{proto}}://{{host}}:{{port}}",
+			"type": "string"
+		}
+	]
+}
