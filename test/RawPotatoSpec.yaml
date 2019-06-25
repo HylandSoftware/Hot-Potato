@@ -76,6 +76,13 @@ paths:
                 $ref: '#/components/schemas/Problem-Detail'
     put:
       summary: Replace existing order with certain ID
+      parameters: 
+        - in: path 
+          name: id 
+          description: ID of the order to be retrieved. 
+          required: true 
+          schema: 
+          type: integer
       requestBody:
         required: true
         content:
@@ -97,6 +104,27 @@ paths:
             application/problem+json:
               schema:
                 $ref: '#/components/schemas/Problem-Detail'
+    options:
+      summary: List all methods gor given path.
+      parameters: 
+        - in: path 
+          name: id 
+          description: ID of the order to be retrieved. 
+          required: true 
+          schema: 
+          type: integer
+      responses:
+        '200':
+          description: Returns order OK
+          headers:
+            Allow:
+              description: Allow header
+              schema:
+                type: string
+          content:
+            text/html:
+              schema:
+                type: string
   /order/{id}/price:
     get:
       summary: Returns price of an order
@@ -200,6 +228,11 @@ paths:
       responses:
         '204':
           description: No Content
+          headers:
+            X-header:
+              schema:
+                type: string
+                format: byte
         '404':
           description: Not Found
           content:
