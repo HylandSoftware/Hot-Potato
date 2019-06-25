@@ -38,6 +38,22 @@ namespace HotPotato.OpenApi.Matchers
         }
 
         [Fact]
+        public void Match_WithRootPath()
+        {
+            string AValidPath = "/";
+            List<string> ValidPaths = new List<string>
+            {
+                "/",
+                "/a/b/{c}",
+                "/foo/{docID}/bar",
+                "/b/d/c"
+            };
+
+            string result = PathMatcher.Match(AValidPath, ValidPaths);
+            Assert.Equal("/", result);
+        }
+
+        [Fact]
         public void Match_ParamAtEnd()
         {
             string AValidPath = "/foo/1";

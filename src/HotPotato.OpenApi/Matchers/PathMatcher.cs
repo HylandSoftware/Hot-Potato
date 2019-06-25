@@ -14,6 +14,11 @@ namespace HotPotato.OpenApi.Matchers
         /// <returns></returns>
         public static string Match(string reqPath, IEnumerable<string> specPaths)
         {
+            if (specPaths.Contains(reqPath))
+            {
+                return reqPath;
+            }
+
             string[] reqPathPieces = preparePathPieces(reqPath);
 
             foreach (string specPath in specPaths)
