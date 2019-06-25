@@ -1,7 +1,7 @@
 pipeline {
     agent {
         kubernetes {
-            label 'hot-potato'
+            label "hot-potato-${UUID.randomUUID().toString()}"
             yamlFile './build-spec.yml'
         }
     }
