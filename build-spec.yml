@@ -5,7 +5,7 @@ spec:
   - name: newman
     image: hcr.io/library/newmancli
     command:
-      - sh
+      - cat
     tty: true
   - name: builder
     image: hcr.io/library/dotnet:2.1-sdk-docker
