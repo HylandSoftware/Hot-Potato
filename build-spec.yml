@@ -15,6 +15,11 @@ spec:
     command:
     - cat
     tty: true
+  - name: newman
+    image: hcr.io/library/newmancli
+    command:
+      - cat
+    tty: true
   volumes:
     - name: docker-sock
       hostPath:
