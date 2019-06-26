@@ -112,7 +112,7 @@ paths:
           description: ID of the order to be retrieved. 
           required: true 
           schema: 
-          type: integer
+            type: integer
       responses:
         '200':
           description: Returns order OK
@@ -122,7 +122,7 @@ paths:
               schema:
                 type: string
           content:
-            text/html:
+            text/plain:
               schema:
                 type: string
   /order/{id}/price:

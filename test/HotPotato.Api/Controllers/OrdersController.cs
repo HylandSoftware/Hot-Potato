@@ -238,16 +238,6 @@ namespace HotPotato.Api.Controllers
         [HttpDelete("/order/{id}/items/{itemId}")]
         public IActionResult DeleteItemWithItemIdInOrder(int id, int itemId)
         {
-            //UnexpectedBody -- return unexpected body on 204 No Content
-            if(id == 555 && itemId == 555)
-            {
-                var res = new ContentResult()
-                {
-                    ContentType = "text/plain",
-                    Content = "Unexpected Body",
-                };
-                return res;
-            }
 
             //InValidHeaders -- strings not formatted correctly
             if (id == 666 && itemId == 666)

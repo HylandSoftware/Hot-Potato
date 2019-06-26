@@ -1,6 +1,6 @@
 {
 	"info": {
-		"_postman_id": "5030f71f-bb20-4ccb-a78b-eba2f2a02844",
+		"_postman_id": "2594e909-f3ff-4096-b8fc-4d3cad761d24",
 		"name": "Non-ConformantTests",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
 	},
@@ -122,40 +122,6 @@
 			"response": []
 		},
 		{
-			"name": "DELETE /order/{555}/items/555 Unexpected Body",
-			"event": [
-				{
-					"listen": "test",
-					"script": {
-						"id": "8206086a-f293-4b47-b3bc-7a87a68cbf05",
-						"exec": [
-							"pm.test(\"order/555/items/555 returns expected body \", function () {",
-							"    pm.response.to.have.body(\"Unexpected Body\");",
-							"});"
-						],
-						"type": "text/javascript"
-					}
-				}
-			],
-			"request": {
-				"method": "DELETE",
-				"header": [],
-				"url": {
-					"raw": "{{endpoint}}/order/555/items/555",
-					"host": [
-						"{{endpoint}}"
-					],
-					"path": [
-						"order",
-						"555",
-						"items",
-						"555"
-					]
-				}
-			},
-			"response": []
-		},
-		{
 			"name": "DELETE /order/{666}/items/666 Invalid Headers",
 			"event": [
 				{
@@ -252,25 +218,25 @@
 	],
 	"variable": [
 		{
-			"id": "eae0a485-d851-4b17-90a2-45aa929df4be",
+			"id": "a26a9238-5a39-4523-ac77-5d104949f6ba",
 			"key": "proto",
 			"value": "http",
 			"type": "string"
 		},
 		{
-			"id": "39a4b212-e848-447c-a88c-e9d97d09a9d0",
+			"id": "62165c19-7998-4f6d-93db-5f8aa2f1779a",
 			"key": "host",
 			"value": "localhost",
 			"type": "string"
 		},
 		{
-			"id": "7acfc676-d7c0-4f90-be02-8a5003971860",
+			"id": "6c9bdf53-3d8d-46c7-b043-48aacf67766e",
 			"key": "port",
 			"value": "5000",
 			"type": "string"
 		},
 		{
-			"id": "80a5ee11-f6b5-44df-9e48-0dbb51f5d156",
+			"id": "d98b3202-144b-42d0-b4e2-1e075def3983",
 			"key": "endpoint",
 			"value": "{{proto}}://{{host}}:{{port}}",
 			"type": "string"
