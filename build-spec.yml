@@ -15,6 +15,11 @@ spec:
     command:
     - cat
     tty: true
+  - name: node
+    image: hcr.io/esteiger/dotnet-with-node
+    command:
+    - cat
+    tty: true
   volumes:
     - name: docker-sock
       hostPath:

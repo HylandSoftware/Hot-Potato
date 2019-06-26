@@ -51,11 +51,13 @@ pipeline {
             steps {
                 container("builder") {
                     sh 'dotnet test ./test/HotPotato.E2E.Test/HotPotato.E2E.Test.csproj -c Release -l:"JUnit;LogFilePath=$WORKSPACE/test/results/E2EResults.xml" --no-restore --no-build'
-                
+                }
+                container("node") {
                     //trying to start hotpotato and api
                     sh 'dotnet ./src/HotPotato.AspNetCore.Host/bin/Release/netcoreapp2.1/HotPotato.AspNetCore.Host.dll &'
                     sh 'dotnet ./test/HotPotato.Api/bin/Release/netcoreapp2.1/HotPotato.Api.dll &'
 
+                    sh 'npm install -g newman@4.5.1'
                     sh 'Newman run ./test/HappyPathTests.postman_collection.json'
                     sh 'Newman run ./test/Non-ConformantTests.postman_collection.json'
                     sh 'Newman run ./test/NotInSpecTests.postman_collection.json'
