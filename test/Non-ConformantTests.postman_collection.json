@@ -1,6 +1,6 @@
 {
 	"info": {
-		"_postman_id": "5030f71f-bb20-4ccb-a78b-eba2f2a02844",
+		"_postman_id": "20051443-b9da-4695-9c76-0be5781ebb0c",
 		"name": "Non-ConformantTests",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
 	},
@@ -252,25 +252,25 @@
 	],
 	"variable": [
 		{
-			"id": "eae0a485-d851-4b17-90a2-45aa929df4be",
+			"id": "494da75b-c369-43b9-bd10-9212eb18e66a",
 			"key": "proto",
 			"value": "http",
 			"type": "string"
 		},
 		{
-			"id": "39a4b212-e848-447c-a88c-e9d97d09a9d0",
+			"id": "4d417d57-7a61-4d35-9fb8-d2f5d38749f0",
 			"key": "host",
 			"value": "localhost",
 			"type": "string"
 		},
 		{
-			"id": "7acfc676-d7c0-4f90-be02-8a5003971860",
+			"id": "5955f225-1c61-4563-992a-53b3c49c2ceb",
 			"key": "port",
 			"value": "5000",
 			"type": "string"
 		},
 		{
-			"id": "80a5ee11-f6b5-44df-9e48-0dbb51f5d156",
+			"id": "94082422-a442-4707-abd7-112dbe4e6af6",
 			"key": "endpoint",
 			"value": "{{proto}}://{{host}}:{{port}}",
 			"type": "string"

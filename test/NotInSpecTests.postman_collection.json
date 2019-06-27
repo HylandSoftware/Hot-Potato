@@ -1,6 +1,6 @@
 {
 	"info": {
-		"_postman_id": "e88eddb4-2690-47c8-b4dd-ebec3f6524e2",
+		"_postman_id": "28a56bf3-077a-4f10-bf85-7d8ca3289212",
 		"name": "NotInSpecTests",
 		"description": "This collection will cover the \"Not In Spec\" paths in HotPotato.Api",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
@@ -136,25 +136,25 @@
 	],
 	"variable": [
 		{
-			"id": "8ca09a1b-7f06-4527-be17-24dd2c0abbc9",
+			"id": "bacbb98c-16dc-4689-afb7-a7daa42df56a",
 			"key": "proto",
 			"value": "http",
 			"type": "string"
 		},
 		{
-			"id": "4bf8b22b-a5c5-4e70-a33f-b1cfd5925f47",
+			"id": "17f7c32d-5d67-425d-befa-554c58de2566",
 			"key": "host",
 			"value": "localhost",
 			"type": "string"
 		},
 		{
-			"id": "bda04f4c-8055-463b-a73e-67d8ff04b5ed",
+			"id": "72fbc26b-ea7c-4968-ac2f-e4fbdd03b501",
 			"key": "port",
 			"value": "5000",
 			"type": "string"
 		},
 		{
-			"id": "09841465-6dc9-441e-aef4-e427221d67f2",
+			"id": "4fffc0c2-d7ab-4721-92b4-950ec3d24f14",
 			"key": "endpoint",
 			"value": "{{proto}}://{{host}}:{{port}}",
 			"type": "string"
