@@ -1,4 +1,7 @@
-﻿using Microsoft.AspNetCore.Hosting;
+﻿using HotPotato.Core.Http;
+using HotPotato.Core.Http.Default;
+using Microsoft.AspNetCore.Hosting;
+using Microsoft.Extensions.DependencyInjection;
 using System.Net.Http;
 using System.Threading.Tasks;
 using System.Net;
@@ -33,6 +36,8 @@ namespace HotPotato.E2E.Test
         [Fact]
         public async Task HotPotato_Should_Return_OK_And_A_String()
         {
+            var servicePro = host.Services;
+
             //Setting up mock server to hit
             const string expected = "ValidResponse";
 
@@ -51,21 +56,18 @@ namespace HotPotato.E2E.Test
                             .WithBody(expected)
                     );
 
-                using (HttpClient client = new HttpClient())
+                Core.Http.Default.HttpClient client = (Core.Http.Default.HttpClient)servicePro.GetService<IHttpClient>();
+
+                HttpMethod method = new HttpMethod(GetMethodCall);
+
+                using (HttpRequest req = new HttpRequest(method, new System.Uri(ProxyEndpoint)))
                 {
-                    HttpMethod method = new HttpMethod(GetMethodCall);
-
-                    using (HttpRequestMessage req = new HttpRequestMessage(method, ProxyEndpoint))
-                    {
-                        HttpResponseMessage res = await client.SendAsync(req);
-
-                        //Asserts
-                        Assert.Equal(HttpStatusCode.OK, res.StatusCode);
-                        Assert.Equal(OKResponseMessage, res.ReasonPhrase);
-                        Assert.Equal(13, res.Content.Headers.ContentLength);
-                        Assert.Equal(PlainTextContentType, res.Content.Headers.ContentType.MediaType);
-                        Assert.Equal(expected, res.Content.ReadAsStringAsync().Result);
-                    }
+                    IHttpResponse res = await client.SendAsync(req);
+                    
+                    //Asserts
+                    Assert.Equal(HttpStatusCode.OK, res.StatusCode);
+                    Assert.Equal(PlainTextContentType, res.ContentType.Type);
+                    Assert.Equal(expected, res.ToBodyString());
                 }
             }
         }
@@ -73,6 +75,8 @@ namespace HotPotato.E2E.Test
         [Fact]
         public async Task HotPotato_Should_Return_OK_And_A_JSON_Object()
         {
+            var servicePro = host.Services;
+
             //Setting up mock server to hit
             string json = @"{
                 'Email': 'james@example.com',
@@ -98,21 +102,19 @@ namespace HotPotato.E2E.Test
                             .WithBody(json)
                     );
 
-                using (HttpClient client = new HttpClient())
+                Core.Http.Default.HttpClient client = (Core.Http.Default.HttpClient)servicePro.GetService<IHttpClient>();
+
+                HttpMethod method = new HttpMethod(GetMethodCall);
+
+                using (HttpRequest req = new HttpRequest(method, new System.Uri(ProxyEndpoint)))
                 {
-                    HttpMethod method = new HttpMethod(GetMethodCall);
 
-                    using (HttpRequestMessage req = new HttpRequestMessage(method, ProxyEndpoint))
-                    {
+                    IHttpResponse res = await client.SendAsync(req);
 
-                        HttpResponseMessage res = await client.SendAsync(req);
-
-                        //Asserts
-                        Assert.Equal(HttpStatusCode.OK, res.StatusCode);
-                        Assert.Equal(OKResponseMessage, res.ReasonPhrase);
-                        Assert.Equal(ApplicationJsonContentType, res.Content.Headers.ContentType.MediaType);
-                        Assert.Equal(json, res.Content.ReadAsStringAsync().Result);
-                    }
+                    //Asserts
+                    Assert.Equal(HttpStatusCode.OK, res.StatusCode);
+                    Assert.Equal(ApplicationJsonContentType, res.ContentType.Type);
+                    Assert.Equal(json, res.ToBodyString());
                 }
             }
         }
@@ -120,6 +122,8 @@ namespace HotPotato.E2E.Test
         [Fact]
         public async Task HotPotato_Should_Return_404_Error()
         {
+            var servicePro = host.Services;
+
             using (var server = FluentMockServer.Start(ApiLocation))
             {
                 server
@@ -135,20 +139,17 @@ namespace HotPotato.E2E.Test
                     );
 
 
-                using (HttpClient client = new HttpClient())
+                Core.Http.Default.HttpClient client = (Core.Http.Default.HttpClient)servicePro.GetService<IHttpClient>();
+                HttpMethod method = new HttpMethod(GetMethodCall);
+
+                using (HttpRequest req = new HttpRequest(method, new System.Uri(ProxyEndpoint)))
                 {
-                    HttpMethod method = new HttpMethod(GetMethodCall);
 
-                    using (HttpRequestMessage req = new HttpRequestMessage(method, ProxyEndpoint))
-                    {
+                    IHttpResponse res = await client.SendAsync(req);
 
-                        HttpResponseMessage res = await client.SendAsync(req);
-
-                        //Asserts
-                        Assert.Equal(HttpStatusCode.NotFound, res.StatusCode);
-                        Assert.Equal(NotFoundResponseMessage, res.ReasonPhrase);
-                        Assert.Equal(NotFoundResponseMessage, res.Content.ReadAsStringAsync().Result);
-                    }
+                    //Asserts
+                    Assert.Equal(HttpStatusCode.NotFound, res.StatusCode);
+                    Assert.Equal(NotFoundResponseMessage, res.ToBodyString());
                 }
             }
         }
@@ -156,6 +157,8 @@ namespace HotPotato.E2E.Test
         [Fact]
         public async Task HotPotato_Should_Return_500_Error()
         {
+            var servicePro = host.Services;
+
             using (var server = FluentMockServer.Start(ApiLocation))
             {
                 server
@@ -172,20 +175,17 @@ namespace HotPotato.E2E.Test
 
 
                 //Setting up Http Client
-                using (HttpClient client = new HttpClient())
+                Core.Http.Default.HttpClient client = (Core.Http.Default.HttpClient)servicePro.GetService<IHttpClient>();
+                HttpMethod method = new HttpMethod(GetMethodCall);
+
+                using (HttpRequest req = new HttpRequest(method, new System.Uri(ProxyEndpoint)))
                 {
-                    HttpMethod method = new HttpMethod(GetMethodCall);
 
-                    using (HttpRequestMessage req = new HttpRequestMessage(method, ProxyEndpoint))
-                    {
+                    IHttpResponse res = await client.SendAsync(req);
 
-                        HttpResponseMessage res = await client.SendAsync(req);
-
-                        //Asserts
-                        Assert.Equal(HttpStatusCode.InternalServerError, res.StatusCode);
-                        Assert.Equal(InternalServerErrorResponseMessage, res.ReasonPhrase);
-                        Assert.Equal(InternalServerErrorResponseMessage, res.Content.ReadAsStringAsync().Result);
-                    }
+                    //Asserts
+                    Assert.Equal(HttpStatusCode.InternalServerError, res.StatusCode);
+                    Assert.Equal(InternalServerErrorResponseMessage, res.ToBodyString());
                 }
             }
         }

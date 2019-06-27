@@ -1,9 +1,5 @@
 ﻿using Microsoft.AspNetCore.Hosting;
-using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Logging;
-using Moq;
-using HotPotato.AspNetCore.Host;
 using HotPotato.Core.Http;
 using HotPotato.Core.Http.Default;
 using System.IO;
@@ -22,7 +18,7 @@ namespace HotPotato.E2E.Test
     public class AutomaticDecompressionTest
     {
         private IWebHost host;
-
+        
         private const string ApiLocation = "http://localhost:5000";
         private const string Endpoint = "/endpoint";
         private const string ProxyEndpoint = "http://localhost:3232/endpoint";
@@ -51,7 +47,7 @@ namespace HotPotato.E2E.Test
         [Fact]
         public async Task HotPotato_ShouldAutomaticallyDecompressGZip()
         {
-            var servicePro = GetServiceProvider();
+            var servicePro = host.Services;
 
             using (var server = FluentMockServer.Start(ApiLocation))
             {
@@ -69,7 +65,6 @@ namespace HotPotato.E2E.Test
                             .WithBody(CompressGZipContent(ExpectedBody).ReadAsByteArrayAsync().Result)
                     );
 
-
                 Core.Http.Default.HttpClient client = (Core.Http.Default.HttpClient)servicePro.GetService<IHttpClient>();
 
                 HttpMethod method = new HttpMethod(GetMethodCall);
@@ -86,7 +81,7 @@ namespace HotPotato.E2E.Test
         [Fact]
         public async Task HotPotato_ShouldAutomaticallyDecompressDeflate()
         {
-            var servicePro = GetServiceProvider();
+            var servicePro = host.Services;
 
             using (var server = FluentMockServer.Start(ApiLocation))
             {
@@ -116,21 +111,6 @@ namespace HotPotato.E2E.Test
                     Assert.Equal(ExpectedBody, res.ToBodyString());
                 }
             }
-        }
-
-        private static ServiceProvider GetServiceProvider()
-        {
-            IConfigurationRoot config = new ConfigurationBuilder()
-                .AddJsonFile("appsettings.json")
-                .Build();
-
-            Startup startUp = new Startup(config, Mock.Of<ILogger<Startup>>());
-
-            IServiceCollection services = new ServiceCollection();
-            startUp.ConfigureServices(services);
-
-            services.AddSingleton<IConfiguration>(config);
-            return services.BuildServiceProvider();
         }
 
         private static HttpContent CompressGZipContent(string content)
