@@ -56,7 +56,7 @@ pipeline {
                     //trying to start hotpotato and api
                     sh 'dotnet ./src/HotPotato.AspNetCore.Host/bin/Release/netcoreapp2.1/HotPotato.AspNetCore.Host.dll &'
                     sh 'touch $WORKSPACE/api.log'
-                    sh 'dotnet ./test/HotPotato.Api/bin/Release/netcoreapp2.1/HotPotato.Api.dll | tail $WORKSPACE/api.log &'
+                    sh 'dotnet ./test/HotPotato.Api/bin/Release/netcoreapp2.1/HotPotato.Api.dll | tail $WORKSPACE/api.log | cat $WORKSPACE/api.log &'
                     sh 'cat $WORKSPACE/api.log'
 
                     sh 'npm install -g newman@4.5.1'
