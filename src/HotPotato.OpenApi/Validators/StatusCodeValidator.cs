@@ -27,7 +27,7 @@ namespace HotPotato.OpenApi.Validators
             string statCodeStr = StatusCode.ToString();
             if (swagOp.Responses.ContainsKey(statCodeStr))
             {
-                if (statCodeStr == NoContentStatusCode && !string.IsNullOrWhiteSpace(BodyString))
+                if (ValidatorConstants.NoContentStatusCodes.Contains(statCodeStr) && !string.IsNullOrWhiteSpace(BodyString))
                 {
                     FailReason = Reason.UnexpectedBody;
                     return false;

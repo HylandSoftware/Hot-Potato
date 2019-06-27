@@ -1,7 +1,6 @@
 ﻿using HotPotato.Core.Http;
+using HotPotato.OpenApi.Models;
 using NJsonSchema;
-using NSwag;
-using System.Collections.Generic;
 
 namespace HotPotato.OpenApi.Validators
 {
@@ -10,6 +9,6 @@ namespace HotPotato.OpenApi.Validators
         public string BodyString { get; protected set; }
         public HttpContentType ContentType { get; protected set; }
 
-        public abstract IValidationResult Validate(SwaggerResponse swagResp);
+        public abstract IValidationResult Validate(JsonSchema4 schema);
     }
 }
