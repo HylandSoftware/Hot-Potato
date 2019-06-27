@@ -61,6 +61,7 @@ pipeline {
 
                     sh 'npm install -g newman@4.5.1'
                     sh 'newman run ./test/HappyPathTests.postman_collection.json -k'
+                    sh 'cat $WORKSPACE/api.log'
                     sh 'newman run ./test/Non-ConformantTests.postman_collection.json -k'
                     sh 'newman run ./test/NotInSpecTests.postman_collection.json -k'
                 }
