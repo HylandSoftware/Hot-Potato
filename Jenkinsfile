@@ -53,7 +53,8 @@ pipeline {
                     sh 'dotnet test ./test/HotPotato.E2E.Test/HotPotato.E2E.Test.csproj -c Release -l:"JUnit;LogFilePath=$WORKSPACE/test/results/E2EResults.xml" --no-restore --no-build'
                     //trying to start hotpotato and api
                     sh 'dotnet $WORKSPACE/src/HotPotato.AspNetCore.Host/bin/Release/netcoreapp2.1/HotPotato.AspNetCore.Host.dll &'
-                    sh 'dotnet $WORKSPACE/test/HotPotato.Api/bin/Release/netcoreapp2.1/HotPotato.Api.dll &'
+                    //sh 'dotnet $WORKSPACE/test/HotPotato.Api/bin/Release/netcoreapp2.1/HotPotato.Api.dll &'
+                    sh 'dotnet ./test/HotPotato.Api/bin/Release/netcoreapp2.1/HotPotato.Api.dll 2>&1 > api.txt &'
                 }
                 container("newman") {
                     sh 'newman run $WORKSPACE/test/HappyPathTests.postman_collection.json'
@@ -89,6 +90,7 @@ pipeline {
         always {
             cobertura coberturaReportFile: '**/test/coverage/*.xml'
             junit '**/test/results/*.xml'
+            sh 'cat api.txt'
         }
         regression {
             mattermostSend color: "#ef1717", icon: "https://jenkins.io/images/logos/jenkins/jenkins.png", message: "Someone broke ${env.BRANCH_NAME}, Ref build number -- ${env.BUILD_NUMBER}! (<${env.BUILD_URL}|${env.BUILD_URL}>)"
