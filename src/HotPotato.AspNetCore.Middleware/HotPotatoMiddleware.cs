@@ -13,10 +13,12 @@ namespace HotPotato.AspNetCore.Middleware
     public class HotPotatoMiddleware
     {
         private const string RemoteEndpointKey = "RemoteEndpoint";
+        private const string SpecLocationKey = "SpecLocation";
 
         private readonly IProxy proxy;
         private readonly ILogger log;
         private readonly string remoteEndpoint;
+        private readonly string specLocation;
         private readonly RequestDelegate _next;
         
         public HotPotatoMiddleware(RequestDelegate next, IProxy proxy, IConfiguration configuration, ILogger<HotPotatoMiddleware> log)
@@ -28,7 +30,9 @@ namespace HotPotato.AspNetCore.Middleware
             this.proxy = proxy;
             this.log = log;
             this.remoteEndpoint = configuration[RemoteEndpointKey];
+            this.specLocation = configuration[SpecLocationKey];
             log.LogInformation($"Forwarding to {remoteEndpoint}");
+            log.LogInformation($"Spec located at {specLocation}");
             _next = next;
         }
 
