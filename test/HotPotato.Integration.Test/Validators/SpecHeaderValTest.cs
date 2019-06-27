@@ -22,6 +22,10 @@ namespace HotPotato.OpenApi.Validators
 {
     public class SpecHeaderValTest
     {
+        private const string LocationHeader = "location";
+        private const string AValidLocationUri = "http://api.docs.hyland.io/";
+        private const string AnInvalidLocationUri = @"this isn't a uri";
+
         [Theory]
         [ClassData(typeof(SpecHeaderTestData))]
         public async void HeaderValidator_CreatesValidResultWithoutMatchingCase(string specSubPath, HttpMethod reqMethod, HttpStatusCode statusCode, string endpointURI, string contentType, object bodyJson)
@@ -35,7 +39,7 @@ namespace HotPotato.OpenApi.Validators
             {
                 //Made HotPot's HttpHeaders' dict constructor case insensitive for possible edge cases
                 //The key is capital "Location" in the spec
-                testRespMsg.Headers.Add("location", "http://api.docs.hyland.io/docs.html?url=http%3A%2F%2Fapi.docs.hyland.io%2Fdocument%2Fspecification.json");
+                testRespMsg.Headers.Add(LocationHeader, AValidLocationUri);
                 testRespMsg.Content = new StringContent(bodyString, Encoding.UTF8, contentType);
                 var testResponse = await testRespMsg.ToClientResponseAsync();
 
@@ -56,6 +60,42 @@ namespace HotPotato.OpenApi.Validators
 
                     Assert.Equal(State.Pass, result.State);
 
+                }
+            }
+        }
+
+        [Theory]
+        [ClassData(typeof(SpecHeaderTestData))]
+        public async void HeaderValidator_CreatesInvalidResultWithIncorrectFormat(string specSubPath, HttpMethod reqMethod, HttpStatusCode statusCode, string endpointURI, string contentType, object bodyJson)
+        {
+            string specPath = SpecPath(specSubPath, "specification.yaml");
+            ServiceProvider provider = GetServiceProvider(specPath);
+
+            string bodyString = JsonConvert.SerializeObject(bodyJson);
+
+            using (HttpResponseMessage testRespMsg = new HttpResponseMessage(statusCode))
+            {
+                testRespMsg.Headers.Add(LocationHeader, AnInvalidLocationUri);
+                testRespMsg.Content = new StringContent(bodyString, Encoding.UTF8, contentType);
+                var testResponse = await testRespMsg.ToClientResponseAsync();
+
+                using (HttpRequest testRequest = new HttpRequest(reqMethod, new Uri(endpointURI)))
+                using (HttpPair testPair = new HttpPair(testRequest, testResponse))
+                {
+                    ISpecificationProvider specPro = provider.GetService<ISpecificationProvider>();
+                    SwaggerDocument swagDoc = specPro.GetSpecDocument();
+
+                    IProcessor processor = provider.GetService<IProcessor>();
+                    processor.Process(testPair);
+
+                    IResultCollector collector = provider.GetService<IResultCollector>();
+
+                    List<Result> results = collector.Results;
+                    FailResult result = (FailResult)results.ElementAt(0);
+
+                    Assert.Equal(State.Fail, result.State);
+                    Assert.Equal(Reason.InvalidHeaders, result.Reasons.ElementAt(0));
+                    Assert.Equal(ValidationErrorKind.UriExpected, result.ValidationErrors.ElementAt(0).Kind);
                 }
             }
         }

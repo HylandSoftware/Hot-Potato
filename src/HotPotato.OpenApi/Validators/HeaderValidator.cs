@@ -1,6 +1,7 @@
 ﻿using HotPotato.Core.Http;
 using HotPotato.OpenApi.Models;
 using Newtonsoft.Json;
+using NJsonSchema;
 using NSwag;
 using System.Collections.Generic;
 
@@ -19,9 +20,9 @@ namespace HotPotato.OpenApi.Validators
         {
             if (swagResp.Headers != null && swagResp.Headers.Count > 0)
             {
-                foreach (var item in swagResp.Headers)
+                foreach (var swagHeader in swagResp.Headers)
                 {
-                    string headerKey = item.Key;
+                    string headerKey = swagHeader.Key;
                     if (Headers == null || !Headers.ContainsKey(headerKey))
                     {
                         return new InvalidResult(Reason.MissingHeaders);
@@ -33,7 +34,11 @@ namespace HotPotato.OpenApi.Validators
                         {
                             // HACK - Need to convert to JSON because that's how NJsonSchema likes it.
                             string jValue = JsonConvert.SerializeObject(value);
-                            ICollection<NJsonSchema.Validation.ValidationError> errors = item.Value.Validate(jValue);
+
+                            JsonSchema4 swagHeaderSchema = GetHeaderSchema(swagHeader.Value.ActualSchema);
+
+                            ICollection<NJsonSchema.Validation.ValidationError> errors = swagHeaderSchema.Validate(jValue);
+
                             if (errors != null && errors.Count != 0)
                             {
                                 List<ValidationError> errList = errors.ToValidationErrorList();
@@ -47,6 +52,26 @@ namespace HotPotato.OpenApi.Validators
                 }
             }
             return new ValidResult();
+        }
+
+        /// <summary>
+        /// Gets the header schema needed for validation, either in the base schema or the ExtentionData
+        /// If a spec header's schema is in a ref, it will be set in the ExtensionData property
+        /// </summary>
+        /// <param name="schema"></param>
+        /// <returns></returns>
+        private JsonSchema4 GetHeaderSchema(JsonSchema4 schema)
+        {
+            if (schema.ExtensionData != null &&
+                schema.ExtensionData.ContainsKey("schema") 
+                && schema.ExtensionData["schema"] != null)
+            {
+                return (JsonSchema4)schema.ExtensionData["schema"];
+            }
+            else
+            {
+                return schema;
+            }
         }
     }
 }
