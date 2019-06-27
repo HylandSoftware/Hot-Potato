@@ -7,14 +7,19 @@ namespace HotPotato.OpenApi.Matchers
     public class PathMatcher
     {
         /// <summary>
-        /// Finds the path in <paramref name="paths"/> that matches the <paramref name="path"/> provided.
+        /// Finds the path in the spec that matches the path in the pair provided.
         /// </summary>
-        /// <param name="reqPath"></param>
+        /// <param name="pairPath"></param>
         /// <param name="specPaths"></param>
         /// <returns></returns>
-        public static string Match(string reqPath, IEnumerable<string> specPaths)
+        public static string Match(string pairPath, IEnumerable<string> specPaths)
         {
-            string[] reqPathPieces = preparePathPieces(reqPath);
+            if (specPaths.Contains(pairPath))
+            {
+                return pairPath;
+            }
+
+            string[] pairPathPieces = preparePathPieces(pairPath);
 
             foreach (string specPath in specPaths)
             {
@@ -24,12 +29,15 @@ namespace HotPotato.OpenApi.Matchers
                 bool match = false;
                 Stack<string> pathStack = new Stack<string>();
 
-                while (i < specPathPieces.Length && i < reqPathPieces.Length)
+                while (i < specPathPieces.Length && i < pairPathPieces.Length)
                 {
-                    if (isParam(specPathPieces[i]) || (specPathPieces[i] == reqPathPieces[i]))
+                    if (isParam(specPathPieces[i]) || (specPathPieces[i] == pairPathPieces[i]))
                     {
                         pathStack.Push(specPathPieces[i]);
-                        match = true;
+                        if (pathStack.Count == specPathPieces.Length)
+                        {
+                            match = true;
+                        }
                     }
                     else
                     {
@@ -41,8 +49,8 @@ namespace HotPotato.OpenApi.Matchers
 
                 if (match == true)
                 {
-                    string retString = "/" + string.Join('/', pathStack);
-                    return retString;
+                    string matchedPath = "/" + string.Join('/', pathStack);
+                    return matchedPath;
                 }
             }
             return string.Empty;
@@ -53,10 +61,16 @@ namespace HotPotato.OpenApi.Matchers
             return s.StartsWith('{') && s.EndsWith('}');
         }
 
+        /// <summary>
+        /// Split paths by '/' to match pieces of the pair's path to parameters in the spec's path
+        /// </summary>
         private static string[] preparePathPieces(string path)
         {
             string[] pathPieces = path.Split('/');
             pathPieces = pathPieces.Where(x => !string.IsNullOrEmpty(x)).ToArray();
+            //Reverse here since some server paths have more than one piece, e.g. https://api.hyland.com/ibpaf/rdds
+            //In cases like this, the relative path in the request can be /ibpaf/rdds/messages/78,
+            //but will need to be matched with /messages/{messageId}
             Array.Reverse(pathPieces);
             return pathPieces;
         }

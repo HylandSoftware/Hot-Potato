@@ -1,7 +1,9 @@
 ﻿
+using HotPotato.Core.Http;
 using HotPotato.OpenApi.Models;
 using HotPotato.OpenApi.Results;
 using HotPotato.OpenApi.SpecificationProvider;
+using NJsonSchema;
 using NSwag;
 using System.Linq;
 
@@ -12,18 +14,19 @@ namespace HotPotato.OpenApi.Validators
         internal PathValidator PathValidator { get; set; }
         internal MethodValidator MethodValidator { get; set; }
         internal StatusCodeValidator StatusCodeValidator { get; set; }
+        internal ContentValidator ContentValidator { get; set; }
         internal BodyValidator BodyValidator { get; set; }
         internal HeaderValidator HeaderValidator { get; set; }
 
         private IResultCollector resColl { get; }
         private SwaggerDocument swagDoc { get; }
+        private HttpContentType contentType { get; }
 
-        private const int NoContentStatusCode = 204;
-
-        public ValidationStrategy(IResultCollector ResColl, ISpecificationProvider SpecPro)
+        public ValidationStrategy(IResultCollector ResColl, ISpecificationProvider SpecPro, HttpContentType ContentType)
         {
             resColl = ResColl;
             swagDoc = SpecPro.GetSpecDocument();
+            contentType = ContentType;
         }
 
         public void Validate()
@@ -33,28 +36,29 @@ namespace HotPotato.OpenApi.Validators
                 AddFail(Reason.MissingPath);
                 return;
             }
-            if(!MethodValidator.Validate(PathValidator.Result))
+            if (!MethodValidator.Validate(PathValidator.Result))
             {
                 AddFail(Reason.MissingMethod);
                 return;
             }
-            if(!StatusCodeValidator.Validate(MethodValidator.Result))
+            if (!StatusCodeValidator.Validate(MethodValidator.Result))
             {
                 AddFail(StatusCodeValidator.FailReason);
                 return;
             }
 
+            JsonSchema4 schema = ContentProvider.GetSchema(StatusCodeValidator.Result, contentType.Type);
+
+            IValidationResult bodyResult = ContentValidator.Validate(schema);
+
+            if (bodyResult == null)
+            {
+                bodyResult = BodyValidator.Validate(schema);
+            }
+
             IValidationResult headerResult = HeaderValidator.Validate(StatusCodeValidator.Result);
 
-            if (StatusCodeValidator.StatusCode == NoContentStatusCode)
-            {
-                AddNoContentValidationResult(headerResult);
-            }
-            else
-            {
-                IValidationResult bodyResult = BodyValidator.Validate(StatusCodeValidator.Result);
-                AddValidationResult(bodyResult, headerResult);
-            }
+            AddValidationResult(bodyResult, headerResult);
         }
 
         internal void AddValidationResult(IValidationResult bodyResult, IValidationResult headerResult)
@@ -80,23 +84,7 @@ namespace HotPotato.OpenApi.Validators
                 InvalidResult invalidBody = (InvalidResult)bodyResult;
                 InvalidResult invalidHeader = (InvalidResult)headerResult;
 
-                AddFail(new Reason[2] { invalidBody.Reason, invalidHeader.Reason}, invalidBody.Errors?.Concat(invalidHeader.Errors).ToArray());
-            }
-        }
-
-        /// <summary>
-        /// Deal with HeaderValidation results after the body has been checked in StatusCodeValidator
-        /// </summary>
-        private void AddNoContentValidationResult(IValidationResult headerResult)
-        {
-            if (!headerResult.Valid)
-            {
-                InvalidResult invalidHeader = (InvalidResult)headerResult;
-                AddFail(invalidHeader.Reason, invalidHeader.Errors);
-            }
-            else
-            {
-                AddPass();
+                AddFail(new Reason[2] { invalidBody.Reason, invalidHeader.Reason }, invalidBody.Errors?.Concat(invalidHeader.Errors).ToArray());
             }
         }
 
