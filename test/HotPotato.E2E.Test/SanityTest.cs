@@ -1,6 +1,7 @@
 ﻿using HotPotato.Core.Http;
 using HotPotato.Core.Http.Default;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using System.Net.Http;
 using System.Threading.Tasks;
