@@ -58,9 +58,9 @@ pipeline {
                     sh 'dotnet ./test/HotPotato.Api/bin/Release/netcoreapp2.1/HotPotato.Api.dll &'
 
                     sh 'npm install -g newman@4.5.1'
-                    sh 'newman run ./test/HappyPathTests.postman_collection.json'
-                    sh 'newman run ./test/Non-ConformantTests.postman_collection.json'
-                    sh 'newman run ./test/NotInSpecTests.postman_collection.json'
+                    sh 'newman run ./test/HappyPathTests.postman_collection.json -k'
+                    sh 'newman run ./test/Non-ConformantTests.postman_collection.json -k'
+                    sh 'newman run ./test/NotInSpecTests.postman_collection.json -k'
                 }
             }
         }
