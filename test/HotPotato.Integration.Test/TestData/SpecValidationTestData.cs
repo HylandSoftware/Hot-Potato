@@ -185,6 +185,10 @@ namespace HotPotato.Http.Default
     {
         public IEnumerator<object[]> GetEnumerator()
         {
+            yield return new object[] { "specs/rawpotato/", HttpMethod.Get,
+            HttpStatusCode.OK, "https://api.hyland.com/", "text/html",
+                @"https://api.hyland.com/" };
+
             yield return new object[] { "specs/rawpotato/", HttpMethod.Delete,
             HttpStatusCode.OK, "https://api.hyland.com/v1/48/plans/48", "application/xml",
                 @"<BaseResponse><Code>48</Code><Message>Deleted with a valid xml</Message></BaseResponse>" };
