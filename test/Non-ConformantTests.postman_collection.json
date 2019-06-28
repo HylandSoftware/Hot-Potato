@@ -1,6 +1,6 @@
 {
 	"info": {
-		"_postman_id": "2594e909-f3ff-4096-b8fc-4d3cad761d24",
+		"_postman_id": "f22deb87-1ec3-408a-9817-8cfef5a039b9",
 		"name": "Non-ConformantTests",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
 	},
@@ -188,6 +188,38 @@
 						"777",
 						"items",
 						"777"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Non-Conformant Results",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "4ee93dd4-01d7-4cc7-8f83-afd4bf88e30b",
+						"exec": [
+							"pm.test(\"Body matches string\", function () \r",
+							"{\r",
+							"    pm.expect(pm.response.text()).to.not.include(\"Pass\");\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{endpoint}}/results",
+					"host": [
+						"{{endpoint}}"
+					],
+					"path": [
+						"results"
 					]
 				}
 			},

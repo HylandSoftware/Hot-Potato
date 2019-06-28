@@ -1,6 +1,6 @@
 {
 	"info": {
-		"_postman_id": "1d4c3eec-7d2a-438b-9f3d-a03cdfb1662f",
+		"_postman_id": "e3fe87bc-1770-42b8-a721-9db312bcdb98",
 		"name": "HappyPathTests",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
 	},
@@ -804,6 +804,38 @@
 					"path": [
 						"order",
 						"2"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "HappyPath Results",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "4ee93dd4-01d7-4cc7-8f83-afd4bf88e30b",
+						"exec": [
+							"pm.test(\"Body matches string\", function () \r",
+							"{\r",
+							"    pm.expect(pm.response.text()).to.not.include(\"Fail\");\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{endpoint}}/results",
+					"host": [
+						"{{endpoint}}"
+					],
+					"path": [
+						"results"
 					]
 				}
 			},

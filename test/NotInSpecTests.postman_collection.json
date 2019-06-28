@@ -1,6 +1,6 @@
 {
 	"info": {
-		"_postman_id": "fc0fd51e-f295-451c-9725-5e1121d2a5d5",
+		"_postman_id": "433b79e7-b4e4-4a87-aa02-d8b61ae03dca",
 		"name": "NotInSpecTests",
 		"description": "This collection will cover the \"Not In Spec\" paths in HotPotato.Api",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
@@ -106,6 +106,38 @@
 					],
 					"path": [
 						"missingcode"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "NotInSpec Reuslts",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "4ee93dd4-01d7-4cc7-8f83-afd4bf88e30b",
+						"exec": [
+							"pm.test(\"Body matches string\", function () \r",
+							"{\r",
+							"    pm.expect(pm.response.text()).to.not.include(\"Pass\");\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{endpoint}}/results",
+					"host": [
+						"{{endpoint}}"
+					],
+					"path": [
+						"results"
 					]
 				}
 			},
