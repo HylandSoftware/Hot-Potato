@@ -57,10 +57,11 @@ namespace HotPotato.OpenApi.Validators
 
         public IValidationStrategy Build()
         {
-            ValidationStrategy val = new ValidationStrategy(ResultCollector, SpecificationProvider);
+            ValidationStrategy val = new ValidationStrategy(ResultCollector, SpecificationProvider, ContentType);
             val.PathValidator = new PathValidator(Path);
             val.MethodValidator = new MethodValidator(Method);
             val.StatusCodeValidator = new StatusCodeValidator(StatusCode, Body);
+            val.ContentValidator = new ContentValidator(Body, ContentType);
             val.BodyValidator = BodyValidatorFactory.Create(Body, ContentType);
             val.HeaderValidator = new HeaderValidator(Headers);
             return val;

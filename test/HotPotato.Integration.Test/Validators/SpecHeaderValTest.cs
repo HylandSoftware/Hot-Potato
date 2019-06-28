@@ -41,6 +41,8 @@ namespace HotPotato.OpenApi.Validators
                 //The key is capital "Location" in the spec
                 testRespMsg.Headers.Add(LocationHeader, AValidLocationUri);
                 testRespMsg.Content = new StringContent(bodyString, Encoding.UTF8, contentType);
+
+
                 var testResponse = await testRespMsg.ToClientResponseAsync();
 
                 using (HttpRequest testRequest = new HttpRequest(reqMethod, new Uri(endpointURI)))
@@ -63,6 +65,7 @@ namespace HotPotato.OpenApi.Validators
                 }
             }
         }
+
 
         [Theory]
         [ClassData(typeof(SpecHeaderTestData))]
@@ -111,7 +114,10 @@ namespace HotPotato.OpenApi.Validators
 
             using (HttpResponseMessage testRespMsg = new HttpResponseMessage(statusCode))
             {
+
                 testRespMsg.Content = new StringContent(bodyString, Encoding.UTF8, contentType);
+                //no headers added
+
                 var testResponse = await testRespMsg.ToClientResponseAsync();
 
                 using (HttpRequest testRequest = new HttpRequest(reqMethod, new Uri(endpointURI)))
@@ -131,6 +137,108 @@ namespace HotPotato.OpenApi.Validators
                     Assert.Equal(State.Fail, result.State);
                     Assert.Equal(Reason.MissingHeaders, result.Reasons.ElementAt(0));
 
+                }
+            }
+        }
+
+        [Theory]
+        [ClassData(typeof(SpecHeaderWithExpectedNoContentTestData))]
+        public async void HeaderValidator_CreatesValidResultWithExpectedEmptyBody(string specSubPath, HttpMethod reqMethod, HttpStatusCode statusCode, string endpointURI)
+        {
+            string specPath = SpecPath(specSubPath, "specification.yaml");
+            ServiceProvider provider = GetServiceProvider(specPath);
+
+            using (HttpResponseMessage testRespMsg = new HttpResponseMessage(statusCode))
+            {
+
+                testRespMsg.Headers.Add(AValidLocationHeaderKey, AValidLocationHeaderValue);
+                testRespMsg.Content = null;
+
+                var testResponse = await testRespMsg.ToClientResponseAsync();
+
+                using (HttpRequest testRequest = new HttpRequest(reqMethod, new Uri(endpointURI)))
+                using (HttpPair testPair = new HttpPair(testRequest, testResponse))
+                {
+                    ISpecificationProvider specPro = provider.GetService<ISpecificationProvider>();
+                    SwaggerDocument swagDoc = specPro.GetSpecDocument();
+
+                    IProcessor processor = provider.GetService<IProcessor>();
+                    processor.Process(testPair);
+
+                    IResultCollector collector = provider.GetService<IResultCollector>();
+
+                    List<Result> results = collector.Results;
+                    Result result = results.ElementAt(0);
+
+                    Assert.Equal(State.Pass, result.State);
+                }
+            }
+        }
+
+        [Theory]
+        [ClassData(typeof(SpecHeaderWithUnexpectedContentTestData))]
+        public async void HeaderValidator_CreatesMissingContentTypeResultWithUnexpectedBodyAndValidHeaders(string specSubPath, HttpMethod reqMethod, HttpStatusCode statusCode, string endpointURI, string contentType, string bodyString)
+        {
+            string specPath = SpecPath(specSubPath, "specification.yaml");
+            ServiceProvider provider = GetServiceProvider(specPath);
+
+            using (HttpResponseMessage testRespMsg = new HttpResponseMessage(statusCode))
+            {
+
+                testRespMsg.Headers.Add(AValidLocationHeaderKey, AValidLocationHeaderValue);
+                testRespMsg.Content = new StringContent(bodyString, Encoding.UTF8, contentType);
+
+                var testResponse = await testRespMsg.ToClientResponseAsync();
+
+                using (HttpRequest testRequest = new HttpRequest(reqMethod, new Uri(endpointURI)))
+                using (HttpPair testPair = new HttpPair(testRequest, testResponse))
+                {
+                    ISpecificationProvider specPro = provider.GetService<ISpecificationProvider>();
+                    SwaggerDocument swagDoc = specPro.GetSpecDocument();
+
+                    IProcessor processor = provider.GetService<IProcessor>();
+                    processor.Process(testPair);
+
+                    IResultCollector collector = provider.GetService<IResultCollector>();
+
+                    List<Result> results = collector.Results;
+                    FailResult result = (FailResult)results.ElementAt(0);
+
+                    Assert.Equal(State.Fail, result.State);
+                    Assert.Equal(Reason.MissingContentType, result.Reasons.ElementAt(0));
+                }
+            }
+        }
+
+        [Theory]
+        [ClassData(typeof(SpecHeaderWithExpectedNoContentTestData))]
+        public async void HeaderValidator_CreatesOnlyMissingHeadersResultWithExpectedEmptyBody(string specSubPath, HttpMethod reqMethod, HttpStatusCode statusCode, string endpointURI)
+        {
+            string specPath = SpecPath(specSubPath, "specification.yaml");
+            ServiceProvider provider = GetServiceProvider(specPath);
+
+            using (HttpResponseMessage testRespMsg = new HttpResponseMessage(statusCode))
+            {
+                testRespMsg.Content = null;
+
+                var testResponse = await testRespMsg.ToClientResponseAsync();
+
+                using (HttpRequest testRequest = new HttpRequest(reqMethod, new Uri(endpointURI)))
+                using (HttpPair testPair = new HttpPair(testRequest, testResponse))
+                {
+                    ISpecificationProvider specPro = provider.GetService<ISpecificationProvider>();
+                    SwaggerDocument swagDoc = specPro.GetSpecDocument();
+
+                    IProcessor processor = provider.GetService<IProcessor>();
+                    processor.Process(testPair);
+
+                    IResultCollector collector = provider.GetService<IResultCollector>();
+
+                    List<Result> results = collector.Results;
+                    FailResult result = (FailResult)results.ElementAt(0);
+
+                    Assert.Equal(State.Fail, result.State);
+                    Assert.Equal(Reason.MissingHeaders, result.Reasons.ElementAt(0));
                 }
             }
         }

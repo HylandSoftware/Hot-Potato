@@ -1,7 +1,6 @@
-﻿using HotPotato.Core.Http;
+﻿
 using HotPotato.OpenApi.Models;
 using NJsonSchema;
-using NSwag;
 using Xunit;
 
 namespace HotPotato.OpenApi.Validators
@@ -15,11 +14,9 @@ namespace HotPotato.OpenApi.Validators
         public void XmlBodyValidator_ReturnsTrueWithValid()
         {
             JsonSchema4 schema = JsonSchema4.CreateAnySchema();
-            SwaggerResponse swagResp = new SwaggerResponse();
-            swagResp.ActualResponse.Schema = schema;
+            XmlBodyValidator subject = new XmlBodyValidator(AValidBody);
 
-            XmlBodyValidator subject = new XmlBodyValidator(AValidBody, new HttpContentType("application/json"));
-            IValidationResult result = subject.Validate(swagResp);
+            IValidationResult result = subject.Validate(schema);
 
             Assert.True(result.Valid);
         }
@@ -28,11 +25,9 @@ namespace HotPotato.OpenApi.Validators
         public void XmlBodyValidator_ReturnsFalseWithInvalid()
         {
             JsonSchema4 schema = JsonSchema4.CreateAnySchema();
-            SwaggerResponse swagResp = new SwaggerResponse();
-            swagResp.ActualResponse.Schema = schema;
+            XmlBodyValidator subject = new XmlBodyValidator(AnInvalidBody);
 
-            XmlBodyValidator subject = new XmlBodyValidator(AnInvalidBody, new HttpContentType("application/json"));
-            InvalidResult result = (InvalidResult)subject.Validate(swagResp);
+            InvalidResult result = (InvalidResult)subject.Validate(schema);
 
             Assert.False(result.Valid);
             Assert.Equal(Reason.InvalidBody, result.Reason);

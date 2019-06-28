@@ -12,6 +12,7 @@ namespace HotPotato.OpenApi.Validators
         {
             Valid = false;
             Reason = reason;
+            Errors = new ValidationError[] { };
         }
 
         public InvalidResult(Reason reason, ValidationError[] errors)

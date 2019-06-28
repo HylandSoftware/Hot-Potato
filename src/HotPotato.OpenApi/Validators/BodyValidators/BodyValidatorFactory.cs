@@ -8,15 +8,15 @@ namespace HotPotato.OpenApi.Validators
         {
             if (contentType.Type.ToLower().Contains(BodyValidatorContentTypes.json))
             {
-                return new JsonBodyValidator(bodyString, contentType);
+                return new JsonBodyValidator(bodyString);
             }
             else if (contentType.Type.ToLower().Contains(BodyValidatorContentTypes.xml))
             {
-                return new XmlBodyValidator(bodyString, contentType);
+                return new XmlBodyValidator(bodyString);
             }
             else
             {
-                return new TextBodyValidator(bodyString, contentType);
+                return new TextBodyValidator(bodyString);
             }
         }
     }
