@@ -3,7 +3,7 @@ info:
   version: 1.0.0
   title: Raw Potato Test API
 paths:
-  '/':
+  /:
     get:
       summary: landing page of this API
       description: >-
@@ -60,14 +60,14 @@ paths:
           description: ID of the order to be retrieved. 
           required: true 
           schema: 
-          type: integer
+            type: integer
       responses:
         '200':
           description: Returns order OK
           content: 
             application/json:
               schema:
-              $ref: '#/components/schemas/Order'
+                $ref: '#/components/schemas/Order'
         '404':
           description: Returns 404 Not Found
           content:
@@ -112,7 +112,7 @@ paths:
           description: ID of the order to be retrieved. 
           required: true 
           schema: 
-          type: integer
+            type: integer
       responses:
         '200':
           description: Returns order OK
@@ -122,7 +122,7 @@ paths:
               schema:
                 type: string
           content:
-            text/html:
+            text/plain:
               schema:
                 type: string
   /order/{id}/price:
@@ -143,7 +143,7 @@ paths:
           content:
             text/plain:
               schema:
-                type: number
+                type: string
               example:
                 '52.00'
         '404':
@@ -167,8 +167,8 @@ paths:
           description: Request successfully processed
           content:
             application/json:
-            schema:
-              $ref: '#/components/schemas/ItemsList'
+              schema:
+                $ref: '#/components/schemas/ItemsList'
         '404':
           description: Not Found. Oder or item with certain ID does not exist.
           content:
@@ -244,27 +244,27 @@ paths:
 
   /missingmethod:
     post:
-    summary: Add a new something...
-    requestBody:
-      description: Creating something...
-    required: true
-    content:
-      text/html:
-            schema:
-              type: string
-    responses:
-    '201':
-      description: Order created successfully
+      summary: Add a new something...
+      requestBody:
+        description: Creating something...
+        required: true
       content:
         text/html:
+          schema:
+            type: string
+      responses:
+        '201':
+          description: Order created successfully
+          content:
+            text/html:
               schema:
                 type: string 
   /missingcode:
     get:
-    summary: Gets something...
-    responses:
-      '204':
-        description: Returns No Content
+      summary: Gets something...
+      responses:
+        '204':
+          description: Returns No Content
     
 components:
   schemas:
