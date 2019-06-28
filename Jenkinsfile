@@ -56,9 +56,9 @@ pipeline {
                     sh 'dotnet $WORKSPACE/test/HotPotato.Api/bin/Release/netcoreapp2.1/HotPotato.Api.dll 2>&1 > api.txt &'
                 }
                 container("newman") {
-                    sh 'newman run $WORKSPACE/test/HappyPathTests.postman_collection.json -r junit --reporter-junit-export _tests/HappyPathTests.postman_collection.junit'
-                    //sh 'newman run $WORKSPACE/test/Non-ConformantTests.postman_collection.json'
-                    sh 'newman run $WORKSPACE/test/NotInSpecTests.postman_collection.json -r junit --reporter-junit-export _tests/NotInSpecTests.postman_collection.junit'
+                    sh 'newman run $WORKSPACE/test/HappyPathTests.postman_collection.json'
+                    sh 'newman run $WORKSPACE/test/Non-ConformantTests.postman_collection.json'
+                    sh 'newman run $WORKSPACE/test/NotInSpecTests.postman_collection.json'
                 }
             }
         }
@@ -89,8 +89,6 @@ pipeline {
         always {
             cobertura coberturaReportFile: '**/test/coverage/*.xml'
             junit '**/test/results/*.xml'
-            junit '_tests/HappyPathTests.postman_collection.junit'
-            junit '_tests/NotInSpecTests.postman_collection.junit'
             //sh 'cat api.txt'
             //sh 'cat host.txt'
         }
