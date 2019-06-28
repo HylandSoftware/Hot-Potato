@@ -151,7 +151,7 @@ namespace HotPotato.OpenApi.Validators
             using (HttpResponseMessage testRespMsg = new HttpResponseMessage(statusCode))
             {
 
-                testRespMsg.Headers.Add(AValidLocationHeaderKey, AValidLocationHeaderValue);
+                testRespMsg.Headers.Add(LocationHeader, AValidLocationUri);
                 testRespMsg.Content = null;
 
                 var testResponse = await testRespMsg.ToClientResponseAsync();
@@ -185,7 +185,7 @@ namespace HotPotato.OpenApi.Validators
             using (HttpResponseMessage testRespMsg = new HttpResponseMessage(statusCode))
             {
 
-                testRespMsg.Headers.Add(AValidLocationHeaderKey, AValidLocationHeaderValue);
+                testRespMsg.Headers.Add(LocationHeader, AValidLocationUri);
                 testRespMsg.Content = new StringContent(bodyString, Encoding.UTF8, contentType);
 
                 var testResponse = await testRespMsg.ToClientResponseAsync();
