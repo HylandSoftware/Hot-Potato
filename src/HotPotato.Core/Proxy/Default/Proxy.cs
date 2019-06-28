@@ -3,6 +3,7 @@ using HotPotato.Core.Models;
 using HotPotato.Core.Processor;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Logging;
+using System;
 using System.Threading.Tasks;
 
 namespace HotPotato.Core.Proxy.Default
@@ -27,14 +28,21 @@ namespace HotPotato.Core.Proxy.Default
 
         public async Task ProcessAsync(string remoteEndpoint, HttpRequest requestIn, HttpResponse responseOut)
         {
-            using (IHttpRequest request = requestIn.ToProxyRequest(remoteEndpoint))
+            try
             {
-                IHttpResponse response = await this.Client.SendAsync(request);
-                await response.ToProxyResponseAsync(responseOut);
-                using (HttpPair pair = new HttpPair(request, response))
+                using (IHttpRequest request = requestIn.ToProxyRequest(remoteEndpoint))
                 {
-                    this.Processor.Process(pair);
+                    IHttpResponse response = await this.Client.SendAsync(request);
+                    await response.ToProxyResponseAsync(responseOut);
+                    using (HttpPair pair = new HttpPair(request, response))
+                    {
+                        this.Processor.Process(pair);
+                    }
                 }
+            }
+            catch (Exception ex)
+            {
+                Logger.LogError($"Exception while processing response: {ex.Message}");
             }
         }
     }
