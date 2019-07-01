@@ -1,6 +1,8 @@
-﻿using HotPotato.OpenApi.Results;
+﻿using HotPotato.OpenApi.Models;
+using HotPotato.OpenApi.Results;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
+using System.Collections.Generic;
 
 namespace HotPotato.AspNetCore.Host
 {
@@ -23,7 +25,16 @@ namespace HotPotato.AspNetCore.Host
 
             HttpContext.Response.Headers.Add("X-Status", _resultCollector.OverallResult.ToString());
 
-            return Ok(_resultCollector.Results);
+            var res = new List<Result>();
+
+            foreach (var item in _resultCollector.Results)
+            {
+                res.Add(item);
+            }
+
+            _resultCollector.Results.Clear();
+
+            return Ok(res);
         }
     }
 }
