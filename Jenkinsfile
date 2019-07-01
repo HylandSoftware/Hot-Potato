@@ -57,8 +57,8 @@ pipeline {
                 }
                 container("newman") {
                     sh 'newman run $WORKSPACE/test/HappyPathTests.postman_collection.json'
-                    sh 'newman run $WORKSPACE/test/Non-ConformantTests.postman_collection.json'
-                    sh 'newman run $WORKSPACE/test/NotInSpecTests.postman_collection.json'
+                    //sh 'newman run $WORKSPACE/test/Non-ConformantTests.postman_collection.json'
+                    //sh 'newman run $WORKSPACE/test/NotInSpecTests.postman_collection.json'
                 }
             }
         }

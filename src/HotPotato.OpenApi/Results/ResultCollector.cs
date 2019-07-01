@@ -1,5 +1,4 @@
-﻿
-using HotPotato.OpenApi.Models;
+﻿using HotPotato.OpenApi.Models;
 using HotPotato.OpenApi.Validators;
 using System.Collections.Generic;
 

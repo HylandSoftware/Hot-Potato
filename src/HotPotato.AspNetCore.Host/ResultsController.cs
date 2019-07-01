@@ -18,7 +18,7 @@ namespace HotPotato.AspNetCore.Host
         [HttpGet]
         [Route("/results")]
         public IActionResult Get()
-        {
+        { 
             _logger.LogDebug("Getting Results...");
 
             HttpContext.Response.Headers.Add("X-Status", _resultCollector.OverallResult.ToString());
