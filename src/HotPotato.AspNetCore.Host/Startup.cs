@@ -46,10 +46,7 @@ namespace HotPotato.AspNetCore.Host
             services.AddMvcCore().AddJsonFormatters();
             services.AddSingleton<IWebProxy, Core.Http.ForwardProxy.Default.HttpForwardProxy>();
             services.AddSingleton(Configuration.GetSection("ForwardProxy").Get<HttpForwardProxyConfig>());
-            services.AddHttpClient<IHttpClient, HotPotato.Core.Http.Default.HttpClient>(client =>
-            {
-                client.BaseAddress = new Uri(Configuration["RemoteEndpoint"]);
-            })
+            services.AddHttpClient<IHttpClient, HotPotato.Core.Http.Default.HttpClient>()
             .ConfigurePrimaryHttpMessageHandler(sp => new HttpClientHandler
             {
                 AutomaticDecompression = DecompressionMethods.Deflate | DecompressionMethods.GZip,
