@@ -119,7 +119,7 @@
 					"script": {
 						"id": "4ee93dd4-01d7-4cc7-8f83-afd4bf88e30b",
 						"exec": [
-							"pm.test(\"Body matches string\", function () \r",
+							"pm.test(\"Results should not contain Pass\", function () \r",
 							"{\r",
 							"    pm.expect(pm.response.text()).to.not.include(\"Pass\");\r",
 							"});"
