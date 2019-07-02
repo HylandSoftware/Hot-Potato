@@ -1,6 +1,6 @@
 {
 	"info": {
-		"_postman_id": "f22deb87-1ec3-408a-9817-8cfef5a039b9",
+		"_postman_id": "71156968-4f00-4bc6-9f54-7ae310cc586d",
 		"name": "Non-ConformantTests",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
 	},
@@ -212,6 +212,45 @@
 			],
 			"request": {
 				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{endpoint}}/results",
+					"host": [
+						"{{endpoint}}"
+					],
+					"path": [
+						"results"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "DeleteResults",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "d7b206ca-08cd-4d3f-8142-053ce638ab10",
+						"exec": [
+							"pm.test(\"Delete /results returns 200 OK\", function () {",
+							"    pm.response.to.have.status(200);",
+							"});",
+							"",
+							"pm.test(\"Delete /results returns expected body \", function () {",
+							"    pm.response.to.have.body(\"\");",
+							"});",
+							"",
+							"pm.test(\"Delete /results returns undefined body\", function () {",
+							"   pm.expect(pm.response.body).to.eql(undefined); ",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "DELETE",
 				"header": [],
 				"url": {
 					"raw": "{{endpoint}}/results",
