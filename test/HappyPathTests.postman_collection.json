@@ -853,10 +853,6 @@
 							"    pm.response.to.have.status(200);",
 							"});",
 							"",
-							"pm.test(\"Delete /results returns expected body \", function () {",
-							"    pm.response.to.have.body(\"\");",
-							"});",
-							"",
 							"pm.test(\"Delete /results returns undefined body\", function () {",
 							"   pm.expect(pm.response.body).to.eql(undefined); ",
 							"});"
