@@ -38,8 +38,6 @@ namespace HotPotato.E2E.Test
         public async Task HotPotato_Should_Return_OK_And_A_String()
         {
             var servicePro = host.Services;
-            //test if the right spec location is in the test config
-            Assert.Equal(HostFixture.SpecLocation, servicePro.GetService<IConfiguration>()["SpecLocation"]);
 
             //Setting up mock server to hit
             const string expected = "ValidResponse";
