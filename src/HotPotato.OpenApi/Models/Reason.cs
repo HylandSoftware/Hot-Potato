@@ -11,6 +11,7 @@
         MissingPath,
         MissingContentType,
         MissingStatusCode,
+        NullHeaderSchema,
         UnexpectedBody
     }
 }
