@@ -11,14 +11,14 @@ namespace HotPotato.E2E.Test
         public IWebHost host { get; }
 
         private const string ApiLocation = "http://localhost:5000";
+        private const string SpecLocation = "https://bitbucket.hylandqa.net/projects/AUTOTEST/repos/hot-potato/raw/test/RawPotatoSpec.yaml?at=refs%2Fheads%2Ffeat%2FAUTOTEST-371-content-is-null-causing-a-nullreferenceexception";
 
         public HostFixture()
         {
             host = new WebHostBuilder()
                 .ConfigureAppConfiguration((hostingContext, config) =>
                 {
-                    config.SetBasePath(hostingContext.HostingEnvironment.ContentRootPath)
-                    .AddJsonFile("appsettings.json", optional: true);
+                    config.SetBasePath(hostingContext.HostingEnvironment.ContentRootPath);
                 })
                 .ConfigureLogging((hostingContext, logging) =>
                 {
@@ -34,6 +34,10 @@ namespace HotPotato.E2E.Test
                     options.AddServerHeader = false;
                 })
                 .UseSetting("RemoteEndpoint", ApiLocation)
+                .UseSetting("SpecLocation", SpecLocation)
+                .UseSetting("ForwardProxy:Enabled", "false")
+                .UseSetting("ForwardProxy:ProxyAddress", "http://localhost:8888")
+                .UseSetting("ForwardProxy:BypassOnLocal", "false")
                 .UseUrls("http://0.0.0.0:3232")
                 .UseStartup<Startup>()
             .Build();
