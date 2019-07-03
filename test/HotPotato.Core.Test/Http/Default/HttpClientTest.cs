@@ -25,10 +25,9 @@ namespace HotPotato.Core.Http.Default
         public async void SendAsync_ExecutesRequest()
         {
             var handlerMock = GetMockHandler(HttpStatusCode.OK);
-            HttpMessageHandler mockHandler = handlerMock.Object;
-
             Uri endpointUri = new Uri(AValidEndpoint);
 
+            using (HttpMessageHandler mockHandler = handlerMock.Object)
             using (HttpRequest request = new HttpRequest(HttpMethod.Get, endpointUri))
             {
                 HttpClient subject = new HttpClient(mockHandler.ToHttpClient());
@@ -50,10 +49,9 @@ namespace HotPotato.Core.Http.Default
         public async void SendAsync_ResponseContainsContent_WithType()
         {
             string expectString = "{\"id\":\"string\"}";
-            HttpContent expectContent = new StringContent(expectString, Encoding.UTF8, "application/json");
 
-            HttpMessageHandler mockHandler = GetMockHandler(HttpStatusCode.OK, expectString).Object;
-
+            using (HttpContent expectContent = new StringContent(expectString, Encoding.UTF8, "application/json"))
+            using (HttpMessageHandler mockHandler = GetMockHandler(HttpStatusCode.OK, expectString).Object)
             using (HttpRequest request = new HttpRequest(HttpMethod.Get, new Uri(AValidEndpoint)))
             {
                 request.SetContent(expectString);
