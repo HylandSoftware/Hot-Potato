@@ -35,7 +35,15 @@ namespace HotPotato.OpenApi.Validators
                             // HACK - Need to convert to JSON because that's how NJsonSchema likes it.
                             string jValue = JsonConvert.SerializeObject(value);
 
-                            JsonSchema4 swagHeaderSchema = GetHeaderSchema(swagHeader.Value.ActualSchema);
+                            JsonSchema4 swagHeaderSchema = null;
+                            if (swagHeader.Value?.ActualSchema != null)
+                            {
+                                swagHeaderSchema = GetHeaderSchema(swagHeader.Value.ActualSchema);
+                            }
+                            else
+                            {
+                                return new InvalidResult(Reason.NullHeaderSchema);
+                            }
 
                             ICollection<NJsonSchema.Validation.ValidationError> errors = swagHeaderSchema.Validate(jValue);
 
