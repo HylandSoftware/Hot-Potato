@@ -56,7 +56,7 @@ pipeline {
                     sh 'dotnet $WORKSPACE/test/HotPotato.Api/bin/Release/netcoreapp2.1/HotPotato.Api.dll &'
                 }
                 container("newman") {
-                    //sh 'newman run $WORKSPACE/test/HappyPathTests.postman_collection.json'
+                    sh 'newman run $WORKSPACE/test/HappyPathTests.postman_collection.json'
                     sh 'newman run $WORKSPACE/test/Non-ConformantTests.postman_collection.json'
                     sh 'newman run $WORKSPACE/test/NotInSpecTests.postman_collection.json'
                 }
