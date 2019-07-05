@@ -12,6 +12,7 @@ namespace HotPotato.OpenApi.Validators
         private const string AValidHeaderValue = "value";
         private const string AValidSchema = @"{'type': 'integer'}";
         private const string AnInvalidValue = "invalidValue";
+        private const string NotAUriString = @"this isn't a uri";
 
         [Fact]
         public void HeaderValidator_ReturnsFalseWithMissingHeaders()
@@ -82,6 +83,27 @@ namespace HotPotato.OpenApi.Validators
 
             Assert.False(result.Valid);
             Assert.Equal(Reason.InvalidHeaders, result.Reason);
+        }
+
+        [Fact]
+        public void HeaderValidator_ReturnsFalseWithIncorrectFormat()
+        {
+            JsonSchema4 byteSchema = new JsonSchema4();
+            byteSchema.Type = JsonObjectType.String;
+            byteSchema.Format = JsonFormatStrings.Uri;
+
+            SwaggerResponse swagResp = new SwaggerResponse();
+            swagResp.Headers.Add(AValidHeaderKey, byteSchema);
+
+            Core.Http.HttpHeaders headers = new Core.Http.HttpHeaders();
+            headers.Add(AValidHeaderKey, NotAUriString);
+
+            HeaderValidator subject = new HeaderValidator(headers);
+            InvalidResult result = (InvalidResult)subject.Validate(swagResp);
+
+            Assert.False(result.Valid);
+            Assert.Equal(Reason.InvalidHeaders, result.Reason);
+            Assert.Equal(ValidationErrorKind.UriExpected, result.Errors[0].Kind);
         }
     }
 }
