@@ -57,8 +57,7 @@ pipeline {
                 }
                 container("newman") {
                     sh 'newman run $WORKSPACE/test/HappyPathTests.postman_collection.json'
-                    //Un-Comment when https://bitbucket.hylandqa.net/projects/AUTOTEST/repos/hot-potato/pull-requests/67/overview is merged
-                    //sh 'newman run $WORKSPACE/test/Non-ConformantTests.postman_collection.json'
+                    sh 'newman run $WORKSPACE/test/Non-ConformantTests.postman_collection.json'
                     sh 'newman run $WORKSPACE/test/NotInSpecTests.postman_collection.json'
                 }
             }
