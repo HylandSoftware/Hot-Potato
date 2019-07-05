@@ -276,7 +276,7 @@ namespace HotPotato.Api.Controllers
 
             //OrderDataStore.Current.Orders.FirstOrDefault(r => r.Id == id).Items.Remove(item);
 
-            Response.Headers.Add("X-header", "HEADER");
+            Response.Headers.Add("Xheader", "HEADER");
 
             return NoContent();
         }
