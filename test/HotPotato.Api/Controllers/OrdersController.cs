@@ -278,7 +278,7 @@ namespace HotPotato.Api.Controllers
 
             var res = new NoContentResult();
 
-            Response.Headers.Add("X-header", "HEADER");
+            Response.Headers.Add("X-header", "SEVBREVS");
 
             return res;
         }
