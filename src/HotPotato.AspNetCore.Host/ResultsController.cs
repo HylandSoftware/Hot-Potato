@@ -25,5 +25,14 @@ namespace HotPotato.AspNetCore.Host
 
             return Ok(_resultCollector.Results);
         }
+
+        [HttpDelete]
+        [Route("/results")]
+        public IActionResult ClearResults()
+        {
+            _resultCollector.Results.Clear();
+
+            return Ok(_resultCollector.Results);
+        }
     }
 }

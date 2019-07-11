@@ -15,8 +15,13 @@ spec:
     command:
     - cat
     tty: true
+  - name: newman
+    image: postman/newman_alpine33
+    command:
+    - cat
+    tty: true
   volumes:
     - name: docker-sock
       hostPath:
         path: /var/run/docker.sock
-        type: File
+        type: File  

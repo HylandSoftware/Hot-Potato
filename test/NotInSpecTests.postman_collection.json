@@ -1,6 +1,6 @@
 {
 	"info": {
-		"_postman_id": "fc0fd51e-f295-451c-9725-5e1121d2a5d5",
+		"_postman_id": "86cbf7fb-403d-483a-8253-586d133bb54d",
 		"name": "NotInSpecTests",
 		"description": "This collection will cover the \"Not In Spec\" paths in HotPotato.Api",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
@@ -110,6 +110,72 @@
 				}
 			},
 			"response": []
+		},
+		{
+			"name": "NotInSpec Reuslts",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "4ee93dd4-01d7-4cc7-8f83-afd4bf88e30b",
+						"exec": [
+							"pm.test(\"Results should not contain Pass\", function () \r",
+							"{\r",
+							"    pm.expect(pm.response.text()).to.not.include(\"Pass\");\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{endpoint}}/results",
+					"host": [
+						"{{endpoint}}"
+					],
+					"path": [
+						"results"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "DeleteResults",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "8bb75c27-230f-435a-996f-711885bc482e",
+						"exec": [
+							"pm.test(\"Delete /results returns 200 OK\", function () {",
+							"    pm.response.to.have.status(200);",
+							"});",
+							"",
+							"let parsedResponseBody = JSON.parse(responseBody);",
+							"tests['Results array is empty'] = (parsedResponseBody.length === 0);"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"url": {
+					"raw": "{{endpoint}}/results",
+					"host": [
+						"{{endpoint}}"
+					],
+					"path": [
+						"results"
+					]
+				}
+			},
+			"response": []
 		}
 	],
 	"event": [
@@ -150,7 +216,7 @@
 		{
 			"id": "483fda4a-b866-45dc-b162-cb26a69acd11",
 			"key": "port",
-			"value": "5000",
+			"value": "3232",
 			"type": "string"
 		},
 		{

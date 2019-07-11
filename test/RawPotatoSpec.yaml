@@ -16,7 +16,7 @@ paths:
         '200':
           description: links to the API capabilities
           content:
-            text/html:
+            text/plain:
               schema:
                 type: string
   /order:

@@ -10,6 +10,7 @@ namespace HotPotato.OpenApi.Validators
     {
         private const string AValidHeaderKey = "X-Header-Key";
         private const string AValidHeaderValue = "value";
+        private const string AValidEncodedHeaderValue = "dmFsdWU=";
         private const string AValidSchema = @"{'type': 'integer'}";
         private const string AnInvalidValue = "invalidValue";
         private const string NotAUriString = @"this isn't a uri";
@@ -88,12 +89,12 @@ namespace HotPotato.OpenApi.Validators
         [Fact]
         public void HeaderValidator_ReturnsFalseWithIncorrectFormat()
         {
-            JsonSchema4 byteSchema = new JsonSchema4();
-            byteSchema.Type = JsonObjectType.String;
-            byteSchema.Format = JsonFormatStrings.Uri;
+            JsonSchema4 uriSchema = new JsonSchema4();
+            uriSchema.Type = JsonObjectType.String;
+            uriSchema.Format = JsonFormatStrings.Uri;
 
             SwaggerResponse swagResp = new SwaggerResponse();
-            swagResp.Headers.Add(AValidHeaderKey, byteSchema);
+            swagResp.Headers.Add(AValidHeaderKey, uriSchema);
 
             Core.Http.HttpHeaders headers = new Core.Http.HttpHeaders();
             headers.Add(AValidHeaderKey, NotAUriString);
@@ -104,6 +105,25 @@ namespace HotPotato.OpenApi.Validators
             Assert.False(result.Valid);
             Assert.Equal(Reason.InvalidHeaders, result.Reason);
             Assert.Equal(ValidationErrorKind.UriExpected, result.Errors[0].Kind);
+        }
+
+        [Fact]
+        public void HeaderValidator_ValidatesBase64Format()
+        {
+            JsonSchema4 byteSchema = new JsonSchema4();
+            byteSchema.Type = JsonObjectType.String;
+            byteSchema.Format = JsonFormatStrings.Byte;
+
+            SwaggerResponse swagResp = new SwaggerResponse();
+            swagResp.Headers.Add(AValidHeaderKey, byteSchema);
+
+            Core.Http.HttpHeaders headers = new Core.Http.HttpHeaders();
+            headers.Add(AValidHeaderKey, AValidEncodedHeaderValue);
+
+            HeaderValidator subject = new HeaderValidator(headers);
+            IValidationResult result = subject.Validate(swagResp);
+
+            Assert.True(result.Valid);
         }
     }
 }

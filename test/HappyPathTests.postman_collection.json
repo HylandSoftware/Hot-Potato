@@ -1,6 +1,6 @@
 {
 	"info": {
-		"_postman_id": "5cf21fe0-7a4c-4b22-b41c-f919a0585a63",
+		"_postman_id": "b76051b5-6d5b-4179-b371-a157127a9165",
 		"name": "HappyPathTests",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
 	},
@@ -808,6 +808,72 @@
 				}
 			},
 			"response": []
+		},
+		{
+			"name": "HappyPath Results",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "4ee93dd4-01d7-4cc7-8f83-afd4bf88e30b",
+						"exec": [
+							"pm.test(\"Results should not contain Fail\", function () \r",
+							"{\r",
+							"    pm.expect(pm.response.text()).to.not.include(\"Fail\");\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{endpoint}}/results",
+					"host": [
+						"{{endpoint}}"
+					],
+					"path": [
+						"results"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "DeleteResults",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "efda4de4-c2a5-4b95-bf6b-3b6862af2ce9",
+						"exec": [
+							"pm.test(\"Delete /results returns 200 OK\", function () {",
+							"    pm.response.to.have.status(200);",
+							"});",
+							"",
+							"let parsedResponseBody = JSON.parse(responseBody);",
+							"tests['Results array is empty'] = (parsedResponseBody.length === 0);"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"url": {
+					"raw": "{{endpoint}}/results",
+					"host": [
+						"{{endpoint}}"
+					],
+					"path": [
+						"results"
+					]
+				}
+			},
+			"response": []
 		}
 	],
 	"event": [
@@ -834,25 +900,25 @@
 	],
 	"variable": [
 		{
-			"id": "45d1df6f-12e9-4fa9-87ae-7ead9564921e",
+			"id": "093e302b-a1ed-40bf-bdb0-9dbdb9925e64",
 			"key": "proto",
 			"value": "http",
 			"type": "string"
 		},
 		{
-			"id": "64036361-3d0d-41b1-a04c-0e7bb7217302",
+			"id": "f4e2e1e0-3078-4278-88cd-b3782705d493",
 			"key": "host",
 			"value": "localhost",
 			"type": "string"
 		},
 		{
-			"id": "46817050-79bc-4a51-9fe6-eb95c8890db7",
+			"id": "a9625d3e-363f-4ff7-ba97-867950f7c749",
 			"key": "port",
-			"value": "5000",
+			"value": "3232",
 			"type": "string"
 		},
 		{
-			"id": "b54f8405-f066-483b-b060-40699f308cf3",
+			"id": "0bf746b5-7b98-4be0-9a31-70939435c861",
 			"key": "endpoint",
 			"value": "{{proto}}://{{host}}:{{port}}",
 			"type": "string"

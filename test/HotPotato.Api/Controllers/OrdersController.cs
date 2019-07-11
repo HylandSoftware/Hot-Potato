@@ -276,9 +276,11 @@ namespace HotPotato.Api.Controllers
 
             //OrderDataStore.Current.Orders.FirstOrDefault(r => r.Id == id).Items.Remove(item);
 
-            Response.Headers.Add("X-header", "HEADER");
+            var res = new NoContentResult();
 
-            return NoContent();
+            Response.Headers.Add("X-header", "SEVBREVS");
+
+            return res;
         }
 
         #endregion
