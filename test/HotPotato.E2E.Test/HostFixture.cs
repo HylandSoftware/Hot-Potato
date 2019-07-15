@@ -11,7 +11,7 @@ namespace HotPotato.E2E.Test
         public IWebHost host { get; }
 
         private const string ApiLocation = "http://localhost:5000";
-        private const string SpecLocation = "https://bitbucket.hylandqa.net/projects/AUTOTEST/repos/hot-potato/raw/test/RawPotatoSpec.yaml?at=refs%2Fheads%2Ffeat%2FAUTOTEST-371-content-is-null-causing-a-nullreferenceexception";
+        private const string SpecLocation = "https://bitbucket.hylandqa.net/projects/AUTOTEST/repos/hot-potato/raw/test/RawPotatoSpec.yaml";
 
         public HostFixture()
         {
