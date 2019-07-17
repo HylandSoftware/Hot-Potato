@@ -8,6 +8,10 @@ namespace HotPotato.AspNetCore.Host
     {
         static void Main(string[] args)
         {
+            if (Banner.Display(args))
+            {
+                Banner.Show();
+            }
             var host = new WebHostBuilder()
                 .ConfigureAppConfiguration((hostingContext, config) =>
                 {
