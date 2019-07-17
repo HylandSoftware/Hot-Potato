@@ -28,15 +28,8 @@ spec:
     volumeMounts:
       - mountPath: /var/run/docker.sock
         name: docker-sock
-      - mountPath: /app/packages
-        name: packages
-      - mountPath: /app/test/results
-        name: test-results
-      - mountPath: /app/test/coverage
-        name: test-coverage
   volumes:
     - name: docker-sock
       hostPath:
         path: /var/run/docker.sock
         type: File
-    
