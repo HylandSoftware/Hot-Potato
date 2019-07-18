@@ -43,13 +43,15 @@ pipeline {
             }
         }
 		
-		// stage("Run-Integration-Tests") {
-        //     steps {
-        //         container("builder") {
-        //             sh 'dotnet test ./test/HotPotato.Integration.Test/HotPotato.Integration.Test.csproj -c Release -l:"JUnit;LogFilePath=$WORKSPACE/test/results/integrationResults.xml" --no-restore --no-build'
-        //         }
-        //     }
-        // }
+		stage("Run-Integration-Tests") {
+            steps {
+                container("docker") {
+                    sh 'docker build --target integrationtest --tag hcr.io/hotpotato:integrationtest --build-arg IMAGE_VERSION=${IMAGE_VERSION} .'
+                    sh 'docker run -v $WORKSPACE/test/results:/app/test/results hcr.io/hotpotato:integrationtest'
+                    //sh 'dotnet test ./test/HotPotato.Integration.Test/HotPotato.Integration.Test.csproj -c Release -l:"JUnit;LogFilePath=$WORKSPACE/test/results/integrationResults.xml" --no-restore --no-build'
+                }
+            }
+        }
 
         // stage("Run-E2E-Tests") {
         //     steps {
