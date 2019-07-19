@@ -94,7 +94,7 @@ pipeline {
     }
     post {
         always {
-            junit '/test/results/*.xml'
+            junit '/app/test/results/*.xml'
             //cobertura coberturaReportFile: '$WORKSPACE/test/coverage/*.xml'
         }
         regression {

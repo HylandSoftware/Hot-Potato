@@ -35,5 +35,5 @@ spec:
         type: File
     - name: test-results
       hostPath:
-        path: /test/results
+        path: /app/test/results
         type: DirectoryOrCreate
