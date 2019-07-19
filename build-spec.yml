@@ -26,14 +26,8 @@ spec:
     volumeMounts:
       - mountPath: /var/run/docker.sock
         name: docker-sock
-      - mountPath: /app/test/results
-        name: test-results
   volumes:
     - name: docker-sock
       hostPath:
         path: /var/run/docker.sock
         type: File
-    - name: test-results
-      hostPath:
-        path: /app/test/results
-        type: DirectoryOrCreate
