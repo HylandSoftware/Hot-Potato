@@ -21,7 +21,7 @@ spec:
     - cat
     tty: true
   - name: docker
-    image: hcr.io/library/docker:dind
+    image: hcr.io/library/docker
     tty: true
     volumeMounts:
       - mountPath: /var/run/docker.sock
