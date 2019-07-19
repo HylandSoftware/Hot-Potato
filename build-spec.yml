@@ -35,5 +35,5 @@ spec:
         type: File
     - name: test-results
       hostPath:
-        path: $WORKSPACE/test/results
+        path: /test/results
         type: DirectoryOrCreate
