@@ -21,15 +21,19 @@ spec:
     - cat
     tty: true
   - name: docker
-    image: hcr.io/library/docker
+    image: hcr.io/library/docker:dind
     tty: true
-    command:
-      - cat
     volumeMounts:
       - mountPath: /var/run/docker.sock
         name: docker-sock
+      - mountPath: /app/test/results
+        name: test-results
   volumes:
     - name: docker-sock
       hostPath:
         path: /var/run/docker.sock
         type: File
+    - name: test-results
+      hostPath:
+        path: $WORKSPACE/test/results
+        type: DirectoryOrCreate
