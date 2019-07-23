@@ -24,52 +24,45 @@ pipeline {
 
         stage("Build") {
             steps {
-                container("docker") {
-                    sh 'docker build --target build --tag hcr.io/hotpotato:build --build-arg IMAGE_VERSION=${IMAGE_VERSION} .'
-                    //sh 'dotnet build --configuration Release -p:Version=${IMAGE_VERSION}'
+                container("builder") {
+                    sh 'dotnet build --configuration Release -p:Version=${IMAGE_VERSION}'
                 }
             }
         }
 
         stage("Run-Unit-Tests") {
             steps {
-                container("docker") {
-                    sh 'docker build --target test --tag hcr.io/hotpotato:test --build-arg IMAGE_VERSION=${IMAGE_VERSION} .'
-                    sh 'docker run -v $WORKSPACE/test/results:/app/test/results -v $WORKSPACE/test/coverage:/app/test/coverage hcr.io/hotpotato:test'
-                    
-                    junit '$WORKSPACE/test/results/*.xml'
-                    // sh 'dotnet test ./test/HotPotato.Core.Test/HotPotato.Core.Test.csproj -c Release -p:CollectCoverage=true -p:CoverletOutputFormat=cobertura -p:CoverletOutput=./test/coverage/coreCoverage.xml -p:Exclude="[xunit.*]*" -l:"JUnit;LogFilePath=$WORKSPACE/test/results/coreResults.xml" --no-restore --no-build'
-                    // sh 'dotnet test ./test/HotPotato.AspNetCore.Middleware.Test/HotPotato.AspNetCore.Middleware.Test.csproj -c Release -p:CollectCoverage=true -p:CoverletOutputFormat=cobertura -p:CoverletOutput=./test/coverage/middlewareCoverage.xml -p:Include="[*.Middleware]*" -l:"JUnit;LogFilePath=$WORKSPACE/test/results/middlewareResults.xml" --no-restore --no-build'
-                    // sh 'dotnet test ./test/HotPotato.OpenApi.Test/HotPotato.OpenApi.Test.csproj -c Release -p:CollectCoverage=true -p:CoverletOutputFormat=cobertura -p:CoverletOutput=./test/coverage/openApiCoverage.xml -p:Include="[*.OpenApi]*" -l:"JUnit;LogFilePath=$WORKSPACE/test/results/openapiResults.xml" --no-restore --no-build'
+                container("builder") {
+                    sh 'dotnet test ./test/HotPotato.Core.Test/HotPotato.Core.Test.csproj -c Release -p:CollectCoverage=true -p:CoverletOutputFormat=cobertura -p:CoverletOutput=./test/coverage/coreCoverage.xml -p:Exclude="[xunit.*]*" -l:"JUnit;LogFilePath=$WORKSPACE/test/results/coreResults.xml" --no-restore --no-build'
+                    sh 'dotnet test ./test/HotPotato.AspNetCore.Middleware.Test/HotPotato.AspNetCore.Middleware.Test.csproj -c Release -p:CollectCoverage=true -p:CoverletOutputFormat=cobertura -p:CoverletOutput=./test/coverage/middlewareCoverage.xml -p:Include="[*.Middleware]*" -l:"JUnit;LogFilePath=$WORKSPACE/test/results/middlewareResults.xml" --no-restore --no-build'
+                    sh 'dotnet test ./test/HotPotato.OpenApi.Test/HotPotato.OpenApi.Test.csproj -c Release -p:CollectCoverage=true -p:CoverletOutputFormat=cobertura -p:CoverletOutput=./test/coverage/openApiCoverage.xml -p:Include="[*.OpenApi]*" -l:"JUnit;LogFilePath=$WORKSPACE/test/results/openapiResults.xml" --no-restore --no-build'
                 }
             }
         }
 		
 		stage("Run-Integration-Tests") {
             steps {
-                container("docker") {
-                    sh 'docker build --target integrationtest --tag hcr.io/hotpotato:integrationtest --build-arg IMAGE_VERSION=${IMAGE_VERSION} .'
-                    sh 'docker run -v /app/test/results:/app/test/results hcr.io/hotpotato:integrationtest'
-                    //sh 'dotnet test ./test/HotPotato.Integration.Test/HotPotato.Integration.Test.csproj -c Release -l:"JUnit;LogFilePath=$WORKSPACE/test/results/integrationResults.xml" --no-restore --no-build'
+                container("builder") {
+                    sh 'dotnet test ./test/HotPotato.Integration.Test/HotPotato.Integration.Test.csproj -c Release -l:"JUnit;LogFilePath=$WORKSPACE/test/results/integrationResults.xml" --no-restore --no-build'
                 }
             }
         }
 
-        // stage("Run-E2E-Tests") {
-        //     steps {
-        //         container("builder") {
-        //             sh 'dotnet test ./test/HotPotato.E2E.Test/HotPotato.E2E.Test.csproj -c Release -l:"JUnit;LogFilePath=$WORKSPACE/test/results/E2EResults.xml" --no-restore --no-build'
+        stage("Run-E2E-Tests") {
+            steps {
+                container("builder") {
+                    sh 'dotnet test ./test/HotPotato.E2E.Test/HotPotato.E2E.Test.csproj -c Release -l:"JUnit;LogFilePath=$WORKSPACE/test/results/E2EResults.xml" --no-restore --no-build'
 
-        //             sh 'dotnet $WORKSPACE/src/HotPotato.AspNetCore.Host/bin/Release/netcoreapp2.1/HotPotato.AspNetCore.Host.dll &'
-        //             sh 'dotnet $WORKSPACE/test/HotPotato.Api/bin/Release/netcoreapp2.1/HotPotato.Api.dll &'
-        //         }
-        //         container("newman") {
-        //             sh 'newman run $WORKSPACE/test/HappyPathTests.postman_collection.json'
-        //             sh 'newman run $WORKSPACE/test/Non-ConformantTests.postman_collection.json'
-        //             sh 'newman run $WORKSPACE/test/NotInSpecTests.postman_collection.json'
-        //         }
-        //     }
-        // }
+                    sh 'dotnet $WORKSPACE/src/HotPotato.AspNetCore.Host/bin/Release/netcoreapp2.1/HotPotato.AspNetCore.Host.dll &'
+                    sh 'dotnet $WORKSPACE/test/HotPotato.Api/bin/Release/netcoreapp2.1/HotPotato.Api.dll &'
+                }
+                container("newman") {
+                    sh 'newman run $WORKSPACE/test/HappyPathTests.postman_collection.json'
+                    sh 'newman run $WORKSPACE/test/Non-ConformantTests.postman_collection.json'
+                    sh 'newman run $WORKSPACE/test/NotInSpecTests.postman_collection.json'
+                }
+            }
+        }
 
         stage("Deploy") {
             when {
