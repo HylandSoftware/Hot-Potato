@@ -84,11 +84,27 @@ pipeline {
                 }
             }
         }
+        stage("Push images") {
+            when {
+                branch 'master'
+            }
+            steps {
+                
+                container("docker") {
+                    withDockerRegistry([credentialsId: 'hcr-tfsbuild', url: 'https://hcr.io']) {
+                        sh 'docker build --tag hcr.io/automated-testing/hot-potato:${IMAGE_VERSION} --build-arg IMAGE_VERSION=${IMAGE_VERSION} .'
+                        sh 'docker push hcr.io/automated-testing/hot-potato:${IMAGE_VERSION}'
+                        sh 'docker tag hcr.io/automated-testing/hot-potato:${IMAGE_VERSION} hcr.io/automated-testing/hot-potato:latest'
+                        sh 'docker push hcr.io/automated-testing/hot-potato:latest'
+                    }
+                }
+            }
+        }
     }
     post {
         always {
-            cobertura coberturaReportFile: '**/test/coverage/*.xml'
             junit '**/test/results/*.xml'
+            cobertura coberturaReportFile: '**/test/coverage/*.xml'
         }
         regression {
             mattermostSend color: "#ef1717", icon: "https://jenkins.io/images/logos/jenkins/jenkins.png", message: "Someone broke ${env.BRANCH_NAME}, Ref build number -- ${env.BUILD_NUMBER}! (<${env.BUILD_URL}|${env.BUILD_URL}>)"
