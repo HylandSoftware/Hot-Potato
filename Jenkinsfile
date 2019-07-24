@@ -87,7 +87,7 @@ pipeline {
         }
         stage("Push images") {
             when {
-                branch 'feat/AUTOTEST-327-create-docker-image-for-hotpotato'
+                branch 'master'
             }
             steps {
                 
