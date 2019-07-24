@@ -85,6 +85,22 @@ pipeline {
                 }
             }
         }
+        stage("Push images") {
+            when {
+                branch 'feat/AUTOTEST-327-create-docker-image-for-hotpotato'
+            }
+            steps {
+                
+                container("docker") {
+                    withDockerRegistry([credentialsId: 'hcr-tfsbuild', url: 'https://hcr.io']) {
+                        sh 'docker build --tag hcr.io/automated-testing/hot-potato:${IMAGE_VERSION} --build_arg IMAGE_VERSION=${IMAGE_VERSION} .'
+                        sh 'docker push hcr.io/automated-testing/hot-potato:${IMAGE_VERSION}'
+                        sh 'docker tag hcr.io/automated-testing/hot-potato:${IMAGE_VERSION} hcr.io/automated-testing/hot-potato:latest'
+                        sh 'docker push hcr.io/automated-testing/hot-potato:latest'
+                    }
+                }
+            }
+        }
     }
     post {
         always {
