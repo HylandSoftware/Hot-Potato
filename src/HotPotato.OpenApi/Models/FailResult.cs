@@ -13,9 +13,12 @@ namespace HotPotato.OpenApi.Models
         public override string Path { get; protected set; }
         public override string Method { get; protected set; }
         public override int StatusCode { get; protected set; }
+        /// <summary>
+        /// Properties above this overriden to ensure the two error properties are last in serialization
+        /// </summary>
         [JsonProperty(ItemConverterType = typeof(StringEnumConverter))]
         public List<Reason> Reasons { get; }
-        public List<ValidationError> ValidationErrors { get; }
+        public List<ValidationError> ValidationErrors { get;  }
 
         public FailResult(string path, string method, int statusCode, List<Reason> reasons, List<ValidationError> validationErrors)
         {

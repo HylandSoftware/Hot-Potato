@@ -47,13 +47,12 @@ __Pass Result__
 __Fail Result__
 ```json
 [
-    {
-        "Reason":"InvalidBody",
-        
+    {        
         "Path":"/endpoint",
         "Method":"GET",
         "StatusCode":404,
         "State":"Fail",
+        "Reasons":["InvalidBody"],
         "ValidationErrors":
         [
             {
@@ -64,6 +63,26 @@ __Fail Result__
                 "LinePosition":10
             }
         ]
+    }
+]
+```
+
+### Custom Result Headers
+
+Hot Potato also allows users to add custom headers to results objects. To do so, users can can add the prefix "X-HP-" to a header key in a request, and it will appear at the top of the result in a "custom" array. The custom array only appears if custom headers are provided.
+
+```json
+[
+	{
+        "custom": {
+            "X-HP-Name": [
+                "LandingPage"
+            ]
+        },
+        "state": "Pass",
+        "path": "/",
+        "method": "get",
+        "statusCode": 200
     }
 ]
 ```

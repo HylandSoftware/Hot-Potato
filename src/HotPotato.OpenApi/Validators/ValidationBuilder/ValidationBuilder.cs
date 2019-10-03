@@ -14,6 +14,7 @@ namespace HotPotato.OpenApi.Validators
         private string Body { get; set; }
         private HttpContentType ContentType { get; set; }
         private HttpHeaders Headers { get; set; }
+        private HttpHeaders CustomHeaders { get; set; }
 
         private IResultCollector ResultCollector { get; }
         private ISpecificationProvider SpecificationProvider { get; }
@@ -55,6 +56,12 @@ namespace HotPotato.OpenApi.Validators
             return this;
         }
 
+        public ValidationBuilder WithCustomHeaders(HttpHeaders customHeaders)
+        {
+            CustomHeaders = customHeaders;
+            return this;
+        }
+
         public IValidationStrategy Build()
         {
             ValidationStrategy val = new ValidationStrategy(ResultCollector, SpecificationProvider, ContentType);
@@ -64,6 +71,7 @@ namespace HotPotato.OpenApi.Validators
             val.ContentValidator = new ContentValidator(Body, ContentType);
             val.BodyValidator = BodyValidatorFactory.Create(Body, ContentType);
             val.HeaderValidator = new HeaderValidator(Headers);
+            val.CustomHeaders = CustomHeaders;
             return val;
         }
     }

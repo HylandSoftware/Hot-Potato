@@ -17,6 +17,7 @@ namespace HotPotato.OpenApi.Validators
         internal ContentValidator ContentValidator { get; set; }
         internal BodyValidator BodyValidator { get; set; }
         internal HeaderValidator HeaderValidator { get; set; }
+        internal HttpHeaders CustomHeaders { get; set; }
 
         private IResultCollector resColl { get; }
         private SwaggerDocument swagDoc { get; }
@@ -90,17 +91,17 @@ namespace HotPotato.OpenApi.Validators
 
         private void AddFail(Reason reason, params ValidationError[] validationErrors)
         {
-            resColl.Fail(PathValidator.Path, MethodValidator.Method, StatusCodeValidator.StatusCode, new Reason[1] { reason }, validationErrors);
+            resColl.Fail(PathValidator.Path, MethodValidator.Method, StatusCodeValidator.StatusCode, new Reason[1] { reason }, CustomHeaders, validationErrors);
         }
 
         private void AddFail(Reason[] reasons, params ValidationError[] validationErrors)
         {
-            resColl.Fail(PathValidator.Path, MethodValidator.Method, StatusCodeValidator.StatusCode, reasons, validationErrors);
+            resColl.Fail(PathValidator.Path, MethodValidator.Method, StatusCodeValidator.StatusCode, reasons, CustomHeaders, validationErrors);
         }
 
         private void AddPass()
         {
-            resColl.Pass(PathValidator.Path, MethodValidator.Method, StatusCodeValidator.StatusCode);
+            resColl.Pass(PathValidator.Path, MethodValidator.Method, StatusCodeValidator.StatusCode, CustomHeaders);
         }
     }
 }

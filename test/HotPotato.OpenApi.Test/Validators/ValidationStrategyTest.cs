@@ -40,7 +40,7 @@ namespace HotPotato.OpenApi.Validators
         public void AddValidationResult_CallsPassOnlyOnce()
         {
             Mock<IResultCollector> mockResultCollector = new Mock<IResultCollector>();
-            mockResultCollector.Setup(x => x.Pass(AValidPath, AValidMethodString, AValidStatusCodeInt));
+            mockResultCollector.Setup(x => x.Pass(AValidPath, AValidMethodString, AValidStatusCodeInt, null));
 
             ValidationStrategy subject = SetUpValidationStrategy(mockResultCollector.Object);
 
@@ -49,14 +49,14 @@ namespace HotPotato.OpenApi.Validators
 
             subject.AddValidationResult(passingBodyResult, passingHeaderResult);
 
-            mockResultCollector.Verify(x => x.Pass(AValidPath, AValidMethodString, AValidStatusCodeInt), Times.Once());
+            mockResultCollector.Verify(x => x.Pass(AValidPath, AValidMethodString, AValidStatusCodeInt, null), Times.Once());
         }
 
         [Fact]
         public void AddValidationResult_DoesntCallPassWithInvalidBodyAndValidHeaders()
         {
             Mock<IResultCollector> mockResultCollector = new Mock<IResultCollector>();
-            mockResultCollector.Setup(x => x.Fail(AValidPath, AValidMethodString, AValidStatusCodeInt, InvalidBodyReason, BodyValidationError));
+            mockResultCollector.Setup(x => x.Fail(AValidPath, AValidMethodString, AValidStatusCodeInt, InvalidBodyReason, null, BodyValidationError));
 
             ValidationStrategy subject = SetUpValidationStrategy(mockResultCollector.Object);
 
@@ -65,15 +65,15 @@ namespace HotPotato.OpenApi.Validators
 
             subject.AddValidationResult(failingBodyResult, passingHeaderResult);
 
-            mockResultCollector.Verify(x => x.Fail(AValidPath, AValidMethodString, AValidStatusCodeInt, InvalidBodyReason, BodyValidationError), Times.Once());
-            mockResultCollector.Verify(x => x.Pass(AValidPath, AValidMethodString, AValidStatusCodeInt), Times.Never());
+            mockResultCollector.Verify(x => x.Fail(AValidPath, AValidMethodString, AValidStatusCodeInt, InvalidBodyReason, null, BodyValidationError), Times.Once());
+            mockResultCollector.Verify(x => x.Pass(AValidPath, AValidMethodString, AValidStatusCodeInt, new HttpHeaders()), Times.Never());
         }
 
         [Fact]
         public void AddValidationResult_DoesntCallPassWithInvalidHeadersAndValidBody()
         {
             Mock<IResultCollector> mockResultCollector = new Mock<IResultCollector>();
-            mockResultCollector.Setup(x => x.Fail(AValidPath, AValidMethodString, AValidStatusCodeInt, InvalidHeaderReason, HeaderValidationError));
+            mockResultCollector.Setup(x => x.Fail(AValidPath, AValidMethodString, AValidStatusCodeInt, InvalidHeaderReason, null, HeaderValidationError));
 
             ValidationStrategy subject = SetUpValidationStrategy(mockResultCollector.Object);
 
@@ -82,8 +82,8 @@ namespace HotPotato.OpenApi.Validators
 
             subject.AddValidationResult(passingBodyResult, failingHeaderResult);
 
-            mockResultCollector.Verify(x => x.Fail(AValidPath, AValidMethodString, AValidStatusCodeInt, InvalidHeaderReason, HeaderValidationError), Times.Once());
-            mockResultCollector.Verify(x => x.Pass(AValidPath, AValidMethodString, AValidStatusCodeInt), Times.Never());
+            mockResultCollector.Verify(x => x.Fail(AValidPath, AValidMethodString, AValidStatusCodeInt, InvalidHeaderReason, null, HeaderValidationError), Times.Once());
+            mockResultCollector.Verify(x => x.Pass(AValidPath, AValidMethodString, AValidStatusCodeInt, new HttpHeaders()), Times.Never());
         }
 
         [Fact]
@@ -93,7 +93,7 @@ namespace HotPotato.OpenApi.Validators
 
             Mock<IResultCollector> mockResultCollector = new Mock<IResultCollector>();
             mockResultCollector.Setup(x => x.Fail(AValidPath, AValidMethodString, AValidStatusCodeInt,
-                InvalidBodyandHeaderReasons, expected));
+                InvalidBodyandHeaderReasons, null, expected));
 
             ValidationStrategy subject = SetUpValidationStrategy(mockResultCollector.Object);
 
@@ -103,7 +103,7 @@ namespace HotPotato.OpenApi.Validators
             subject.AddValidationResult(failingBodyResult, failingHeaderResult);
 
             mockResultCollector.Verify(x => x.Fail(AValidPath, AValidMethodString, AValidStatusCodeInt,
-                InvalidBodyandHeaderReasons, expected), Times.Once());
+                InvalidBodyandHeaderReasons, null, expected), Times.Once());
         }
 
         [Fact]
@@ -111,7 +111,7 @@ namespace HotPotato.OpenApi.Validators
         {
             Mock<IResultCollector> mockResultCollector = new Mock<IResultCollector>();
             mockResultCollector.Setup(x => x.Fail(AValidPath, AValidMethodString, AValidStatusCodeInt,
-                new Reason[] { Reason.InvalidBody, Reason.InvalidHeaders }, new ValidationError[] { }));
+                new Reason[] { Reason.InvalidBody, Reason.InvalidHeaders }, null, new ValidationError[] { }));
 
             ValidationStrategy subject = SetUpValidationStrategy(mockResultCollector.Object);
 
@@ -121,14 +121,14 @@ namespace HotPotato.OpenApi.Validators
             subject.AddValidationResult(failingBodyResult, failingHeaderResult);
 
             mockResultCollector.Verify(x => x.Fail(AValidPath, AValidMethodString, AValidStatusCodeInt,
-                new Reason[] { Reason.InvalidBody, Reason.InvalidHeaders }, new ValidationError[] { }), Times.Once());
+                new Reason[] { Reason.InvalidBody, Reason.InvalidHeaders }, null, new ValidationError[] { }), Times.Once());
         }
 
         [Fact]
         public void AddValidationResult_DoesNotThrowExceptionWithMissingHeadersAndInvalidBodyWithError()
         {
             Mock<IResultCollector> mockResultCollector = new Mock<IResultCollector>();
-            mockResultCollector.Setup(x => x.Fail(AValidPath, AValidMethodString, AValidStatusCodeInt, InvalidBodyMissingHeaderReason, BodyValidationError));
+            mockResultCollector.Setup(x => x.Fail(AValidPath, AValidMethodString, AValidStatusCodeInt, InvalidBodyMissingHeaderReason, null, BodyValidationError));
 
             ValidationStrategy subject = SetUpValidationStrategy(mockResultCollector.Object);
 
@@ -137,14 +137,14 @@ namespace HotPotato.OpenApi.Validators
 
             subject.AddValidationResult(failingBodyResult, failingHeaderResult);
 
-            mockResultCollector.Verify(x => x.Fail(AValidPath, AValidMethodString, AValidStatusCodeInt, InvalidBodyMissingHeaderReason, BodyValidationError), Times.Once());
+            mockResultCollector.Verify(x => x.Fail(AValidPath, AValidMethodString, AValidStatusCodeInt, InvalidBodyMissingHeaderReason, null, BodyValidationError), Times.Once());
         }
 
         [Fact]
         public void AddValidationResult_DoesNotThrowExceptionWithMissingBodyAndInvalidHeadersWithError()
         {
             Mock<IResultCollector> mockResultCollector = new Mock<IResultCollector>();
-            mockResultCollector.Setup(x => x.Fail(AValidPath, AValidMethodString, AValidStatusCodeInt, MissingBodyInvalidHeaderReason, HeaderValidationError));
+            mockResultCollector.Setup(x => x.Fail(AValidPath, AValidMethodString, AValidStatusCodeInt, MissingBodyInvalidHeaderReason, null, HeaderValidationError));
 
             ValidationStrategy subject = SetUpValidationStrategy(mockResultCollector.Object);
 
@@ -153,14 +153,14 @@ namespace HotPotato.OpenApi.Validators
 
             subject.AddValidationResult(failingBodyResult, failingHeaderResult);
 
-            mockResultCollector.Verify(x => x.Fail(AValidPath, AValidMethodString, AValidStatusCodeInt, MissingBodyInvalidHeaderReason, HeaderValidationError), Times.Once());
+            mockResultCollector.Verify(x => x.Fail(AValidPath, AValidMethodString, AValidStatusCodeInt, MissingBodyInvalidHeaderReason, null, HeaderValidationError), Times.Once());
         }
 
         [Fact]
         public void AddValidationResult_DoesNotThrowExceptionWithMissingBodyAndMissingHeaders()
         {
             Mock<IResultCollector> mockResultCollector = new Mock<IResultCollector>();
-            mockResultCollector.Setup(x => x.Fail(AValidPath, AValidMethodString, AValidStatusCodeInt, MissingBodyAndHeaderReason, new ValidationError[] { }));
+            mockResultCollector.Setup(x => x.Fail(AValidPath, AValidMethodString, AValidStatusCodeInt, MissingBodyAndHeaderReason, null, new ValidationError[] { }));
 
             ValidationStrategy subject = SetUpValidationStrategy(mockResultCollector.Object);
 
@@ -169,19 +169,19 @@ namespace HotPotato.OpenApi.Validators
 
             subject.AddValidationResult(failingBodyResult, failingHeaderResult);
 
-            mockResultCollector.Verify(x => x.Fail(AValidPath, AValidMethodString, AValidStatusCodeInt, MissingBodyAndHeaderReason, new ValidationError[] { }), Times.Once());
+            mockResultCollector.Verify(x => x.Fail(AValidPath, AValidMethodString, AValidStatusCodeInt, MissingBodyAndHeaderReason, null, new ValidationError[] { }), Times.Once());
         }
 
         [Fact]
         public void Validate_CallsFailWithMissingData()
         {
             Mock<IResultCollector> mockResultCollector = new Mock<IResultCollector>();
-            mockResultCollector.Setup(x => x.Fail("", AValidMethodString, AValidStatusCodeInt, MissingPathReason));
+            mockResultCollector.Setup(x => x.Fail("", AValidMethodString, AValidStatusCodeInt, MissingPathReason, null, new ValidationError[] { }));
 
             ValidationStrategy subject = SetUpValidationStrategy(mockResultCollector.Object, "");
             subject.Validate();
 
-            mockResultCollector.Verify(x => x.Fail("", AValidMethodString, AValidStatusCodeInt, MissingPathReason), Times.Once());
+            mockResultCollector.Verify(x => x.Fail("", AValidMethodString, AValidStatusCodeInt, MissingPathReason, null, new ValidationError[] { }), Times.Once());
         }
 
         private ValidationStrategy SetUpValidationStrategy(IResultCollector resColl, string path = AValidPath)

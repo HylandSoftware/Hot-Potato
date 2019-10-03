@@ -14,6 +14,14 @@ namespace HotPotato.Core.Http
             data = new Dictionary<string, List<string>>(ignoreCase);
         }
 
+        public int Count
+        {
+            get
+            {
+                return data.Count;
+            }
+        }
+
         public void Add(string key, string value)
         {
             if (!this.data.ContainsKey(key)) this.data[key] = new List<string>();

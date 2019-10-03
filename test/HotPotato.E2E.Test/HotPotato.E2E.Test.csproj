@@ -29,6 +29,7 @@
   <ItemGroup>
     <ProjectReference Include="..\..\src\HotPotato.AspNetCore.Host\HotPotato.AspNetCore.Host.csproj" />
     <ProjectReference Include="..\..\src\HotPotato.Core\HotPotato.Core.csproj" />
+    <ProjectReference Include="..\..\src\HotPotato.OpenApi\HotPotato.OpenApi.csproj" />
   </ItemGroup>
 
 </Project>

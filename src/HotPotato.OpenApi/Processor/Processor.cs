@@ -27,6 +27,7 @@ namespace HotPotato.OpenApi.Processor
                 .WithStatusCode(pair.Response.StatusCode)
                 .WithBody(pair.Response.ToBodyString(), pair.Response.ContentType)
                 .WithHeaders(pair.Response.Headers)
+                .WithCustomHeaders(pair.Request.CustomHeaders)
                 .Build();
 
             val.Validate();

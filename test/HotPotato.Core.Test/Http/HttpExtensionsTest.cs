@@ -17,10 +17,15 @@ namespace HotPotato.Core.Http
     public class HttpExtensionsTest
     {
         private const HttpStatusCode AVAlidStatusCode = HttpStatusCode.OK;
+
         private const string AValidKey = "x-header-key";
         private const string AnotherValidKey = "x-another-key";
-        private const string AVAlidHeaderValue = "AValidHeaderValue";
+        private const string AValidHeaderValue = "AValidHeaderValue";
         private const string AnotherHeaderValue = "AnotherHeaderValue";
+
+        private const string AValidCustomHeaderKey = "X-HP-ACustomHeaderKey";
+        private const string AValidCustomHeaderValue = "X-HP-ACustomHeaderValue";
+
         private readonly MediaTypeHeaderValue AValidMediaType = new MediaTypeHeaderValue("application/json");
         private const string AValidUri = "http://foo/";
         private const string AVAlidContent = "{'foo':'bar'}";
@@ -57,7 +62,7 @@ namespace HotPotato.Core.Http
         public void ToClientRequestMessage_HasExcludableHeaders_AreExcluded(string key)
         {
             IHttpRequest request = new Default.HttpRequest(new Uri(AValidUri));
-            request.HttpHeaders.Add(key, AVAlidHeaderValue);
+            request.HttpHeaders.Add(key, AValidHeaderValue);
 
             HttpRequestMessage result = HttpExtensions.ToClientRequestMessage(request);
             Assert.False(result.Headers.TryGetValues(key, out _));
@@ -73,7 +78,7 @@ namespace HotPotato.Core.Http
         public void ToClientRequestMessage_HasHeaders_AreIncluded(string key)
         {
             IHttpRequest request = new Default.HttpRequest(new Uri(AValidUri));
-            request.HttpHeaders.Add(key, AVAlidHeaderValue);
+            request.HttpHeaders.Add(key, AValidHeaderValue);
 
             HttpRequestMessage result = HttpExtensions.ToClientRequestMessage(request);
 
@@ -163,12 +168,12 @@ namespace HotPotato.Core.Http
         {
             HttpResponseMessage httpResponseMessage = new HttpResponseMessage(AVAlidStatusCode);
             httpResponseMessage.Content = new StringContent(AVAlidContent);
-            httpResponseMessage.Content.Headers.Add(AValidKey, AVAlidHeaderValue);
+            httpResponseMessage.Content.Headers.Add(AValidKey, AValidHeaderValue);
 
             IHttpResponse result = await HttpExtensions.ToClientResponseAsync(httpResponseMessage);
 
             Assert.True(result.Headers.ContainsKey(AValidKey));
-            Assert.Equal(AVAlidHeaderValue, result.Headers[AValidKey][0]);
+            Assert.Equal(AValidHeaderValue, result.Headers[AValidKey][0]);
         }
 
         [Fact]
@@ -194,14 +199,35 @@ namespace HotPotato.Core.Http
         {
             MSHTTP.HttpRequest request = new DefaultHttpRequest(new MSHTTP.DefaultHttpContext());
             request.Method = GET;
-            request.Headers.Add(AValidKey, AVAlidHeaderValue);
-            request.Headers.Add(AnotherValidKey, AVAlidHeaderValue);
+            request.Headers.Add(AValidKey, AValidHeaderValue);
+            request.Headers.Add(AnotherValidKey, AValidHeaderValue);
 
             IHttpRequest result = HttpExtensions.ToProxyRequest(request, AValidUri);
 
             Assert.NotNull(result.HttpHeaders);
             Assert.True(result.HttpHeaders.ContainsKey(AValidKey));
             Assert.True(result.HttpHeaders.ContainsKey(AnotherValidKey));
+        }
+
+        [Fact]
+        public void ToProxyRequest_AppliesCustomHeadersToOnlyCustomHeaders()
+        {
+            MSHTTP.HttpRequest request = new DefaultHttpRequest(new MSHTTP.DefaultHttpContext());
+            request.Method = GET;
+            request.Headers.Add(AValidKey, AValidHeaderValue);
+            request.Headers.Add(AValidCustomHeaderKey, AValidCustomHeaderValue);
+
+            IHttpRequest result = HttpExtensions.ToProxyRequest(request, AValidUri);
+
+            Assert.NotNull(result.HttpHeaders);
+
+            //regular headers do not contain custom headers
+            Assert.False(result.HttpHeaders.ContainsKey(AValidCustomHeaderKey));
+            Assert.True(result.HttpHeaders.ContainsKey(AValidKey));
+
+            Assert.True(result.CustomHeaders.ContainsKey(AValidCustomHeaderKey));
+            //custom headers do not contain regular headers
+            Assert.False(result.CustomHeaders.ContainsKey(AValidKey));
         }
 
         [Fact]
@@ -280,7 +306,7 @@ namespace HotPotato.Core.Http
         public async Task ToProxyResponseAsync_HasHeaders_SetsHeaders(string key)
         {
             HttpHeaders headers = new HttpHeaders();
-            headers.Add(key, AVAlidHeaderValue);
+            headers.Add(key, AValidHeaderValue);
             IHttpResponse httpResponse = new Default.HttpResponse(AVAlidStatusCode, headers, new byte[0], AValidMediaType);
             MSHTTP.HttpResponse response = new DefaultHttpResponse(new MSHTTP.DefaultHttpContext());
 
@@ -293,7 +319,7 @@ namespace HotPotato.Core.Http
         public async Task ToProxyResponseAsync_HasMultiValueHeaders_SetsHeaders()
         {
             HttpHeaders headers = new HttpHeaders();
-            headers.Add(AValidKey, AVAlidHeaderValue);
+            headers.Add(AValidKey, AValidHeaderValue);
             headers.Add(AValidKey, AnotherHeaderValue);
             IHttpResponse httpResponse = new Default.HttpResponse(AVAlidStatusCode, headers, new byte[0], AValidMediaType);
             MSHTTP.HttpResponse response = new DefaultHttpResponse(new MSHTTP.DefaultHttpContext());
@@ -301,7 +327,7 @@ namespace HotPotato.Core.Http
             await HttpExtensions.ToProxyResponseAsync(httpResponse, response);
 
             Assert.True(response.Headers.TryGetValue(AValidKey, out StringValues result));
-            Assert.Contains(AVAlidHeaderValue, (IEnumerable<string>)result);
+            Assert.Contains(AValidHeaderValue, (IEnumerable<string>)result);
             Assert.Contains(AnotherHeaderValue, (IEnumerable<string>)result);
         }
 
@@ -318,7 +344,7 @@ namespace HotPotato.Core.Http
         public async Task ToProxyResponseAsync_HasExcludableHeaders_AreExcluded(string key)
         {
             HttpHeaders headers = new HttpHeaders();
-            headers.Add(key, AVAlidHeaderValue);
+            headers.Add(key, AValidHeaderValue);
             IHttpResponse httpResponse = new Default.HttpResponse(AVAlidStatusCode, headers, new byte[0], AValidMediaType);
             MSHTTP.HttpResponse response = new DefaultHttpResponse(new MSHTTP.DefaultHttpContext());
 

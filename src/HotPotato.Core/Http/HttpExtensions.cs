@@ -13,6 +13,7 @@ namespace HotPotato.Core.Http
 {
     public static class HttpExtensions
     {
+        private const string customHeaderPrefix = "X-HP-";
         private const string transferEncoding = "transfer-encoding";
         private static readonly HashSet<string> MethodsWithPayload = new HashSet<string>
         {
@@ -42,6 +43,11 @@ namespace HotPotato.Core.Http
                 "x-powered-by"
             };
 
+        /// <summary>
+        /// Convert from hot potato's request to a request message to be sent to the client
+        /// </summary>
+        /// <param name="this"></param>
+        /// <returns></returns>
         public static HttpRequestMessage ToClientRequestMessage(this IHttpRequest @this)
         {
             _ = @this ?? throw Exceptions.ArgumentNull(nameof(@this));
@@ -63,6 +69,12 @@ namespace HotPotato.Core.Http
             }
             return message;
         }
+
+        /// <summary>
+        /// Convert from an mshtml response message to a hot potato request task to be resolved by the client
+        /// </summary>
+        /// <param name="this"></param>
+        /// <returns></returns>
         public static async Task<IHttpResponse> ToClientResponseAsync(this HttpResponseMessage @this)
         {
             _ = @this ?? throw Exceptions.ArgumentNull(nameof(@this));
@@ -95,6 +107,12 @@ namespace HotPotato.Core.Http
             }
         }
 
+        /// <summary>
+        /// Converts the mshttp request to a hot potato request to be used by the proxy
+        /// </summary>
+        /// <param name="this"></param>
+        /// <param name="remoteEndpoint"></param>
+        /// <returns></returns>
         public static IHttpRequest ToProxyRequest(this MSHTTP.HttpRequest @this, string remoteEndpoint)
         {
             _ = @this ?? throw Exceptions.ArgumentNull(nameof(@this));
@@ -105,7 +123,14 @@ namespace HotPotato.Core.Http
             {
                 foreach (var item in @this.Headers)
                 {
-                    request.HttpHeaders.Add(item.Key, item.Value.ToArray());
+                    if (!item.Key.Contains(customHeaderPrefix))
+                    {
+                        request.HttpHeaders.Add(item.Key, item.Value.ToArray());
+                    }
+                    else
+                    {
+                        request.CustomHeaders.Add(item.Key, item.Value.ToArray());
+                    }
                 }
             }
             if (MethodsWithPayload.Contains(@this.Method.ToUpperInvariant()) && @this.Body != null)
@@ -120,6 +145,12 @@ namespace HotPotato.Core.Http
             return request;
         }
 
+        /// <summary>
+        /// Allow responses to be asynchronously processed by hot potato 
+        /// </summary>
+        /// <param name="this"></param>
+        /// <param name="response"></param>
+        /// <returns></returns>
         public static async Task ToProxyResponseAsync(this IHttpResponse @this, MSHTTP.HttpResponse response)
         {
             _ = @this ?? throw Exceptions.ArgumentNull(nameof(@this));

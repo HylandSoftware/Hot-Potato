@@ -1,4 +1,5 @@
 ﻿
+using HotPotato.Core.Http;
 using HotPotato.OpenApi.Models;
 using HotPotato.OpenApi.Validators;
 using System.Collections.Generic;
@@ -9,7 +10,7 @@ namespace HotPotato.OpenApi.Results
     {
         State OverallResult { get; }
         List<Result> Results { get; }
-        void Pass(string path, string method, int statusCode);
-        void Fail(string path, string method, int StatusCode, Reason[] reasons, params ValidationError[] validationErrors);
+        void Pass(string path, string method, int statusCode, HttpHeaders customHeaders);
+        void Fail(string path, string method, int StatusCode, Reason[] reasons, HttpHeaders customHeaders, params ValidationError[] validationErrors);
     }
 }

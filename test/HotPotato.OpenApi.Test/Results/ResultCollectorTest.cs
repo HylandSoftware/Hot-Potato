@@ -44,7 +44,7 @@ namespace HotPotato.OpenApi.Results
 
             ResultCollector subject = new ResultCollector();
 
-            subject.Fail(Path, Get, NotFoundStatusCode, inputReason, validationErrors.ToArray());
+            subject.Fail(Path, Get, NotFoundStatusCode, inputReason, null, validationErrors.ToArray());
 
             Assert.NotEmpty(subject.Results);
             Assert.Single(subject.Results);

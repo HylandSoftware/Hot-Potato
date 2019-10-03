@@ -1,4 +1,5 @@
-﻿using HotPotato.OpenApi.Models;
+﻿using HotPotato.Core.Http;
+using HotPotato.OpenApi.Models;
 using HotPotato.OpenApi.Validators;
 using System.Linq;
 using Xunit;
@@ -15,10 +16,16 @@ namespace HotPotato.OpenApi.Results
         private const State FailState = State.Fail;
         private const Reason FailReason = Reason.Unknown;
 
+        private const string AValidKey = "A-Header-Key";
+        private const string AValidValue = "A-Valid-Value";
+
+        private const string AValidCustomHeaderKey = "X-HP-Custom-Header-Key";
+        private const string AValidCustomHeaderValue = "Custom-Header-Value";
+
         [Fact]
         public void CanICreateAPassResult()
         {
-            var subject = ResultFactory.PassResult(Path, Method, PassStatusCode);
+            var subject = ResultFactory.PassResult(Path, Method, PassStatusCode, new HttpHeaders());
 
             Assert.NotNull(subject);
             Assert.Equal(Path, subject.Path);
@@ -28,12 +35,26 @@ namespace HotPotato.OpenApi.Results
         }
 
         [Fact]
+        public void CanICreateAPassResultWithCustomHeaders()
+        {
+            HttpHeaders customHeaders = new HttpHeaders();
+            customHeaders.Add(AValidCustomHeaderKey, AValidCustomHeaderValue);
+
+            PassResultWithCustomHeaders subject = (PassResultWithCustomHeaders)ResultFactory.PassResult(Path, Method, PassStatusCode, customHeaders);
+
+            Assert.True(subject.Custom.ContainsKey(AValidCustomHeaderKey));
+            Assert.Equal(AValidCustomHeaderValue, subject.Custom[AValidCustomHeaderKey].ElementAt(0));
+        }
+
+        [Fact]
         public void CanICreateAFailResult()
         {
             var err = new ValidationError("Error", ValidationErrorKind.Unknown, "Property", 5, 10);
             var validationErrors = new ValidationError[] { err };
 
-            FailResult subject = (FailResult)ResultFactory.FailResult(Path, Method, FailStatusCode, new Reason[1] { FailReason }, validationErrors);
+            HttpHeaders customHeaders = new HttpHeaders();
+
+            FailResult subject = (FailResult)ResultFactory.FailResult(Path, Method, FailStatusCode, new Reason[1] { FailReason }, customHeaders, validationErrors);
 
             Assert.NotNull(subject);
             Assert.Equal(Path, subject.Path);
@@ -42,6 +63,21 @@ namespace HotPotato.OpenApi.Results
             Assert.Equal(FailState, subject.State);
             Assert.Equal(FailReason, subject.Reasons.ElementAt(0));
             Assert.Equal(validationErrors, subject.ValidationErrors);
+        }
+
+        [Fact]
+        public void CanICreateAFailResultWithCustomHeaders()
+        {
+            HttpHeaders customHeaders = new HttpHeaders();
+            customHeaders.Add(AValidKey, AValidValue);
+
+            var err = new ValidationError("Error", ValidationErrorKind.Unknown, "Property", 5, 10);
+            var validationErrors = new ValidationError[] { err };
+
+            FailResultWithCustomHeaders subject = (FailResultWithCustomHeaders)ResultFactory.FailResult(Path, Method, FailStatusCode, new Reason[1] { FailReason }, customHeaders, validationErrors);
+
+            Assert.True(subject.Custom.ContainsKey(AValidKey));
+            Assert.Equal(AValidValue, subject.Custom[AValidKey].ElementAt(0));
         }
     }
 }

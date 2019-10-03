@@ -10,6 +10,7 @@ namespace HotPotato.Core.Http
         HttpMethod Method { get; }
         Uri Uri { get; }
         HttpHeaders HttpHeaders { get; }
+        HttpHeaders CustomHeaders { get; }
         MediaTypeHeaderValue ContentType { get; }
         HttpContent Content { get; }
         IHttpRequest SetContent(string content);

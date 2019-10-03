@@ -16,6 +16,7 @@ namespace HotPotato.Core.Http.Default
         public HttpMethod Method { get; }
         public Uri Uri { get; }
         public HttpHeaders HttpHeaders { get; }
+        public HttpHeaders CustomHeaders { get; }
         public MediaTypeHeaderValue ContentType { get; private set; }
         public HttpContent Content => this.requestContent.Content;
         
@@ -30,6 +31,7 @@ namespace HotPotato.Core.Http.Default
             this.Method = method;
             this.Uri = uri;
             this.HttpHeaders = new HttpHeaders();
+            this.CustomHeaders = new HttpHeaders();
             this.requestContent = new HttpRequestMessage();
         }
 
