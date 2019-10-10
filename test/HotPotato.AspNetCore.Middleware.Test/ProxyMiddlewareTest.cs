@@ -1,5 +1,4 @@
-﻿using HotPotato.AspNetCore.Middleware;
-using HotPotato.Core.Proxy;
+﻿using HotPotato.Core.Proxy;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
@@ -9,7 +8,7 @@ using System.Net;
 using System.Net.Http;
 using Xunit;
 
-namespace HotPotato.Middleware
+namespace HotPotato.AspNetCore.Middleware
 {
     public class HotPotatoMiddlewareTest
     {

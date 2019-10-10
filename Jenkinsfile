@@ -50,6 +50,7 @@ pipeline {
         stage("Run-E2E-Tests") {
             steps {
                 container("builder") {
+					sh 'dotnet test ./test/HotPotato.TestServer.Test/HotPotato.TestServ.Test.csproj -c Release -l:"JUnit;LogFilePath=$WORKSPACE/test/results/testServerResults.xml" --no-restore --no-build'
                     sh 'dotnet test ./test/HotPotato.E2E.Test/HotPotato.E2E.Test.csproj -c Release -l:"JUnit;LogFilePath=$WORKSPACE/test/results/E2EResults.xml" --no-restore --no-build'
 
                     sh 'dotnet $WORKSPACE/src/HotPotato.AspNetCore.Host/bin/Release/netcoreapp2.1/HotPotato.AspNetCore.Host.dll &'

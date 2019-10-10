@@ -138,6 +138,12 @@ namespace HotPotato.Core.Http
                 using (MemoryStream stream = new MemoryStream())
                 {
                     @this.Body.CopyTo(stream);
+                    if (!string.IsNullOrEmpty(@this.ContentType))
+                    {
+                        //Sanitize here since System.Net.Http was throwing a format exception
+                        //when sending POST/PUT requests with payloads through TestServer
+                        @this.ContentType = @this.ContentType.Split(";")[0];
+                    }
                     request.SetContent(stream.ToArray(), @this.ContentType);
                 }
             }
