@@ -41,6 +41,9 @@ namespace HotPotato.AspNetCore.Host
 
         public void ConfigureServices(IServiceCollection services)
         {
+            bool ignoreClientCertificateValidationErrors = Configuration.GetSection("HttpClientSettings").GetValue<bool>("IgnoreClientHttpsCertificateValidationErrors");
+            LogTlsValidationSetting(ignoreClientCertificateValidationErrors);
+
             services.AddScoped<IProxy, HotPotato.Core.Proxy.Default.Proxy>();
             services.AddScoped<IHttpClient, HotPotato.Core.Http.Default.HttpClient>();
             services.AddMvcCore().AddJsonFormatters();
@@ -50,13 +53,32 @@ namespace HotPotato.AspNetCore.Host
             .ConfigurePrimaryHttpMessageHandler(sp => new HttpClientHandler
             {
                 AutomaticDecompression = DecompressionMethods.Deflate | DecompressionMethods.GZip,
-                Proxy = sp.GetService<HttpForwardProxyConfig>().Enabled ? sp.GetService<IWebProxy>() : null
+                Proxy = sp.GetService<HttpForwardProxyConfig>().Enabled ? sp.GetService<IWebProxy>() : null,
+                ServerCertificateCustomValidationCallback = ignoreClientCertificateValidationErrors ?
+                    HttpClientHandler.DangerousAcceptAnyServerCertificateValidator :
+                    null
             });
 
             services.AddSingleton<ISpecificationProvider, SpecificationProvider>();
             services.AddSingleton<IResultCollector, ResultCollector>();
 
             services.AddTransient<IProcessor, Processor>();
+        }
+
+        private void LogTlsValidationSetting(bool settingValue)
+        {
+            if (settingValue)
+            {
+                Log.LogWarning(
+                    String.Format(
+                        @"IgnoreClientCertificateValidation is set to TRUE! When Hot Potato sends requests to the remote API, SSL/TLS certificate validation errors will be ignored!"));
+            }
+            else
+            {
+                Log.LogInformation(
+                    String.Format(
+                        @"IgnoreClientCertificateValidation is set to false. When Hot Potato sends requests to the remote API, SSL/TLS certificate validation problems will cause critical application errors."));
+            }
         }
     }
 }

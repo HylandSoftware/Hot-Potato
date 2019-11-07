@@ -17,6 +17,7 @@ namespace HotPotato.AspNetCore.Host
                 {
                     config.SetBasePath(hostingContext.HostingEnvironment.ContentRootPath)
                         .AddJsonFile("appsettings.json", optional: true)
+                        .AddEnvironmentVariables()
                         .AddCommandLine(args);
                 })
                 .ConfigureLogging((hostingContext, logging) =>
