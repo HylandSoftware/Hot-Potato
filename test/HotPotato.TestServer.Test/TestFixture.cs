@@ -19,7 +19,10 @@ namespace HotPotato.TestServ.Test
 
         //TestServer won't actually listen on an address, but it needs a BaseAddress to be used by the HttpRequest constructors
         //It can be set to any address as long as it is a valid uri
-        private const string TestServerAddress = "http://localhost:5000";
+        private const string ApiServerAddress = "http://localhost:5000";
+        //Same goes for the address of the TestServer housing the middleware:
+        //it doesn't bind to an address, but we're setting it to 3232 here to mimic the host, and to give a base address to send requests
+        private const string HotPotatoAddress = "http://localhost:3232";
 
         private readonly TestServer apiServer;
         private readonly TestServer hotPotatoServer;
@@ -30,13 +33,13 @@ namespace HotPotato.TestServ.Test
                 .UseStartup<TStartup>();
 
             apiServer = new TestServer(apiBuilder);
-            apiServer.BaseAddress = new Uri(TestServerAddress);
+            apiServer.BaseAddress = new Uri(ApiServerAddress);
 
             Core.Http.Default.HttpClient apiClient = new Core.Http.Default.HttpClient(apiServer.CreateClient());
 
             var hotPotatoBuilder = new WebHostBuilder()
                 //Setting this here instead of in appsettings.json so it always matches the BaseAddress on TestServer
-               .UseSetting("RemoteEndpoint", TestServerAddress)
+               .UseSetting("RemoteEndpoint", ApiServerAddress)
                .ConfigureAppConfiguration((hostingContext, config) =>
                 {
                     config.SetBasePath(hostingContext.HostingEnvironment.ContentRootPath)
@@ -61,6 +64,7 @@ namespace HotPotato.TestServ.Test
                 });
 
             hotPotatoServer = new TestServer(hotPotatoBuilder);
+            hotPotatoServer.BaseAddress = new Uri(HotPotatoAddress);
 
             Results = hotPotatoServer.Host.Services.GetService<IResultCollector>().Results;
             Client = new Core.Http.Default.HttpClient(hotPotatoServer.CreateClient());
