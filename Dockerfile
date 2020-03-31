@@ -1,8 +1,14 @@
 FROM mcr.microsoft.com/dotnet/core/sdk:2.2 AS build
 LABEL cache=true
 ARG IMAGE_VERSION
+
+RUN apt-get update && apt-get install -y curl sudo
+RUN curl -fksSL https://certs.hyland.io/install.sh | sudo bash
+RUN update-ca-certificates
+
 WORKDIR /app
 COPY . .
+
 RUN dotnet build --configuration Release -p:Version=${IMAGE_VERSION} --output /app/build
 RUN dotnet publish ./src/HotPotato.AspNetCore.Host/HotPotato.AspNetCore.Host.csproj --configuration Release -p:Version=${IMAGE_VERSION} --output /app/publish
 

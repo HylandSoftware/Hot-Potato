@@ -1,4 +1,5 @@
-# Hot Potato Proxy 
+# Hot Potato Proxy
+
 ### Develop
 [![Build Status](https://autotest.jenkins.hylandqa.net/job/Test%20Automation%20Team/job/hot-potato/job/master/badge/icon)](https://autotest.jenkins.hylandqa.net/job/Test%20Automation%20Team/job/hot-potato/job/master/) 
 [![Coverage](http://shields.hyland.io/jenkins/c/https/autotest.jenkins.hylandqa.net/job/Test%20Automation%20Team/job/hot-potato/job/master.svg)](https://autotest.jenkins.hylandqa.net/job/Test%20Automation%20Team/job/hot-potato/job/master/lastSuccessfulBuild/cobertura/)
@@ -30,19 +31,21 @@ HotPotato --RemoteEndpoint http://hyland.io/my/api --SpecLocation http://hyland.
 
 ### Docker
 
-Hot Potato can also be started in a Jenkins build through Docker. In a pipeline stage, you can create a network through docker, pull our image from [Harbor](https://hcr.io/harbor/projects/118/repositories/automated-testing%2Fhot-potato/tags/latest), then start Hot Potato in that network.
+Hot Potato can also be started in a Jenkins build through Docker. In a pipeline stage, you can create a network through Docker, pull our image from [Harbor](https://hcr.io/harbor/projects/118/repositories/automated-testing%2Fhot-potato/tags/latest), then start Hot Potato in that network.
 
-A good example can be found in the [Jenkinsfile]("https://bitbucket.hylandqa.net/projects/IA/repos/cv-conformance-tests/browse/Jenkinsfile") for the CV Conformance Tests of the Insurance team:
+A good example can be found in the [Jenkinsfile](https://bitbucket.hylandqa.net/projects/IA/repos/cv-conformance-tests/browse/Jenkinsfile) for the CV Conformance Tests of the Insurance team:
 
 ```groovy
 stage('HotPotato'){			
 	steps {
 		sh 'docker network create hp'
 		sh 'docker pull hcr.io/automated-testing/hot-potato:latest'
-		sh 'docker run --rm -d --network hp --name Conformance -p 3232:3232 -e REMOTE_ENDPOINT=http://rdv-004274.hylandqa.net:9999 -e SPEC_LOCATION=https://bitbucket.hylandqa.net/projects/CV/repos/specifications/raw/specs/cv/specification.yaml hcr.io/automated-testing/hot-potato'               
+		sh 'docker run --rm -d --network hp --name Conformance -p 3232:3232 -e HttpClientSettings__IgnoreClientHttpsCertificateValidationErrors=true -e REMOTE_ENDPOINT=http://rdv-004274.hylandqa.net:9999 -e SPEC_LOCATION=https://bitbucket.hylandqa.net/projects/CV/repos/specifications/raw/specs/cv/specification.yaml hcr.io/automated-testing/hot-potato'               
         }			
 	}
 ```
+
+We ran into persisent SSL certificate validation issues when running in Docker, so setting the environment variable `HttpClientSettings__IgnoreClientHttpsCertificateValidationErrors` to `true` as shown above is necessary to run tests successfully.
 
 <a name="results"></a>
 ## Results
@@ -318,3 +321,5 @@ stage("Run-E2E-Tests") {
 
 [NJsonSchema](https://github.com/RicoSuter/NJsonSchema), the library used by Hot Potato to parse the yaml format used by OpenApi specifications, cannot handle multi-file specs in its current state.
 Multiple issues are open ([566](https://github.com/RicoSuter/NJsonSchema/issues/566), [1093](https://github.com/RicoSuter/NJsonSchema/issues/1093), [1171](https://github.com/RicoSuter/NSwag/issues/1171)) and a [pull request](https://github.com/RicoSuter/NJsonSchema/pull/1098) has been submitted. We are considering forking the project if need be.
+
+A workaround for this issue is using the tool [swagger-merger](https://www.npmjs.com/package/swagger-merger) to combine multi-file specs into a single file.
