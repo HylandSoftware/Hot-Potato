@@ -14,6 +14,8 @@ namespace HotPotato.AspNetCore.Middleware
     {
         private const string RemoteEndpointKey = "RemoteEndpoint";
         private const string AValidEndpoint = "http://foo";
+        private const string SpecLocationKey = "SpecLocation";
+        private const string AValidSpecLocation = "https://bitbucket.hylandqa.net/projects/AUTOTEST/repos/foo/raw/test/bar.yaml";
 
         [Fact]
         public void Constructor_NullProxy_Throws()
@@ -34,11 +36,26 @@ namespace HotPotato.AspNetCore.Middleware
         }
 
         [Fact]
+        public void Constructor_MissingRemoteEndpointKey_Throws()
+        {
+            Assert.Throws<InvalidOperationException>(() => new HotPotatoMiddleware(null, Mock.Of<IProxy>(), Mock.Of<IConfiguration>(), Mock.Of<ILogger<HotPotatoMiddleware>>()));
+        }
+
+        [Fact]
+        public void Constructor_MissingSpecLocationKey_Throws()
+        {
+            Mock<IConfiguration> configMock = new Mock<IConfiguration>();
+            configMock.SetupGet(x => x[RemoteEndpointKey]).Returns(AValidEndpoint);
+            Assert.Throws<InvalidOperationException>(() => new HotPotatoMiddleware(null, Mock.Of<IProxy>(), configMock.Object, Mock.Of<ILogger<HotPotatoMiddleware>>()));
+        }
+
+        [Fact]
         public async void Invoke_CallsProxy()
         {
             Mock<IProxy> proxyMock = new Mock<IProxy>();
             Mock<IConfiguration> configMock = new Mock<IConfiguration>();
             configMock.SetupGet(x => x[RemoteEndpointKey]).Returns(AValidEndpoint);
+            configMock.SetupGet(x => x[SpecLocationKey]).Returns(AValidSpecLocation);
             Mock<HttpContext> contextMock = new Mock<HttpContext>();
             var response = Mock.Of<HttpResponse>();
             var request = Mock.Of<HttpRequest>();
@@ -64,6 +81,7 @@ namespace HotPotato.AspNetCore.Middleware
                 .Throws(new Exception("FAIL"));
             Mock<IConfiguration> configMock = new Mock<IConfiguration>();
             configMock.SetupGet(x => x[RemoteEndpointKey]).Returns(AValidEndpoint);
+            configMock.SetupGet(x => x[SpecLocationKey]).Returns(AValidSpecLocation);
             Mock<ILogger<HotPotatoMiddleware>> loggerMock = new Mock<ILogger<HotPotatoMiddleware>>();
             Mock<HttpContext> contextMock = new Mock<HttpContext>();
             contextMock.SetupGet(x => x.Request).Returns(Mock.Of<HttpRequest>());
@@ -88,6 +106,7 @@ namespace HotPotato.AspNetCore.Middleware
                 .Throws(new HttpRequestException("FAIL"));
             Mock<IConfiguration> configMock = new Mock<IConfiguration>();
             configMock.SetupGet(x => x[RemoteEndpointKey]).Returns(AValidEndpoint);
+            configMock.SetupGet(x => x[SpecLocationKey]).Returns(AValidSpecLocation);
             Mock<ILogger<HotPotatoMiddleware>> loggerMock = new Mock<ILogger<HotPotatoMiddleware>>();
             Mock<HttpContext> contextMock = new Mock<HttpContext>();
             contextMock.SetupGet(x => x.Request).Returns(Mock.Of<HttpRequest>());

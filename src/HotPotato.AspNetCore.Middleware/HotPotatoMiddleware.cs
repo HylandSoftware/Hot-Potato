@@ -27,6 +27,9 @@ namespace HotPotato.AspNetCore.Middleware
             _ = configuration ?? throw Exceptions.ArgumentNull(nameof(configuration));
             _ = log ?? throw Exceptions.ArgumentNull(nameof(log));
 
+            _ = configuration[RemoteEndpointKey] ?? throw Exceptions.InvalidOperation("'RemoteEndpoint' is not defined");
+            _ = configuration[SpecLocationKey] ?? throw Exceptions.InvalidOperation("'SpecLocation' is not defined");
+
             this.proxy = proxy;
             this.log = log;
             this.remoteEndpoint = configuration[RemoteEndpointKey];
