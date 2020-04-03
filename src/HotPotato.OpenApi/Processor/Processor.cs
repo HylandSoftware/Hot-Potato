@@ -22,7 +22,7 @@ namespace HotPotato.OpenApi.Processor
         public void Process(HttpPair pair)
         {
             IValidationStrategy val = new ValidationBuilder(ResultCollector, SpecificationProvider)
-                .WithPath(pair.Request.Uri.AbsolutePath)
+                .WithPath(pair.Request.DecodedPath)
                 .WithMethod(pair.Request.Method)
                 .WithStatusCode(pair.Response.StatusCode)
                 .WithBody(pair.Response.ToBodyString(), pair.Response.ContentType)

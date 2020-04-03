@@ -9,6 +9,7 @@ namespace HotPotato.Core.Http
     {
         HttpMethod Method { get; }
         Uri Uri { get; }
+        string DecodedPath { get; }
         HttpHeaders HttpHeaders { get; }
         HttpHeaders CustomHeaders { get; }
         MediaTypeHeaderValue ContentType { get; }
