@@ -4,6 +4,7 @@ using NSwag;
 using static NSwag.SwaggerYamlDocument;
 using System;
 using System.IO;
+using System.Net;
 using System.Net.Http;
 using System.Threading.Tasks;
 
@@ -53,6 +54,8 @@ namespace HotPotato.OpenApi.SpecificationProvider
                         Console.WriteLine(certificate);
                         return true;
                     };
+                    //this is a possible fix for an issue that was causing requests to be forcibly closed
+                    System.Net.ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls | SecurityProtocolType.Tls11 | SecurityProtocolType.Tls12;
                 }
                 using (HttpClient client = new HttpClient(handler))
                 {

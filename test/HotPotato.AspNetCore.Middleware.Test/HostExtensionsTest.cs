@@ -1,4 +1,5 @@
-﻿using HotPotato.Core.Http;
+﻿using HotPotato.Core.Cookies;
+using HotPotato.Core.Http;
 using HotPotato.Core.Http.Default;
 using HotPotato.Core.Processor;
 using HotPotato.Core.Proxy;
@@ -16,6 +17,7 @@ namespace HotPotato.AspNetCore.Middleware
     public class HostExtensionsTest
     {
         private const string SpecLocation = "https://bitbucket.hylandqa.net/projects/AUTOTEST/repos/hot-potato/raw/test/RawPotatoSpec.yaml";
+        private const string ApiServerAddress = "http://localhost:5000";
 
         [Fact]
         public void ConfigureMiddlewareServices_SetsAllExpectedServices()
@@ -32,6 +34,7 @@ namespace HotPotato.AspNetCore.Middleware
                     services.ConfigureMiddlewareServices(client);
                 })
                 .UseSetting("SpecLocation", SpecLocation)
+                .UseSetting("RemoteEndpoint", ApiServerAddress)
                 .Configure(app =>
                 {
                     app.UseMiddleware<HotPotatoMiddleware>();
@@ -48,6 +51,7 @@ namespace HotPotato.AspNetCore.Middleware
             Assert.NotNull(result.GetService<ISpecificationProvider>());
             Assert.NotNull(result.GetService<IResultCollector>());
             Assert.NotNull(result.GetService<IProcessor>());
+            Assert.NotNull(result.GetService<ICookieJar>());
         }
 
         [Fact]

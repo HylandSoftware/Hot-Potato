@@ -15,6 +15,8 @@ pipeline {
                 container('gitversion') {
                     script {
                         env.IMAGE_VERSION = sh(script: 'mono /usr/lib/GitVersion/GitVersion.exe /output json /showvariable MajorMinorPatch', returnStdout: true).trim()
+                        //keeping this comment in the case of needing a future alpha test
+                        //env.IMAGE_VERSION = env.IMAGE_VERSION + "-alpha"
                         echo IMAGE_VERSION 
                     }
                 }

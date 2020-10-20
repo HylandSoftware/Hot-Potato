@@ -1,4 +1,5 @@
-﻿using HotPotato.Core.Http;
+﻿using HotPotato.Core.Cookies;
+using HotPotato.Core.Http;
 using HotPotato.Core.Processor;
 using HotPotato.Core.Proxy;
 using HotPotato.OpenApi.Results;
@@ -27,6 +28,7 @@ namespace HotPotato.AspNetCore.Middleware
                 services.AddScoped<IHttpClient, HotPotato.Core.Http.Default.HttpClient>();
                 services.AddHttpClient<IHttpClient, HotPotato.Core.Http.Default.HttpClient>();
             }
+            services.AddSingleton<ICookieJar, CookieJar>();
             services.AddSingleton<ISpecificationProvider, SpecificationProvider>();
             services.AddSingleton<IResultCollector, ResultCollector>();
             services.AddTransient<IProcessor, Processor>();
