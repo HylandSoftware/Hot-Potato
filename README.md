@@ -1,8 +1,8 @@
 # Hot Potato Proxy
 
 ### Develop
-[![Build Status](https://autotest.jenkins.hylandqa.net/job/Test%20Automation%20Team/job/hot-potato/job/master/badge/icon)](https://autotest.jenkins.hylandqa.net/job/Test%20Automation%20Team/job/hot-potato/job/master/) 
-[![Coverage](http://shields.hyland.io/jenkins/c/https/autotest.jenkins.hylandqa.net/job/Test%20Automation%20Team/job/hot-potato/job/master.svg)](https://autotest.jenkins.hylandqa.net/job/Test%20Automation%20Team/job/hot-potato/job/master/lastSuccessfulBuild/cobertura/)
+[![Build Status](https://autotest.jenkins.hylandqa.net/job/Prod%20Bitbucket/job/hot-potato/job/master/badge/icon)](https://autotest.jenkins.hylandqa.net/job/Prod%20Bitbucket/job/hot-potato/job/master/) 
+[![Coverage](http://shields.hyland.io/jenkins/c/https/autotest.jenkins.hylandqa.net/job/Prod%20Bitbucket/job/hot-potato/job/master.svg)](https://autotest.jenkins.hylandqa.net/job/Prod%20Bitbucket/job/hot-potato/job/master/lastSuccessfulBuild/cobertura/)
 
 The Hot Potato Proxy intends to function as an ASP.NET Core proxy that will validate an API's conformance to an OpenAPI spec.
 
