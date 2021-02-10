@@ -11,7 +11,7 @@ namespace HotPotato.E2E.Test
         public IWebHost host { get; }
 
         private const string ApiLocation = "http://localhost:5000";
-        private const string SpecLocation = "https://bitbucket.hylandqa.net/projects/AUTOTEST/repos/hot-potato/raw/test/RawPotatoSpec.yaml";
+        private const string SpecLocation = "https://bitbucket.hyland.com/projects/TATO/repos/hot-potato/raw/test/RawPotatoSpec.yaml";
 
         public HostFixture()
         {
