@@ -113,7 +113,7 @@ namespace HotPotato.Core.Http
         /// <param name="this"></param>
         /// <param name="remoteEndpoint"></param>
         /// <returns></returns>
-        public static IHttpRequest ToProxyRequest(this MSHTTP.HttpRequest @this, string remoteEndpoint)
+        public static async Task<IHttpRequest> ToProxyRequest(this MSHTTP.HttpRequest @this, string remoteEndpoint)
         {
             _ = @this ?? throw Exceptions.ArgumentNull(nameof(@this));
             _ = remoteEndpoint ?? throw Exceptions.ArgumentNull(nameof(remoteEndpoint));
@@ -137,7 +137,7 @@ namespace HotPotato.Core.Http
             {
                 using (MemoryStream stream = new MemoryStream())
                 {
-                    @this.Body.CopyTo(stream);
+                    await @this.Body.CopyToAsync(stream);
                     if (!string.IsNullOrEmpty(@this.ContentType))
                     {
                         //Sanitize here since System.Net.Http was throwing a format exception

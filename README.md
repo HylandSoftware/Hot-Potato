@@ -33,14 +33,14 @@ HotPotato --RemoteEndpoint http://hyland.io/my/api --SpecLocation http://hyland.
 
 Hot Potato can also be started in a Jenkins build through Docker. In a pipeline stage, you can create a network through Docker, pull our image from [Harbor](https://hcr.io/harbor/projects/118/repositories/automated-testing%2Fhot-potato/tags/latest), then start Hot Potato in that network.
 
-A good example can be found in the [Jenkinsfile](https://bitbucket.hylandqa.net/projects/IA/repos/cv-conformance-tests/browse/Jenkinsfile) for the CV Conformance Tests of the Insurance team:
+A good example can be found in the [Jenkinsfile](https://bitbucket.hyland.com/projects/IBPA-CV/repos/cv-conformance-tests/browse/Jenkinsfile) for the CV Conformance Tests:
 
 ```groovy
 stage('HotPotato'){			
 	steps {
 		sh 'docker network create hp'
 		sh 'docker pull hcr.io/automated-testing/hot-potato:latest'
-		sh 'docker run --rm -d --network hp --name Conformance -p 3232:3232 -e HttpClientSettings__IgnoreClientHttpsCertificateValidationErrors=true -e REMOTE_ENDPOINT=http://rdv-004274.hylandqa.net:9999 -e SPEC_LOCATION=https://bitbucket.hylandqa.net/projects/CV/repos/specifications/raw/specs/cv/specification.yaml hcr.io/automated-testing/hot-potato'               
+		sh 'docker run --rm -d --network hp --name Conformance -p 3232:3232 -e HttpClientSettings__IgnoreClientHttpsCertificateValidationErrors=true -e REMOTE_ENDPOINT=https://$Host/$ApiRoot -e SPEC_LOCATION=$ApiSpec hcr.io/automated-testing/hot-potato'                
         }			
 	}
 ```
@@ -305,8 +305,8 @@ We do so in our "Run-E2E-Tests" stage in our [Jenkinsfile](https://bitbucket.hyl
 stage("Run-E2E-Tests") {
     steps {
         container("builder") {
-            sh 'dotnet $WORKSPACE/src/HotPotato.AspNetCore.Host/bin/Release/netcoreapp2.1/HotPotato.AspNetCore.Host.dll &'
-            sh 'dotnet $WORKSPACE/test/HotPotato.Api/bin/Release/netcoreapp2.1/HotPotato.Api.dll &'
+            sh 'dotnet $WORKSPACE/src/HotPotato.AspNetCore.Host/bin/Release/netcoreapp3.1/HotPotato.AspNetCore.Host.dll &'
+            sh 'dotnet $WORKSPACE/test/HotPotato.Api/bin/Release/netcoreapp3.1/HotPotato.Api.dll &'
         }
         container("newman") {
             sh 'newman run $WORKSPACE/test/HappyPathTests.postman_collection.json'

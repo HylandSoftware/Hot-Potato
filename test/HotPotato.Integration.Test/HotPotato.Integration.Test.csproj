@@ -2,9 +2,11 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFramework>netcoreapp2.1</TargetFramework>
+    <TargetFrameworks>netcoreapp2.1;netcoreapp3.1</TargetFrameworks>
 
     <IsPackable>false</IsPackable>
+
+    <Configurations>Debug;Release;ExcludeTests</Configurations>
   </PropertyGroup>
 
   <ItemGroup>

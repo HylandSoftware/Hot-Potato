@@ -2,7 +2,7 @@
 
   <PropertyGroup>
     <OutputType>Library</OutputType>
-    <TargetFramework>netcoreapp2.1</TargetFramework>
+    <TargetFrameworks>netcoreapp2.1;netcoreapp3.1</TargetFrameworks>
     <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
     <WarningsAsErrors />
     <ApplicationIcon />
@@ -11,7 +11,8 @@
     <Title>HotPotato.OpenApi</Title>
     <Authors>Test Automation Team | GRP-AutomatedTesting@.hyland.com</Authors>
     <Description>HotPotato.OpenApi contains all of the OpenAPI functionality including the processor implementation that validates an HTTP request/response pair against a spec, a result collection, logic to find paths, and so on. Currently, we are using the packages NSwag, NJsonSchema, and NJsonSchema.Yaml to consume a spec and to validate the contained schemas.</Description>
-    <RepositoryUrl>https://bitbucket.hylandqa.net/projects/AUTOTEST/repos/hot-potato-.net/browse</RepositoryUrl>
+    <RepositoryUrl>https://bitbucket.hyland.com/projects/TATO/repos/hot-potato/browse</RepositoryUrl>
+    <Configurations>Debug;Release;ExcludeTests</Configurations>
   </PropertyGroup>
   
   <ItemGroup>

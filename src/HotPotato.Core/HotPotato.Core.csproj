@@ -1,12 +1,13 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFramework>netcoreapp2.1</TargetFramework>
+    <TargetFrameworks>netcoreapp2.1;netcoreapp3.1</TargetFrameworks>
     <PackageVersion></PackageVersion>
     <Title>HotPotato.Core</Title>
     <Authors>Test Automation Team | GRP-AutomatedTesting@.hyland.com</Authors>
     <Description>HotPotato.Core contains all of the models, HTTP logic, the proxy forwarder, and the interface for the proxy processor. This library is a dependency of HotPotato.AspNetCore.Middleware but will likely never need to be directly consumed.</Description>
-    <RepositoryUrl>https://bitbucket.hylandqa.net/projects/AUTOTEST/repos/hot-potato-.net/browse</RepositoryUrl>
+    <RepositoryUrl>https://bitbucket.hyland.com/projects/TATO/repos/hot-potato/browse</RepositoryUrl>
+    <Configurations>Debug;Release;ExcludeTests</Configurations>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
@@ -15,7 +16,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Microsoft.AspNetCore.Hosting" Version="2.2.0" />
+    <PackageReference Include="Microsoft.AspNetCore.Hosting" Version="2.2.7" />
     <PackageReference Include="Microsoft.AspNetCore.Http" Version="2.2.2" />
     <PackageReference Include="Microsoft.Extensions.Logging" Version="2.2.0" />
     <PackageReference Include="System.Net.Primitives" Version="4.3.0" />

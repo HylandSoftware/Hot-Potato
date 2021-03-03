@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Hosting;
 using Microsoft.AspNetCore.TestHost;
 using System;
 using System.Collections.Generic;
@@ -49,11 +50,11 @@ namespace HotPotato.TestServ.Test
                 {
                     logging.AddConfiguration(hostingContext.Configuration.GetSection("Logging"));
                     logging.AddConsole();
-                    if (hostingContext.HostingEnvironment.IsDevelopment())
-                    {
-                        logging.AddDebug();
-                    }
-                })
+					if (hostingContext.HostingEnvironment.IsDevelopment())
+					{
+						logging.AddDebug();
+					}
+				})
                 .ConfigureServices(services =>
                 {
                     services.ConfigureMiddlewareServices(apiClient);

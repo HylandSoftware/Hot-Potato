@@ -184,25 +184,25 @@ namespace HotPotato.Core.Http
         }
 
         [Fact]
-        public void ToProxyRequest_SetsRemoteEndpoint()
+        public async void ToProxyRequest_SetsRemoteEndpoint()
         {
             MSHTTP.HttpRequest request = new DefaultHttpRequest(new MSHTTP.DefaultHttpContext());
             request.Method = "GET";
 
-            IHttpRequest result = HttpExtensions.ToProxyRequest(request, AValidUri);
+            IHttpRequest result = await HttpExtensions.ToProxyRequest(request, AValidUri);
 
             Assert.Equal(AValidUri, result.Uri.ToString());
         }
 
         [Fact]
-        public void ToProxyRequest_WithHeaders_SetsHeaders()
+        public async void ToProxyRequest_WithHeaders_SetsHeaders()
         {
             MSHTTP.HttpRequest request = new DefaultHttpRequest(new MSHTTP.DefaultHttpContext());
             request.Method = GET;
             request.Headers.Add(AValidKey, AValidHeaderValue);
             request.Headers.Add(AnotherValidKey, AValidHeaderValue);
 
-            IHttpRequest result = HttpExtensions.ToProxyRequest(request, AValidUri);
+            IHttpRequest result = await HttpExtensions.ToProxyRequest(request, AValidUri);
 
             Assert.NotNull(result.HttpHeaders);
             Assert.True(result.HttpHeaders.ContainsKey(AValidKey));
@@ -210,14 +210,14 @@ namespace HotPotato.Core.Http
         }
 
         [Fact]
-        public void ToProxyRequest_AppliesCustomHeadersToOnlyCustomHeaders()
+        public async void ToProxyRequest_AppliesCustomHeadersToOnlyCustomHeaders()
         {
             MSHTTP.HttpRequest request = new DefaultHttpRequest(new MSHTTP.DefaultHttpContext());
             request.Method = GET;
             request.Headers.Add(AValidKey, AValidHeaderValue);
             request.Headers.Add(AValidCustomHeaderKey, AValidCustomHeaderValue);
 
-            IHttpRequest result = HttpExtensions.ToProxyRequest(request, AValidUri);
+            IHttpRequest result = await HttpExtensions.ToProxyRequest(request, AValidUri);
 
             Assert.NotNull(result.HttpHeaders);
 
@@ -242,51 +242,50 @@ namespace HotPotato.Core.Http
                 request.SetupGet(r => r.Method).Returns(POST);
                 request.SetupGet(r => r.Body).Returns(contentStream);
 
-                IHttpRequest result = HttpExtensions.ToProxyRequest(request.Object, AValidUri);
+                IHttpRequest result = await HttpExtensions.ToProxyRequest(request.Object, AValidUri);
 
                 Assert.Equal(content, await result.Content.ReadAsByteArrayAsync());
             }
         }
 
         [Fact]
-        public void ToProxyRequest_MethodWithPayload_NoBody_DoesNotSetPayload()
+        public async void ToProxyRequest_MethodWithPayload_NoBody_DoesNotSetPayload()
         {
             MSHTTP.HttpRequest request = new DefaultHttpRequest(new MSHTTP.DefaultHttpContext());
             request.Method = POST;
 
-            IHttpRequest result = HttpExtensions.ToProxyRequest(request, AValidUri);
+            IHttpRequest result = await HttpExtensions.ToProxyRequest(request, AValidUri);
 
             Assert.Empty(result.Content.ReadAsByteArrayAsync().Result);
         }
 
         [Fact]
-        public void ToProxyRequest_MethodWithoutPayload_DoesNotSetPayload()
+        public async void ToProxyRequest_MethodWithoutPayload_DoesNotSetPayload()
         {
             MSHTTP.HttpRequest request = new DefaultHttpRequest(new MSHTTP.DefaultHttpContext());
             request.Method = GET;
 
-            IHttpRequest result = HttpExtensions.ToProxyRequest(request, AValidUri);
+            IHttpRequest result = await HttpExtensions.ToProxyRequest(request, AValidUri);
 
             Assert.Null(result.Content);
         }
 
-        [Fact]
-        public void ToProxyRequest_ThrowsArgumentNullExceptionWithMsHttpRequest()
-        {
-            MSHTTP.HttpRequest request = null;
-            Action subject = () => request.ToProxyRequest(null);
-            Assert.Throws<ArgumentNullException>(subject);
-        }
+		[Fact]
+		public void ToProxyRequest_ThrowsArgumentNullExceptionWithMsHttpRequest()
+		{
+			MSHTTP.HttpRequest request = null;
+			Assert.ThrowsAsync<ArgumentNullException>(async () => await request.ToProxyRequest(null));
+		}
 
-        [Fact]
-        public void ToProxyRequest_ThrowsArgumentNullExceptionWithRemoteEndpoint()
-        {
-            MSHTTP.HttpRequest request = Mock.Of<MSHTTP.HttpRequest>();
-            Action subject = () => request.ToProxyRequest(null);
-            Assert.Throws<ArgumentNullException>(subject);
-        }
+		[Fact]
+		public void ToProxyRequest_ThrowsArgumentNullExceptionWithRemoteEndpoint()
+		{
+			MSHTTP.HttpRequest request = Mock.Of<MSHTTP.HttpRequest>();
+			Action subject = async () => await request.ToProxyRequest(null);
+			Assert.ThrowsAsync<ArgumentNullException>(async () => await request.ToProxyRequest(null));
+		}
 
-        [Fact]
+		[Fact]
         public async Task ToProxyResponseAsync_SetsStatusCode()
         {
             HttpHeaders headers = new HttpHeaders();

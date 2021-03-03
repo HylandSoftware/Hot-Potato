@@ -29,14 +29,28 @@ namespace HotPotato.Core.Http.Default
             : this(HttpMethod.Get, uri)
         {
             this.Uri = uri;
-            this.DecodedPath = HttpUtility.UrlDecode(uri.AbsolutePath);
+            if (uri.IsAbsoluteUri)
+			{
+                this.DecodedPath = HttpUtility.UrlDecode(uri.AbsolutePath);
+            }
+			else
+			{
+                this.DecodedPath = HttpUtility.UrlDecode(uri.OriginalString);
+            }
         }
 
         public HttpRequest(HttpMethod method, Uri uri)
         {
             this.Method = method;
             this.Uri = uri;
-            this.DecodedPath = HttpUtility.UrlDecode(uri.AbsolutePath);
+            if (uri.IsAbsoluteUri)
+            {
+                this.DecodedPath = HttpUtility.UrlDecode(uri.AbsolutePath);
+            }
+            else
+            {
+                this.DecodedPath = HttpUtility.UrlDecode(uri.OriginalString);
+            }
             this.HttpHeaders = new HttpHeaders();
             this.CustomHeaders = new HttpHeaders();
             this.requestContent = new HttpRequestMessage();

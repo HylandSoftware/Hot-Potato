@@ -2,7 +2,7 @@
 
   <PropertyGroup>
     <OutputType>Exe</OutputType>
-    <TargetFramework>netcoreapp2.1</TargetFramework>
+    <TargetFrameworks>netcoreapp2.1;netcoreapp3.1</TargetFrameworks>
     <PackAsTool>true</PackAsTool>
     <ToolCommandName>HotPotato</ToolCommandName>
     <PackageVersion></PackageVersion>
@@ -13,7 +13,8 @@
 
       hotpotato --RemoteEndpoint http://hyland.io/my/api --SpecLocation http://hyland.io/my/spec.json
     </Description>
-    <RepositoryUrl>https://bitbucket.hylandqa.net/projects/AUTOTEST/repos/hot-potato-.net/browse</RepositoryUrl>
+    <RepositoryUrl>https://bitbucket.hyland.com/projects/TATO/repos/hot-potato/browse</RepositoryUrl>
+    <Configurations>Debug;Release;ExcludeTests</Configurations>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
@@ -23,7 +24,7 @@
 
   <ItemGroup>
     <PackageReference Include="Microsoft.AspNetCore.Buffering" Version="0.2.2" />
-    <PackageReference Include="Microsoft.AspNetCore.Hosting" Version="2.2.0" />
+    <PackageReference Include="Microsoft.AspNetCore.Hosting" Version="2.2.7" />
     <PackageReference Include="Microsoft.AspNetCore.Mvc" Version="2.2.0" />
     <PackageReference Include="Microsoft.AspNetCore.Mvc.Core" Version="2.2.5" />
     <PackageReference Include="Microsoft.AspNetCore.Mvc.Formatters.Json" Version="2.2.0" />

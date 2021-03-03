@@ -7,35 +7,35 @@ using System.Threading.Tasks;
 
 namespace HotPotato.Core.Proxy.Default
 {
-    public class Proxy : IProxy
-    {
+	public class Proxy : IProxy
+	{
 
-        private IHttpClient Client { get; }
-        private ILogger Logger { get; }
-        private IProcessor Processor { get; }
+		private IHttpClient Client { get; }
+		private ILogger Logger { get; }
+		private IProcessor Processor { get; }
 
-        public Proxy(IHttpClient client, ILogger<Proxy> logger, IProcessor processor)
-        {
-            _ = client ?? throw Exceptions.ArgumentNull(nameof(client));
-            _ = logger ?? throw Exceptions.ArgumentNull(nameof(logger));
-            _ = processor ?? throw Exceptions.ArgumentNull(nameof(processor));
+		public Proxy(IHttpClient client, ILogger<Proxy> logger, IProcessor processor)
+		{
+			_ = client ?? throw Exceptions.ArgumentNull(nameof(client));
+			_ = logger ?? throw Exceptions.ArgumentNull(nameof(logger));
+			_ = processor ?? throw Exceptions.ArgumentNull(nameof(processor));
 
-            this.Client = client;
-            this.Logger = logger;
-            this.Processor = processor;
-        }
+			this.Client = client;
+			this.Logger = logger;
+			this.Processor = processor;
+		}
 
-        public async Task ProcessAsync(string remoteEndpoint, HttpRequest requestIn, HttpResponse responseOut)
-        {
-            using (IHttpRequest request = requestIn.ToProxyRequest(remoteEndpoint))
-            {
-                IHttpResponse response = await this.Client.SendAsync(request);
-                await response.ToProxyResponseAsync(responseOut);
-                using (HttpPair pair = new HttpPair(request, response))
-                {
-                    this.Processor.Process(pair);
-                }
-            }
-        }
-    }
+		public async Task ProcessAsync(string remoteEndpoint, HttpRequest requestIn, HttpResponse responseOut)
+		{
+			using (IHttpRequest request = await requestIn.ToProxyRequest(remoteEndpoint))
+			{
+				IHttpResponse response = await this.Client.SendAsync(request);
+				await response.ToProxyResponseAsync(responseOut);
+				using (HttpPair pair = new HttpPair(request, response))
+				{
+					this.Processor.Process(pair);
+				}
+			}
+		}
+	}
 }

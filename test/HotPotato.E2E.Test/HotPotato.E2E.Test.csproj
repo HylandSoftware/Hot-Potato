@@ -1,15 +1,17 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFramework>netcoreapp2.1</TargetFramework>
+    <TargetFrameworks>netcoreapp2.1;netcoreapp3.1</TargetFrameworks>
 
     <IsPackable>false</IsPackable>
+
+    <Configurations>Debug;Release;ExcludeTests</Configurations>
   </PropertyGroup>
 
   <ItemGroup>
     <PackageReference Include="JUnitTestLogger" Version="1.1.0" />
     <PackageReference Include="Microsoft.AspNetCore.Buffering" Version="0.2.2" />
-    <PackageReference Include="Microsoft.AspNetCore.Hosting" Version="2.2.0" />
+    <PackageReference Include="Microsoft.AspNetCore.Hosting" Version="2.2.7" />
     <PackageReference Include="Microsoft.AspNetCore.Mvc" Version="2.2.0" />
     <PackageReference Include="Microsoft.AspNetCore.Mvc.Core" Version="2.2.5" />
     <PackageReference Include="Microsoft.AspNetCore.Mvc.Formatters.Json" Version="2.2.0" />

@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Hosting;
 
 namespace HotPotato.Api
 {
@@ -16,17 +17,25 @@ namespace HotPotato.Api
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddMvc();
+            services.AddControllers().AddNewtonsoftJson();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, IHostingEnvironment env)
+        public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
-            if (env.IsDevelopment())
-            {
-                app.UseDeveloperExceptionPage();
-            }
+			if (env.IsDevelopment())
+			{
+				app.UseDeveloperExceptionPage();
+			}
 
-            app.UseMvc();
+			app.UseStaticFiles();
+            app.UseRouting();
+            app.UseCors();
+
+            app.UseEndpoints(endpoints =>
+            {
+                endpoints.MapControllers();
+            });
         }
     }
 }
