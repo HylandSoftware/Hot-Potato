@@ -28,7 +28,7 @@ spec:
     - cat
     tty: true
   - name: newman
-    image: postman/newman_alpine33
+    image: docker.artifactory.onbase.net/postman/newman_alpine33
     imagePullPolicy: IfNotPresent
     command:
     - cat
