@@ -1,5 +1,4 @@
-﻿
-using HotPotato.OpenApi.Models;
+﻿using HotPotato.OpenApi.Models;
 using NJsonSchema;
 using Xunit;
 
@@ -10,6 +9,10 @@ namespace HotPotato.OpenApi.Validators
         private const string AValidBody = "{'foo': '1'}";
         private const string AnInvalidBody = "{'foo': 'abc'}";
         private const string AValidSchema = @"{'type': 'integer'}";
+
+        private const string AValidNullableBody = "{'foo': null}";
+        //nullable in yaml converts to x-nullable in json
+        private const string AValidNullableSchema = @"{'properties':{'foo':{'type':'integer','x-nullable':true}}}";
 
         [Fact]
         public void JsonBodyValidator_ReturnsTrueWithValid()
@@ -36,5 +39,29 @@ namespace HotPotato.OpenApi.Validators
         }
 
         //the cases for null body and null schema will now be addressed by the ContentValidator
+
+        [Fact]
+        public void JsonBodyValidator_ReturnsTrueWithValidNullable()
+        {
+            JsonSchema4 schema = JsonSchema4.FromJsonAsync(AValidNullableSchema).Result;
+            JsonBodyValidator subject = new JsonBodyValidator(AValidNullableBody);
+
+            IValidationResult result = subject.Validate(schema);
+
+            Assert.True(result.Valid);
+        }
+
+        [Fact]
+        public void JsonBodyValidator_ReturnsFalseWithUnexpectedNullable()
+        {
+            JsonSchema4 schema = JsonSchema4.FromJsonAsync(AValidSchema).Result;
+            JsonBodyValidator subject = new JsonBodyValidator(AValidNullableBody);
+
+            InvalidResult result = (InvalidResult)subject.Validate(schema);
+
+            Assert.False(result.Valid);
+            Assert.Equal(Reason.InvalidBody, result.Reason);
+            Assert.Equal(ValidationErrorKind.IntegerExpected, result.Errors[0].Kind);
+        }
     }
 }

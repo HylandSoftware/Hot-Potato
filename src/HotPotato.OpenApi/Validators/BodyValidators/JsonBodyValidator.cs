@@ -1,5 +1,6 @@
-﻿using HotPotato.OpenApi.Models;
-using HotPotato.Core.Http;
+﻿using HotPotato.OpenApi.Filters;
+using HotPotato.OpenApi.Models;
+using Newtonsoft.Json;
 using NJsonSchema;
 using System.Collections.Generic;
 
@@ -15,13 +16,18 @@ namespace HotPotato.OpenApi.Validators
         public override IValidationResult Validate(JsonSchema4 schema)
         {
             ICollection<NJsonSchema.Validation.ValidationError> errors = schema.Validate(BodyString);
-            if (errors == null || errors.Count == 0)
+            List<ValidationError> errList = errors.ToValidationErrorList();
+            List<IValidationErrorFilter> filters = FilterFactory.CreateApplicableFilters(schema, BodyString);
+            foreach (IValidationErrorFilter filter in filters)
+            {
+                filter.Filter(errList);
+            }
+            if (errList.Count == 0)
             {
                 return new ValidResult();
             }
             else
-            {
-                List<ValidationError> errList = errors.ToValidationErrorList();
+			{
                 ValidationError[] errorArr = errList.ToArray();
                 return new InvalidResult(Reason.InvalidBody, errorArr);
             }
