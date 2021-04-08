@@ -16,7 +16,7 @@ namespace HotPotato.OpenApi.Validators
             Headers = headers;
         }
 
-        public IValidationResult Validate(SwaggerResponse swagResp)
+        public IValidationResult Validate(OpenApiResponse swagResp)
         {
             if (swagResp.Headers != null && swagResp.Headers.Count > 0)
             {
@@ -35,7 +35,7 @@ namespace HotPotato.OpenApi.Validators
                             // HACK - Need to convert to JSON because that's how NJsonSchema likes it.
                             string jValue = JsonConvert.SerializeObject(value);
 
-                            JsonSchema4 swagHeaderSchema = null;
+                            JsonSchema swagHeaderSchema = null;
                             if (swagHeader.Value?.ActualSchema != null)
                             {
                                 swagHeaderSchema = GetHeaderSchema(swagHeader.Value.ActualSchema);
@@ -68,13 +68,13 @@ namespace HotPotato.OpenApi.Validators
         /// </summary>
         /// <param name="schema"></param>
         /// <returns></returns>
-        private JsonSchema4 GetHeaderSchema(JsonSchema4 schema)
+        private JsonSchema GetHeaderSchema(JsonSchema schema)
         {
             if (schema.ExtensionData != null &&
                 schema.ExtensionData.ContainsKey("schema") 
                 && schema.ExtensionData["schema"] != null)
             {
-                return (JsonSchema4)schema.ExtensionData["schema"];
+                return (JsonSchema)schema.ExtensionData["schema"];
             }
             else
             {

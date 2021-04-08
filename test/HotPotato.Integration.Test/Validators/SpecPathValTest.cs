@@ -17,7 +17,7 @@ namespace HotPotato.OpenApi.Validators
             ServiceProvider provider = GetServiceProvider(specPath);
 
             ISpecificationProvider specPro = provider.GetService<ISpecificationProvider>();
-            SwaggerDocument swagDoc = specPro.GetSpecDocument();
+            OpenApiDocument swagDoc = specPro.GetSpecDocument();
 
             ResultCollector resColl = new ResultCollector();
 
@@ -34,7 +34,7 @@ namespace HotPotato.OpenApi.Validators
             ServiceProvider provider = GetServiceProvider(specPath);
 
             ISpecificationProvider specPro = provider.GetService<ISpecificationProvider>();
-            SwaggerDocument swagDoc = specPro.GetSpecDocument();
+            OpenApiDocument swagDoc = specPro.GetSpecDocument();
 
             ResultCollector resColl = new ResultCollector();
 

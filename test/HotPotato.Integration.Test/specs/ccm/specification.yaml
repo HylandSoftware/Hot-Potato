@@ -248,8 +248,8 @@ paths:
                 schema:
                   $ref: '#/components/schemas/SmsError'
         '404':
-          description: "Message with the specified id was not found for that
-          account"
+          description: 'Message with the specified id was not found for that
+          account'
           content:
               application/problem+json:
                 schema:

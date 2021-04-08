@@ -7,14 +7,14 @@ namespace HotPotato.OpenApi.Validators
     internal class PathValidator
     {
         public string Path { get; }
-        public SwaggerPathItem Result { get; private set; }
+        public OpenApiPathItem Result { get; private set; }
 
         public PathValidator(string path)
         {
             Path = path ?? string.Empty;
         }
 
-        public bool Validate(SwaggerDocument swagDoc)
+        public bool Validate(OpenApiDocument swagDoc)
         {
             if (string.IsNullOrEmpty(Path))
             {

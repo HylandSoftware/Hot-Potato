@@ -4,6 +4,6 @@ namespace HotPotato.OpenApi.SpecificationProvider
 {
     public interface ISpecificationProvider
     {
-        SwaggerDocument GetSpecDocument();
+        OpenApiDocument GetSpecDocument();
     }
 }

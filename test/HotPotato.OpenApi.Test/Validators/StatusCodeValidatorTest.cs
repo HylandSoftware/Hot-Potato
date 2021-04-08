@@ -13,8 +13,8 @@ namespace HotPotato.OpenApi.Validators
         [Fact]
         public void StatCodeValidator_GeneratesResponse()
         {
-            SwaggerOperation swagOp = new SwaggerOperation();
-            SwaggerResponse expected = Mock.Of<SwaggerResponse>();
+            OpenApiOperation swagOp = new OpenApiOperation();
+            OpenApiResponse expected = Mock.Of<OpenApiResponse>();
             swagOp.Responses.Add("200", expected);
 
             StatusCodeValidator subject = new StatusCodeValidator(HttpStatusCode.OK, "");
@@ -25,8 +25,8 @@ namespace HotPotato.OpenApi.Validators
         [Fact]
         public void StatCodeValidator_ReturnsTrueWithNoContentExpected()
         {
-            SwaggerOperation swagOp = new SwaggerOperation();
-            SwaggerResponse expected = Mock.Of<SwaggerResponse>();
+            OpenApiOperation swagOp = new OpenApiOperation();
+            OpenApiResponse expected = Mock.Of<OpenApiResponse>();
             swagOp.Responses.Add("204", expected);
 
             StatusCodeValidator subject = new StatusCodeValidator(HttpStatusCode.NoContent, "");
@@ -37,8 +37,8 @@ namespace HotPotato.OpenApi.Validators
         [Fact]
         public void StatCodeValidator_ReturnsFalseWithMissingStatCode()
         {
-            SwaggerOperation swagOp = new SwaggerOperation();
-            swagOp.Responses.Add("400", Mock.Of<SwaggerResponse>());
+            OpenApiOperation swagOp = new OpenApiOperation();
+            swagOp.Responses.Add("400", Mock.Of<OpenApiResponse>());
 
             StatusCodeValidator subject = new StatusCodeValidator(HttpStatusCode.OK, "");
 
@@ -52,8 +52,8 @@ namespace HotPotato.OpenApi.Validators
         [InlineData("304", HttpStatusCode.NotModified)]
         public void StatCodeValidator_ReturnsFalseWithUnexpectedBody(string NoContentStatusCode, HttpStatusCode StatusCode)
         {
-            SwaggerOperation swagOp = new SwaggerOperation();
-            swagOp.Responses.Add(NoContentStatusCode, Mock.Of<SwaggerResponse>());
+            OpenApiOperation swagOp = new OpenApiOperation();
+            swagOp.Responses.Add(NoContentStatusCode, Mock.Of<OpenApiResponse>());
 
             StatusCodeValidator subject = new StatusCodeValidator(StatusCode, "{'perfectSquare': '4'}");
 
@@ -62,9 +62,9 @@ namespace HotPotato.OpenApi.Validators
         }
 
         [Fact]
-        public void StatCodeValidator_ReturnsFalseWithNullSwaggerResponse()
+        public void StatCodeValidator_ReturnsFalseWithNullOpenApiResponse()
         {
-            SwaggerOperation swagOp = new SwaggerOperation();
+            OpenApiOperation swagOp = new OpenApiOperation();
 
             StatusCodeValidator subject = new StatusCodeValidator(HttpStatusCode.Ambiguous, "{'perfectSquare': '49'}");
 

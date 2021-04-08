@@ -187,6 +187,10 @@ namespace HotPotato.OpenApi.Validators
         /// Content-Type not found in spec - also entails missing schemas if an unexpected body is returned
         /// that is not covered under the expected No Content status code logic
         /// </summary>
-        MissingContentType
+        MissingContentType,
+        /// <summary>
+        /// A uuid is expected
+        /// </summary>
+        UuidExpected
     }
 }

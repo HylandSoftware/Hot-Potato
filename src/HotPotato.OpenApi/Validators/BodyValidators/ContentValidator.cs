@@ -18,7 +18,7 @@ namespace HotPotato.OpenApi.Validators
         /// In the case of an empty schema in the spec, an empty response body should be expected
         /// However, if one is empty and the other is populated, then an error should be thrown
         /// </summary>
-        public IValidationResult Validate(JsonSchema4 schema)
+        public IValidationResult Validate(JsonSchema schema)
         {
             if (schema == null && string.IsNullOrWhiteSpace(BodyString))
             {

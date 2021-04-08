@@ -7,7 +7,7 @@ namespace HotPotato.OpenApi.Validators
     internal class MethodValidator
     {
         public string Method { get; }
-        public SwaggerOperation Result { get; private set; }
+        public OpenApiOperation Result { get; private set; }
         
         public MethodValidator(HttpMethod method)
         {
@@ -21,7 +21,7 @@ namespace HotPotato.OpenApi.Validators
             }
         }
 
-        public bool Validate(SwaggerPathItem swagPath)
+        public bool Validate(OpenApiPathItem swagPath)
         {
             if (swagPath.ContainsKey(Method))
             {
@@ -39,21 +39,21 @@ namespace HotPotato.OpenApi.Validators
             switch (method)
             {
                 case HttpVerbs.DELETE:
-                    return SwaggerOperationMethod.Delete;
+                    return OpenApiOperationMethod.Delete;
                 case HttpVerbs.GET:
-                    return SwaggerOperationMethod.Get;
+                    return OpenApiOperationMethod.Get;
                 case HttpVerbs.OPTIONS:
-                    return SwaggerOperationMethod.Options;
+                    return OpenApiOperationMethod.Options;
                 case HttpVerbs.PATCH:
-                    return SwaggerOperationMethod.Patch;
+                    return OpenApiOperationMethod.Patch;
                 case HttpVerbs.POST:
-                    return SwaggerOperationMethod.Post;
+                    return OpenApiOperationMethod.Post;
                 case HttpVerbs.PUT:
-                    return SwaggerOperationMethod.Put;
+                    return OpenApiOperationMethod.Put;
                 case HttpVerbs.TRACE:
-                    return SwaggerOperationMethod.Trace;
+                    return OpenApiOperationMethod.Trace;
                 default:
-                    return SwaggerOperationMethod.Undefined;
+                    return OpenApiOperationMethod.Undefined;
             }
         }
     }

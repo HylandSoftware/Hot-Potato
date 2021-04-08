@@ -12,7 +12,7 @@ namespace HotPotato.OpenApi.Validators
             BodyString = bodyString;
         }
 
-        public override IValidationResult Validate(JsonSchema4 schema)
+        public override IValidationResult Validate(JsonSchema schema)
         {
             BodyString = BodyString.ToJsonText();
 

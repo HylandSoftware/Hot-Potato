@@ -9,6 +9,6 @@ namespace HotPotato.OpenApi.Validators
         public string BodyString { get; protected set; }
         public HttpContentType ContentType { get; protected set; }
 
-        public abstract IValidationResult Validate(JsonSchema4 schema);
+        public abstract IValidationResult Validate(JsonSchema schema);
     }
 }

@@ -13,7 +13,7 @@ namespace HotPotato.OpenApi.Validators
             BodyString = bodyString;
         }
 
-        public override IValidationResult Validate(JsonSchema4 schema)
+        public override IValidationResult Validate(JsonSchema schema)
         {
             var xmlErrList = schema.ValidateXml(BodyString);
             if (xmlErrList.Count == 0)

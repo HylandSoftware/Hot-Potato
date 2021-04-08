@@ -21,7 +21,7 @@ namespace HotPotato.OpenApi.Validators
         [Fact]
         public void ValidateXml_ReturnsEmptyErrorListWithValidXml()
         {
-            JsonSchema4 testJson = new JsonSchema4();
+            JsonSchema testJson = new JsonSchema();
             List<ValidationError> result = testJson.ValidateXml(AValidXml);
             Assert.Empty(result);
         }
@@ -29,7 +29,7 @@ namespace HotPotato.OpenApi.Validators
         [Fact]
         public void ValidateXml_ReturnsErrorWithInvalidXml()
         {
-            JsonSchema4 testJson = new JsonSchema4();
+            JsonSchema testJson = new JsonSchema();
             List<ValidationError> result = testJson.ValidateXml(AMalformedXml);
             Assert.Equal(ValidationErrorKind.InvalidXml, result.ElementAt(0).Kind);
         }

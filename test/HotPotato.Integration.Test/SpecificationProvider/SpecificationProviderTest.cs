@@ -15,7 +15,7 @@ namespace HotPotato.OpenApi.SpecificationProvider
             ServiceProvider provider = GetServiceProvider(SpecPath("specs/keyword/", "specification.yaml"));
 
             ISpecificationProvider subject = provider.GetService<ISpecificationProvider>();
-            SwaggerDocument result = subject.GetSpecDocument();
+            OpenApiDocument result = subject.GetSpecDocument();
 
             Assert.Equal(result.DocumentPath, SpecPath("specs/keyword/", "specification.yaml"));
         }

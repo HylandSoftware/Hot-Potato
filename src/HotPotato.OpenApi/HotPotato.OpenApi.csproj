@@ -17,10 +17,10 @@
   
   <ItemGroup>
     <PackageReference Include="Newtonsoft.Json" Version="11.0.2" />
-    <PackageReference Include="NJsonSchema" Version="9.13.22" />
-    <PackageReference Include="NJsonSchema.Yaml" Version="9.13.22" />
-    <PackageReference Include="NSwag.Core" Version="12.0.15" />
-    <PackageReference Include="NSwag.Core.Yaml" Version="12.0.15" />
+    <PackageReference Include="NJsonSchema" Version="10.3.11" />
+    <PackageReference Include="NJsonSchema.Yaml" Version="10.3.11" />
+    <PackageReference Include="NSwag.Core" Version="13.10.8" />
+    <PackageReference Include="NSwag.Core.Yaml" Version="13.10.8" />
   </ItemGroup>
   
   <ItemGroup>

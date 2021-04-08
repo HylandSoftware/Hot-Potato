@@ -17,7 +17,7 @@ namespace HotPotato.OpenApi.Validators
         [Fact]
         public void JsonBodyValidator_ReturnsTrueWithValid()
         {
-            JsonSchema4 schema = JsonSchema4.CreateAnySchema();
+            JsonSchema schema = JsonSchema.CreateAnySchema();
             JsonBodyValidator subject = new JsonBodyValidator(AValidBody);
 
             IValidationResult result = subject.Validate(schema);
@@ -28,7 +28,7 @@ namespace HotPotato.OpenApi.Validators
         [Fact]
         public void JsonBodyValidator_ReturnsFalseWithInvalid()
         {
-            JsonSchema4 schema = JsonSchema4.FromJsonAsync(AValidSchema).Result;
+            JsonSchema schema = JsonSchema.FromJsonAsync(AValidSchema).Result;
             JsonBodyValidator subject = new JsonBodyValidator(AnInvalidBody);
 
             InvalidResult result = (InvalidResult)subject.Validate(schema);
@@ -43,7 +43,7 @@ namespace HotPotato.OpenApi.Validators
         [Fact]
         public void JsonBodyValidator_ReturnsTrueWithValidNullable()
         {
-            JsonSchema4 schema = JsonSchema4.FromJsonAsync(AValidNullableSchema).Result;
+            JsonSchema schema = JsonSchema.FromJsonAsync(AValidNullableSchema).Result;
             JsonBodyValidator subject = new JsonBodyValidator(AValidNullableBody);
 
             IValidationResult result = subject.Validate(schema);
@@ -54,7 +54,7 @@ namespace HotPotato.OpenApi.Validators
         [Fact]
         public void JsonBodyValidator_ReturnsFalseWithUnexpectedNullable()
         {
-            JsonSchema4 schema = JsonSchema4.FromJsonAsync(AValidSchema).Result;
+            JsonSchema schema = JsonSchema.FromJsonAsync(AValidSchema).Result;
             JsonBodyValidator subject = new JsonBodyValidator(AValidNullableBody);
 
             InvalidResult result = (InvalidResult)subject.Validate(schema);

@@ -11,8 +11,8 @@ namespace HotPotato.OpenApi.Validators
         [Fact]
         public void PathValidator_GeneratesPathItem()
         {
-            SwaggerDocument swagDoc = new SwaggerDocument();
-            SwaggerPathItem expected = Mock.Of<SwaggerPathItem>();
+            OpenApiDocument swagDoc = new OpenApiDocument();
+            OpenApiPathItem expected = Mock.Of<OpenApiPathItem>();
             swagDoc.Paths.Add("/workflow/life-cycles", expected);
 
             PathValidator subject = new PathValidator(AValidEndpoint);
@@ -23,8 +23,8 @@ namespace HotPotato.OpenApi.Validators
         [Fact]
         public void PathValidator_ReturnsFalseWithMissingPath()
         {
-            SwaggerDocument swagDoc = new SwaggerDocument();
-            swagDoc.Paths.Add("/deficiencies/deficiencies", Mock.Of<SwaggerPathItem>());
+            OpenApiDocument swagDoc = new OpenApiDocument();
+            swagDoc.Paths.Add("/deficiencies/deficiencies", Mock.Of<OpenApiPathItem>());
 
             PathValidator subject = new PathValidator(AValidEndpoint);
 
@@ -34,8 +34,8 @@ namespace HotPotato.OpenApi.Validators
         [Fact]
         public void PathValidator_ReturnsFalseWithNullPath()
         {
-            SwaggerDocument swagDoc = new SwaggerDocument();
-            swagDoc.Paths.Add("/deficiencies/deficiencies", Mock.Of<SwaggerPathItem>());
+            OpenApiDocument swagDoc = new OpenApiDocument();
+            swagDoc.Paths.Add("/deficiencies/deficiencies", Mock.Of<OpenApiPathItem>());
 
             PathValidator subject = new PathValidator(null);
 
@@ -45,7 +45,7 @@ namespace HotPotato.OpenApi.Validators
         [Fact]
         public void PathValidator_ReturnsFalseWithNullSwaggerPath()
         {
-            SwaggerDocument swagDoc = new SwaggerDocument();
+            OpenApiDocument swagDoc = new OpenApiDocument();
 
             PathValidator subject = new PathValidator(AValidEndpoint);
 

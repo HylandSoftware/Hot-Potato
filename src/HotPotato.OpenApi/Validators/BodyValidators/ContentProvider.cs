@@ -6,9 +6,9 @@ namespace HotPotato.OpenApi.Validators
 {
     internal static class ContentProvider
     {
-        public static JsonSchema4 GetSchema(SwaggerResponse swagResp, string contentType)
+        public static JsonSchema GetSchema(OpenApiResponse swagResp, string contentType)
         {
-            JsonSchema4 specBody = null;
+            JsonSchema specBody = null;
             //application/problem+json doesn't generate the Content dict used below
             if (contentType.Contains("problem"))
             {

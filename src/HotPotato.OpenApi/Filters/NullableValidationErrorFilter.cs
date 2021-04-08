@@ -7,10 +7,10 @@ namespace HotPotato.OpenApi.Filters
 {
 	public class NullableValidationErrorFilter : IValidationErrorFilter
 	{
-		private readonly JsonSchema4 schema;
+		private readonly JsonSchema schema;
 		private readonly string body;
 
-		public NullableValidationErrorFilter(JsonSchema4 Schema, string Body)
+		public NullableValidationErrorFilter(JsonSchema Schema, string Body)
 		{
 			schema = Schema;
 			body = Body;

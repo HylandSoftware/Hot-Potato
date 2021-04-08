@@ -49,7 +49,7 @@ namespace HotPotato.OpenApi.Validators
                 using (HttpPair testPair = new HttpPair(testRequest, testResponse))
                 {
                     ISpecificationProvider specPro = provider.GetService<ISpecificationProvider>();
-                    SwaggerDocument swagDoc = specPro.GetSpecDocument();
+                    OpenApiDocument swagDoc = specPro.GetSpecDocument();
 
                     IProcessor processor = provider.GetService<IProcessor>();
                     processor.Process(testPair);
@@ -86,7 +86,7 @@ namespace HotPotato.OpenApi.Validators
                 using (HttpPair testPair = new HttpPair(testRequest, testResponse))
                 {
                     ISpecificationProvider specPro = provider.GetService<ISpecificationProvider>();
-                    SwaggerDocument swagDoc = specPro.GetSpecDocument();
+                    OpenApiDocument swagDoc = specPro.GetSpecDocument();
 
                     IProcessor processor = provider.GetService<IProcessor>();
                     processor.Process(testPair);
@@ -124,7 +124,7 @@ namespace HotPotato.OpenApi.Validators
                 using (HttpPair testPair = new HttpPair(testRequest, testResponse))
                 {
                     ISpecificationProvider specPro = provider.GetService<ISpecificationProvider>();
-                    SwaggerDocument swagDoc = specPro.GetSpecDocument();
+                    OpenApiDocument swagDoc = specPro.GetSpecDocument();
 
                     IProcessor processor = provider.GetService<IProcessor>();
                     processor.Process(testPair);
@@ -160,7 +160,7 @@ namespace HotPotato.OpenApi.Validators
                 using (HttpPair testPair = new HttpPair(testRequest, testResponse))
                 {
                     ISpecificationProvider specPro = provider.GetService<ISpecificationProvider>();
-                    SwaggerDocument swagDoc = specPro.GetSpecDocument();
+                    OpenApiDocument swagDoc = specPro.GetSpecDocument();
 
                     IProcessor processor = provider.GetService<IProcessor>();
                     processor.Process(testPair);
@@ -194,7 +194,7 @@ namespace HotPotato.OpenApi.Validators
                 using (HttpPair testPair = new HttpPair(testRequest, testResponse))
                 {
                     ISpecificationProvider specPro = provider.GetService<ISpecificationProvider>();
-                    SwaggerDocument swagDoc = specPro.GetSpecDocument();
+                    OpenApiDocument swagDoc = specPro.GetSpecDocument();
 
                     IProcessor processor = provider.GetService<IProcessor>();
                     processor.Process(testPair);
@@ -227,7 +227,7 @@ namespace HotPotato.OpenApi.Validators
                 using (HttpPair testPair = new HttpPair(testRequest, testResponse))
                 {
                     ISpecificationProvider specPro = provider.GetService<ISpecificationProvider>();
-                    SwaggerDocument swagDoc = specPro.GetSpecDocument();
+                    OpenApiDocument swagDoc = specPro.GetSpecDocument();
 
                     IProcessor processor = provider.GetService<IProcessor>();
                     processor.Process(testPair);

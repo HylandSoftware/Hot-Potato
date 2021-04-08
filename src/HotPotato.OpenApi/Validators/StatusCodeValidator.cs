@@ -12,7 +12,7 @@ namespace HotPotato.OpenApi.Validators
         public string BodyString { get; }
 
         public Reason FailReason { get; private set; }
-        public SwaggerResponse Result { get; private set; }
+        public OpenApiResponse Result { get; private set; }
 
         private const string NoContentStatusCode = "204";
 
@@ -22,7 +22,7 @@ namespace HotPotato.OpenApi.Validators
             BodyString = bodyString;
         }
 
-        public bool Validate(SwaggerOperation swagOp)
+        public bool Validate(OpenApiOperation swagOp)
         {
             string statCodeStr = StatusCode.ToString();
             if (swagOp.Responses.ContainsKey(statCodeStr))

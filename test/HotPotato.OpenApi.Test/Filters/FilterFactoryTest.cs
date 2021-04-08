@@ -14,7 +14,7 @@ namespace HotPotato.OpenApi.Filters
         [Fact]
         public void CreateApplicableFilters_CreatesNullableFilterWithApplicableBody()
 		{
-            JsonSchema4 schema = JsonSchema4.CreateAnySchema();
+            JsonSchema schema = JsonSchema.CreateAnySchema();
             List<IValidationErrorFilter> errList = FilterFactory.CreateApplicableFilters(schema, AValidNullableBody);
 
             Assert.True(errList.ElementAt(0) is NullableValidationErrorFilter);
@@ -23,7 +23,7 @@ namespace HotPotato.OpenApi.Filters
         [Fact]
         public void CreateApplicableFilters_CreatesEmptyListWithStandardBody()
         {
-            JsonSchema4 schema = JsonSchema4.CreateAnySchema();
+            JsonSchema schema = JsonSchema.CreateAnySchema();
             
             List<IValidationErrorFilter> errList = FilterFactory.CreateApplicableFilters(schema, AValidBody);
 

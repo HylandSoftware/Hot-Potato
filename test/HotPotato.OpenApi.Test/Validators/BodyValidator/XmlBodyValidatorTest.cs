@@ -13,7 +13,7 @@ namespace HotPotato.OpenApi.Validators
         [Fact]
         public void XmlBodyValidator_ReturnsTrueWithValid()
         {
-            JsonSchema4 schema = JsonSchema4.CreateAnySchema();
+            JsonSchema schema = JsonSchema.CreateAnySchema();
             XmlBodyValidator subject = new XmlBodyValidator(AValidBody);
 
             IValidationResult result = subject.Validate(schema);
@@ -24,7 +24,7 @@ namespace HotPotato.OpenApi.Validators
         [Fact]
         public void XmlBodyValidator_ReturnsFalseWithInvalid()
         {
-            JsonSchema4 schema = JsonSchema4.CreateAnySchema();
+            JsonSchema schema = JsonSchema.CreateAnySchema();
             XmlBodyValidator subject = new XmlBodyValidator(AnInvalidBody);
 
             InvalidResult result = (InvalidResult)subject.Validate(schema);

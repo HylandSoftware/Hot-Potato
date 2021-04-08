@@ -14,12 +14,12 @@ namespace HotPotato.OpenApi.Validators
         [Fact]
         public void GetSchema_ReturnsBodyWithValidContent()
         {
-            JsonSchema4 expected = JsonSchema4.CreateAnySchema();
+            JsonSchema expected = JsonSchema.CreateAnySchema();
 
-            SwaggerResponse swagResp = new SwaggerResponse();
+            OpenApiResponse swagResp = new OpenApiResponse();
             swagResp.Schema = expected;
 
-            JsonSchema4 result = ContentProvider.GetSchema(swagResp, AValidJsonContentType);
+            JsonSchema result = ContentProvider.GetSchema(swagResp, AValidJsonContentType);
 
             Assert.Equal(expected, result);
         }
@@ -27,15 +27,15 @@ namespace HotPotato.OpenApi.Validators
         [Fact]
         public void GetSchema_ReturnsBodyWithValidProblemContent()
         {
-            SwaggerResponse swagResp = new SwaggerResponse();
+            OpenApiResponse swagResp = new OpenApiResponse();
 
-            JsonSchema4 expected = JsonSchema4.CreateAnySchema();
+            JsonSchema expected = JsonSchema.CreateAnySchema();
             OpenApiMediaType mediaType = new OpenApiMediaType();
             mediaType.Schema = expected;
 
             swagResp.Content.Add(AValidProblemContentType, mediaType);
 
-            JsonSchema4 result = ContentProvider.GetSchema(swagResp, AValidProblemContentType);
+            JsonSchema result = ContentProvider.GetSchema(swagResp, AValidProblemContentType);
 
             Assert.Equal(expected, result);
         }
@@ -43,10 +43,10 @@ namespace HotPotato.OpenApi.Validators
         [Fact]
         public void GetSchema_ReturnsNullWithNullContent()
         {
-            SwaggerResponse swagResp = new SwaggerResponse();
+            OpenApiResponse swagResp = new OpenApiResponse();
             swagResp.Schema = null;
 
-            JsonSchema4 result = ContentProvider.GetSchema(swagResp, AValidJsonContentType);
+            JsonSchema result = ContentProvider.GetSchema(swagResp, AValidJsonContentType);
 
             Assert.Null(result);
         }
@@ -54,12 +54,12 @@ namespace HotPotato.OpenApi.Validators
         [Fact]
         public void GetSchema_ReturnsNullWithMissingContent()
         {
-            JsonSchema4 expected = JsonSchema4.CreateAnySchema();
+            JsonSchema expected = JsonSchema.CreateAnySchema();
 
-            SwaggerResponse swagResp = new SwaggerResponse();
+            OpenApiResponse swagResp = new OpenApiResponse();
             swagResp.Schema = expected;
 
-            JsonSchema4 result = ContentProvider.GetSchema(swagResp, AValidXmlContentType);
+            JsonSchema result = ContentProvider.GetSchema(swagResp, AValidXmlContentType);
 
             Assert.Null(result);
         }

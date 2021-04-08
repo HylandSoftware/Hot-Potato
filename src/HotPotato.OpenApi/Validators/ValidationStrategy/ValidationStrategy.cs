@@ -20,7 +20,7 @@ namespace HotPotato.OpenApi.Validators
         internal HttpHeaders CustomHeaders { get; set; }
 
         private IResultCollector resColl { get; }
-        private SwaggerDocument swagDoc { get; }
+        private OpenApiDocument swagDoc { get; }
         private HttpContentType contentType { get; }
 
         public ValidationStrategy(IResultCollector ResColl, ISpecificationProvider SpecPro, HttpContentType ContentType)
@@ -48,7 +48,7 @@ namespace HotPotato.OpenApi.Validators
                 return;
             }
 
-            JsonSchema4 schema = ContentProvider.GetSchema(StatusCodeValidator.Result, contentType.Type);
+            JsonSchema schema = ContentProvider.GetSchema(StatusCodeValidator.Result, contentType.Type);
 
             IValidationResult bodyResult = ContentValidator.Validate(schema);
 

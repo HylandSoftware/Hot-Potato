@@ -11,7 +11,7 @@ namespace HotPotato.OpenApi.Validators
     {
         // Since preserving xml element data types for validation would require work beyond the scope of this project,
         // this validator will check if the body is a parsable xml and if all the required properties are present
-        public static List<ValidationError> ValidateXml(this JsonSchema4 @this, string xmlBody)
+        public static List<ValidationError> ValidateXml(this JsonSchema @this, string xmlBody)
         {
             List<ValidationError> errorList = new List<ValidationError>();
 
@@ -26,13 +26,13 @@ namespace HotPotato.OpenApi.Validators
                 return errorList;
             }
 
-            IReadOnlyDictionary<string, JsonProperty> expectedProperties = @this.ActualSchema?.ActualProperties;
+            IReadOnlyDictionary<string, JsonSchemaProperty> expectedProperties = @this.ActualSchema?.ActualProperties;
             if (expectedProperties == null || expectedProperties.Count == 0)
             {
                 return errorList;
             }
 
-            foreach (KeyValuePair<string, JsonProperty> property in expectedProperties)
+            foreach (KeyValuePair<string, JsonSchemaProperty> property in expectedProperties)
             {
                 if (property.Value.IsRequired && !xmlBody.Contains(property.Key))
                 {
@@ -53,7 +53,7 @@ namespace HotPotato.OpenApi.Validators
         /// <summary>
         /// Remove all trailing encodings from content-types for uniform matching
         /// </summary>
-        /// <param name="this">A SwaggerResponse.Content dic</param>
+        /// <param name="this">A OpenApiResponse.Content dic</param>
         /// <returns>Content dict with sanitized content-types</returns>
         public static Dictionary<string, OpenApiMediaType> SanitizeContentTypes(this IDictionary<string, OpenApiMediaType> @this)
         {

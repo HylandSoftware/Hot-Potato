@@ -12,7 +12,7 @@ namespace HotPotato.OpenApi.Validators
         [Fact]
         public void TextBodyValidator_ReturnsTrueWithValidText()
         {
-            JsonSchema4 schema = JsonSchema4.CreateAnySchema();
+            JsonSchema schema = JsonSchema.CreateAnySchema();
             TextBodyValidator subject = new TextBodyValidator(AValidBody);
 
             IValidationResult result = subject.Validate(schema);

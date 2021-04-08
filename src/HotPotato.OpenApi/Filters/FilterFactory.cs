@@ -5,7 +5,7 @@ namespace HotPotato.OpenApi.Filters
 {
 	public static class FilterFactory
 	{
-		public static List<IValidationErrorFilter> CreateApplicableFilters(JsonSchema4 schema, string body)
+		public static List<IValidationErrorFilter> CreateApplicableFilters(JsonSchema schema, string body)
 		{
 			List<IValidationErrorFilter> filters = new List<IValidationErrorFilter>();
 			if (body.Contains("null"))

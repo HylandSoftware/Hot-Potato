@@ -1,7 +1,7 @@
 ﻿using HotPotato.Core;
 using Microsoft.Extensions.Configuration;
 using NSwag;
-using static NSwag.SwaggerYamlDocument;
+using static NSwag.OpenApiYamlDocument;
 using System;
 using System.IO;
 using System.Net;
@@ -22,9 +22,9 @@ namespace HotPotato.OpenApi.SpecificationProvider
             //mirror the security setting used at startup
             this.ignoreClientCertificateValidationErrors = config.GetSection("HttpClientSettings").GetValue<bool>("IgnoreClientHttpsCertificateValidationErrors");
         }
-        public SwaggerDocument GetSpecDocument()
+        public OpenApiDocument GetSpecDocument()
         {
-            Task<SwaggerDocument> swagTask = null;
+            Task<OpenApiDocument> swagTask = null;
             if (Path.IsPathFullyQualified(SpecLocation))
             {
                 swagTask = FromFileAsync(SpecLocation);
@@ -40,7 +40,7 @@ namespace HotPotato.OpenApi.SpecificationProvider
             return swagTask.Result;
         }
 
-        private async Task<SwaggerDocument> FromUrlAsyncWithClient(string url)
+        private async Task<OpenApiDocument> FromUrlAsyncWithClient(string url)
         {
             using (HttpClientHandler handler = new HttpClientHandler())
             {

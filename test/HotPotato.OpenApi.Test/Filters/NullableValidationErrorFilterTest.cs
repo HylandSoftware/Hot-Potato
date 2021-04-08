@@ -19,7 +19,7 @@ namespace HotPotato.OpenApi.Filters
 		[Fact]
 		public void NullableValidationErrorFilter_Filter_RemovesFalseNullErrors()
 		{
-			JsonSchema4 schema = JsonSchema4.FromJsonAsync(AValidNullableSchema).Result;
+			JsonSchema schema = JsonSchema.FromJsonAsync(AValidNullableSchema).Result;
 
 			ICollection<NJsonSchema.Validation.ValidationError> errors = schema.Validate(AValidNullableBody);
 			List<ValidationError> errList = errors.ToValidationErrorList();
@@ -34,7 +34,7 @@ namespace HotPotato.OpenApi.Filters
 		[Fact]
 		public void NullableValidationErrorFilter_Filter_DoesNotRemoveTrueErrors()
 		{
-			JsonSchema4 schema = JsonSchema4.FromJsonAsync(AValidSchema).Result;
+			JsonSchema schema = JsonSchema.FromJsonAsync(AValidSchema).Result;
 
 			ICollection<NJsonSchema.Validation.ValidationError> errors = schema.Validate(AValidNullableBody);
 			List<ValidationError> errList = errors.ToValidationErrorList();

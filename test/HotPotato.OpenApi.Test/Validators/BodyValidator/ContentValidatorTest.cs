@@ -12,7 +12,7 @@ namespace HotPotato.OpenApi.Validators
         [Fact]
         public void ContentValidator_ReturnsNullWithValidBodyandValidSchema()
         {
-            JsonSchema4 schema = JsonSchema4.CreateAnySchema();
+            JsonSchema schema = JsonSchema.CreateAnySchema();
             ContentValidator subject = new ContentValidator(AValidBody, new HttpContentType("application/json"));
 
             IValidationResult result = subject.Validate(schema);
@@ -23,7 +23,7 @@ namespace HotPotato.OpenApi.Validators
         [Fact]
         public void ContentValidator_ReturnsInvalidWithMissingBody()
         {
-            JsonSchema4 schema = JsonSchema4.CreateAnySchema();
+            JsonSchema schema = JsonSchema.CreateAnySchema();
             ContentValidator subject = new ContentValidator("", new HttpContentType("application/json"));
 
             InvalidResult result = (InvalidResult)subject.Validate(schema);
@@ -35,7 +35,7 @@ namespace HotPotato.OpenApi.Validators
         [Fact]
         public void ContentValidator_ReturnsInvalidWithUnexpectedBody()
         {
-            JsonSchema4 schema = null;
+            JsonSchema schema = null;
             ContentValidator subject = new ContentValidator(AValidBody, new HttpContentType("application/json"));
 
             InvalidResult result = (InvalidResult)subject.Validate(schema);
@@ -47,7 +47,7 @@ namespace HotPotato.OpenApi.Validators
         [Fact]
         public void ContentValidator_ReturnsValidWithExpectedEmptyBody()
         {
-            JsonSchema4 schema = null;
+            JsonSchema schema = null;
             ContentValidator subject = new ContentValidator(string.Empty, new HttpContentType("application/json"));
 
             IValidationResult result = subject.Validate(schema);
