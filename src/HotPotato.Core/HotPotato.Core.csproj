@@ -1,7 +1,10 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFrameworks>netcoreapp2.1;netcoreapp3.1</TargetFrameworks>
+    <TargetFrameworks>netcoreapp2.2;netcoreapp3.1</TargetFrameworks>
+    <RestoreSources>
+      https://proget.onbase.net/nuget/NuGet/;
+    </RestoreSources>
     <PackageVersion></PackageVersion>
     <Title>HotPotato.Core</Title>
     <Authors>Test Automation Team | GRP-AutomatedTesting@.hyland.com</Authors>
@@ -19,6 +22,7 @@
     <PackageReference Include="Microsoft.AspNetCore.Hosting" Version="2.2.7" />
     <PackageReference Include="Microsoft.AspNetCore.Http" Version="2.2.2" />
     <PackageReference Include="Microsoft.Extensions.Logging" Version="2.2.0" />
+    <PackageReference Include="Microsoft.NETCore.DotNetHostPolicy" Version="2.2.2" />
     <PackageReference Include="System.Net.Primitives" Version="4.3.0" />
   </ItemGroup>
 

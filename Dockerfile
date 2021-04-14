@@ -1,7 +1,7 @@
 FROM mcr.microsoft.com/dotnet/sdk:5.0 AS build
 LABEL cache=true
 ARG IMAGE_VERSION=1.0
-ARG NET_FRAMEWORK=netcoreapp2.1
+ARG NET_FRAMEWORK=netcoreapp2.2
 ENV VERSION $IMAGE_VERSION
 ENV FRAMEWORK $NET_FRAMEWORK
 

@@ -13,7 +13,7 @@ spec:
       - mountPath: /var/run/docker.sock
         name: docker-sock
   - name: builder21
-    image: docker.artifactory.onbase.net/microsoft/dotnet:2.1-sdk
+    image: docker.artifactory.onbase.net/microsoft/dotnet:2.2-sdk
     imagePullPolicy: IfNotPresent
     command: 
       - sh   

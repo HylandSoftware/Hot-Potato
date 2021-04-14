@@ -35,7 +35,6 @@ namespace HotPotato.AspNetCore.Host
 
         public void Configure(ILoggerFactory loggerFactory, IApplicationBuilder builder, IHostingEnvironment env)
         {
-            builder.UseResponseBuffering();
             builder.UseMiddleware<HotPotatoMiddleware>();
             builder.UseMvc();
         }
