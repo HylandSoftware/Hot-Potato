@@ -22,7 +22,7 @@
     <PackageReference Include="Microsoft.AspNetCore.Hosting" Version="2.2.7" />
     <PackageReference Include="Microsoft.AspNetCore.Http" Version="2.2.2" />
     <PackageReference Include="Microsoft.Extensions.Logging" Version="2.2.0" />
-    <PackageReference Include="Microsoft.NETCore.DotNetHostPolicy" Version="2.2.2" />
+    <PackageReference Include="Microsoft.NETCore.DotNetHostPolicy" Version="5.0.4" />
     <PackageReference Include="System.Net.Primitives" Version="4.3.0" />
   </ItemGroup>
 

@@ -14,7 +14,7 @@ namespace HotPotato.Api.Controllers
         [HttpGet("/")]
         public IActionResult getLandingPage()
         {
-            string repo = @"https://bitbucket.hylandqa.net/projects/AUTOTEST/repos/hot-potato/browse";
+            string repo = @"https://bitbucket.hyland.com/projects/TATO/repos/hot-potato/browse";
 
             return Ok(repo);
         }

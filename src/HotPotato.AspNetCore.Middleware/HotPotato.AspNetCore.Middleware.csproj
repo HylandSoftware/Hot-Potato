@@ -24,7 +24,7 @@
   <ItemGroup>
     <PackageReference Include="Microsoft.AspNetCore.Hosting" Version="2.2.7" />
     <PackageReference Include="Microsoft.Extensions.Http" Version="2.2.0" />
-    <PackageReference Include="Microsoft.NETCore.DotNetHostPolicy" Version="2.2.2" />
+    <PackageReference Include="Microsoft.NETCore.DotNetHostPolicy" Version="5.0.4" />
   </ItemGroup>
 
   <ItemGroup>

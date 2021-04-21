@@ -101,22 +101,11 @@ pipeline {
             when {
                 branch 'master'
             }
-            environment {
-                NETCORE_TWO = "netcoreapp2.2"
-                NETCORE_THREE = "netcoreapp3.1"
-                NETCORE_TWO_IMAGE_VERSION = "$IMAGE_VERSION-$NETCORE_TWO"
-                NETCORE_THREE_IMAGE_VERSION = "$IMAGE_VERSION-$NETCORE_THREE"
-            }
             steps {
                 container("docker") {
                     withDockerRegistry([credentialsId: 'hcr-tfsbuild', url: 'https://hcr.io']) {
-                        sh 'docker build --tag hcr.io/automated-testing/hot-potato:${IMAGE_VERSION} --build-arg IMAGE_VERSION=${IMAGE_VERSION} --build-arg NET_FRAMEWORK=${NETCORE_TWO} .'
+                        sh 'docker build --tag hcr.io/automated-testing/hot-potato:${IMAGE_VERSION} --build-arg IMAGE_VERSION=${IMAGE_VERSION} .'
                         sh 'docker push hcr.io/automated-testing/hot-potato:${IMAGE_VERSION}'
-
-                        //leaving in these comments if we revisit creating 3.1 docker containers
-                        // sh 'docker build --tag hcr.io/automated-testing/hot-potato:${NETCORE_THREE_IMAGE_VERSION} --build-arg IMAGE_VERSION=${NETCORE_THREE_IMAGE_VERSION} --build-arg NET_FRAMEWORK=${NETCORE_THREE} .'
-                        // sh 'docker push hcr.io/automated-testing/hot-potato:${NETCORE_THREE_IMAGE_VERSION}'
-
                         sh 'docker tag hcr.io/automated-testing/hot-potato:${IMAGE_VERSION} hcr.io/automated-testing/hot-potato:latest'
                         sh 'docker push hcr.io/automated-testing/hot-potato:latest'
                     }

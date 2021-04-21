@@ -15,7 +15,7 @@ namespace HotPotato.AspNetCore.Middleware
         private const string RemoteEndpointKey = "RemoteEndpoint";
         private const string AValidEndpoint = "http://foo";
         private const string SpecLocationKey = "SpecLocation";
-        private const string AValidSpecLocation = "https://bitbucket.hylandqa.net/projects/AUTOTEST/repos/foo/raw/test/bar.yaml";
+        private const string AValidSpecLocation = "https://bitbucket.hyland.com/projects/AUTOTEST/repos/foo/raw/test/bar.yaml";
 
         [Fact]
         public void Constructor_NullProxy_Throws()

@@ -157,7 +157,7 @@ The main factor in setting up a test suite to use the isolated middleware is tha
 
 #### Using the Middleware with TestServer
 
-In our example [test fixture](https://bitbucket.hylandqa.net/projects/AUTOTEST/repos/hot-potato/browse/test/HotPotato.TestServer.Test/TestFixture.cs), we use two instances of TestServer: one to create the client representing the API Under Test, and one that consumes this client to create a new client housing the Hot Potato proxy.
+In our example [test fixture](https://bitbucket.hyland.com/projects/TATO/repos/hot-potato/browse/test/HotPotato.TestServer.Test/TestFixture.cs), we use two instances of TestServer: one to create the client representing the API Under Test, and one that consumes this client to create a new client housing the Hot Potato proxy.
 
 First, we define a TestFixture class to use a generic Startup reference type:
  ```csharp
@@ -230,7 +230,7 @@ Result result = results.ElementAt(0);
 Assert.Equal(State.Pass, result.State);
 ```
 
-The full example test can be found at [RawPotatoTest.cs](https://bitbucket.hylandqa.net/projects/AUTOTEST/repos/hot-potato/browse/test/HotPotato.TestServer.Test/RawPotatoTest.cs).
+The full example test can be found at [RawPotatoTest.cs](https://bitbucket.hyland.com/projects/TATO/repos/hot-potato/browse/test/HotPotato.TestServer.Test/RawPotatoTest.cs).
 
 #### Using Middleware/TestServer with Startups in separate test projects
 
@@ -253,7 +253,7 @@ End-to-End tests using Hot Potato can be run with Postman both locally and throu
 
 To use Postman locally, you must have instances of both the Hot Potato server and your API server running.
 
-For our test project, we provided our own sample Hot Potato API, which can be found [here](https://bitbucket.hylandqa.net/projects/AUTOTEST/repos/hot-potato/browse/test/HotPotato.Api).
+For our test project, we provided our own sample Hot Potato API, which can be found [here](https://bitbucket.hyland.com/projects/TATO/repos/hot-potato/browse/test/HotPotato.Api).
 
 Once your System Under Test is ready, you may start writing Postman requests with the base address of localhost:3232.
 To check the results of these requests, you can query the results endpoint as shown in the [Results](#results) section above.
@@ -268,7 +268,7 @@ If you are not familiar with creating collections and writing tests in Postman, 
 
 Tests will usually check for critical information such as if the correct status code and body are being returned correctly in the response.
 
-Examples can be found in our HappyPath collection [here](https://bitbucket.hylandqa.net/projects/AUTOTEST/repos/hot-potato/browse/test/HappyPathTests.postman_collection.json).
+Examples can be found in our HappyPath collection [here](https://bitbucket.hyland.com/projects/TATO/repos/hot-potato/browse/test/HappyPathTests.postman_collection.json).
 
 **Check that the response contains the correct status code and expected body**
 ```javascript
@@ -277,7 +277,7 @@ pm.test(\"LandingPage returns 200 OK\", function () {
 })
 
 pm.test(\"LandingPage returns expected body \", function () {
-	pm.response.to.have.body(\"https://bitbucket.hylandqa.net/projects/AUTOTEST/repos/hot-potato/browse\")
+	pm.response.to.have.body(\"https://bitbucket.hyland.com/projects/TATO/repos/hot-potato/browse\")
 })
 ```
 
@@ -299,7 +299,7 @@ Once your collection and its tests are finished, you can export it as a json fil
 More information about exporting collections can be found [here](https://learning.getpostman.com/docs/postman/collections/data-formats/)
 
 Now that the collection is in a directory, it can be used by the ```newman run``` command in Jenkins.
-We do so in our "Run-E2E-Tests" stage in our [Jenkinsfile](https://bitbucket.hylandqa.net/projects/AUTOTEST/repos/hot-potato/browse/Jenkinsfile), where we start Hot Potato and our sample API.
+We do so in our "Run-E2E-Tests" stage in our [Jenkinsfile](https://bitbucket.hyland.com/projects/TATO/repos/hot-potato/browse/Jenkinsfile), where we start Hot Potato and our sample API.
 
 ```groovy
 stage("Run-E2E-Tests") {
@@ -319,7 +319,6 @@ stage("Run-E2E-Tests") {
 
 ## Known Issues
 
-[NJsonSchema](https://github.com/RicoSuter/NJsonSchema), the library used by Hot Potato to parse the yaml format used by OpenApi specifications, cannot handle multi-file specs in its current state.
-Multiple issues are open ([566](https://github.com/RicoSuter/NJsonSchema/issues/566), [1093](https://github.com/RicoSuter/NJsonSchema/issues/1093), [1171](https://github.com/RicoSuter/NSwag/issues/1171)) and a [pull request](https://github.com/RicoSuter/NJsonSchema/pull/1098) has been submitted. We are considering forking the project if need be.
+As of version 1.0.13, Hot Potato can handle multi-file specs, but unfortunately still cannot handle some edge cases involving schemas in a subdirectory having external references to other schemas in subdirectories. A [pull request](https://github.com/RicoSuter/NJsonSchema/pull/1356) has been submitted to [NJsonSchema](https://github.com/RicoSuter/NJsonSchema) that would solve these edge cases.
 
 A workaround for this issue is using the tool [swagger-merger](https://www.npmjs.com/package/swagger-merger) to combine multi-file specs into a single file.
