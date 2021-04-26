@@ -70,6 +70,20 @@ namespace HotPotato.Api
                             Price = 5.00
                         }
                     }
+                },
+                new Order()
+                {
+                    Id = 4,
+                    Price = null,
+                    Items = new List<Item>()
+                    {
+                        new Item()
+                        {
+                            ItemId = 6,
+                            Name = "Video Card",
+                            Price = null
+                        }
+                    }
                 }
             };
         }

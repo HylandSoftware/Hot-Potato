@@ -278,6 +278,7 @@ components:
           type: integer
         price:
           type: number
+          nullable: true
         items:
           type:
             schema:
@@ -298,8 +299,9 @@ components:
           type: integer
         name:
           type: string
-        price: 
+        price:
           type: number
+          nullable: true
     ItemsList:
       type: array
       items:
@@ -321,7 +323,7 @@ components:
           type: string
           format: uri
           description: |-
-            An absolute URI that identifies the problem type.  When
+            An absolute URI that identifies the problem type. When
             dereferenced, it should provide human-readable documentation
             for the problem type (e.g., using HTML).
         title:
@@ -348,5 +350,5 @@ components:
           format: uri
           description: |-
             A URI reference that identifies the specific occurrence of
-            the problem.  It may or may not yield further information
+            the problem. It may or may not yield further information
             if dereferenced.
