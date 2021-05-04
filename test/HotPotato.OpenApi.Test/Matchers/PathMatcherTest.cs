@@ -87,7 +87,7 @@ namespace HotPotato.OpenApi.Matchers
         }
 
         [Fact]
-        public void Match_NotInList_ReturnsEmpty()
+        public void Match_NotInList_ReturnsNull()
         {
             string AValidPath = "/foo/bar";
             List<string> ValidPaths = new List<string>
@@ -99,7 +99,7 @@ namespace HotPotato.OpenApi.Matchers
 
             string result = PathMatcher.Match(AValidPath, ValidPaths);
 
-            Assert.Equal(string.Empty, result);
+            Assert.Null(result);
         }
     }
 }

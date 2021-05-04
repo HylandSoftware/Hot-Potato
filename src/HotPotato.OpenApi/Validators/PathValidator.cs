@@ -1,5 +1,4 @@
-﻿
-using HotPotato.OpenApi.Matchers;
+﻿using HotPotato.OpenApi.Matchers;
 using NSwag;
 
 namespace HotPotato.OpenApi.Validators
@@ -21,15 +20,24 @@ namespace HotPotato.OpenApi.Validators
                 return false;
             }
             string match = PathMatcher.Match(Path, swagDoc.Paths.Keys);
-            if (swagDoc.Paths.ContainsKey(match))
+            if (match != null)
             {
-                Result = swagDoc.Paths[match];
-                return true;
+                if (swagDoc.Paths.ContainsKey(match))
+                {
+                    Result = swagDoc.Paths[match];
+                    return true;
+                }
+                else
+				{
+                    string matchWithSlash = match + "/";
+                    if (swagDoc.Paths.ContainsKey(matchWithSlash))
+                    {
+                        Result = swagDoc.Paths[matchWithSlash];
+                        return true;
+                    }
+                }
             }
-            else
-            {
-                return false;
-            }
+            return false;
         }
     }
 }

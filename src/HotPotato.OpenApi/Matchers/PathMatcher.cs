@@ -53,7 +53,7 @@ namespace HotPotato.OpenApi.Matchers
                     return matchedPath;
                 }
             }
-            return string.Empty;
+            return null;
         }
 
         private static bool isParam(string s)

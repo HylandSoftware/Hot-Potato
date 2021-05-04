@@ -1,5 +1,4 @@
-﻿
-using Moq;
+﻿using Moq;
 using NSwag;
 using Xunit;
 
@@ -8,12 +7,14 @@ namespace HotPotato.OpenApi.Validators
     public class PathValidatorTest
     {
         private const string AValidEndpoint = "https://api.hyland.com/workflow/life-cycles";
-        [Fact]
-        public void PathValidator_GeneratesPathItem()
+        [Theory]
+        [InlineData("/workflow/life-cycles")]
+        [InlineData("/workflow/life-cycles/")]
+        public void PathValidator_GeneratesPathItem(string path)
         {
             OpenApiDocument swagDoc = new OpenApiDocument();
             OpenApiPathItem expected = Mock.Of<OpenApiPathItem>();
-            swagDoc.Paths.Add("/workflow/life-cycles", expected);
+            swagDoc.Paths.Add(path, expected);
 
             PathValidator subject = new PathValidator(AValidEndpoint);
 
