@@ -5,6 +5,9 @@ pipeline {
             yamlFile './build-spec.yml'
         }
     }
+    environment {
+        TEAMS_WEBHOOK_ID = credentials("teams-webhook-id")
+    }
 
     stages {
         stage('Version') {
@@ -119,12 +122,17 @@ pipeline {
             cobertura coberturaReportFile: '**/test/coverage/*.xml'
             codometer programName: 'R&D Operations', projectName: 'HotPotato', teamName: 'TATO', channel: 'master', version: "${IMAGE_VERSION}", tags: [type: "Russet"]
         }
-        regression {
-            mattermostSend color: "#ef1717", icon: "https://jenkins.io/images/logos/jenkins/jenkins.png", message: "Someone broke ${env.BRANCH_NAME}, Ref build number -- ${env.BUILD_NUMBER}! (<${env.BUILD_URL}|${env.BUILD_URL}>)"
+		regression {
+            office365ConnectorSend webhookUrl: env.TEAMS_WEBHOOK_ID,
+                    color: '#ff0000',
+                    message: "${env.JOB_NAME} ${env.BUILD_NUMBER} failed to build.",
+                    status: 'Failure'
         }
-
         fixed {
-            mattermostSend color: "#7FFF00", icon: "https://jenkins.io/images/logos/jenkins/jenkins.png", message: "Someone fixed ${env.BRANCH_NAME}, Ref build number -- ${env.BUILD_NUMBER}! (<${env.BUILD_URL}|${env.BUILD_URL}>)"
+            office365ConnectorSend webhookUrl: env.TEAMS_WEBHOOK_ID,
+                    color: '#00ff00',
+                    message: "${env.JOB_NAME} ${env.BUILD_NUMBER} built successfully!",
+                    status: 'Success'
         }
     }
 }
