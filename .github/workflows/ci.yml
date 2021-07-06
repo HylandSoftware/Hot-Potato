@@ -23,7 +23,7 @@ jobs:
     # - name: Restore dependencies
     #   run: dotnet restore
     - name: Build
-      run: dotnet build --configuration Release
+      run: dotnet build HotPotato.sln --configuration Release
     - name: Run Unit Tests .NET 2.2
       run: |
         dotnet test ./test/HotPotato.Core.Test/HotPotato.Core.Test.csproj -f "netcoreapp2.2" -c Release -p:CollectCoverage=true -p:CoverletOutputFormat=cobertura -p:CoverletOutput=./test/coverage/coreCoverage.xml -p:Exclude="[xunit.*]*" -l:"JUnit;LogFilePath=$GITHUB_WORKSPACE/test/results/coreResults.xml" --no-restore --no-build
