@@ -1,8 +1,7 @@
-name: .NET Build/Test
+name: Hot Potato CI
 
 on:
   push:
-    branches: [ master, open-source-prep ]
   pull_request:
     branches: [ master ]
 
