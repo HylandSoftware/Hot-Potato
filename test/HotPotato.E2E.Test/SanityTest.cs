@@ -57,7 +57,7 @@ namespace HotPotato.E2E.Test
                             .WithBody(expected)
                     );
 
-                Core.Http.Default.HotPotatoClient client = (Core.Http.Default.HotPotatoClient)servicePro.GetService<IHotPotatoClient>();
+                HotPotatoClient client = (HotPotatoClient)servicePro.GetService<IHotPotatoClient>();
 
                 HttpMethod method = new HttpMethod(GetMethodCall);
 
@@ -103,7 +103,7 @@ namespace HotPotato.E2E.Test
                             .WithBody(json)
                     );
 
-                Core.Http.Default.HotPotatoClient client = (Core.Http.Default.HotPotatoClient)servicePro.GetService<IHotPotatoClient>();
+                HotPotatoClient client = (HotPotatoClient)servicePro.GetService<IHotPotatoClient>();
 
                 HttpMethod method = new HttpMethod(GetMethodCall);
 
@@ -140,7 +140,7 @@ namespace HotPotato.E2E.Test
                     );
 
 
-                Core.Http.Default.HotPotatoClient client = (Core.Http.Default.HotPotatoClient)servicePro.GetService<IHotPotatoClient>();
+                HotPotatoClient client = (HotPotatoClient)servicePro.GetService<IHotPotatoClient>();
                 HttpMethod method = new HttpMethod(GetMethodCall);
 
                 using (HotPotatoRequest req = new HotPotatoRequest(method, new System.Uri(ProxyEndpoint)))
@@ -176,7 +176,7 @@ namespace HotPotato.E2E.Test
 
 
                 //Setting up Http Client
-                Core.Http.Default.HotPotatoClient client = (Core.Http.Default.HotPotatoClient)servicePro.GetService<IHotPotatoClient>();
+                HotPotatoClient client = (HotPotatoClient)servicePro.GetService<IHotPotatoClient>();
                 HttpMethod method = new HttpMethod(GetMethodCall);
 
                 using (HotPotatoRequest req = new HotPotatoRequest(method, new System.Uri(ProxyEndpoint)))

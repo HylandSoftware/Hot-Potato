@@ -14,7 +14,7 @@ namespace HotPotato.TestServ.Test
 {
     public class RawPotatoTest : IClassFixture<TestFixture<Api.Startup>>, IDisposable
     {
-        private Core.Http.Default.HotPotatoClient client;
+        private HotPotatoClient client;
         private List<Result> results;
 
         private readonly Order paperOrder = new Order()

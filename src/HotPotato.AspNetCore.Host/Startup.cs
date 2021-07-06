@@ -2,6 +2,7 @@ using HotPotato.AspNetCore.Middleware;
 using HotPotato.Core;
 using HotPotato.Core.Cookies;
 using HotPotato.Core.Http;
+using HotPotato.Core.Http.Default;
 using HotPotato.Core.Http.ForwardProxy;
 using HotPotato.Core.Processor;
 using HotPotato.Core.Proxy;
@@ -45,12 +46,12 @@ namespace HotPotato.AspNetCore.Host
             LogTlsValidationSetting(ignoreClientCertificateValidationErrors);
 
             services.AddScoped<IProxy, HotPotato.Core.Proxy.Default.Proxy>();
-            services.AddScoped<IHotPotatoClient, HotPotato.Core.Http.Default.HotPotatoClient>();
+            services.AddScoped<IHotPotatoClient, HotPotatoClient>();
             services.AddMvcCore().AddJsonFormatters();
             services.AddSingleton<IWebProxy, Core.Http.ForwardProxy.Default.HttpForwardProxy>();
             services.AddSingleton(Configuration.GetSection("ForwardProxy").Get<HttpForwardProxyConfig>());
             services.AddSingleton<ICookieJar, CookieJar>();
-            services.AddHttpClient<IHotPotatoClient, HotPotato.Core.Http.Default.HotPotatoClient>()
+            services.AddHttpClient<IHotPotatoClient, HotPotatoClient>()
             .ConfigurePrimaryHttpMessageHandler(sp => new HttpClientHandler
             {
                 AutomaticDecompression = DecompressionMethods.Deflate | DecompressionMethods.GZip,

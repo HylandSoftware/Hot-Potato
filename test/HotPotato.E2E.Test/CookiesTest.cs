@@ -60,7 +60,7 @@ namespace HotPotato.E2E.Test
                             .WithBody(expected)
                     );
 
-                Core.Http.Default.HotPotatoClient client = (Core.Http.Default.HotPotatoClient)servicePro.GetService<IHotPotatoClient>();
+                HotPotatoClient client = (HotPotatoClient)servicePro.GetService<IHotPotatoClient>();
 
                 ICookieJar cookieJar = servicePro.GetService<ICookieJar>();
                 Cookie cookie = new Cookie(CookieName, CookieValue, CookiePath, CookieDomain);
