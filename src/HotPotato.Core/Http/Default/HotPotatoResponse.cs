@@ -4,14 +4,14 @@ using System.Net.Http.Headers;
 
 namespace HotPotato.Core.Http.Default
 {
-    public class HttpResponse : IHttpResponse
+    public class HotPotatoResponse : IHotPotatoResponse
     {
-        public HttpResponse(HttpStatusCode statusCode, HttpHeaders headers)
+        public HotPotatoResponse(HttpStatusCode statusCode, HttpHeaders headers)
         {
             this.StatusCode = statusCode;
             this.Headers = headers;
         }
-        public HttpResponse(HttpStatusCode statusCode, HttpHeaders headers, byte[] content, MediaTypeHeaderValue contentType)
+        public HotPotatoResponse(HttpStatusCode statusCode, HttpHeaders headers, byte[] content, MediaTypeHeaderValue contentType)
             : this(statusCode, headers)
         {
             this.Content = content;

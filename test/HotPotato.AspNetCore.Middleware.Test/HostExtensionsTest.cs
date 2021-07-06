@@ -22,7 +22,7 @@ namespace HotPotato.AspNetCore.Middleware
         [Fact]
         public void ConfigureMiddlewareServices_SetsAllExpectedServices()
         {
-            HttpClient client = new HttpClient(new System.Net.Http.HttpClient());
+            HotPotatoClient client = new HotPotatoClient(new System.Net.Http.HttpClient());
 
             IWebHost subject = new WebHostBuilder()
                 .ConfigureAppConfiguration((hostingContext, config) =>
@@ -46,8 +46,8 @@ namespace HotPotato.AspNetCore.Middleware
             //tried to make this into loop of type variables,
             //but the compiler didn't like using variables as Types
             Assert.NotNull(result.GetService<IProxy>());
-            Assert.NotNull(result.GetService<IHttpClient>());
-            Assert.Equal(client, result.GetService<IHttpClient>());
+            Assert.NotNull(result.GetService<IHotPotatoClient>());
+            Assert.Equal(client, result.GetService<IHotPotatoClient>());
             Assert.NotNull(result.GetService<ISpecificationProvider>());
             Assert.NotNull(result.GetService<IResultCollector>());
             Assert.NotNull(result.GetService<IProcessor>());
@@ -75,7 +75,7 @@ namespace HotPotato.AspNetCore.Middleware
 
             IServiceProvider result = subject.Services;
 
-            Assert.NotNull(result.GetService<IHttpClient>());
+            Assert.NotNull(result.GetService<IHotPotatoClient>());
         }
     }
 }

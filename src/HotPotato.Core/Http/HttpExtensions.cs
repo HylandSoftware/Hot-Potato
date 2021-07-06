@@ -48,7 +48,7 @@ namespace HotPotato.Core.Http
         /// </summary>
         /// <param name="this"></param>
         /// <returns></returns>
-        public static HttpRequestMessage ToClientRequestMessage(this IHttpRequest @this)
+        public static HttpRequestMessage ToClientRequestMessage(this IHotPotatoRequest @this)
         {
             _ = @this ?? throw Exceptions.ArgumentNull(nameof(@this));
 
@@ -75,7 +75,7 @@ namespace HotPotato.Core.Http
         /// </summary>
         /// <param name="this"></param>
         /// <returns></returns>
-        public static async Task<IHttpResponse> ToClientResponseAsync(this HttpResponseMessage @this)
+        public static async Task<IHotPotatoResponse> ToClientResponseAsync(this HttpResponseMessage @this)
         {
             _ = @this ?? throw Exceptions.ArgumentNull(nameof(@this));
 
@@ -99,11 +99,11 @@ namespace HotPotato.Core.Http
                 contentType = contentType ?? new MediaTypeHeaderValue("application/json");
                 byte[] payload = await @this.Content.ReadAsByteArrayAsync();
 
-                return new HttpResponse(@this.StatusCode, headers, payload, contentType);
+                return new HotPotatoResponse(@this.StatusCode, headers, payload, contentType);
             }
             else
             {
-                return new HttpResponse(@this.StatusCode, headers, new byte[] { }, new MediaTypeHeaderValue("application/json"));
+                return new HotPotatoResponse(@this.StatusCode, headers, new byte[] { }, new MediaTypeHeaderValue("application/json"));
             }
         }
 
@@ -113,12 +113,12 @@ namespace HotPotato.Core.Http
         /// <param name="this"></param>
         /// <param name="remoteEndpoint"></param>
         /// <returns></returns>
-        public static async Task<IHttpRequest> ToProxyRequest(this MSHTTP.HttpRequest @this, string remoteEndpoint)
+        public static async Task<IHotPotatoRequest> ToProxyRequest(this MSHTTP.HttpRequest @this, string remoteEndpoint)
         {
             _ = @this ?? throw Exceptions.ArgumentNull(nameof(@this));
             _ = remoteEndpoint ?? throw Exceptions.ArgumentNull(nameof(remoteEndpoint));
 
-            HttpRequest request = new HttpRequest(new HttpMethod(@this.Method), @this.BuildUri(remoteEndpoint));
+            HotPotatoRequest request = new HotPotatoRequest(new HttpMethod(@this.Method), @this.BuildUri(remoteEndpoint));
             if (@this.Headers != null && @this.Headers.Count > 0)
             {
                 foreach (var item in @this.Headers)
@@ -157,7 +157,7 @@ namespace HotPotato.Core.Http
         /// <param name="this"></param>
         /// <param name="response"></param>
         /// <returns></returns>
-        public static async Task ToProxyResponseAsync(this IHttpResponse @this, MSHTTP.HttpResponse response)
+        public static async Task ToProxyResponseAsync(this IHotPotatoResponse @this, MSHTTP.HttpResponse response)
         {
             _ = @this ?? throw Exceptions.ArgumentNull(nameof(@this));
             _ = response ?? throw Exceptions.ArgumentNull(nameof(response));
@@ -189,7 +189,7 @@ namespace HotPotato.Core.Http
             return new Uri($"{remoteEndpoint}{@this.Path.Value}{@this.QueryString}");
         }
 
-        public static string ToBodyString(this IHttpResponse @this)
+        public static string ToBodyString(this IHotPotatoResponse @this)
         {
             if (@this.Content == null || @this.ContentType == null)
             {

@@ -16,17 +16,17 @@ namespace HotPotato.AspNetCore.Middleware
         /// </summary>
         /// <param name="services">The client from the external host to be injected into the service collection</param>
         /// <returns></returns>
-        public static IServiceCollection ConfigureMiddlewareServices(this IServiceCollection services, Core.Http.Default.HttpClient client = null)
+        public static IServiceCollection ConfigureMiddlewareServices(this IServiceCollection services, Core.Http.Default.HotPotatoClient client = null)
         {
             services.AddScoped<IProxy, HotPotato.Core.Proxy.Default.Proxy>();
             if (client != null)
             {
-                services.AddSingleton<IHttpClient>(client);
+                services.AddSingleton<IHotPotatoClient>(client);
             }
             else
             {
-                services.AddScoped<IHttpClient, HotPotato.Core.Http.Default.HttpClient>();
-                services.AddHttpClient<IHttpClient, HotPotato.Core.Http.Default.HttpClient>();
+                services.AddScoped<IHotPotatoClient, HotPotato.Core.Http.Default.HotPotatoClient>();
+                services.AddHttpClient<IHotPotatoClient, HotPotato.Core.Http.Default.HotPotatoClient>();
             }
             services.AddSingleton<ICookieJar, CookieJar>();
             services.AddSingleton<ISpecificationProvider, SpecificationProvider>();

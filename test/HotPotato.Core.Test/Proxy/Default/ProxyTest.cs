@@ -32,7 +32,7 @@ namespace HotPotato.Core.Proxy.Default
         [Fact]
         public void Proxy_Constructor_ThrowsArgumentNullExceptionWithConfig()
         {
-            Action subject = () => new Proxy(Mock.Of<IHttpClient>(), null, null);
+            Action subject = () => new Proxy(Mock.Of<IHotPotatoClient>(), null, null);
             Assert.Throws<ArgumentNullException>(subject);
         }
 
@@ -52,11 +52,11 @@ namespace HotPotato.Core.Proxy.Default
         [InlineData(PUT)]
         public async void ProcessAsync_CallsClient(string method)
         {
-            Mock<IHttpResponse> internalResponseMock = new Mock<IHttpResponse>();
+            Mock<IHotPotatoResponse> internalResponseMock = new Mock<IHotPotatoResponse>();
             internalResponseMock.SetupGet(x => x.StatusCode).Returns(System.Net.HttpStatusCode.OK);
             internalResponseMock.SetupGet(x => x.Headers).Returns(new HttpHeaders());
-            Mock<IHttpClient> clientMock = new Mock<IHttpClient>();
-            clientMock.Setup(x => x.SendAsync(It.IsAny<IHttpRequest>())).Returns(Task.FromResult(internalResponseMock.Object));
+            Mock<IHotPotatoClient> clientMock = new Mock<IHotPotatoClient>();
+            clientMock.Setup(x => x.SendAsync(It.IsAny<IHotPotatoRequest>())).Returns(Task.FromResult(internalResponseMock.Object));
             var requestHeaders = new HeaderDictionary();
             Mock<HttpRequest> requestMock = new Mock<HttpRequest>();
             requestMock.SetupGet(x => x.Method).Returns(method);
@@ -69,7 +69,7 @@ namespace HotPotato.Core.Proxy.Default
 
             await subject.ProcessAsync(AValidEndpoint, requestMock.Object, responseMock.Object);
 
-            clientMock.Verify(x => x.SendAsync(It.IsAny<IHttpRequest>()));
+            clientMock.Verify(x => x.SendAsync(It.IsAny<IHotPotatoRequest>()));
         }
     }
 }

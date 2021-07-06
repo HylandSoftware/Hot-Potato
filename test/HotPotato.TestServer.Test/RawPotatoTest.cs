@@ -14,7 +14,7 @@ namespace HotPotato.TestServ.Test
 {
     public class RawPotatoTest : IClassFixture<TestFixture<Api.Startup>>, IDisposable
     {
-        private Core.Http.Default.HttpClient client;
+        private Core.Http.Default.HotPotatoClient client;
         private List<Result> results;
 
         private readonly Order paperOrder = new Order()
@@ -51,7 +51,7 @@ namespace HotPotato.TestServ.Test
             HttpMethod method = new HttpMethod(methodString);
             Uri pathUri = new Uri(path);
 
-            using (HttpRequest req = new HttpRequest(method, pathUri))
+            using (HotPotatoRequest req = new HotPotatoRequest(method, pathUri))
             {
                 if (hasRequestBody)
                 {
@@ -80,7 +80,7 @@ namespace HotPotato.TestServ.Test
             HttpMethod method = new HttpMethod(methodString);
             Uri pathUri = new Uri(path);
 
-            using (HttpRequest req = new HttpRequest(method, pathUri))
+            using (HotPotatoRequest req = new HotPotatoRequest(method, pathUri))
             {
                 await client.SendAsync(req);
 

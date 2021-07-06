@@ -5,7 +5,7 @@ using System.Text;
 
 namespace HotPotato.Core.Http
 {
-    public interface IHttpRequest : IDisposable
+    public interface IHotPotatoRequest : IDisposable
     {
         HttpMethod Method { get; }
         Uri Uri { get; }
@@ -14,9 +14,9 @@ namespace HotPotato.Core.Http
         HttpHeaders CustomHeaders { get; }
         MediaTypeHeaderValue ContentType { get; }
         HttpContent Content { get; }
-        IHttpRequest SetContent(string content);
-        IHttpRequest SetContent(string content, Encoding encoding);
-        IHttpRequest SetContent(string content, Encoding encoding, string mediaType);
-        IHttpRequest SetContent(string content, Encoding encoding, MediaTypeHeaderValue mediaType);
+        IHotPotatoRequest SetContent(string content);
+        IHotPotatoRequest SetContent(string content, Encoding encoding);
+        IHotPotatoRequest SetContent(string content, Encoding encoding, string mediaType);
+        IHotPotatoRequest SetContent(string content, Encoding encoding, MediaTypeHeaderValue mediaType);
     }
 }

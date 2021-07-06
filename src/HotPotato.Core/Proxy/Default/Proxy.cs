@@ -10,11 +10,11 @@ namespace HotPotato.Core.Proxy.Default
 	public class Proxy : IProxy
 	{
 
-		private IHttpClient Client { get; }
+		private IHotPotatoClient Client { get; }
 		private ILogger Logger { get; }
 		private IProcessor Processor { get; }
 
-		public Proxy(IHttpClient client, ILogger<Proxy> logger, IProcessor processor)
+		public Proxy(IHotPotatoClient client, ILogger<Proxy> logger, IProcessor processor)
 		{
 			_ = client ?? throw Exceptions.ArgumentNull(nameof(client));
 			_ = logger ?? throw Exceptions.ArgumentNull(nameof(logger));
@@ -27,9 +27,9 @@ namespace HotPotato.Core.Proxy.Default
 
 		public async Task ProcessAsync(string remoteEndpoint, HttpRequest requestIn, HttpResponse responseOut)
 		{
-			using (IHttpRequest request = await requestIn.ToProxyRequest(remoteEndpoint))
+			using (IHotPotatoRequest request = await requestIn.ToProxyRequest(remoteEndpoint))
 			{
-				IHttpResponse response = await this.Client.SendAsync(request);
+				IHotPotatoResponse response = await this.Client.SendAsync(request);
 				await response.ToProxyResponseAsync(responseOut);
 				using (HttpPair pair = new HttpPair(request, response))
 				{

@@ -33,7 +33,7 @@ namespace HotPotato.OpenApi.Validators
                 testRespMsg.Content = null;
                 var testResponse = await testRespMsg.ToClientResponseAsync();
 
-                using (HttpRequest testRequest = new HttpRequest(reqMethod, new Uri(endpointURI)))
+                using (HotPotatoRequest testRequest = new HotPotatoRequest(reqMethod, new Uri(endpointURI)))
                 using (HttpPair testPair = new HttpPair(testRequest, testResponse))
                 {
                     ISpecificationProvider specPro = provider.GetService<ISpecificationProvider>();
@@ -65,7 +65,7 @@ namespace HotPotato.OpenApi.Validators
                 testRespMsg.Content = new StringContent("", Encoding.UTF8, "application/json");
                 var testResponse = await testRespMsg.ToClientResponseAsync();
 
-                using (HttpRequest testRequest = new HttpRequest(reqMethod, new Uri(endpointURI)))
+                using (HotPotatoRequest testRequest = new HotPotatoRequest(reqMethod, new Uri(endpointURI)))
                 using (HttpPair testPair = new HttpPair(testRequest, testResponse))
                 {
                     ISpecificationProvider specPro = provider.GetService<ISpecificationProvider>();
@@ -97,7 +97,7 @@ namespace HotPotato.OpenApi.Validators
                 testRespMsg.Content = new StringContent("{ 'perfectSquare': '4' }", Encoding.UTF8, "application/json");
                 var testResponse = await testRespMsg.ToClientResponseAsync();
 
-                using (HttpRequest testRequest = new HttpRequest(reqMethod, new Uri(endpointURI)))
+                using (HotPotatoRequest testRequest = new HotPotatoRequest(reqMethod, new Uri(endpointURI)))
                 using (HttpPair testPair = new HttpPair(testRequest, testResponse))
                 {
                     ISpecificationProvider specPro = provider.GetService<ISpecificationProvider>();

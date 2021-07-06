@@ -15,7 +15,7 @@ namespace HotPotato.TestServ.Test
 {
     public class TestFixture<TStartup> : IDisposable where TStartup : class
     {
-        public Core.Http.Default.HttpClient Client { get; }
+        public Core.Http.Default.HotPotatoClient Client { get; }
         public List<Result> Results { get; }
 
         //TestServer won't actually listen on an address, but it needs a BaseAddress to be used by the HttpRequest constructors
@@ -36,7 +36,7 @@ namespace HotPotato.TestServ.Test
             apiServer = new TestServer(apiBuilder);
             apiServer.BaseAddress = new Uri(ApiServerAddress);
 
-            Core.Http.Default.HttpClient apiClient = new Core.Http.Default.HttpClient(apiServer.CreateClient());
+            Core.Http.Default.HotPotatoClient apiClient = new Core.Http.Default.HotPotatoClient(apiServer.CreateClient());
 
             var hotPotatoBuilder = new WebHostBuilder()
                 //Setting this here instead of in appsettings.json so it always matches the BaseAddress on TestServer
@@ -68,7 +68,7 @@ namespace HotPotato.TestServ.Test
             hotPotatoServer.BaseAddress = new Uri(HotPotatoAddress);
 
             Results = hotPotatoServer.Host.Services.GetService<IResultCollector>().Results;
-            Client = new Core.Http.Default.HttpClient(hotPotatoServer.CreateClient());
+            Client = new Core.Http.Default.HotPotatoClient(hotPotatoServer.CreateClient());
         }
 
         public void Dispose()

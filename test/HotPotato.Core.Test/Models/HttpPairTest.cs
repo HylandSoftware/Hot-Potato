@@ -18,7 +18,7 @@ namespace HotPotato.Core.Models
         [Fact]
         public void HttpPair_Constructor_ThrowsArgumentNullExceptionWithResponse()
         {
-            IHttpRequest request = Mock.Of<IHttpRequest>();
+            IHotPotatoRequest request = Mock.Of<IHotPotatoRequest>();
             Action subject = () => new HttpPair(request, null);
             Assert.Throws<ArgumentNullException>(subject);
         }
@@ -26,8 +26,8 @@ namespace HotPotato.Core.Models
         [Fact]
         public void HttpPair_Constructor_SetsRequestandResponse()
         {
-            IHttpRequest request = Mock.Of<IHttpRequest>();
-            IHttpResponse response = Mock.Of<IHttpResponse>();
+            IHotPotatoRequest request = Mock.Of<IHotPotatoRequest>();
+            IHotPotatoResponse response = Mock.Of<IHotPotatoResponse>();
 
             HttpPair subject = new HttpPair(request, response);
 
