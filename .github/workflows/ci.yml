@@ -29,13 +29,8 @@ jobs:
         configFilePath: './GitVersion.yml'
 
     - name: Display GitVersion outputs
-      env:
-        IMAGE_VERSION: ${{ steps.gitversion.outputs.majorMinorPatch }}
       run: |
-        echo ${{ env.IMAGE_VERSION }}
-        echo "${{ env.IMAGE_VERSION }}"
-        echo $IMAGE_VERSION
-        echo "$IMAGE_VERSION"
+        export IMAGE_VERSION=${{ steps.gitversion.outputs.majorMinorPatch }}
         echo "MajorMinorPatch: ${{ steps.gitversion.outputs.majorMinorPatch }}"
         echo "NuGetVersionV2: ${{ steps.gitversion.outputs.nuGetVersionV2 }}"
 
