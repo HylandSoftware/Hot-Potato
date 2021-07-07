@@ -30,7 +30,6 @@ jobs:
 
     - name: Display GitVersion outputs
       run: |
-        export IMAGE_VERSION=${{ steps.gitversion.outputs.majorMinorPatch }}
         echo "MajorMinorPatch: ${{ steps.gitversion.outputs.majorMinorPatch }}"
         echo "NuGetVersionV2: ${{ steps.gitversion.outputs.nuGetVersionV2 }}"
 
@@ -46,11 +45,7 @@ jobs:
 
     - name: Build
       run: |
-        echo ${{ env.IMAGE_VERSION }}
-        echo "${{ env.IMAGE_VERSION }}"
-        echo $IMAGE_VERSION
-        echo "$IMAGE_VERSION"
-        dotnet build --configuration Release -p:Version=${{ env.IMAGE_VERSION }}
+        dotnet build --configuration Release -p:Version=${{ steps.gitversion.outputs.majorMinorPatch }}
 
     - name: Run Unit Tests .NET 2.2
       run: |
