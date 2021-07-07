@@ -30,6 +30,7 @@ jobs:
 
     - name: Display GitVersion outputs
       run: |
+        env.IMAGE_VERSION = ${{ steps.gitversion.outputs.majorMinorPatch }}
         echo "MajorMinorPatch: ${{ steps.gitversion.outputs.majorMinorPatch }}"
         echo "NuGetVersionV2: ${{ steps.gitversion.outputs.nuGetVersionV2 }}"
 
@@ -44,7 +45,7 @@ jobs:
         dotnet-version: 3.1.x
 
     - name: Build
-      run: dotnet build --configuration Release
+      run: dotnet build --configuration Release -p:Version=${IMAGE_VERSION}
 
     - name: Run Unit Tests .NET 2.2
       run: |
@@ -73,3 +74,14 @@ jobs:
     #     dotnet test ./test/HotPotato.E2E.Test/HotPotato.E2E.Test.csproj -f "netcoreapp3.1" -c Release -l:"JUnit;LogFilePath=$GITHUB_WORKSPACE/test/results/E2EResults.xml" --no-restore --no-build
     #     dotnet $GITHUB_WORKSPACE/src/HotPotato.AspNetCore.Host/bin/Release/netcoreapp3.1/HotPotato.AspNetCore.Host.dll &
     #     dotnet $GITHUB_WORKSPACE/test/HotPotato.Api/bin/Release/netcoreapp3.1/HotPotato.Api.dll &
+
+    - name: Create Release
+      uses: actions/create-release@v1
+    #  if: env.isMaster == 'true'
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }} # This token is provided by Actions, you do not need to create your own token
+        with:
+          tag_name: ${{ steps.gitversion.outputs.nuGetVersionV2 }}
+          release_name: ${{ steps.gitversion.outputs.nuGetVersionV2 }}
+          draft: true
+          prerelease: true
