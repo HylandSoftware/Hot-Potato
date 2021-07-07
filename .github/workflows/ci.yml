@@ -30,7 +30,7 @@ jobs:
 
     - name: Display GitVersion outputs
       env:
-        IMAGE_VERSION = ${{ steps.gitversion.outputs.majorMinorPatch }}
+        IMAGE_VERSION: ${{ steps.gitversion.outputs.majorMinorPatch }}
       run: |
         echo "MajorMinorPatch: ${{ steps.gitversion.outputs.majorMinorPatch }}"
         echo "NuGetVersionV2: ${{ steps.gitversion.outputs.nuGetVersionV2 }}"
