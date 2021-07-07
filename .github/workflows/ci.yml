@@ -75,14 +75,16 @@ jobs:
     #     dotnet $GITHUB_WORKSPACE/src/HotPotato.AspNetCore.Host/bin/Release/netcoreapp3.1/HotPotato.AspNetCore.Host.dll &
     #     dotnet $GITHUB_WORKSPACE/test/HotPotato.Api/bin/Release/netcoreapp3.1/HotPotato.Api.dll &
 
+    - name: Start Hot Potato Server
+      run: |
+        dotnet $GITHUB_WORKSPACE/src/HotPotato.AspNetCore.Host/bin/Release/netcoreapp3.1/HotPotato.AspNetCore.Host.dll &
+        dotnet $GITHUB_WORKSPACE/test/HotPotato.Api/bin/Release/netcoreapp3.1/HotPotato.Api.dll &
+ 
     - name: Run Postman Tests
       uses: anthonyvscode/newman-action@v1
       with:
         collection: ./test/HappyPathTests.postman_collection.json
         reporters: cli
-
-    - name: Report Postman Results
-      run: echo ${{ steps.run-newman.outputs.summary }}
 
     # - name: Create Release
     #   uses: actions/create-release@v1
