@@ -75,12 +75,21 @@ jobs:
     #     dotnet $GITHUB_WORKSPACE/src/HotPotato.AspNetCore.Host/bin/Release/netcoreapp3.1/HotPotato.AspNetCore.Host.dll &
     #     dotnet $GITHUB_WORKSPACE/test/HotPotato.Api/bin/Release/netcoreapp3.1/HotPotato.Api.dll &
 
-    - name: Create Release
-      uses: actions/create-release@v1
-      env:
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }} # This token is provided by Actions, you do not need to create your own token
+    - name: Run Postman Tests
+      uses: anthonyvscode/newman-action@v1
       with:
-        tag_name: ${{ steps.gitversion.outputs.nuGetVersionV2 }}
-        release_name: ${{ steps.gitversion.outputs.nuGetVersionV2 }}
-        draft: false
-        prerelease: true
+        collection: ./test/HappyPathTests.postman_collection
+        reporters: cli
+
+    - name: Report Postman Results
+      run: echo ${{ steps.run-newman.outputs.summary }}
+
+    # - name: Create Release
+    #   uses: actions/create-release@v1
+    #   env:
+    #     GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }} # This token is provided by Actions, you do not need to create your own token
+    #   with:
+    #     tag_name: ${{ steps.gitversion.outputs.nuGetVersionV2 }}
+    #     release_name: ${{ steps.gitversion.outputs.nuGetVersionV2 }}
+    #     draft: false
+    #     prerelease: true
