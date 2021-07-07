@@ -78,7 +78,7 @@ jobs:
     - name: Run Postman Tests
       uses: anthonyvscode/newman-action@v1
       with:
-        collection: ./test/HappyPathTests.postman_collection
+        collection: ./test/HappyPathTests.postman_collection.json
         reporters: cli
 
     - name: Report Postman Results
