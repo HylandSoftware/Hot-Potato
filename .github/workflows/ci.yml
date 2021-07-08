@@ -5,6 +5,9 @@ on:
   pull_request:
     branches: [ master ]
 
+env:
+  isMaster: ${{ github.ref == 'refs/heads/master' }}
+
 jobs:
   build:
 
@@ -85,12 +88,13 @@ jobs:
     #     collection: ./test/HappyPathTests.postman_collection.json
     #     reporters: cli
 
-    # - name: Create Release
-    #   uses: actions/create-release@v1
-    #   env:
-    #     GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }} # This token is provided by Actions, you do not need to create your own token
-    #   with:
-    #     tag_name: ${{ steps.gitversion.outputs.nuGetVersionV2 }}
-    #     release_name: ${{ steps.gitversion.outputs.nuGetVersionV2 }}
-    #     draft: false
-    #     prerelease: true
+    - name: Create Release
+      uses: actions/create-release@v1
+      if: ${{ success() && env.isMaster == 'true' }}
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }} # This token is provided by Actions, you do not need to create your own token
+      with:
+        tag_name: ${{ steps.gitversion.outputs.nuGetVersionV2 }}
+        release_name: ${{ steps.gitversion.outputs.nuGetVersionV2 }}
+        draft: false
+        prerelease: true
