@@ -102,7 +102,7 @@ jobs:
 
     - name: Create Release
       uses: actions/create-release@v1
-      #if: ${{ success() && env.isMaster == 'true' }}
+      if: ${{ success() && env.isMaster == 'true' }}
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }} # This token is provided by Actions, you do not need to create your own token
       with:
