@@ -92,7 +92,7 @@ jobs:
       uses: actions/upload-artifact@v2
       with:
         name: code-coverage-reports
-        path: ./test/coverage/*.xml
+        path: ./test/coverage/**.xml
 
     - name: Archive test results
       uses: actions/upload-artifact@v2
