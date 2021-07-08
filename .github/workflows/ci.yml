@@ -92,13 +92,13 @@ jobs:
       uses: actions/upload-artifact@v2
       with:
         name: code-coverage-reports
-        path: **/test/coverage/*.xml
+        path: ./test/coverage/*.xml
 
     - name: Archive test results
       uses: actions/upload-artifact@v2
       with:
         name: test-results
-        path: **/test/results/*.xml
+        path: ./test/results/*.xml
 
     - name: Create Release
       uses: actions/create-release@v1
