@@ -236,7 +236,7 @@ Result result = results.ElementAt(0);
 Assert.Equal(State.Pass, result.State);
 ```
 
-Make sure to call `results.Clear()` in a `Dispose()` method in XUnit or a `[Teardown]` method in NUnit.
+Make sure to call `results.Clear()` in a `Dispose()` method in XUnit or a `[Teardown]` method in NUnit. Another option is to call `results.Clear` in the `finally` block of a try-finally statement containing the test fixture. 
 
 The full example test can be found at [RawPotatoTest.cs](https://bitbucket.hyland.com/projects/TATO/repos/hot-potato/browse/test/HotPotato.TestServer.Test/RawPotatoTest.cs).
 
