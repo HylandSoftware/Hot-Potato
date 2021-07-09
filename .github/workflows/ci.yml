@@ -33,7 +33,6 @@ jobs:
 
     - name: Display GitVersion outputs
       run: |
-        echo "${{ github.ref }}"
         echo "MajorMinorPatch: ${{ steps.gitversion.outputs.majorMinorPatch }}"
         echo "NuGetVersionV2: ${{ steps.gitversion.outputs.nuGetVersionV2 }}"
 
@@ -109,4 +108,4 @@ jobs:
         tag_name: ${{ steps.gitversion.outputs.nuGetVersionV2 }}
         release_name: ${{ steps.gitversion.outputs.nuGetVersionV2 }}
         draft: false
-        prerelease: true
+        prerelease: false
