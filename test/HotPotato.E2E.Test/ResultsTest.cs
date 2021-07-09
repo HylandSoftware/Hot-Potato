@@ -59,23 +59,23 @@ namespace HotPotato.E2E.Test
                             .WithBody(expected)
                     );
 
-                Core.Http.Default.HttpClient client = (Core.Http.Default.HttpClient)servicePro.GetService<IHttpClient>();
+                HotPotatoClient client = (HotPotatoClient)servicePro.GetService<IHotPotatoClient>();
 
                 HttpMethod method = new HttpMethod(GetMethodCall);
 
                 IResultCollector resultCollector = servicePro.GetService<IResultCollector>();
                 resultCollector.Results.Clear();
 
-                using (HttpRequest req = new HttpRequest(method, new System.Uri(ProxyEndpoint)))
+                using (HotPotatoRequest req = new HotPotatoRequest(method, new System.Uri(ProxyEndpoint)))
                 {
                     req.HttpHeaders.Add(ACustomHeaderKey, ACustomHeaderValue);
-                    IHttpResponse res = await client.SendAsync(req);
+                    IHotPotatoResponse res = await client.SendAsync(req);
                 }
 
                 //second request to make sure custom header doesn't linger
-                using (HttpRequest req = new HttpRequest(method, new System.Uri(ProxyEndpoint)))
+                using (HotPotatoRequest req = new HotPotatoRequest(method, new System.Uri(ProxyEndpoint)))
                 {
-                    IHttpResponse res = await client.SendAsync(req);
+                    IHotPotatoResponse res = await client.SendAsync(req);
                 }
 
                 FailResultWithCustomHeaders resultWithCustomHeaders = (FailResultWithCustomHeaders)resultCollector.Results.ElementAt(0);

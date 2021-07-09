@@ -13,7 +13,7 @@ namespace HotPotato.Core.Http.Default
         [Fact]
         public void HttpRequest_DecodedPath_DecodesSpecialCharacters()
         {
-            HttpRequest subject = new HttpRequest(new Uri(AValidUriWithPipes));
+            HotPotatoRequest subject = new HotPotatoRequest(new Uri(AValidUriWithPipes));
             string result = subject.DecodedPath;
             Assert.Equal(ExpectedPath, result);
         }
@@ -21,7 +21,7 @@ namespace HotPotato.Core.Http.Default
         [Fact]
         public void HttpRequest_DecodedPath_DecodesSpecialCharactersWithMethodCtor()
         {
-            HttpRequest subject = new HttpRequest(HttpMethod.Trace, new Uri(AValidUriWithPipes));
+            HotPotatoRequest subject = new HotPotatoRequest(HttpMethod.Trace, new Uri(AValidUriWithPipes));
             string result = subject.DecodedPath;
             Assert.Equal(ExpectedPath, result);
         }
@@ -31,7 +31,7 @@ namespace HotPotato.Core.Http.Default
         {
             Uri expectedUri = new Uri(AValidRelativePath, UriKind.Relative);
 
-            HttpRequest subject = new HttpRequest(expectedUri);
+            HotPotatoRequest subject = new HotPotatoRequest(expectedUri);
 
             Assert.Equal(expectedUri, subject.Uri);
             Assert.Equal(AValidRelativePath, subject.DecodedPath);
@@ -42,7 +42,7 @@ namespace HotPotato.Core.Http.Default
 		{
             Uri expectedUri = new Uri(AValidRelativePath, UriKind.Relative);
 
-            HttpRequest subject = new HttpRequest(HttpMethod.Trace, expectedUri);
+            HotPotatoRequest subject = new HotPotatoRequest(HttpMethod.Trace, expectedUri);
 
             Assert.Equal(expectedUri, subject.Uri);
             Assert.Equal(AValidRelativePath, subject.DecodedPath);

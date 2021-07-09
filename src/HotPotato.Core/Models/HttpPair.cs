@@ -5,10 +5,10 @@ namespace HotPotato.Core.Models
 {
     public class HttpPair : IDisposable
     {
-        public IHttpRequest Request { get; }
-        public IHttpResponse Response { get; }
+        public IHotPotatoRequest Request { get; }
+        public IHotPotatoResponse Response { get; }
         private bool disposed = false;
-        public HttpPair(IHttpRequest request, IHttpResponse response)
+        public HttpPair(IHotPotatoRequest request, IHotPotatoResponse response)
         {
             _ = request ?? throw Exceptions.ArgumentNull(nameof(request));
             _ = response ?? throw Exceptions.ArgumentNull(nameof(response));

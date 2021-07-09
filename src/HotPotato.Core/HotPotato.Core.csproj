@@ -2,9 +2,9 @@
 
   <PropertyGroup>
     <TargetFrameworks>netcoreapp2.2;netcoreapp3.1</TargetFrameworks>
-    <RestoreSources>
+    <!-- <RestoreSources>
       https://proget.onbase.net/nuget/NuGet/;
-    </RestoreSources>
+    </RestoreSources> -->
     <PackageVersion></PackageVersion>
     <Title>HotPotato.Core</Title>
     <Authors>Test Automation Team | GRP-AutomatedTesting@.hyland.com</Authors>

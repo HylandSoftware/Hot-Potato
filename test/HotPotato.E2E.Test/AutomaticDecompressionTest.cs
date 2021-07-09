@@ -65,14 +65,14 @@ namespace HotPotato.E2E.Test
                             .WithBody(CompressGZipContent(ExpectedBody).ReadAsByteArrayAsync().Result)
                     );
 
-                Core.Http.Default.HttpClient client = (Core.Http.Default.HttpClient)servicePro.GetService<IHttpClient>();
+                HotPotatoClient client = (HotPotatoClient)servicePro.GetService<IHotPotatoClient>();
 
                 HttpMethod method = new HttpMethod(GetMethodCall);
 
-                using (HttpRequest req = new HttpRequest(method, new System.Uri(ProxyEndpoint)))
+                using (HotPotatoRequest req = new HotPotatoRequest(method, new System.Uri(ProxyEndpoint)))
                 {
                     req.SetContent(CompressGZipContent(ExpectedBody).ReadAsByteArrayAsync().Result, ApplicationJsonContentType);
-                    IHttpResponse res = await client.SendAsync(req);
+                    IHotPotatoResponse res = await client.SendAsync(req);
                     Assert.Equal(ExpectedBody, res.ToBodyString());
                 }
             }
@@ -100,14 +100,14 @@ namespace HotPotato.E2E.Test
                     );
 
 
-                Core.Http.Default.HttpClient client = (Core.Http.Default.HttpClient)servicePro.GetService<IHttpClient>();
+                HotPotatoClient client = (HotPotatoClient)servicePro.GetService<IHotPotatoClient>();
 
                 HttpMethod method = new HttpMethod(GetMethodCall);
 
-                using (HttpRequest req = new HttpRequest(method, new System.Uri(ProxyEndpoint)))
+                using (HotPotatoRequest req = new HotPotatoRequest(method, new System.Uri(ProxyEndpoint)))
                 {
                     req.SetContent(CompressDeflateContent(ExpectedBody).ReadAsByteArrayAsync().Result, ApplicationJsonContentType);
-                    IHttpResponse res = await client.SendAsync(req);
+                    IHotPotatoResponse res = await client.SendAsync(req);
                     Assert.Equal(ExpectedBody, res.ToBodyString());
                 }
             }

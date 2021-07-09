@@ -6,7 +6,7 @@ using System.Web;
 
 namespace HotPotato.Core.Http.Default
 {
-    public class HttpRequest : IHttpRequest, IDisposable
+    public class HotPotatoRequest : IHotPotatoRequest, IDisposable
     {
         private readonly Encoding DefaultEncoding = Encoding.UTF8;
         private readonly string DefaultMediaType = "application/json";
@@ -25,7 +25,7 @@ namespace HotPotato.Core.Http.Default
         public MediaTypeHeaderValue ContentType { get; private set; }
         public HttpContent Content => this.requestContent.Content;
         
-        public HttpRequest(Uri uri)
+        public HotPotatoRequest(Uri uri)
             : this(HttpMethod.Get, uri)
         {
             this.Uri = uri;
@@ -39,7 +39,7 @@ namespace HotPotato.Core.Http.Default
             }
         }
 
-        public HttpRequest(HttpMethod method, Uri uri)
+        public HotPotatoRequest(HttpMethod method, Uri uri)
         {
             this.Method = method;
             this.Uri = uri;
@@ -56,28 +56,28 @@ namespace HotPotato.Core.Http.Default
             this.requestContent = new HttpRequestMessage();
         }
 
-        public IHttpRequest SetContent(string content)
+        public IHotPotatoRequest SetContent(string content)
         {
             return SetContent(content, DefaultEncoding);
         }
 
-        public IHttpRequest SetContent(string content, Encoding encoding)
+        public IHotPotatoRequest SetContent(string content, Encoding encoding)
         {
             return SetContent(content, encoding, DefaultMediaType);
         }
 
-        public IHttpRequest SetContent(string content, Encoding encoding, string mediaType)
+        public IHotPotatoRequest SetContent(string content, Encoding encoding, string mediaType)
         {
             return SetContent(content, encoding, new MediaTypeHeaderValue(mediaType));
         }
 
-        public IHttpRequest SetContent(string content, Encoding encoding, MediaTypeHeaderValue mediaType)
+        public IHotPotatoRequest SetContent(string content, Encoding encoding, MediaTypeHeaderValue mediaType)
         {
             this.requestContent.Content = new StringContent(content, encoding, mediaType.MediaType);
             return this;
         }
 
-        public IHttpRequest SetContent(byte[] content, string mediaType)
+        public IHotPotatoRequest SetContent(byte[] content, string mediaType)
         {
             this.requestContent.Content = new ByteArrayContent(content);
 

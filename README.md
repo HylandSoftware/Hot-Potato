@@ -179,7 +179,10 @@ var apiBuilder = new WebHostBuilder()
 apiServer = new TestServer(apiBuilder);
 apiServer.BaseAddress = new Uri(TestServerAddress);
 
+//versions below 1.1.0
 Core.Http.Default.HttpClient apiClient = new Core.Http.Default.HttpClient(apiServer.CreateClient());
+//1.1.0+
+HotPotatoClient apiClient = new HotPotatoClient(apiServer.CreateClient());
 ```
 
 Now that we have a client created for the API Under Test, we can build our web host and inject it into the Test Server.
@@ -218,7 +221,10 @@ These services are `IProxy`, `ISpecificationProivder`, `IResultCollector`, and `
 We set the fixture's public members of Results to the List<Result> member of the IResultCollector and Client to the client created with the Hot Potato TestServer:
 ```csharp
 Results = hotPotatoServer.Host.Services.GetService<IResultCollector>().Results;
+//versions below 1.1.0
 Client = new Core.Http.Default.HttpClient(hotPotatoServer.CreateClient());
+//1.1.0+
+Client = new HotPotatoClient(hotPotatoServer.CreateClient());
 ```
 
 Then we use them like so in a test to send requests and verify the validation results:
@@ -229,6 +235,8 @@ Result result = results.ElementAt(0);
 
 Assert.Equal(State.Pass, result.State);
 ```
+
+Make sure to call `results.Clear()` in a `Dispose()` method in XUnit or a `[Teardown]` method in NUnit. Another option is to call `results.Clear` in the `finally` block of a try-finally statement containing the test fixture. 
 
 The full example test can be found at [RawPotatoTest.cs](https://bitbucket.hyland.com/projects/TATO/repos/hot-potato/browse/test/HotPotato.TestServer.Test/RawPotatoTest.cs).
 

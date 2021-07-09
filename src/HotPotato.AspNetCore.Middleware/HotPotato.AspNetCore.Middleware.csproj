@@ -3,9 +3,9 @@
   <PropertyGroup>
     <OutputType>Library</OutputType>
     <TargetFrameworks>netcoreapp2.2;netcoreapp3.1</TargetFrameworks>
-    <RestoreSources>
+    <!-- <RestoreSources>
       https://proget.onbase.net/nuget/NuGet/;
-    </RestoreSources>
+    </RestoreSources> -->
     <ApplicationIcon />
     <StartupObject />
     <PackageVersion></PackageVersion>

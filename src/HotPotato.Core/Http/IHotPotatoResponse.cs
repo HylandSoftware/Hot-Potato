@@ -3,7 +3,7 @@ using System.Net.Http.Headers;
 
 namespace HotPotato.Core.Http
 {
-    public interface IHttpResponse
+    public interface IHotPotatoResponse
     {
         HttpStatusCode StatusCode { get; }
         HttpHeaders Headers { get; }

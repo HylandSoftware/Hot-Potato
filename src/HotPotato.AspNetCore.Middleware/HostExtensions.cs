@@ -1,5 +1,6 @@
 ﻿using HotPotato.Core.Cookies;
 using HotPotato.Core.Http;
+using HotPotato.Core.Http.Default;
 using HotPotato.Core.Processor;
 using HotPotato.Core.Proxy;
 using HotPotato.OpenApi.Results;
@@ -16,17 +17,17 @@ namespace HotPotato.AspNetCore.Middleware
         /// </summary>
         /// <param name="services">The client from the external host to be injected into the service collection</param>
         /// <returns></returns>
-        public static IServiceCollection ConfigureMiddlewareServices(this IServiceCollection services, Core.Http.Default.HttpClient client = null)
+        public static IServiceCollection ConfigureMiddlewareServices(this IServiceCollection services, HotPotatoClient client = null)
         {
             services.AddScoped<IProxy, HotPotato.Core.Proxy.Default.Proxy>();
             if (client != null)
             {
-                services.AddSingleton<IHttpClient>(client);
+                services.AddSingleton<IHotPotatoClient>(client);
             }
             else
             {
-                services.AddScoped<IHttpClient, HotPotato.Core.Http.Default.HttpClient>();
-                services.AddHttpClient<IHttpClient, HotPotato.Core.Http.Default.HttpClient>();
+                services.AddScoped<IHotPotatoClient, HotPotatoClient>();
+                services.AddHttpClient<IHotPotatoClient, HotPotatoClient>();
             }
             services.AddSingleton<ICookieJar, CookieJar>();
             services.AddSingleton<ISpecificationProvider, SpecificationProvider>();

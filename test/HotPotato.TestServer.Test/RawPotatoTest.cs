@@ -12,9 +12,9 @@ using Xunit;
 
 namespace HotPotato.TestServ.Test
 {
-    public class RawPotatoTest : IClassFixture<TestFixture<Api.Startup>>
+    public class RawPotatoTest : IClassFixture<TestFixture<Api.Startup>>, IDisposable
     {
-        private Core.Http.Default.HttpClient client;
+        private HotPotatoClient client;
         private List<Result> results;
 
         private readonly Order paperOrder = new Order()
@@ -51,7 +51,7 @@ namespace HotPotato.TestServ.Test
             HttpMethod method = new HttpMethod(methodString);
             Uri pathUri = new Uri(path);
 
-            using (HttpRequest req = new HttpRequest(method, pathUri))
+            using (HotPotatoRequest req = new HotPotatoRequest(method, pathUri))
             {
                 if (hasRequestBody)
                 {
@@ -66,9 +66,40 @@ namespace HotPotato.TestServ.Test
                 Assert.Equal(pathUri.AbsolutePath, result.Path);
                 Assert.Equal(State.Pass, result.State);
                 Assert.Equal(expectedStatusCode, result.StatusCode);
-
-                results.Clear();
             }
         }
-    }
+
+        [Theory]
+        [InlineData("http://localhost:3232", "GET")]
+        [InlineData("http://localhost:3232/order", "GET")]
+        [InlineData("http://localhost:3232/expected_fail", "GET")]
+        [InlineData("http://localhost:3232/order/2", "OPTIONS")]
+        [InlineData("http://localhost:3232/order/4", "GET")]
+        public async Task One_Fail_Result_Should_Not_Fail_The_Whole_Set(string path, string methodString)
+        {
+            HttpMethod method = new HttpMethod(methodString);
+            Uri pathUri = new Uri(path);
+
+            using (HotPotatoRequest req = new HotPotatoRequest(method, pathUri))
+            {
+                await client.SendAsync(req);
+
+                Result result = results.ElementAt(0);
+
+                if (path.Contains("expected_fail"))
+                {
+                    Assert.Equal(State.Fail, result.State);
+                }
+                else
+				{
+                    Assert.Equal(State.Pass, result.State);
+                }
+            }
+        }
+
+        public void Dispose()
+		{
+			results.Clear();
+		}
+	}
 }

@@ -60,15 +60,15 @@ namespace HotPotato.E2E.Test
                             .WithBody(expected)
                     );
 
-                Core.Http.Default.HttpClient client = (Core.Http.Default.HttpClient)servicePro.GetService<IHttpClient>();
+                HotPotatoClient client = (HotPotatoClient)servicePro.GetService<IHotPotatoClient>();
 
                 ICookieJar cookieJar = servicePro.GetService<ICookieJar>();
                 Cookie cookie = new Cookie(CookieName, CookieValue, CookiePath, CookieDomain);
                 cookieJar.Cookies.Add(cookie);
 
-                using (HttpRequest req = new HttpRequest(HttpMethod.Delete, new System.Uri(CookiesEndpoint)))
+                using (HotPotatoRequest req = new HotPotatoRequest(HttpMethod.Delete, new System.Uri(CookiesEndpoint)))
                 {
-                    IHttpResponse res = await client.SendAsync(req);
+                    IHotPotatoResponse res = await client.SendAsync(req);
                 }
 
                 HttpMethod method = new HttpMethod(GetMethodCall);
@@ -76,9 +76,9 @@ namespace HotPotato.E2E.Test
                 IResultCollector resultCollector = servicePro.GetService<IResultCollector>();
                 resultCollector.Results.Clear();
 
-                using (HttpRequest req = new HttpRequest(method, new System.Uri(ProxyEndpoint)))
+                using (HotPotatoRequest req = new HotPotatoRequest(method, new System.Uri(ProxyEndpoint)))
                 {
-                    IHttpResponse res = await client.SendAsync(req);
+                    IHotPotatoResponse res = await client.SendAsync(req);
                 }
 
                 Assert.True(cookieJar.Cookies.Count == 0);

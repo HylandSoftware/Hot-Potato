@@ -17,7 +17,7 @@ namespace HotPotato.Core.Http.Default
         [Fact]
         public void Constructor_ThrowsArgumentNullExceptionWithClient()
         {
-            Action subject = () => new HttpClient(null);
+            Action subject = () => new HotPotatoClient(null);
             Assert.Throws<ArgumentNullException>(subject);
         }
 
@@ -28,11 +28,11 @@ namespace HotPotato.Core.Http.Default
             Uri endpointUri = new Uri(AValidEndpoint);
 
             using (HttpMessageHandler mockHandler = handlerMock.Object)
-            using (HttpRequest request = new HttpRequest(HttpMethod.Get, endpointUri))
+            using (HotPotatoRequest request = new HotPotatoRequest(HttpMethod.Get, endpointUri))
             {
-                HttpClient subject = new HttpClient(mockHandler.ToHttpClient());
+                HotPotatoClient subject = new HotPotatoClient(mockHandler.ToHttpClient());
 
-                IHttpResponse response = await subject.SendAsync(request);
+                IHotPotatoResponse response = await subject.SendAsync(request);
 
                 Assert.NotNull(response);
 
@@ -52,13 +52,13 @@ namespace HotPotato.Core.Http.Default
 
             using (HttpContent expectContent = new StringContent(expectString, Encoding.UTF8, "application/json"))
             using (HttpMessageHandler mockHandler = GetMockHandler(HttpStatusCode.OK, expectString).Object)
-            using (HttpRequest request = new HttpRequest(HttpMethod.Get, new Uri(AValidEndpoint)))
+            using (HotPotatoRequest request = new HotPotatoRequest(HttpMethod.Get, new Uri(AValidEndpoint)))
             {
                 request.SetContent(expectString);
 
-                HttpClient subject = new HttpClient(mockHandler.ToHttpClient());
+                HotPotatoClient subject = new HotPotatoClient(mockHandler.ToHttpClient());
 
-                IHttpResponse response = await subject.SendAsync(request);
+                IHotPotatoResponse response = await subject.SendAsync(request);
                 string bodyString = response.ToBodyString();
 
                 Assert.Equal("utf-8", response.ContentType.CharSet);

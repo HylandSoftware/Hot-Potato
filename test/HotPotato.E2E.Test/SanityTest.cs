@@ -57,13 +57,13 @@ namespace HotPotato.E2E.Test
                             .WithBody(expected)
                     );
 
-                Core.Http.Default.HttpClient client = (Core.Http.Default.HttpClient)servicePro.GetService<IHttpClient>();
+                HotPotatoClient client = (HotPotatoClient)servicePro.GetService<IHotPotatoClient>();
 
                 HttpMethod method = new HttpMethod(GetMethodCall);
 
-                using (HttpRequest req = new HttpRequest(method, new System.Uri(ProxyEndpoint)))
+                using (HotPotatoRequest req = new HotPotatoRequest(method, new System.Uri(ProxyEndpoint)))
                 {
-                    IHttpResponse res = await client.SendAsync(req);
+                    IHotPotatoResponse res = await client.SendAsync(req);
                     
                     //Asserts
                     Assert.Equal(HttpStatusCode.OK, res.StatusCode);
@@ -103,14 +103,14 @@ namespace HotPotato.E2E.Test
                             .WithBody(json)
                     );
 
-                Core.Http.Default.HttpClient client = (Core.Http.Default.HttpClient)servicePro.GetService<IHttpClient>();
+                HotPotatoClient client = (HotPotatoClient)servicePro.GetService<IHotPotatoClient>();
 
                 HttpMethod method = new HttpMethod(GetMethodCall);
 
-                using (HttpRequest req = new HttpRequest(method, new System.Uri(ProxyEndpoint)))
+                using (HotPotatoRequest req = new HotPotatoRequest(method, new System.Uri(ProxyEndpoint)))
                 {
 
-                    IHttpResponse res = await client.SendAsync(req);
+                    IHotPotatoResponse res = await client.SendAsync(req);
 
                     //Asserts
                     Assert.Equal(HttpStatusCode.OK, res.StatusCode);
@@ -140,13 +140,13 @@ namespace HotPotato.E2E.Test
                     );
 
 
-                Core.Http.Default.HttpClient client = (Core.Http.Default.HttpClient)servicePro.GetService<IHttpClient>();
+                HotPotatoClient client = (HotPotatoClient)servicePro.GetService<IHotPotatoClient>();
                 HttpMethod method = new HttpMethod(GetMethodCall);
 
-                using (HttpRequest req = new HttpRequest(method, new System.Uri(ProxyEndpoint)))
+                using (HotPotatoRequest req = new HotPotatoRequest(method, new System.Uri(ProxyEndpoint)))
                 {
 
-                    IHttpResponse res = await client.SendAsync(req);
+                    IHotPotatoResponse res = await client.SendAsync(req);
 
                     //Asserts
                     Assert.Equal(HttpStatusCode.NotFound, res.StatusCode);
@@ -176,13 +176,13 @@ namespace HotPotato.E2E.Test
 
 
                 //Setting up Http Client
-                Core.Http.Default.HttpClient client = (Core.Http.Default.HttpClient)servicePro.GetService<IHttpClient>();
+                HotPotatoClient client = (HotPotatoClient)servicePro.GetService<IHotPotatoClient>();
                 HttpMethod method = new HttpMethod(GetMethodCall);
 
-                using (HttpRequest req = new HttpRequest(method, new System.Uri(ProxyEndpoint)))
+                using (HotPotatoRequest req = new HotPotatoRequest(method, new System.Uri(ProxyEndpoint)))
                 {
 
-                    IHttpResponse res = await client.SendAsync(req);
+                    IHotPotatoResponse res = await client.SendAsync(req);
 
                     //Asserts
                     Assert.Equal(HttpStatusCode.InternalServerError, res.StatusCode);
