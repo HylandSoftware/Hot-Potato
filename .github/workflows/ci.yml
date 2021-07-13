@@ -87,6 +87,27 @@ jobs:
     #     collection: ./test/HappyPathTests.postman_collection.json
     #     reporters: cli
 
+    - name: Deploy 
+      run: |
+        dotnet pack ./src/HotPotato.AspNetCore.Host/HotPotato.AspNetCore.Host.csproj -p:PackageVersion=${{ steps.gitversion.outputs.majorMinorPatch }} -c Release --no-build --no-restore
+        dotnet pack ./src/HotPotato.AspNetCore.Middleware/HotPotato.AspNetCore.Middleware.csproj -p:PackageVersion=${{ steps.gitversion.outputs.majorMinorPatch }} -c Release --no-build --no-restore
+        dotnet pack ./src/HotPotato.Core/HotPotato.Core.csproj -p:PackageVersion=${{ steps.gitversion.outputs.majorMinorPatch }} -c Release --no-build --no-restore
+        dotnet pack ./src/HotPotato.OpenApi/HotPotato.OpenApi.csproj -p:PackageVersion=${{ steps.gitversion.outputs.majorMinorPatch }} -c Release --no-build --no-restore
+
+        dotnet nuget push $GITHUB_WORKSPACE/src/HotPotato.AspNetCore.Host/**/*.nupkg -k ${{ secrets.GITHUB_TOKEN }} -s https://nuget.pkg.github.com/HylandSoftware/index.json
+        dotnet nuget push $GITHUB_WORKSPACE/src/HotPotato.AspNetCore.Middleware/**/*.nupkg -k ${{ secrets.GITHUB_TOKEN }} -s https://nuget.pkg.github.com/HylandSoftware/index.json
+        dotnet nuget push $GITHUB_WORKSPACE/src/HotPotato.Core/**/*.nupkg -k ${{ secrets.GITHUB_TOKEN }} -s https://nuget.pkg.github.com/HylandSoftware/index.json
+        dotnet nuget push $GITHUB_WORKSPACE/src/HotPotato.OpenApi/**/*.nupkg -k ${{ secrets.GITHUB_TOKEN }} -s https://nuget.pkg.github.com/HylandSoftware/index.json
+
+      # nuget local artifactory?
+
+    # Push Images
+    - name: Push Images
+      run: |
+
+    # Docker stuffff 
+    # docker local artifactory?
+
     - name: Archive code coverage results
       uses: actions/upload-artifact@v2
       with:
