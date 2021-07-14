@@ -51,6 +51,9 @@ jobs:
 
     - name: Build
       run: |
+        echo "1" + ${{ env.VERSION }}
+        echo "2" + env.VERSION
+        echo "3" + $VERSION
         dotnet build --configuration Release -p:Version=${{ env.VERSION }}
 
     - name: Run Unit Tests .NET 2.2
