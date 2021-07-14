@@ -35,9 +35,6 @@ jobs:
       run: |
         echo "MajorMinorPatch: ${{ steps.gitversion.outputs.majorMinorPatch }}"
         echo "NuGetVersionV2: ${{ steps.gitversion.outputs.nuGetVersionV2 }}"
-      
-    - name: Set Version env.
-      run: echo "VERSION" = "${{ steps.gitversion.outputs.majorMinorPatch }}" >> $GITHUB_ENV
 
     - name: Setup .NET Core 2.2
       uses: actions/setup-dotnet@v1
@@ -51,10 +48,7 @@ jobs:
 
     - name: Build
       run: |
-        echo "1" + ${{ env.VERSION }}
-        echo "2" + env.VERSION
-        echo "3" + $VERSION
-        dotnet build --configuration Release -p:Version=${{ env.VERSION }}
+        dotnet build --configuration Release -p:Version=${{ env.GitVersion_MajorMinorPatch }}
 
     - name: Run Unit Tests .NET 2.2
       run: |
@@ -95,10 +89,10 @@ jobs:
 
     - name: Deploy 
       run: |
-        dotnet pack ./src/HotPotato.AspNetCore.Host/HotPotato.AspNetCore.Host.csproj -p:PackageVersion=${{ env.VERSION }} -c Release --no-build --no-restore
-        dotnet pack ./src/HotPotato.AspNetCore.Middleware/HotPotato.AspNetCore.Middleware.csproj -p:PackageVersion=${{ env.VERSION }} -c Release --no-build --no-restore
-        dotnet pack ./src/HotPotato.Core/HotPotato.Core.csproj -p:PackageVersion=${{ env.VERSION }} -c Release --no-build --no-restore
-        dotnet pack ./src/HotPotato.OpenApi/HotPotato.OpenApi.csproj -p:PackageVersion=${{ env.VERSION }} -c Release --no-build --no-restore
+        dotnet pack ./src/HotPotato.AspNetCore.Host/HotPotato.AspNetCore.Host.csproj -p:PackageVersion=${{ env.GitVersion_MajorMinorPatch }} -c Release --no-build --no-restore
+        dotnet pack ./src/HotPotato.AspNetCore.Middleware/HotPotato.AspNetCore.Middleware.csproj -p:PackageVersion=${{ env.GitVersion_MajorMinorPatch}} -c Release --no-build --no-restore
+        dotnet pack ./src/HotPotato.Core/HotPotato.Core.csproj -p:PackageVersion=${{ env.GitVersion_MajorMinorPatch }} -c Release --no-build --no-restore
+        dotnet pack ./src/HotPotato.OpenApi/HotPotato.OpenApi.csproj -p:PackageVersion=${{ env.GitVersion_MajorMinorPatch }} -c Release --no-build --no-restore
 
         dotnet nuget push $GITHUB_WORKSPACE/src/HotPotato.AspNetCore.Host/**/*.nupkg -k ${{ secrets.GITHUB_TOKEN }} -s https://nuget.pkg.github.com/HylandSoftware/index.json
         dotnet nuget push $GITHUB_WORKSPACE/src/HotPotato.AspNetCore.Middleware/**/*.nupkg -k ${{ secrets.GITHUB_TOKEN }} -s https://nuget.pkg.github.com/HylandSoftware/index.json
@@ -112,9 +106,9 @@ jobs:
         
     # - name: Push Images
     #   run: |
-    #     sh 'docker build --tag hcr.io/automated-testing/hot-potato:${{ env.VERSION }} --build-arg IMAGE_VERSION=${{ env.VERSION }} .'
-    #     sh 'docker push hcr.io/automated-testing/hot-potato:${{ env.VERSION }}'
-    #     sh 'docker tag hcr.io/automated-testing/hot-potato:${{ env.VERSION }} hcr.io/automated-testing/hot-potato:latest'
+    #     sh 'docker build --tag hcr.io/automated-testing/hot-potato:${{ env.GitVersion_MajorMinorPatch }} --build-arg IMAGE_VERSION=${{ env.GitVersion_MajorMinorPatch }} .'
+    #     sh 'docker push hcr.io/automated-testing/hot-potato:${{ env.GitVersion_MajorMinorPatch }}'
+    #     sh 'docker tag hcr.io/automated-testing/hot-potato:${{ env.GitVersion_MajorMinorPatch }} hcr.io/automated-testing/hot-potato:latest'
     #     sh 'docker push hcr.io/automated-testing/hot-potato:latest'
 
     # Docker stuffff 
