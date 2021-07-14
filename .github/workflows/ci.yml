@@ -7,7 +7,7 @@ on:
 
 env:
   isMaster: ${{ github.ref == 'refs/heads/master' }}
-
+  
 jobs:
   build:
 
@@ -35,8 +35,9 @@ jobs:
       run: |
         echo "MajorMinorPatch: ${{ steps.gitversion.outputs.majorMinorPatch }}"
         echo "NuGetVersionV2: ${{ steps.gitversion.outputs.nuGetVersionV2 }}"
-      env: 
-        VERSION: ${{ steps.gitversion.outputs.majorMinorPatch }}"
+      
+    - name: Set Version env.
+      run: echo "VERSION" = "${{ steps.gitversion.outputs.majorMinorPatch }}" >> $GITHUB_ENV
 
     - name: Setup .NET Core 2.2
       uses: actions/setup-dotnet@v1
