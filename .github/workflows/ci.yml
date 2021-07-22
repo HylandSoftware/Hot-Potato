@@ -100,7 +100,7 @@ jobs:
         dotnet nuget push $GITHUB_WORKSPACE/src/HotPotato.OpenApi/**/*.nupkg -k ${{ secrets.GITHUB_TOKEN }} -s https://nuget.pkg.github.com/HylandSoftware/index.json --skip-duplicate
 
     - name: Push Images
-      if: contains(github.ref, "refs/heads/v*")
+      if: startsWith(github.ref, 'refs/tags/v')
       run: |
         dotnet nuget push $GITHUB_WORKSPACE/src/HotPotato.AspNetCore.Host/**/*.nupkg -k ${{ secrets.TESTAUTOMATION_GITHUB }} -s https://artifactory.onbase.net/artifactory/api/nuget/nuget --skip-duplicate
         dotnet nuget push $GITHUB_WORKSPACE/src/HotPotato.AspNetCore.Middleware/**/*.nupkg -k ${{ secrets.TESTAUTOMATION_GITHUB }} -s https://artifactory.onbase.net/artifactory/api/nuget/nuget --skip-duplicate
