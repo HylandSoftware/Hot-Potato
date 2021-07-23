@@ -93,7 +93,7 @@ jobs:
         name: code-coverage-reports
         path: ./test/coverage/*.xml
 
-      name: Create badge
+    - name: Create badge
       uses: schneegans/dynamic-badges-action@v1.1.0
       with:
         auth: ${{ secrets.BADGE_SECRET }}
