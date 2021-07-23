@@ -93,6 +93,16 @@ jobs:
         name: code-coverage-reports
         path: ./test/coverage/*.xml
 
+    - if: ${{ code-coverage-reports }}
+      name: Create badge
+      uses: schneegans/dynamic-badges-action@v1.1.0
+      with:
+        auth: ${{ secrets.BADGE_SECRET }}
+        gistID: a7688a704df34b13e2995c77340e1df6
+        filename: test.json
+        label: Test Coverage
+        message: ${{ env.CoverletOutput}}
+
     - name: Archive test results
       uses: actions/upload-artifact@v2
       with:
