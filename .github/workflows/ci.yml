@@ -100,7 +100,7 @@ jobs:
         gistID: a7688a704df34b13e2995c77340e1df6
         filename: test.json
         label: Test Coverage
-        message: ${{ env.CoverletOutput}}
+        message: ${{ env.CoverletOutput }}
 
     - name: Archive test results
       uses: actions/upload-artifact@v2
