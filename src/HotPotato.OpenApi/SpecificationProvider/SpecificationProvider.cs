@@ -53,12 +53,13 @@ namespace HotPotato.OpenApi.SpecificationProvider
 
         private string RelativeSpecLocationFullPath()
 		{
+            string relativeSpecLocation = SpecLocation.Replace('/', Path.DirectorySeparatorChar).Replace('\\', Path.DirectorySeparatorChar);
             DirectoryInfo directory = Directory.GetParent(Environment.CurrentDirectory);
             while (directory != null && !directory.GetFiles("*.sln").Any())
             {
                 directory = directory.Parent;
             }
-            return Path.Join(directory.FullName, SpecLocation);
+            return Path.Join(directory.FullName, relativeSpecLocation);
 		}
 
         private async Task<OpenApiDocument> FromUrlAsyncWithClient(string url)
