@@ -79,16 +79,19 @@ jobs:
       run: |
         dotnet test ./test/HotPotato.TestServer.Test/HotPotato.TestServ.Test.csproj -c Release -l:"JUnit;LogFilePath=$GITHUB_WORKSPACE/test/results/testServerResults.xml" --no-restore --no-build
 
-    # - name: Start Hot Potato For Postman Tests
-    #   run: |
-    #     dotnet $GITHUB_WORKSPACE/src/HotPotato.AspNetCore.Host/bin/Release/netcoreapp3.1/HotPotato.AspNetCore.Host.dll &
-    #     dotnet $GITHUB_WORKSPACE/test/HotPotato.Api/bin/Release/netcoreapp3.1/HotPotato.Api.dll &
+    - name: Start Hot Potato For Postman Tests
+      env:
+        SpecLocation: "https://raw.githubusercontent.com/HylandSoftware/Hot-Potato/master/test/RawPotatoSpec.yaml"
+        RepoToken: ${{ secrets.GITHUB_TOKEN }}
+      run: |
+        dotnet $GITHUB_WORKSPACE/src/HotPotato.AspNetCore.Host/bin/Release/netcoreapp3.1/HotPotato.AspNetCore.Host.dll &
+        dotnet $GITHUB_WORKSPACE/test/HotPotato.Api/bin/Release/netcoreapp3.1/HotPotato.Api.dll &
  
-    # - name: Run Postman Tests
-    #   uses: anthonyvscode/newman-action@v1
-    #   with:
-    #     collection: ./test/HappyPathTests.postman_collection.json
-    #     reporters: cli
+    - name: Run Postman Tests
+      uses: anthonyvscode/newman-action@v1
+      with:
+        collection: ./test/HappyPathTests.postman_collection.json
+        reporters: cli
 
     - name: Archive code coverage results
       uses: actions/upload-artifact@v2
