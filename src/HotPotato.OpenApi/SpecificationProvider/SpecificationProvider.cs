@@ -14,14 +14,14 @@ namespace HotPotato.OpenApi.SpecificationProvider
     public class SpecificationProvider : ISpecificationProvider
     {
         private readonly string SpecLocation;
-        private readonly string RepoToken;
+        private readonly string SpecToken;
         private readonly bool ignoreClientCertificateValidationErrors;
 
         public SpecificationProvider(IConfiguration config)
         {
             _ = config ?? throw Exceptions.ArgumentNull(nameof(config));
             this.SpecLocation = config["SpecLocation"];
-            this.RepoToken = config["RepoToken"];
+            this.SpecToken = config["SpecToken"];
             //mirror the security setting used at startup
             this.ignoreClientCertificateValidationErrors = config.GetSection("HttpClientSettings").GetValue<bool>("IgnoreClientHttpsCertificateValidationErrors");
         }
@@ -81,9 +81,9 @@ namespace HotPotato.OpenApi.SpecificationProvider
                     client.BaseAddress = new Uri(url);
                     using (HttpRequestMessage req = new HttpRequestMessage(HttpMethod.Get, url))
                     {
-                        if (!string.IsNullOrWhiteSpace(RepoToken))
+                        if (!string.IsNullOrWhiteSpace(SpecToken))
                         {
-                            req.Headers.Add("Authorization", $"Bearer {RepoToken}");
+                            req.Headers.Add("Authorization", $"Bearer {SpecToken}");
                         }
                         using (HttpResponseMessage response = await client.SendAsync(req).ConfigureAwait(false))
                         {
