@@ -4,9 +4,12 @@ using NSwag;
 using static NSwag.OpenApiYamlDocument;
 using System;
 using System.IO;
+using System.Linq;
 using System.Net;
 using System.Net.Http;
 using System.Threading.Tasks;
+
+using Microsoft.Extensions.Logging;
 
 namespace HotPotato.OpenApi.SpecificationProvider
 {
@@ -14,8 +17,9 @@ namespace HotPotato.OpenApi.SpecificationProvider
     {
         private readonly string SpecLocation;
         private readonly bool ignoreClientCertificateValidationErrors;
+        private ILogger Logger;
 
-        public SpecificationProvider(IConfiguration config)
+        public SpecificationProvider(IConfiguration config, ILogger<SpecificationProvider> logger)
         {
             _ = config ?? throw Exceptions.ArgumentNull(nameof(config));
             this.SpecLocation = config["SpecLocation"];
@@ -24,11 +28,19 @@ namespace HotPotato.OpenApi.SpecificationProvider
         }
         public OpenApiDocument GetSpecDocument()
         {
+            Console.WriteLine(SpecLocation);
             Task<OpenApiDocument> swagTask = null;
-            if (Path.IsPathFullyQualified(SpecLocation))
-            {
-                swagTask = FromFileAsync(SpecLocation);
-            }
+            if (Path.IsPathRooted(SpecLocation))
+			{
+                if (Path.IsPathFullyQualified(SpecLocation))
+				{
+                    swagTask = FromFileAsync(SpecLocation);
+                }
+                else
+				{
+                    swagTask = FromFileAsync(RelativeSpecLocationFullPath());
+				}
+			}
             else if (Uri.IsWellFormedUriString(SpecLocation, UriKind.Absolute))
             {
                 swagTask = FromUrlAsyncWithClient(SpecLocation);
@@ -39,6 +51,16 @@ namespace HotPotato.OpenApi.SpecificationProvider
             }
             return swagTask.Result;
         }
+
+        private string RelativeSpecLocationFullPath()
+		{
+            DirectoryInfo directory = Directory.GetParent(Environment.CurrentDirectory);
+            while (directory != null && !directory.GetFiles("*.sln").Any())
+            {
+                directory = directory.Parent;
+            }
+            return = Path.Join(directory.FullName, SpecLocation);
+		}
 
         private async Task<OpenApiDocument> FromUrlAsyncWithClient(string url)
         {
