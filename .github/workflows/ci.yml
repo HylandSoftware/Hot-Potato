@@ -74,7 +74,8 @@ jobs:
 
     - name: Run TestServer Tests
       env:
-        SpecLocation: "https://raw.githubusercontent.com/HylandSoftware/Hot-Potato/master/test/RawPotatoSpec.yaml?token=${{ secrets.GITHUB_TOKEN }}"
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        SpecLocation: "https://raw.githubusercontent.com/HylandSoftware/Hot-Potato/master/test/RawPotatoSpec.yaml"
       run: |
         dotnet test ./test/HotPotato.TestServer.Test/HotPotato.TestServ.Test.csproj -c Release -l:"JUnit;LogFilePath=$GITHUB_WORKSPACE/test/results/testServerResults.xml" --no-restore --no-build
 
