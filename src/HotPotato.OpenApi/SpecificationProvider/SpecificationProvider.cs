@@ -9,17 +9,14 @@ using System.Net;
 using System.Net.Http;
 using System.Threading.Tasks;
 
-using Microsoft.Extensions.Logging;
-
 namespace HotPotato.OpenApi.SpecificationProvider
 {
     public class SpecificationProvider : ISpecificationProvider
     {
         private readonly string SpecLocation;
         private readonly bool ignoreClientCertificateValidationErrors;
-        private ILogger Logger;
 
-        public SpecificationProvider(IConfiguration config, ILogger<SpecificationProvider> logger)
+        public SpecificationProvider(IConfiguration config)
         {
             _ = config ?? throw Exceptions.ArgumentNull(nameof(config));
             this.SpecLocation = config["SpecLocation"];
@@ -29,7 +26,7 @@ namespace HotPotato.OpenApi.SpecificationProvider
         public OpenApiDocument GetSpecDocument()
         {
             Console.WriteLine(SpecLocation);
-            Task<OpenApiDocument> swagTask = null;
+            Task<OpenApiDocument> swagTask;
             if (Path.IsPathRooted(SpecLocation))
 			{
                 if (Path.IsPathFullyQualified(SpecLocation))
