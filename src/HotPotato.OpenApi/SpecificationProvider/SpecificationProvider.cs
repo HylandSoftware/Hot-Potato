@@ -29,20 +29,17 @@ namespace HotPotato.OpenApi.SpecificationProvider
         {
             Console.WriteLine(SpecLocation);
             Task<OpenApiDocument> swagTask;
-            if (Path.IsPathRooted(SpecLocation))
-			{
-                if (Path.IsPathFullyQualified(SpecLocation))
-				{
-                    swagTask = FromFileAsync(SpecLocation);
-                }
-                else
-				{
-                    swagTask = FromFileAsync(RelativeSpecLocationFullPath());
-				}
-			}
-            else if (Uri.IsWellFormedUriString(SpecLocation, UriKind.Absolute))
+            if (Uri.IsWellFormedUriString(SpecLocation, UriKind.Absolute))
             {
                 swagTask = FromUrlAsyncWithClient(SpecLocation);
+            }
+            else if (Path.IsPathFullyQualified(SpecLocation))
+            {
+                swagTask = FromFileAsync(SpecLocation);
+            }
+            else if (Path.IsPathRooted(SpecLocation.Replace('/', Path.DirectorySeparatorChar).Replace('\\', Path.DirectorySeparatorChar)))
+			{
+                swagTask = FromFileAsync(RelativeSpecLocationFullPath());
             }
             else
             {
