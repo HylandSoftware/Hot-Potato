@@ -38,12 +38,12 @@ jobs:
 
     - name: Setup .NET Core 2.2
       uses: actions/setup-dotnet@v1
-      with:	
+      with:
         dotnet-version: 2.2.x
 
-    - name: Setup .NET Core 3.1	
-      uses: actions/setup-dotnet@v1	
-      with:	
+    - name: Setup .NET Core 3.1
+      uses: actions/setup-dotnet@v1
+      with:
         dotnet-version: 3.1.x
 
     - name: Build
@@ -74,8 +74,8 @@ jobs:
 
     - name: Run TestServer Tests
       env:
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         SpecLocation: "https://raw.githubusercontent.com/HylandSoftware/Hot-Potato/master/test/RawPotatoSpec.yaml"
+        RepoToken: ${{ secrets.GITHUB_TOKEN }}
       run: |
         dotnet test ./test/HotPotato.TestServer.Test/HotPotato.TestServ.Test.csproj -c Release -l:"JUnit;LogFilePath=$GITHUB_WORKSPACE/test/results/testServerResults.xml" --no-restore --no-build
 
