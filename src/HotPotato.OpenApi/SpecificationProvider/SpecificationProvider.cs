@@ -59,7 +59,7 @@ namespace HotPotato.OpenApi.SpecificationProvider
             {
                 directory = directory.Parent;
             }
-            return = Path.Join(directory.FullName, SpecLocation);
+            return Path.Join(directory.FullName, SpecLocation);
 		}
 
         private async Task<OpenApiDocument> FromUrlAsyncWithClient(string url)
