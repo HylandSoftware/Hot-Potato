@@ -67,10 +67,11 @@ jobs:
         dotnet test ./test/HotPotato.Integration.Test/HotPotato.Integration.Test.csproj -f "netcoreapp2.2" -c Release -l:"JUnit;LogFilePath=$GITHUB_WORKSPACE/test/results/integrationResults.xml" --no-restore --no-build
         dotnet test ./test/HotPotato.Integration.Test/HotPotato.Integration.Test.csproj -f "netcoreapp3.1" -c Release -l:"JUnit;LogFilePath=$GITHUB_WORKSPACE/test/results/integrationResults.xml" --no-restore --no-build
 
-    # - name: Run E2E Tests
-    #   run: |
-    #     dotnet test ./test/HotPotato.E2E.Test/HotPotato.E2E.Test.csproj -f "netcoreapp2.2" -c Release -l:"JUnit;LogFilePath=$GITHUB_WORKSPACE/test/results/E2EResults.xml" --no-restore --no-build
-    #     dotnet test ./test/HotPotato.E2E.Test/HotPotato.E2E.Test.csproj -f "netcoreapp3.1" -c Release -l:"JUnit;LogFilePath=$GITHUB_WORKSPACE/test/results/E2EResults.xml" --no-restore --no-build
+    - name: Run E2E Tests
+    # These E2E tests use local relative paths, so there's no need to set env vars here
+      run: |
+        dotnet test ./test/HotPotato.E2E.Test/HotPotato.E2E.Test.csproj -f "netcoreapp2.2" -c Release -l:"JUnit;LogFilePath=$GITHUB_WORKSPACE/test/results/E2EResults.xml" --no-restore --no-build
+        dotnet test ./test/HotPotato.E2E.Test/HotPotato.E2E.Test.csproj -f "netcoreapp3.1" -c Release -l:"JUnit;LogFilePath=$GITHUB_WORKSPACE/test/results/E2EResults.xml" --no-restore --no-build
 
     - name: Run TestServer Tests
       env:
