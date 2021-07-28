@@ -109,10 +109,10 @@ jobs:
 
         nuget setapikey $GITHUB_USR:${{ secrets.TESTAUTOMATION_GITHUB }} -Source Artifactory
 
-        nuget push $GITHUB_WORKSPACE/src/HotPotato.AspNetCore.Host/**/*.nupkg -Source https://artifactory.onbase.net/artifactory/api/nuget/nuget/tato
-        nuget push $GITHUB_WORKSPACE/src/HotPotato.AspNetCore.Middleware/**/*.nupkg -Source https://artifactory.onbase.net/artifactory/api/nuget/nuget/tato
-        nuget push $GITHUB_WORKSPACE/src/HotPotato.Core/**/*.nupkg -Source https://artifactory.onbase.net/artifactory/api/nuget/nuget/tato
-        nuget push $GITHUB_WORKSPACE/src/HotPotato.OpenApi/**/*.nupkg -Source https://artifactory.onbase.net/artifactory/api/nuget/nuget/tato
+        nuget push $GITHUB_WORKSPACE/src/HotPotato.AspNetCore.Host/**/*.nupkg -Source https://artifactory.onbase.net/artifactory/api/nuget/nuget
+        nuget push $GITHUB_WORKSPACE/src/HotPotato.AspNetCore.Middleware/**/*.nupkg -Source https://artifactory.onbase.net/artifactory/api/nuget/nuget
+        nuget push $GITHUB_WORKSPACE/src/HotPotato.Core/**/*.nupkg -Source https://artifactory.onbase.net/artifactory/api/nuget/nuget
+        nuget push $GITHUB_WORKSPACE/src/HotPotato.OpenApi/**/*.nupkg -Source https://artifactory.onbase.net/artifactory/api/nuget/nuget
 
         docker login -u $GITHUB_USR -p ${{ secrets.TESTAUTOMATION_GITHUB }} $TAG_SCHEME
 
