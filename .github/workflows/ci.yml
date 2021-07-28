@@ -103,15 +103,18 @@ jobs:
       #if: env.isMaster == 'true'
       env:
         TAG_SCHEME: docker.artifactory.onbase.net
+        GITHUB_USR: testautomation_github
       run: |
-        nuget sources Add -Name Artifactory -Source https://artifactory.onbase.net/artifactory/api/nuget/nuget/tato -username testautomation_github -password ${{ secrets.TESTAUTOMATION_GITHUB }}
+        nuget sources Add -Name Artifactory -Source https://artifactory.onbase.net/artifactory/api/nuget/nuget/tato -username $GITHUB_USR -password ${{ secrets.TESTAUTOMATION_GITHUB }}
+        
+        nuget setapikey $GITHUB_USR:${{ secrets.TESTAUTOMATION_GITHUB }}
 
         nuget push $GITHUB_WORKSPACE/src/HotPotato.AspNetCore.Host/**/*.nupkg -Source Artifactory
         nuget push $GITHUB_WORKSPACE/src/HotPotato.AspNetCore.Middleware/**/*.nupkg -Source Artifactory
         nuget push $GITHUB_WORKSPACE/src/HotPotato.Core/**/*.nupkg -Source Artifactory
         nuget push $GITHUB_WORKSPACE/src/HotPotato.OpenApi/**/*.nupkg -Source Artifactory
 
-        docker login -u testautomation_github -p ${{ secrets.TESTAUTOMATION_GITHUB }} $TAG_SCHEME
+        docker login -u $GITHUB_USR -p ${{ secrets.TESTAUTOMATION_GITHUB }} $TAG_SCHEME
 
         docker build --tag $TAG_SCHEME/tato/hot-potato:${{ env.GitVersion_MajorMinorPatch }} --build-arg IMAGE_VERSION=${{ env.GitVersion_MajorMinorPatch }}
         docker push $TAG_SCHEME/tato/hot-potato:${{ env.GitVersion_MajorMinorPatch }}
