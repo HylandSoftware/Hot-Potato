@@ -28,17 +28,13 @@ namespace HotPotato.OpenApi.SpecificationProvider
         public OpenApiDocument GetSpecDocument()
         {
             Task<OpenApiDocument> swagTask;
-            if (Uri.IsWellFormedUriString(SpecLocation, UriKind.Absolute))
-            {
-                swagTask = FromUrlAsyncWithClient(SpecLocation);
-            }
-            else if (Path.IsPathFullyQualified(SpecLocation))
+            if (Path.IsPathFullyQualified(SpecLocation))
             {
                 swagTask = FromFileAsync(SpecLocation);
             }
-            else if (Path.IsPathRooted(SpecLocation.Replace('/', Path.DirectorySeparatorChar).Replace('\\', Path.DirectorySeparatorChar)))
-			{
-                swagTask = FromFileAsync(RelativeSpecLocationFullPath());
+            else if (Uri.IsWellFormedUriString(SpecLocation, UriKind.Absolute))
+            {
+                swagTask = FromUrlAsyncWithClient(SpecLocation);
             }
             else
             {
@@ -46,17 +42,6 @@ namespace HotPotato.OpenApi.SpecificationProvider
             }
             return swagTask.Result;
         }
-
-        private string RelativeSpecLocationFullPath()
-		{
-            string relativeSpecLocation = SpecLocation.Replace('/', Path.DirectorySeparatorChar).Replace('\\', Path.DirectorySeparatorChar);
-            DirectoryInfo directory = Directory.GetParent(Environment.CurrentDirectory);
-            while (directory != null && !directory.GetFiles("*.sln").Any())
-            {
-                directory = directory.Parent;
-            }
-            return Path.Join(directory.FullName, relativeSpecLocation);
-		}
 
         private async Task<OpenApiDocument> FromUrlAsyncWithClient(string url)
         {
