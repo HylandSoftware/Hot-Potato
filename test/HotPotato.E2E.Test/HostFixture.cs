@@ -10,15 +10,15 @@ namespace HotPotato.E2E.Test
     {
         public IWebHost host { get; }
 
-        private const string ApiLocation = "http://localhost:5000";
-        private const string SpecLocation = @"M:\git\hot-potato-.net\test\RawPotatoSpec.yaml";
-
         public HostFixture()
         {
             host = new WebHostBuilder()
                 .ConfigureAppConfiguration((hostingContext, config) =>
                 {
                     config.SetBasePath(hostingContext.HostingEnvironment.ContentRootPath);
+                    config.AddJsonFile("appsettings.json", optional: true);
+                    config.AddEnvironmentVariables();
+                    config.AddUserSecrets<HostFixture>();
                 })
                 .ConfigureLogging((hostingContext, logging) =>
                 {
@@ -33,11 +33,6 @@ namespace HotPotato.E2E.Test
                 {
                     options.AddServerHeader = false;
                 })
-                .UseSetting("RemoteEndpoint", ApiLocation)
-                .UseSetting("SpecLocation", SpecLocation)
-                .UseSetting("ForwardProxy:Enabled", "false")
-                .UseSetting("ForwardProxy:ProxyAddress", "http://localhost:8888")
-                .UseSetting("ForwardProxy:BypassOnLocal", "false")
                 .UseUrls("http://0.0.0.0:3232")
                 .UseStartup<Startup>()
             .Build();

@@ -67,21 +67,21 @@ jobs:
         dotnet test ./test/HotPotato.Integration.Test/HotPotato.Integration.Test.csproj -f "netcoreapp2.2" -c Release -l:"JUnit;LogFilePath=$GITHUB_WORKSPACE/test/results/integrationResults.xml" --no-restore --no-build
         dotnet test ./test/HotPotato.Integration.Test/HotPotato.Integration.Test.csproj -f "netcoreapp3.1" -c Release -l:"JUnit;LogFilePath=$GITHUB_WORKSPACE/test/results/integrationResults.xml" --no-restore --no-build
 
-    #- name: Run E2E Tests
-    #  run: |
-    #    dotnet test ./test/HotPotato.E2E.Test/HotPotato.E2E.Test.csproj -f "netcoreapp2.2" -c Release -l:"JUnit;LogFilePath=$GITHUB_WORKSPACE/test/results/E2EResults.xml" --no-restore --no-build
-    #    dotnet test ./test/HotPotato.E2E.Test/HotPotato.E2E.Test.csproj -f "netcoreapp3.1" -c Release -l:"JUnit;LogFilePath=$GITHUB_WORKSPACE/test/results/E2EResults.xml" --no-restore --no-build
+    - name: Run E2E Tests
+      env:
+        SpecToken: ${{ secrets.GITHUB_TOKEN }}
+      run: |
+        dotnet test ./test/HotPotato.E2E.Test/HotPotato.E2E.Test.csproj -f "netcoreapp2.2" -c Release -l:"JUnit;LogFilePath=$GITHUB_WORKSPACE/test/results/E2EResults.xml" --no-restore --no-build
+        dotnet test ./test/HotPotato.E2E.Test/HotPotato.E2E.Test.csproj -f "netcoreapp3.1" -c Release -l:"JUnit;LogFilePath=$GITHUB_WORKSPACE/test/results/E2EResults.xml" --no-restore --no-build
 
     - name: Run TestServer Tests
       env:
-        SpecLocation: "https://raw.githubusercontent.com/HylandSoftware/Hot-Potato/master/test/RawPotatoSpec.yaml"
         SpecToken: ${{ secrets.GITHUB_TOKEN }}
       run: |
         dotnet test ./test/HotPotato.TestServer.Test/HotPotato.TestServ.Test.csproj -c Release -l:"JUnit;LogFilePath=$GITHUB_WORKSPACE/test/results/testServerResults.xml" --no-restore --no-build
 
     - name: Start Hot Potato For Postman Tests
       env:
-        SpecLocation: "https://raw.githubusercontent.com/HylandSoftware/Hot-Potato/master/test/RawPotatoSpec.yaml"
         SpecToken: ${{ secrets.GITHUB_TOKEN }}
       run: |
         dotnet $GITHUB_WORKSPACE/src/HotPotato.AspNetCore.Host/bin/Release/netcoreapp3.1/HotPotato.AspNetCore.Host.dll &
