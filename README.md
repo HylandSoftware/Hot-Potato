@@ -1,8 +1,9 @@
 # Hot Potato Proxy
 
 ### Develop
-[![Build Status](https://autotest.jenkins.hylandqa.net/job/Prod%20Bitbucket/job/hot-potato/job/master/badge/icon)](https://autotest.jenkins.hylandqa.net/job/Prod%20Bitbucket/job/hot-potato/job/master/) 
-[![Coverage](http://shields.hyland.io/jenkins/c/https/autotest.jenkins.hylandqa.net/job/Prod%20Bitbucket/job/hot-potato/job/master.svg)](https://autotest.jenkins.hylandqa.net/job/Prod%20Bitbucket/job/hot-potato/job/master/lastSuccessfulBuild/cobertura/)
+[![Hot Potato CI](https://github.com/HylandSoftware/Hot-Potato/actions/workflows/ci.yml/badge.svg?branch=master)](https://github.com/HylandSoftware/Hot-Potato/actions/workflows/ci.yml)
+
+
 
 The Hot Potato Proxy intends to function as an ASP.NET Core proxy that will validate an API's conformance to an OpenAPI spec.
 
@@ -157,7 +158,7 @@ The main factor in setting up a test suite to use the isolated middleware is tha
 
 #### Using the Middleware with TestServer
 
-In our example [test fixture](https://bitbucket.hyland.com/projects/TATO/repos/hot-potato/browse/test/HotPotato.TestServer.Test/TestFixture.cs), we use two instances of TestServer: one to create the client representing the API Under Test, and one that consumes this client to create a new client housing the Hot Potato proxy.
+In our example [test fixture](https://github.com/HylandSoftware/Hot-Potato/blob/master/test/HotPotato.TestServer.Test/TestFixture.cs), we use two instances of TestServer: one to create the client representing the API Under Test, and one that consumes this client to create a new client housing the Hot Potato proxy.
 
 First, we define a TestFixture class to use a generic Startup reference type:
  ```csharp
@@ -238,7 +239,7 @@ Assert.Equal(State.Pass, result.State);
 
 Make sure to call `results.Clear()` in a `Dispose()` method in XUnit or a `[Teardown]` method in NUnit. Another option is to call `results.Clear` in the `finally` block of a try-finally statement containing the test fixture. 
 
-The full example test can be found at [RawPotatoTest.cs](https://bitbucket.hyland.com/projects/TATO/repos/hot-potato/browse/test/HotPotato.TestServer.Test/RawPotatoTest.cs).
+The full example test can be found at [RawPotatoTest.cs](https://github.com/HylandSoftware/Hot-Potato/blob/master/test/HotPotato.TestServer.Test/RawPotatoTest.cs).
 
 #### Using Middleware/TestServer with Startups in separate test projects
 
@@ -261,7 +262,7 @@ End-to-End tests using Hot Potato can be run with Postman both locally and throu
 
 To use Postman locally, you must have instances of both the Hot Potato server and your API server running.
 
-For our test project, we provided our own sample Hot Potato API, which can be found [here](https://bitbucket.hyland.com/projects/TATO/repos/hot-potato/browse/test/HotPotato.Api).
+For our test project, we provided our own sample Hot Potato API, which can be found [here](https://github.com/HylandSoftware/Hot-Potato/tree/master/test/HotPotato.Api).
 
 Once your System Under Test is ready, you may start writing Postman requests with the base address of localhost:3232.
 To check the results of these requests, you can query the results endpoint as shown in the [Results](#results) section above.
@@ -276,7 +277,7 @@ If you are not familiar with creating collections and writing tests in Postman, 
 
 Tests will usually check for critical information such as if the correct status code and body are being returned correctly in the response.
 
-Examples can be found in our HappyPath collection [here](https://bitbucket.hyland.com/projects/TATO/repos/hot-potato/browse/test/HappyPathTests.postman_collection.json).
+Examples can be found in our HappyPath collection [here](https://github.com/HylandSoftware/Hot-Potato/blob/master/test/HappyPathTests.postman_collection.json).
 
 **Check that the response contains the correct status code and expected body**
 ```javascript
@@ -285,7 +286,7 @@ pm.test(\"LandingPage returns 200 OK\", function () {
 })
 
 pm.test(\"LandingPage returns expected body \", function () {
-	pm.response.to.have.body(\"https://bitbucket.hyland.com/projects/TATO/repos/hot-potato/browse\")
+	pm.response.to.have.body(\"https://github.com/HylandSoftware/Hot-Potato\")
 })
 ```
 
@@ -307,7 +308,7 @@ Once your collection and its tests are finished, you can export it as a json fil
 More information about exporting collections can be found [here](https://learning.getpostman.com/docs/postman/collections/data-formats/)
 
 Now that the collection is in a directory, it can be used by the ```newman run``` command in Jenkins.
-We do so in our "Run-E2E-Tests" stage in our [Jenkinsfile](https://bitbucket.hyland.com/projects/TATO/repos/hot-potato/browse/Jenkinsfile), where we start Hot Potato and our sample API.
+We do so in our "Run-E2E-Tests" stage in our [Jenkinsfile](https://github.com/HylandSoftware/Hot-Potato/blob/master/Jenkinsfile), where we start Hot Potato and our sample API.
 
 ```groovy
 stage("Run-E2E-Tests") {
