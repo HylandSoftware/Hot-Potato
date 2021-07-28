@@ -105,14 +105,14 @@ jobs:
         TAG_SCHEME: docker.artifactory.onbase.net
         GITHUB_USR: testautomation_github
       run: |
-        nuget sources Add -Name Artifactory -Source https://artifactory.onbase.net/artifactory/api/nuget/nuget/tato -username $GITHUB_USR -password ${{ secrets.TESTAUTOMATION_GITHUB }}
+        nuget sources Add -Name Artifactory -Source https://artifactory.onbase.net/artifactory/api/nuget/nuget -username $GITHUB_USR -password ${{ secrets.TESTAUTOMATION_GITHUB }}
 
         nuget setapikey $GITHUB_USR:${{ secrets.TESTAUTOMATION_GITHUB }} -Source Artifactory
 
-        nuget push $GITHUB_WORKSPACE/src/HotPotato.AspNetCore.Host/**/*.nupkg -Source Artifactory
-        nuget push $GITHUB_WORKSPACE/src/HotPotato.AspNetCore.Middleware/**/*.nupkg -Source Artifactory
-        nuget push $GITHUB_WORKSPACE/src/HotPotato.Core/**/*.nupkg -Source Artifactory
-        nuget push $GITHUB_WORKSPACE/src/HotPotato.OpenApi/**/*.nupkg -Source Artifactory
+        nuget push $GITHUB_WORKSPACE/src/HotPotato.AspNetCore.Host/**/*.nupkg -Source https://artifactory.onbase.net/artifactory/api/nuget/nuget/tato
+        nuget push $GITHUB_WORKSPACE/src/HotPotato.AspNetCore.Middleware/**/*.nupkg -Source https://artifactory.onbase.net/artifactory/api/nuget/nuget/tato
+        nuget push $GITHUB_WORKSPACE/src/HotPotato.Core/**/*.nupkg -Source https://artifactory.onbase.net/artifactory/api/nuget/nuget/tato
+        nuget push $GITHUB_WORKSPACE/src/HotPotato.OpenApi/**/*.nupkg -Source https://artifactory.onbase.net/artifactory/api/nuget/nuget/tato
 
         docker login -u $GITHUB_USR -p ${{ secrets.TESTAUTOMATION_GITHUB }} $TAG_SCHEME
 
