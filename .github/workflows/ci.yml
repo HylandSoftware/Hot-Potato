@@ -101,16 +101,20 @@ jobs:
 
     - name: Push Images
       if: startsWith(github.ref, 'refs/tags/v')
+      env:
+        TAG_SCHEME: docker.artifactory.onbase.net
       run: |
-        dotnet nuget push $GITHUB_WORKSPACE/src/HotPotato.AspNetCore.Host/**/*.nupkg -k ${{ secrets.TESTAUTOMATION_GITHUB }} -s https://artifactory.onbase.net/artifactory/api/nuget/nuget --skip-duplicate
-        dotnet nuget push $GITHUB_WORKSPACE/src/HotPotato.AspNetCore.Middleware/**/*.nupkg -k ${{ secrets.TESTAUTOMATION_GITHUB }} -s https://artifactory.onbase.net/artifactory/api/nuget/nuget --skip-duplicate
-        dotnet nuget push $GITHUB_WORKSPACE/src/HotPotato.Core/**/*.nupkg -k ${{ secrets.TESTAUTOMATION_GITHUB }} -s https://artifactory.onbase.net/artifactory/api/nuget/nuget --skip-duplicate
-        dotnet nuget push $GITHUB_WORKSPACE/src/HotPotato.OpenApi/**/*.nupkg -k ${{ secrets.TESTAUTOMATION_GITHUB }} -s https://artifactory.onbase.net/artifactory/api/nuget/nuget --skip-duplicate
+        dotnet nuget push $GITHUB_WORKSPACE/src/HotPotato.AspNetCore.Host/**/*.nupkg -k ${{ secrets.TESTAUTOMATION_GITHUB }} -s https://artifactory.onbase.net/artifactory/api/nuget/nuget/tato --skip-duplicate
+        dotnet nuget push $GITHUB_WORKSPACE/src/HotPotato.AspNetCore.Middleware/**/*.nupkg -k ${{ secrets.TESTAUTOMATION_GITHUB }} -s https://artifactory.onbase.net/artifactory/api/nuget/nuget/tato --skip-duplicate
+        dotnet nuget push $GITHUB_WORKSPACE/src/HotPotato.Core/**/*.nupkg -k ${{ secrets.TESTAUTOMATION_GITHUB }} -s https://artifactory.onbase.net/artifactory/api/nuget/nuget/tato --skip-duplicate
+        dotnet nuget push $GITHUB_WORKSPACE/src/HotPotato.OpenApi/**/*.nupkg -k ${{ secrets.TESTAUTOMATION_GITHUB }} -s https://artifactory.onbase.net/artifactory/api/nuget/nuget/tato --skip-duplicate
 
-        docker build --tag hcr.io/automated-testing/hot-potato:${{ env.GitVersion_MajorMinorPatch }} --build-arg IMAGE_VERSION=${{ env.GitVersion_MajorMinorPatch }}
-        docker push hcr.io/automated-testing/hot-potato:${{ env.GitVersion_MajorMinorPatch }}
-        docker tag hcr.io/automated-testing/hot-potato:${{ env.GitVersion_MajorMinorPatch }} hcr.io/automated-testing/hot-potato:latest
-        docker push hcr.io/automated-testing/hot-potato:latest
+        docker login -u testautomation_github -p ${{ secrets.TESTAUTOMATION_GITHUB }} $TAG_SCHEME
+
+        docker build --tag $TAG_SCHEME/tato/hot-potato:${{ env.GitVersion_MajorMinorPatch }} --build-arg IMAGE_VERSION=${{ env.GitVersion_MajorMinorPatch }}
+        docker push $TAG_SCHEME/tato/hot-potato:${{ env.GitVersion_MajorMinorPatch }}
+        docker tag $TAG_SCHEME/tato/hot-potato:${{ env.GitVersion_MajorMinorPatch }} $TAG_SCHEME/tato/hot-potato:latest
+        docker push $TAG_SCHEME/tato/hot-potato:latest
 
     - name: Archive code coverage results
       uses: actions/upload-artifact@v2
