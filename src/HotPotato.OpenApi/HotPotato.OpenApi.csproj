@@ -2,10 +2,7 @@
 
   <PropertyGroup>
     <OutputType>Library</OutputType>
-    <TargetFrameworks>netcoreapp2.2;netcoreapp3.1</TargetFrameworks>
-    <!-- <RestoreSources>
-      https://proget.onbase.net/nuget/NuGet/;
-    </RestoreSources> -->
+    <TargetFrameworks>net5.0</TargetFrameworks>
     <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
     <WarningsAsErrors />
     <ApplicationIcon />
