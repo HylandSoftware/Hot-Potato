@@ -11,7 +11,7 @@ namespace HotPotato.E2E.Test
         public IWebHost host { get; }
 
         private const string ApiLocation = "http://localhost:5000";
-        private const string SpecLocation = "\\test\\RawPotatoSpec.yaml";
+        private const string SpecLocation = @"M:\git\hot-potato-.net\test\RawPotatoSpec.yaml";
 
         public HostFixture()
         {

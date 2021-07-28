@@ -46,7 +46,8 @@ namespace HotPotato.TestServ.Test
                 {
                     config.SetBasePath(hostingContext.HostingEnvironment.ContentRootPath)
                         .AddJsonFile("appsettings.json", optional: true)
-                        .AddEnvironmentVariables();
+                        .AddEnvironmentVariables()
+                        .AddUserSecrets<TestFixture<TStartup>>();
                 })
                 .ConfigureLogging((hostingContext, logging) =>
                 {

@@ -27,7 +27,6 @@ namespace HotPotato.OpenApi.SpecificationProvider
         }
         public OpenApiDocument GetSpecDocument()
         {
-            Console.WriteLine(SpecLocation);
             Task<OpenApiDocument> swagTask;
             if (Uri.IsWellFormedUriString(SpecLocation, UriKind.Absolute))
             {
