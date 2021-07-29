@@ -8,8 +8,14 @@
     <RootNamespace>HotPotato</RootNamespace>
     <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
     <WarningsAsErrors />
-    <Configurations>Debug;Release;ExcludeTests</Configurations>
+    <Configurations>Debug;Release;</Configurations>
   </PropertyGroup>
+
+
+	<!--Publish Properties-->
+	<PropertyGroup>
+		<IsPublishable>false</IsPublishable>
+	</PropertyGroup>
 
   <ItemGroup>
     <PackageReference Include="coverlet.msbuild" Version="3.0.3">

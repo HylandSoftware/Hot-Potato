@@ -3,8 +3,14 @@
   <PropertyGroup>
     <TargetFramework>net5.0</TargetFramework>
     <AspNetCoreHostingModel>InProcess</AspNetCoreHostingModel>
-    <Configurations>Debug;Release;ExcludeTests</Configurations>
+    <IsPackable>false</IsPackable>
+    <Configurations>Debug;Release;</Configurations>
   </PropertyGroup>
+
+	<!--Publish Properties-->
+	<PropertyGroup>
+		<IsPublishable>false</IsPublishable>
+	</PropertyGroup>
 
   <ItemGroup>
     <PackageReference Include="Microsoft.AspNetCore.Mvc.NewtonsoftJson" Version="3.1.3" />

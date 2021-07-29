@@ -5,8 +5,14 @@
 
     <IsPackable>false</IsPackable>
 
-    <Configurations>Debug;Release;ExcludeTests</Configurations>
+    <Configurations>Debug;Release;</Configurations>
   </PropertyGroup>
+
+
+	<!--Publish Properties-->
+	<PropertyGroup>
+		<IsPublishable>false</IsPublishable>
+	</PropertyGroup>
 
   <ItemGroup>
     <PackageReference Include="JUnitTestLogger" Version="1.1.0" />
