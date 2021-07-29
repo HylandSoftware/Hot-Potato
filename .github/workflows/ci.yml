@@ -104,13 +104,13 @@ jobs:
       env:
         TAG_SCHEME: docker.artifactory.onbase.net
         GITHUB_USR: testautomation_github
-        run: |
-          docker login -u $GITHUB_USR -p ${{ secrets.TESTAUTOMATION_GITHUB }} $TAG_SCHEME
+      run: |
+        docker login -u $GITHUB_USR -p ${{ secrets.TESTAUTOMATION_GITHUB }} $TAG_SCHEME
 
-          docker build --tag $TAG_SCHEME/tato/hot-potato:${{ env.GitVersion_MajorMinorPatch }} --build-arg IMAGE_VERSION=${{ env.GitVersion_MajorMinorPatch }}
-          docker push $TAG_SCHEME/tato/hot-potato:${{ env.GitVersion_MajorMinorPatch }}
-          docker tag $TAG_SCHEME/tato/hot-potato:${{ env.GitVersion_MajorMinorPatch }} $TAG_SCHEME/tato/hot-potato:latest
-          docker push $TAG_SCHEME/tato/hot-potato:latest
+        docker build --tag $TAG_SCHEME/tato/hot-potato:${{ env.GitVersion_MajorMinorPatch }} --build-arg IMAGE_VERSION=${{ env.GitVersion_MajorMinorPatch }}
+        docker push $TAG_SCHEME/tato/hot-potato:${{ env.GitVersion_MajorMinorPatch }}
+        docker tag $TAG_SCHEME/tato/hot-potato:${{ env.GitVersion_MajorMinorPatch }} $TAG_SCHEME/tato/hot-potato:latest
+        docker push $TAG_SCHEME/tato/hot-potato:latest
       # run: |
       #   nuget sources Add -Name Artifactory -Source https://artifactory.onbase.net/artifactory/api/nuget/nuget/tato -username $GITHUB_USR -password ${{ secrets.TESTAUTOMATION_GITHUB }}
 
