@@ -7,7 +7,7 @@ on:
 
 env:
   isMaster: ${{ github.ref == 'refs/heads/master' }}
-
+  
 jobs:
   build:
 
@@ -48,7 +48,7 @@ jobs:
 
     - name: Build
       run: |
-        dotnet build --configuration Release -p:Version=${{ steps.gitversion.outputs.majorMinorPatch }}
+        dotnet build --configuration Release -p:Version=${{ env.GitVersion_MajorMinorPatch }}
 
     - name: Run Unit Tests .NET 2.2
       run: |
@@ -86,6 +86,40 @@ jobs:
     #   with:
     #     collection: ./test/HappyPathTests.postman_collection.json
     #     reporters: cli
+
+    - name: Deploy 
+      run: |
+        dotnet pack ./src/HotPotato.AspNetCore.Host/HotPotato.AspNetCore.Host.csproj -p:PackageVersion=${{ env.GitVersion_MajorMinorPatch }} -c Release --no-build --no-restore
+        dotnet pack ./src/HotPotato.AspNetCore.Middleware/HotPotato.AspNetCore.Middleware.csproj -p:PackageVersion=${{ env.GitVersion_MajorMinorPatch}} -c Release --no-build --no-restore
+        dotnet pack ./src/HotPotato.Core/HotPotato.Core.csproj -p:PackageVersion=${{ env.GitVersion_MajorMinorPatch }} -c Release --no-build --no-restore
+        dotnet pack ./src/HotPotato.OpenApi/HotPotato.OpenApi.csproj -p:PackageVersion=${{ env.GitVersion_MajorMinorPatch }} -c Release --no-build --no-restore
+
+        dotnet nuget push $GITHUB_WORKSPACE/src/HotPotato.AspNetCore.Host/**/*.nupkg -k ${{ secrets.GITHUB_TOKEN }} -s https://nuget.pkg.github.com/HylandSoftware/index.json --skip-duplicate
+        dotnet nuget push $GITHUB_WORKSPACE/src/HotPotato.AspNetCore.Middleware/**/*.nupkg -k ${{ secrets.GITHUB_TOKEN }} -s https://nuget.pkg.github.com/HylandSoftware/index.json --skip-duplicate
+        dotnet nuget push $GITHUB_WORKSPACE/src/HotPotato.Core/**/*.nupkg -k ${{ secrets.GITHUB_TOKEN }} -s https://nuget.pkg.github.com/HylandSoftware/index.json --skip-duplicate
+        dotnet nuget push $GITHUB_WORKSPACE/src/HotPotato.OpenApi/**/*.nupkg -k ${{ secrets.GITHUB_TOKEN }} -s https://nuget.pkg.github.com/HylandSoftware/index.json --skip-duplicate
+
+    # - name: Push Images
+    #   #if: env.isMaster == 'true'
+    #   env:
+    #     TAG_SCHEME: docker.artifactory.onbase.net
+    #     GITHUB_USR: testautomation_github
+    #   run: |
+    #     nuget sources Add -Name Artifactory -Source https://artifactory.onbase.net/artifactory/api/nuget/nuget/tato -username $GITHUB_USR -password ${{ secrets.TESTAUTOMATION_GITHUB }}
+
+    #     nuget setapikey ${{ secrets.TESTAUTOMATION_GITHUB }} -Source Artifactory
+
+    #     nuget push $GITHUB_WORKSPACE/src/HotPotato.AspNetCore.Host/**/*.nupkg -Source https://artifactory.onbase.net/artifactory/api/nuget/nuget/tato
+    #     nuget push $GITHUB_WORKSPACE/src/HotPotato.AspNetCore.Middleware/**/*.nupkg -Source https://artifactory.onbase.net/artifactory/api/nuget/nuget/tato
+    #     nuget push $GITHUB_WORKSPACE/src/HotPotato.Core/**/*.nupkg -Source https://artifactory.onbase.net/artifactory/api/nuget/nuget/tato
+    #     nuget push $GITHUB_WORKSPACE/src/HotPotato.OpenApi/**/*.nupkg -Source https://artifactory.onbase.net/artifactory/api/nuget/nuget/tato
+
+    #     docker login -u $GITHUB_USR -p ${{ secrets.TESTAUTOMATION_GITHUB }} $TAG_SCHEME
+
+    #     docker build --tag $TAG_SCHEME/tato/hot-potato:${{ env.GitVersion_MajorMinorPatch }} --build-arg IMAGE_VERSION=${{ env.GitVersion_MajorMinorPatch }}
+    #     docker push $TAG_SCHEME/tato/hot-potato:${{ env.GitVersion_MajorMinorPatch }}
+    #     docker tag $TAG_SCHEME/tato/hot-potato:${{ env.GitVersion_MajorMinorPatch }} $TAG_SCHEME/tato/hot-potato:latest
+    #     docker push $TAG_SCHEME/tato/hot-potato:latest
 
     - name: Archive code coverage results
       uses: actions/upload-artifact@v2
