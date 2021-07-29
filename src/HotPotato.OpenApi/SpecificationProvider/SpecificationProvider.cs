@@ -1,10 +1,11 @@
 ﻿using HotPotato.Core;
 using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.Logging;
+using Newtonsoft.Json;
 using NSwag;
 using static NSwag.OpenApiYamlDocument;
 using System;
 using System.IO;
-using System.Linq;
 using System.Net;
 using System.Net.Http;
 using System.Threading.Tasks;
@@ -17,11 +18,16 @@ namespace HotPotato.OpenApi.SpecificationProvider
         private readonly string SpecToken;
         private readonly bool ignoreClientCertificateValidationErrors;
 
-        public SpecificationProvider(IConfiguration config)
+        private ILogger Logger { get; }
+
+        public SpecificationProvider(IConfiguration config, ILogger<SpecificationProvider> logger)
         {
             _ = config ?? throw Exceptions.ArgumentNull(nameof(config));
+            _ = logger ?? throw Exceptions.ArgumentNull(nameof(logger));
+
             this.SpecLocation = config["SpecLocation"];
             this.SpecToken = config["SpecToken"];
+            this.Logger = logger;
             //mirror the security setting used at startup
             this.ignoreClientCertificateValidationErrors = config.GetSection("HttpClientSettings").GetValue<bool>("IgnoreClientHttpsCertificateValidationErrors");
         }
@@ -69,7 +75,12 @@ namespace HotPotato.OpenApi.SpecificationProvider
                         }
                         using (HttpResponseMessage response = await client.SendAsync(req).ConfigureAwait(false))
                         {
-                            response.EnsureSuccessStatusCode();
+                            if (!response.IsSuccessStatusCode)
+							{
+                                Logger.LogDebug($"Failed to retrieve spec. Response: {response}");
+                                throw Exceptions.SpecNotFound(SpecLocation, response);
+                            }
+
                             string data = await response.Content.ReadAsStringAsync().ConfigureAwait(false);
                             return await FromYamlAsync(data, url).ConfigureAwait(false);
                         }

@@ -69,8 +69,17 @@ namespace HotPotato.AspNetCore.Middleware
 				}
 				catch (Exception e)
 				{
-					this.log.LogError(e, "Failed to forward request");
-					context.Response.StatusCode = (int)HttpStatusCode.InternalServerError;
+					if (e.InnerException != null && e.InnerException is SpecNotFoundException)
+					{
+						SpecNotFoundException spex = (SpecNotFoundException)e.InnerException;
+						log.LogError($"Failed to retrieve spec - please recheck SpecLocation and SpecToken. StatusCode: {(int)spex.Response.StatusCode} ReasonPhrase: {spex.Response.ReasonPhrase}", e.InnerException);
+					}
+					else
+					{
+						//handle unknown exceptions
+						this.log.LogError(e, "Failed to forward request");
+						context.Response.StatusCode = (int)HttpStatusCode.InternalServerError;
+					}
 				}
 			}
 		}
