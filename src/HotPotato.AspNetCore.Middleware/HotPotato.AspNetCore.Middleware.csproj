@@ -12,7 +12,7 @@
     <Title>HotPotato.AspNetCore.Middleware</Title>
     <Authors>Test Automation Team | GRP-AutomatedTesting@.hyland.com</Authors>
     <Description>This is an ASP.NETCore middleware that can be used in situations where test suites are directly starting up the server startup or using the TestServer.</Description>
-    <RepositoryUrl>https://bitbucket.hyland.com/projects/TATO/repos/hot-potato/browse</RepositoryUrl>
+    <RepositoryUrl>https://github.com/HylandSoftware/Hot-Potato</RepositoryUrl>
     <Configurations>Debug;Release;ExcludeTests</Configurations>
   </PropertyGroup>
 
