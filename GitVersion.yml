@@ -1,5 +1,2 @@
 next-version: 2.0.0
 mode: Mainline
-branches:
-  master:
-    regex: (^master$|^origin\/master$)
