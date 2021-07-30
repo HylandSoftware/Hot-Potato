@@ -1,11 +1,11 @@
-﻿using HotPotato.Api.Models;
+﻿using HotPotato.Test.Api.Models;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Net.Http.Headers;
 using System;
 using System.Linq;
 
-namespace HotPotato.Api.Controllers
+namespace HotPotato.Test.Api.Controllers
 {
     public class OrdersController : Controller
     {

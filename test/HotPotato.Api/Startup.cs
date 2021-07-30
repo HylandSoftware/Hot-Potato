@@ -8,7 +8,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 
-namespace HotPotato.Api
+namespace HotPotato.Test.Api
 {
     public class Startup
     {
