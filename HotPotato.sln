@@ -32,6 +32,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "(meta)", "(meta)", "{F2D187
 	ProjectSection(SolutionItems) = preProject
 		.gitignore = .gitignore
 		build-spec.yml = build-spec.yml
+		.github\workflows\ci.yml = .github\workflows\ci.yml
 		CONTRIBUTING.md = CONTRIBUTING.md
 		GitVersion.yml = GitVersion.yml
 		Jenkinsfile = Jenkinsfile
