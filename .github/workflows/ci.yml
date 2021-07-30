@@ -83,15 +83,8 @@ jobs:
 
     - name: Deploy
       run: |
-        dotnet pack ./src/HotPotato.AspNetCore.Host/HotPotato.AspNetCore.Host.csproj -p:PackageVersion=${{ env.GitVersion_MajorMinorPatch }} -c Release --no-build --no-restore
-        dotnet pack ./src/HotPotato.AspNetCore.Middleware/HotPotato.AspNetCore.Middleware.csproj -p:PackageVersion=${{ env.GitVersion_MajorMinorPatch}} -c Release --no-build --no-restore
-        dotnet pack ./src/HotPotato.Core/HotPotato.Core.csproj -p:PackageVersion=${{ env.GitVersion_MajorMinorPatch }} -c Release --no-build --no-restore
-        dotnet pack ./src/HotPotato.OpenApi/HotPotato.OpenApi.csproj -p:PackageVersion=${{ env.GitVersion_MajorMinorPatch }} -c Release --no-build --no-restore
-
-        dotnet nuget push $GITHUB_WORKSPACE/src/HotPotato.AspNetCore.Host/**/*.nupkg -k ${{ secrets.GITHUB_TOKEN }} -s https://nuget.pkg.github.com/HylandSoftware/index.json --skip-duplicate
-        dotnet nuget push $GITHUB_WORKSPACE/src/HotPotato.AspNetCore.Middleware/**/*.nupkg -k ${{ secrets.GITHUB_TOKEN }} -s https://nuget.pkg.github.com/HylandSoftware/index.json --skip-duplicate
-        dotnet nuget push $GITHUB_WORKSPACE/src/HotPotato.Core/**/*.nupkg -k ${{ secrets.GITHUB_TOKEN }} -s https://nuget.pkg.github.com/HylandSoftware/index.json --skip-duplicate
-        dotnet nuget push $GITHUB_WORKSPACE/src/HotPotato.OpenApi/**/*.nupkg -k ${{ secrets.GITHUB_TOKEN }} -s https://nuget.pkg.github.com/HylandSoftware/index.json --skip-duplicate
+        dotnet pack . -p:PackageVersion=${{ env. GitVersion_NuGetVersionV2 }} -c Release --no-build --no-restore --output $GITHUB_WORKSPACE/nuget
+        dotnet nuget push $GITHUB_WORKSPACE/nuget/**/*.nupkg -k ${{ secrets.GITHUB_TOKEN }} -s https://nuget.pkg.github.com/HylandSoftware/index.json --skip-duplicate
 
     # - name: Push Images
     #   #if: env.isMaster == 'true'

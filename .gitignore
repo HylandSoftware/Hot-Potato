@@ -1,6 +1,7 @@
 # Build
 [Bb]in/
 [Oo]bj/
+[Nn]uget/
 
 # Visual Studio
 .vs/
