@@ -13,8 +13,9 @@
 
       hotpotato --RemoteEndpoint http://hyland.io/my/api --SpecLocation http://hyland.io/my/spec.json
     </Description>
-    <RepositoryUrl>https://bitbucket.hyland.com/projects/TATO/repos/hot-potato/browse</RepositoryUrl>
+    <RepositoryUrl>https://github.com/HylandSoftware/Hot-Potato</RepositoryUrl>
     <Configurations>Debug;Release;Docker</Configurations>
+    <UserSecretsId>f08ecae4-7c64-4d97-9cbe-ea1f8fbd4dcc</UserSecretsId>
   </PropertyGroup>
 
   <PropertyGroup>
@@ -30,6 +31,7 @@
     <PackageReference Include="Microsoft.Extensions.Logging.Console" Version="5.0.*" />
     <PackageReference Include="Microsoft.Extensions.Logging.Debug" Version="5.0.*" />
     <PackageReference Include="Microsoft.NETCore.DotNetHostPolicy" Version="5.0.*" />
+    <PackageReference Include="Microsoft.Extensions.Configuration.UserSecrets" Version="5.0.*" />
     <PackageReference Include="System.Net.Primitives" Version="4.3.0" />
   </ItemGroup>
 

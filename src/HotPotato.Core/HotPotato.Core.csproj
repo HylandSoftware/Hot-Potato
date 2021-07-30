@@ -7,7 +7,7 @@
     <Title>HotPotato.Core</Title>
     <Authors>Test Automation Team | GRP-AutomatedTesting@.hyland.com</Authors>
     <Description>HotPotato.Core contains all of the models, HTTP logic, the proxy forwarder, and the interface for the proxy processor. This library is a dependency of HotPotato.AspNetCore.Middleware but will likely never need to be directly consumed.</Description>
-    <RepositoryUrl>https://bitbucket.hyland.com/projects/TATO/repos/hot-potato/browse</RepositoryUrl>
+    <RepositoryUrl>https://github.com/HylandSoftware/Hot-Potato</RepositoryUrl>
     <Configurations>Debug;Release;Docker</Configurations>
   </PropertyGroup>
 

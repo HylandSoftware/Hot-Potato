@@ -5,7 +5,9 @@
 
     <IsPackable>false</IsPackable>
 
-    <Configurations>Debug;Release;</Configurations>
+    <Configurations>Debug;Release;Docker</Configurations>
+
+    <UserSecretsId>3791b776-fe7b-45bd-8e72-93c7a8046c72</UserSecretsId>
   </PropertyGroup>
 
 
@@ -17,6 +19,7 @@
   <ItemGroup>
     <PackageReference Include="JUnitTestLogger" Version="1.1.0" />
     <PackageReference Include="Microsoft.Extensions.Http" Version="5.0.*" />
+    <PackageReference Include="Microsoft.Extensions.Configuration.UserSecrets" Version="5.0.*" />
     <PackageReference Include="Microsoft.NET.Test.Sdk" Version="16.1.0" />
     <PackageReference Include="Moq" Version="4.10.1" />
     <PackageReference Include="NSwag.Core" Version="13.10.8" />

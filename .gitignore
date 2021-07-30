@@ -11,3 +11,5 @@
 
 # MacOS Cruft
 .DS_Store
+# Sonarqube
+.sonarqube/

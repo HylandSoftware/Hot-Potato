@@ -11,10 +11,10 @@
     <Title>HotPotato.OpenApi</Title>
     <Authors>Test Automation Team | GRP-AutomatedTesting@.hyland.com</Authors>
     <Description>HotPotato.OpenApi contains all of the OpenAPI functionality including the processor implementation that validates an HTTP request/response pair against a spec, a result collection, logic to find paths, and so on. Currently, we are using the packages NSwag, NJsonSchema, and NJsonSchema.Yaml to consume a spec and to validate the contained schemas.</Description>
-    <RepositoryUrl>https://bitbucket.hyland.com/projects/TATO/repos/hot-potato/browse</RepositoryUrl>
+    <RepositoryUrl>https://github.com/HylandSoftware/Hot-Potato</RepositoryUrl>
     <Configurations>Debug;Release;Docker</Configurations>
   </PropertyGroup>
-  
+
   <ItemGroup>
     <PackageReference Include="Microsoft.NETCore.DotNetHostPolicy" Version="5.0.4" />
     <PackageReference Include="Namotion.Reflection" Version="1.0.18" />
@@ -25,7 +25,7 @@
     <PackageReference Include="NSwag.Core.Yaml" Version="13.10.8" />
     <PackageReference Include="YamlDotNet" Version="9.1.4" />
   </ItemGroup>
-  
+
   <ItemGroup>
     <ProjectReference Include="..\HotPotato.Core\HotPotato.Core.csproj" />
   </ItemGroup>
