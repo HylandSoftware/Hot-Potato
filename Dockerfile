@@ -22,4 +22,4 @@ ENV REMOTE_ENDPOINT "http://localhost:9000"
 COPY --from=build /app/publish /opt/hotpotato/
 
 EXPOSE 3232
-ENTRYPOINT dotnet /opt/hotpotato/HotPotato.AspNetCore.Host.dll
+ENTRYPOINT dotnet /opt/hotpotato/HotPotato.AspNetCore.Host.dll --SpecLocation=${SPEC_LOCATION} --RemoteEndpoint=${REMOTE_ENDPOINT}
