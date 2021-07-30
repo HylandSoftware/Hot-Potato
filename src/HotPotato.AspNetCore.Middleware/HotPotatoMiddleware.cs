@@ -67,19 +67,26 @@ namespace HotPotato.AspNetCore.Middleware
 					this.log.LogError(httpEx, "Failed to forward request. Remote endpoint may be down.");
 					context.Response.StatusCode = (int)HttpStatusCode.BadGateway;
 				}
-				catch (Exception e)
+				catch (AggregateException agex)
 				{
-					if (e.InnerException != null && e.InnerException is SpecNotFoundException)
+					if (agex.InnerException != null && agex.InnerException is SpecNotFoundException)
 					{
-						SpecNotFoundException spex = (SpecNotFoundException)e.InnerException;
-						log.LogError($"Failed to retrieve spec - please recheck SpecLocation and SpecToken. StatusCode: {(int)spex.Response.StatusCode} ReasonPhrase: {spex.Response.ReasonPhrase}", e.InnerException);
+						SpecNotFoundException spex = (SpecNotFoundException)agex.InnerException;
+						log.LogError(agex, $"Failed to retrieve spec - please recheck SpecLocation and SpecToken.{Environment.NewLine}StatusCode: {(int)spex.Response.StatusCode}{Environment.NewLine}ReasonPhrase: {spex.Response.ReasonPhrase}");
 					}
 					else
 					{
-						//handle unknown exceptions
-						this.log.LogError(e, "Failed to forward request");
-						context.Response.StatusCode = (int)HttpStatusCode.InternalServerError;
+						//an example edge case would be a non-existent domain like https://raw.fakegithubusercontent.com/HylandSoftware/Hot-Potato/master/test/RawPotatoSpec.yaml
+						log.LogError(agex, "Exception thrown from an async call");
 					}
+					//we'll probably want to set to context.Reponse status code in the future,
+					//but for now trying to set it here will cause a "Response already started")
+				}
+				catch (Exception e)
+				{
+					//handle unknown exceptions
+					this.log.LogError(e, "Failed to forward request");
+					context.Response.StatusCode = (int)HttpStatusCode.InternalServerError;
 				}
 			}
 		}
