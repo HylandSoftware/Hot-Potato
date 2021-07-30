@@ -1,6 +1,6 @@
 # Contributing
 
-We invite all Hylanders and others from the open-source community to contribute to our repositories. We ask that any change be discussed via a [Jira Issue](https://jira.hylandqa.net/secure/RapidBoard.jspa?rapidView=178) and [Microsoft Teams](https://teams.microsoft.com/l/channel/19%3acc45b0e645694e7db6301d43a53606a1%40thread.skype/Test%2520Automation?groupId=7b32cc4c-a7d6-4ff7-bbc8-dae60309180b&tenantId=8ca5db88-a5ab-48f7-a5e0-4ce50935f807). When preparing a contribution to our repository, please consider the following contribution guidelines.
+We invite all Hylanders and others from the open-source community to contribute to our repositories. We ask that any change be discussed via a [GitHub Issue](https://github.com/HylandSoftware/Hot-Potato/issues). When preparing a contribution to our repository, please consider the following contribution guidelines.
 
 ## Code of Conduct
 
