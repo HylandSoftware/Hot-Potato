@@ -1,0 +1,70 @@
+{
+    "version": "2.0.0",
+    "tasks": [
+        {
+            "label": "build",
+            "command": "dotnet",
+            "type": "process",
+            "args": [
+                "build",
+                "${workspaceFolder}/src/HotPotato.AspNetCore.Host/HotPotato.AspNetCore.Host.csproj",
+                "/property:GenerateFullPaths=true",
+                "/consoleloggerparameters:NoSummary"
+            ],
+            "problemMatcher": "$msCompile"
+        },
+        {
+            "label": "publish",
+            "command": "dotnet",
+            "type": "process",
+            "args": [
+                "publish",
+                "${workspaceFolder}/src/HotPotato.AspNetCore.Host/HotPotato.AspNetCore.Host.csproj",
+                "/property:GenerateFullPaths=true",
+                "/consoleloggerparameters:NoSummary"
+            ],
+            "problemMatcher": "$msCompile"
+        },
+        {
+            "label": "watch",
+            "command": "dotnet",
+            "type": "process",
+            "args": [
+                "watch",
+                "run",
+                "${workspaceFolder}/src/HotPotato.AspNetCore.Host/HotPotato.AspNetCore.Host.csproj",
+                "/property:GenerateFullPaths=true",
+                "/consoleloggerparameters:NoSummary"
+            ],
+            "problemMatcher": "$msCompile"
+        },
+        {
+            "label": "docker-build",
+            "type": "shell",
+            "command": "docker",
+            "args": [
+                "build",
+                ".",
+                "--build-arg",
+                "VERSION=2.0.0-dev",
+                "--tag",
+                "hot-potato:dev"
+            ],
+            "problemMatcher": []
+        },
+        {
+            "label": "docker-run",
+            "type": "shell",
+            "command": "docker",
+            "args": [
+                "run",
+                "-i",
+                "-t",
+                "-p",
+                "3232:3232",
+                "hot-potato:dev"
+            ],
+            "problemMatcher": []
+        }
+    ]
+}

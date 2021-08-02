@@ -1,11 +1,8 @@
-﻿<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk.Web">
 
   <PropertyGroup>
     <OutputType>Exe</OutputType>
-    <TargetFrameworks>netcoreapp2.2;netcoreapp3.1</TargetFrameworks>
-    <!-- <RestoreSources>
-      https://proget.onbase.net/nuget/NuGet/;
-    </RestoreSources> -->
+    <TargetFrameworks>net5.0</TargetFrameworks>
     <PackAsTool>true</PackAsTool>
     <ToolCommandName>HotPotato</ToolCommandName>
     <PackageVersion></PackageVersion>
@@ -17,29 +14,24 @@
       hotpotato --RemoteEndpoint http://hyland.io/my/api --SpecLocation http://hyland.io/my/spec.json
     </Description>
     <RepositoryUrl>https://github.com/HylandSoftware/Hot-Potato</RepositoryUrl>
-    <Configurations>Debug;Release;ExcludeTests</Configurations>
+    <Configurations>Debug;Release;Docker</Configurations>
     <UserSecretsId>f08ecae4-7c64-4d97-9cbe-ea1f8fbd4dcc</UserSecretsId>
   </PropertyGroup>
 
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
+  <PropertyGroup>
     <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
     <WarningsAsErrors />
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Microsoft.AspNetCore.Hosting" Version="2.2.7" />
-    <PackageReference Include="Microsoft.AspNetCore.Mvc" Version="2.2.0" />
-    <PackageReference Include="Microsoft.AspNetCore.Mvc.Core" Version="2.2.5" />
-    <PackageReference Include="Microsoft.AspNetCore.Mvc.Formatters.Json" Version="2.2.0" />
-    <PackageReference Include="Microsoft.AspNetCore.Server.Kestrel" Version="2.2.0" />
-    <PackageReference Include="Microsoft.Extensions.Configuration.CommandLine" Version="2.2.0" />
-    <PackageReference Include="Microsoft.Extensions.Configuration.Json" Version="3.1.5" />
-    <PackageReference Include="Microsoft.Extensions.Configuration.UserSecrets" Version="3.1.3" />
-    <PackageReference Include="Microsoft.Extensions.Http" Version="2.2.0" />
-    <PackageReference Include="Microsoft.Extensions.Logging.Configuration" Version="2.2.0" />
-    <PackageReference Include="Microsoft.Extensions.Logging.Console" Version="2.2.0" />
-    <PackageReference Include="Microsoft.Extensions.Logging.Debug" Version="2.2.0" />
-    <PackageReference Include="Microsoft.NETCore.DotNetHostPolicy" Version="5.0.4" />
+    <PackageReference Include="Microsoft.Extensions.Configuration.CommandLine" Version="5.0.*" />
+    <PackageReference Include="Microsoft.Extensions.Configuration.Json" Version="5.0.*" />
+    <PackageReference Include="Microsoft.Extensions.Http" Version="5.0.*" />
+    <PackageReference Include="Microsoft.Extensions.Logging.Configuration" Version="5.0.*" />
+    <PackageReference Include="Microsoft.Extensions.Logging.Console" Version="5.0.*" />
+    <PackageReference Include="Microsoft.Extensions.Logging.Debug" Version="5.0.*" />
+    <PackageReference Include="Microsoft.NETCore.DotNetHostPolicy" Version="5.0.*" />
+    <PackageReference Include="Microsoft.Extensions.Configuration.UserSecrets" Version="5.0.*" />
     <PackageReference Include="System.Net.Primitives" Version="4.3.0" />
   </ItemGroup>
 

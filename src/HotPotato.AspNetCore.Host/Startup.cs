@@ -13,6 +13,7 @@ using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using System;
 using System.Net;
@@ -34,10 +35,18 @@ namespace HotPotato.AspNetCore.Host
             Log = log;
         }
 
-        public void Configure(ILoggerFactory loggerFactory, IApplicationBuilder builder, IHostingEnvironment env)
+        public void Configure(IApplicationBuilder builder, IWebHostEnvironment env)
         {
+            if (env.IsDevelopment()) 
+            {
+                builder.UseDeveloperExceptionPage();
+            }
+
             builder.UseMiddleware<HotPotatoMiddleware>();
-            builder.UseMvc();
+            builder.UseRouting();
+            builder.UseEndpoints(endpointBuilder => {
+                endpointBuilder.MapControllers();
+            });
         }
 
         public void ConfigureServices(IServiceCollection services)
@@ -47,7 +56,7 @@ namespace HotPotato.AspNetCore.Host
 
             services.AddScoped<IProxy, HotPotato.Core.Proxy.Default.Proxy>();
             services.AddScoped<IHotPotatoClient, HotPotatoClient>();
-            services.AddMvcCore().AddJsonFormatters();
+            services.AddMvcCore();
             services.AddSingleton<IWebProxy, Core.Http.ForwardProxy.Default.HttpForwardProxy>();
             services.AddSingleton(Configuration.GetSection("ForwardProxy").Get<HttpForwardProxyConfig>());
             services.AddSingleton<ICookieJar, CookieJar>();
