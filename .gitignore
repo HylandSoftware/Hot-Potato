@@ -11,3 +11,5 @@
 
 # Sonarqube
 .sonarqube/
+
+.DS_Store
