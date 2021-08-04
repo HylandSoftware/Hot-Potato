@@ -1,4 +1,4 @@
-﻿using HotPotato.Core;
+using HotPotato.Core;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
 using Moq;
@@ -16,16 +16,14 @@ namespace HotPotato.OpenApi.SpecificationProvider
         public void SpecificationProvider_Constructor_ThrowsArgumentNullExceptionWithConfig()
         {
             ILogger<SpecificationProvider> mockLogger = Mock.Of<ILogger<SpecificationProvider>>();
-            Action subject = () => new SpecificationProvider(null, mockLogger);
-            Assert.Throws<ArgumentNullException>(subject);
+            Assert.Throws<ArgumentNullException>(() => new SpecificationProvider(null, mockLogger));
         }
 
         [Fact]
         public void SpecificationProvider_Constructor_ThrowsArgumentNullExceptionWithLogger()
         {
             IConfiguration mockConfig = Mock.Of<IConfiguration>();
-            Action subject = () => new SpecificationProvider(mockConfig, null);
-            Assert.Throws<ArgumentNullException>(subject);
+            Assert.Throws<ArgumentNullException>(() => new SpecificationProvider(mockConfig, null));
         }
 
         [Fact]
