@@ -48,19 +48,19 @@ jobs:
 
     - name: Run Unit Tests
       run: |
-        dotnet test ./test/HotPotato.Core.Test/HotPotato.Core.Test.csproj -f "net5.0" -c Release -p:CollectCoverage=true -p:CoverletOutputFormat=cobertura -p:CoverletOutput=$GITHUB_WORKSPACE/test/coverage/coreCoverage.xml -p:Exclude="[xunit.*]*" -l:"JUnit;LogFilePath=$GITHUB_WORKSPACE/test/results/coreResults.xml" --no-restore --no-build
-        dotnet test ./test/HotPotato.AspNetCore.Middleware.Test/HotPotato.AspNetCore.Middleware.Test.csproj -f "net5.0" -c Release -p:CollectCoverage=true -p:CoverletOutputFormat=cobertura -p:CoverletOutput=$GITHUB_WORKSPACE/test/coverage/middlewareCoverage.xml -p:Include="[*.Middleware]*" -l:"JUnit;LogFilePath=$GITHUB_WORKSPACE/test/results/middlewareResults.xml" --no-restore --no-build
-        dotnet test ./test/HotPotato.OpenApi.Test/HotPotato.OpenApi.Test.csproj -f "net5.0" -c Release -p:CollectCoverage=true -p:CoverletOutputFormat=cobertura -p:CoverletOutput=$GITHUB_WORKSPACE/test/coverage/openApiCoverage.xml -p:Include="[*.OpenApi]*" -l:"JUnit;LogFilePath=$GITHUB_WORKSPACE/test/results/openapiResults.xml" --no-restore --no-build
+        dotnet test ./test/HotPotato.Core.Test/HotPotato.Core.Test.csproj -c Release -p:CollectCoverage=true -p:CoverletOutputFormat=cobertura -p:CoverletOutput=$GITHUB_WORKSPACE/test/coverage/coreCoverage.xml -p:Exclude="[xunit.*]*" -l:"JUnit;LogFilePath=$GITHUB_WORKSPACE/test/results/coreResults.xml" --no-restore --no-build
+        dotnet test ./test/HotPotato.AspNetCore.Middleware.Test/HotPotato.AspNetCore.Middleware.Test.csproj -c Release -p:CollectCoverage=true -p:CoverletOutputFormat=cobertura -p:CoverletOutput=$GITHUB_WORKSPACE/test/coverage/middlewareCoverage.xml -p:Include="[*.Middleware]*" -l:"JUnit;LogFilePath=$GITHUB_WORKSPACE/test/results/middlewareResults.xml" --no-restore --no-build
+        dotnet test ./test/HotPotato.OpenApi.Test/HotPotato.OpenApi.Test.csproj -c Release -p:CollectCoverage=true -p:CoverletOutputFormat=cobertura -p:CoverletOutput=$GITHUB_WORKSPACE/test/coverage/openApiCoverage.xml -p:Include="[*.OpenApi]*" -l:"JUnit;LogFilePath=$GITHUB_WORKSPACE/test/results/openapiResults.xml" --no-restore --no-build
 
     - name: Run Integration Tests
       run: |
-        dotnet test ./test/HotPotato.Integration.Test/HotPotato.Integration.Test.csproj -f "net5.0" -c Release -l:"JUnit;LogFilePath=$GITHUB_WORKSPACE/test/results/integrationResults.xml" --no-restore --no-build
+        dotnet test ./test/HotPotato.Integration.Test/HotPotato.Integration.Test.csproj -c Release -l:"JUnit;LogFilePath=$GITHUB_WORKSPACE/test/results/integrationResults.xml" --no-restore --no-build
 
     - name: Run E2E Tests
       env:
         SpecToken: ${{ secrets.GITHUB_TOKEN }}
       run: |
-        dotnet test ./test/HotPotato.E2E.Test/HotPotato.E2E.Test.csproj -f "net5.0" -c Release -l:"JUnit;LogFilePath=$GITHUB_WORKSPACE/test/results/E2EResults.xml" --no-restore --no-build
+        dotnet test ./test/HotPotato.E2E.Test/HotPotato.E2E.Test.csproj -c Release -l:"JUnit;LogFilePath=$GITHUB_WORKSPACE/test/results/E2EResults.xml" --no-restore --no-build
 
     - name: Run TestServer Tests
       env:
