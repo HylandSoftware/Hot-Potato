@@ -1,9 +1,7 @@
 name: Hot Potato CI
 
 on:
-  push:
-  pull_request:
-    branches: [ master ]
+  push
 
 env:
   isMaster: ${{ github.ref == 'refs/heads/master' }}
