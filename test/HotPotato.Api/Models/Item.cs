@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace HotPotato.Api.Models
+namespace HotPotato.Test.Api.Models
 {
     public class Item
     {

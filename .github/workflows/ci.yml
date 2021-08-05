@@ -1,9 +1,7 @@
 name: Hot Potato CI
 
 on:
-  push:
-  pull_request:
-    branches: [ master ]
+  push
 
 env:
   isMaster: ${{ github.ref == 'refs/heads/master' }}
@@ -78,7 +76,7 @@ jobs:
         SpecToken: ${{ secrets.GITHUB_TOKEN }}
       run: |
         dotnet $GITHUB_WORKSPACE/src/HotPotato.AspNetCore.Host/bin/Release/net5.0/HotPotato.AspNetCore.Host.dll &
-        dotnet $GITHUB_WORKSPACE/test/HotPotato.Api/bin/Release/net5.0/HotPotato.Api.dll &
+        dotnet $GITHUB_WORKSPACE/test/HotPotato.Api/bin/Release/net5.0/HotPotato.Test.Api.dll &
 
     - name: Run Postman Tests
       uses: anthonyvscode/newman-action@v1

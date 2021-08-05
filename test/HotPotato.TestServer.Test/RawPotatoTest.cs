@@ -1,4 +1,4 @@
-using HotPotato.Api.Models;
+using HotPotato.Test.Api.Models;
 using HotPotato.Core.Http;
 using HotPotato.Core.Http.Default;
 using HotPotato.OpenApi.Models;
@@ -12,7 +12,7 @@ using Xunit;
 
 namespace HotPotato.TestServ.Test
 {
-    public class RawPotatoTest : IClassFixture<TestFixture<Api.Startup>>, IDisposable
+    public class RawPotatoTest : IClassFixture<TestFixture<HotPotato.Test.Api.Startup>>, IDisposable
     {
         private HotPotatoClient client;
         private List<Result> results;
@@ -32,7 +32,7 @@ namespace HotPotato.TestServ.Test
             }
         };
 
-        public RawPotatoTest(TestFixture<Api.Startup> fixture)
+        public RawPotatoTest(TestFixture<HotPotato.Test.Api.Startup> fixture)
         {
             client = fixture.Client;
             results = fixture.Results;
