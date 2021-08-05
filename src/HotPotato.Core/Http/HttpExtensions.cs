@@ -205,7 +205,9 @@ namespace HotPotato.Core.Http
                     encode = Encoding.UTF8;
                     break;
                 case "utf-7":
+                #pragma warning disable
                     encode = Encoding.UTF7;
+                #pragma warning restore 
                     break;
                 case "utf-32":
                     encode = Encoding.UTF32;

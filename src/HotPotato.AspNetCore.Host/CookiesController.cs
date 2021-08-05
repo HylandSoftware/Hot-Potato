@@ -3,7 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace HotPotato.AspNetCore.Host
 {
-	public class CookiesController : Controller
+	public class CookiesController : ControllerBase
 	{
 		private ICookieJar _cookieJar;
 

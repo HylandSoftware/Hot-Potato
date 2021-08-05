@@ -1,12 +1,17 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFrameworks>netcoreapp2.2;netcoreapp3.1</TargetFrameworks>
+    <TargetFrameworks>net5.0</TargetFrameworks>
 
     <IsPackable>false</IsPackable>
 
-    <Configurations>Debug;Release;ExcludeTests</Configurations>
+    <Configurations>Debug;Release;</Configurations>
   </PropertyGroup>
+
+	<!--Publish Properties-->
+	<PropertyGroup>
+		<IsPublishable>false</IsPublishable>
+	</PropertyGroup>
 
   <ItemGroup>
     <PackageReference Include="coverlet.msbuild" Version="3.0.3">

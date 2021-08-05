@@ -1,6 +1,7 @@
 # Build
 [Bb]in/
 [Oo]bj/
+[Nn]uget/
 
 # Visual Studio
 .vs/
@@ -8,3 +9,8 @@
 *.user
 *.[Cc]ache
 *.[Cc]overage
+
+# MacOS Cruft
+.DS_Store
+# Sonarqube
+.sonarqube/

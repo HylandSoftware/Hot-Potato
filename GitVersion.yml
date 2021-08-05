@@ -1,5 +1,8 @@
-next-version: 2.0.0
-mode: Mainline
+---
+assembly-informational-format: '{Major}.{Minor}.{Patch}.{env:BUILD_NUMBER ?? 0}-{Sha}'
+mode: MainLine
+minor-version-bump-message: '\s?(feat|feature|minor)'
 branches:
   master:
-    regex: (^master$|^origin\/master$)
+    regex: ^master$|^main$
+    tag: 'unstable'

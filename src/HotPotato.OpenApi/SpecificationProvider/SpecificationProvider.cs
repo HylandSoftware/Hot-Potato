@@ -1,5 +1,7 @@
 ﻿using HotPotato.Core;
 using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.Logging;
+using Newtonsoft.Json;
 using NSwag;
 using static NSwag.OpenApiYamlDocument;
 using System;
@@ -13,18 +15,25 @@ namespace HotPotato.OpenApi.SpecificationProvider
     public class SpecificationProvider : ISpecificationProvider
     {
         private readonly string SpecLocation;
+        private readonly string SpecToken;
         private readonly bool ignoreClientCertificateValidationErrors;
 
-        public SpecificationProvider(IConfiguration config)
+        private ILogger Logger { get; }
+
+        public SpecificationProvider(IConfiguration config, ILogger<SpecificationProvider> logger)
         {
             _ = config ?? throw Exceptions.ArgumentNull(nameof(config));
+            _ = logger ?? throw Exceptions.ArgumentNull(nameof(logger));
+
             this.SpecLocation = config["SpecLocation"];
+            this.SpecToken = config["SpecToken"];
+            this.Logger = logger;
             //mirror the security setting used at startup
             this.ignoreClientCertificateValidationErrors = config.GetSection("HttpClientSettings").GetValue<bool>("IgnoreClientHttpsCertificateValidationErrors");
         }
         public OpenApiDocument GetSpecDocument()
         {
-            Task<OpenApiDocument> swagTask = null;
+            Task<OpenApiDocument> swagTask;
             if (Path.IsPathFullyQualified(SpecLocation))
             {
                 swagTask = FromFileAsync(SpecLocation);
@@ -60,9 +69,18 @@ namespace HotPotato.OpenApi.SpecificationProvider
                     client.BaseAddress = new Uri(url);
                     using (HttpRequestMessage req = new HttpRequestMessage(HttpMethod.Get, url))
                     {
+                        if (!string.IsNullOrWhiteSpace(SpecToken))
+                        {
+                            req.Headers.Add("Authorization", $"Bearer {SpecToken}");
+                        }
                         using (HttpResponseMessage response = await client.SendAsync(req).ConfigureAwait(false))
                         {
-                            response.EnsureSuccessStatusCode();
+                            if (!response.IsSuccessStatusCode)
+							{
+                                Logger.LogDebug($"Failed to retrieve spec. Response: {response}");
+                                throw Exceptions.SpecNotFound(SpecLocation, response);
+                            }
+
                             string data = await response.Content.ReadAsStringAsync().ConfigureAwait(false);
                             return await FromYamlAsync(data, url).ConfigureAwait(false);
                         }

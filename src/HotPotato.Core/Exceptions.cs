@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Net.Http;
 
 namespace HotPotato.Core
 {
@@ -8,5 +9,7 @@ namespace HotPotato.Core
             new ArgumentNullException(paramName);
         public static InvalidOperationException InvalidOperation(string message) =>
             new InvalidOperationException(message);
+        public static SpecNotFoundException SpecNotFound(string specLocation, HttpResponseMessage response) =>
+            new SpecNotFoundException(specLocation, response);
     }
 }
