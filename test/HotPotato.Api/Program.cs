@@ -8,7 +8,7 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
 
-namespace HotPotato.Api
+namespace HotPotato.Test.Api
 {
     public class Program
     {

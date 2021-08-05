@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 
-namespace HotPotato.Api.Models
+namespace HotPotato.Test.Api.Models
 {
     public class Order
     {

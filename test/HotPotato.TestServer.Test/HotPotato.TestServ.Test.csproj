@@ -34,7 +34,7 @@
   <ItemGroup>
     <ProjectReference Include="..\..\src\HotPotato.AspNetCore.Middleware\HotPotato.AspNetCore.Middleware.csproj" />
     <ProjectReference Include="..\..\src\HotPotato.OpenApi\HotPotato.OpenApi.csproj" />
-    <ProjectReference Include="..\HotPotato.Api\HotPotato.Api.csproj" />
+    <ProjectReference Include="..\HotPotato.Api\HotPotato.Test.Api.csproj" />
   </ItemGroup>
 
   <ItemGroup>

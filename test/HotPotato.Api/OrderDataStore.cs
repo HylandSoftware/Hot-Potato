@@ -1,7 +1,7 @@
-﻿using HotPotato.Api.Models;
+﻿using HotPotato.Test.Api.Models;
 using System.Collections.Generic;
 
-namespace HotPotato.Api
+namespace HotPotato.Test.Api
 {
     public class OrderDataStore
     {
