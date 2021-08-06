@@ -1,6 +1,6 @@
 # Contributing
 
-We invite all Hylanders to contribute to our repositories. We ask that any change be discussed via a [Jira Issue](https://jira.hylandqa.net/secure/RapidBoard.jspa?rapidView=178), [Mattermost](https://mattermost.hyland.com/hyland/channels/test-automation), via [Email](mailto:grp-automatedtesting@hyland.com), or in person. When preparing a contribution to our repository, please consider the following contribution guidelines.
+We invite all Hylanders and others from the open-source community to contribute to our repositories. We ask that any change be discussed via a [GitHub Issue](https://github.com/HylandSoftware/Hot-Potato/issues). When preparing a contribution to our repository, please consider the following contribution guidelines.
 
 ## Code of Conduct
 
@@ -27,6 +27,58 @@ Our integration test project tends to test more complicated integrated scenarios
 ### System Tests
 
 Our system tests are meant to act as a form of documentation for the multiple ways the proxy can be used to validate conformance to an API spec. They consist of a made-up API with a specification, a set of tests, and the HotPotato proxy set up as a reverse proxy. There are 3 suites that test valid tests, missing specification components, and invalid specification components which exist in `HotPotato.System.HappyPath.Test.csproj`, `HotPotato.System.NotInSpec.Test.csproj`, and `HotPotato.System.NonConformant.Test.csproj` respectively.
+
+### Local Tests
+
+To run tests locally against an external remote endpoint, you will need to provide the API's RemoteEndpoint and SpecLocation to `src\HotPotato.AspNetCore.Host\appsettings.json`. Like the example below:
+
+```diff
+{
+  "RemoteEndpoint": "https://nvpub.vic-metria.nu/naturvardsregistret/v2/rest",
+  "HttpClientSettings": {
+    "IgnoreClientHttpsCertificateValidationErrors": "false"
+  },
+  "SpecLocation": "https://raw.githubusercontent.com/greentechdev/greentechdev.github.io/master/nvr_api.yaml",
+  "ForwardProxy": {
+    "Enabled": "false",
+    "ProxyAddress": "http://localhost:8888",
+    "BypassOnLocal": "false"
+  },
+  "exclude": [
+    "**/bin",
+    "**/bower_components",
+    "**/jspm_packages",
+    "**/node_modules",
+    "**/obj",
+    "**/platforms"
+  ],
+  "Logging": {
+    "LogLevel": {
+      "Default": "Debug",
+      "System": "Information",
+      "Microsoft": "Information"
+    }
+  }
+}
+```
+
+Once the API that needs to be tested is configured, you'll want to append the endpoints (e.g localhost:3232/omrade/skyddstyper) through something like Postman.
+
+Noted: As with any sort of Hot Potato testing, you'll be replacing the host name with localhost:3232.
+
+To run these tests locally through a Docker container, you can do a Docker build from within the root folder of your Hot Potato solution, while passing passing in an arbitrary number for IMAGE_VERSION, like so:
+
+```sh
+docker build --tag hcr.io/automated-testing/hot-potato:4.9 --build-arg IMAGE_VERSION=4.9 .
+```
+
+Now to test, you may pass the API's REMOTE_ENDPOINT and SPEC_LOCATION through the command line. Connecting Docker with your localhost requires some nontrivial network setup, so we recommend using an external API, like so:
+
+```sh
+docker run --rm -d --network hp --name Conformance -p 3232:3232 -e HttpClientSettings__IgnoreClientHttpsCertificateValidationErrors=true -e 
+REMOTE_ENDPOINT=https://nvpub.vic-metria.nu/naturvardsregistret/v2/rest -e 
+SPEC_LOCATION=https://raw.githubusercontent.com/greentechdev/greentechdev.github.io/master/nvr_api.yaml hcr.io/automated-testing/hot-potato:4.9
+```
 
 ## Pull requests
 
