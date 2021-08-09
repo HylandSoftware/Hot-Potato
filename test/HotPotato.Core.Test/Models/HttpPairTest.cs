@@ -1,4 +1,4 @@
-﻿using HotPotato.Core.Http;
+using HotPotato.Core.Http;
 using Moq;
 using System;
 using Xunit;
@@ -11,16 +11,14 @@ namespace HotPotato.Core.Models
         [Fact]
         public void HttpPair_Constructor_ThrowsArgumentNullExceptionWithRequest()
         {
-            Action subject = () => new HttpPair(null, null);
-            Assert.Throws<ArgumentNullException>(subject);
+            Assert.Throws<ArgumentNullException>(() => new HttpPair(null, null));
         }
 
         [Fact]
         public void HttpPair_Constructor_ThrowsArgumentNullExceptionWithResponse()
         {
             IHotPotatoRequest request = Mock.Of<IHotPotatoRequest>();
-            Action subject = () => new HttpPair(request, null);
-            Assert.Throws<ArgumentNullException>(subject);
+            Assert.Throws<ArgumentNullException>(() => new HttpPair(request, null));
         }
 
         [Fact]
