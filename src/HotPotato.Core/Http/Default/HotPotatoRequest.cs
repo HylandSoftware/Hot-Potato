@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Text;
@@ -6,7 +6,7 @@ using System.Web;
 
 namespace HotPotato.Core.Http.Default
 {
-    public class HotPotatoRequest : IHotPotatoRequest, IDisposable
+    public class HotPotatoRequest : IHotPotatoRequest
     {
         private readonly Encoding DefaultEncoding = Encoding.UTF8;
         private readonly string DefaultMediaType = "application/json";
