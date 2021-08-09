@@ -1,8 +1,10 @@
-﻿using System;
+using System;
 using System.Net.Http;
+using System.Runtime.Serialization;
 
 namespace HotPotato.Core
 {
+	[Serializable]
 	public class SpecNotFoundException : Exception
 	{
 		public string SpecLocation { get; }
@@ -12,6 +14,12 @@ namespace HotPotato.Core
 		{
 			SpecLocation = specLocation;
 			Response = response;
+		}
+
+		protected SpecNotFoundException(SerializationInfo info, StreamingContext context)
+			: base (info, context)
+		{
+
 		}
 	}
 }
