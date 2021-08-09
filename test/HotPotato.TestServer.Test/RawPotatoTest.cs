@@ -100,6 +100,7 @@ namespace HotPotato.TestServ.Test
         public void Dispose()
 		{
 			results.Clear();
+			GC.SuppressFinalize(this);
 		}
 	}
 }

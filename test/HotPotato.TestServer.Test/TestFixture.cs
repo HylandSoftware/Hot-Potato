@@ -1,4 +1,4 @@
-﻿using HotPotato.AspNetCore.Middleware;
+using HotPotato.AspNetCore.Middleware;
 using HotPotato.Core.Http.Default;
 using HotPotato.OpenApi.Models;
 using HotPotato.OpenApi.Results;
@@ -78,6 +78,7 @@ namespace HotPotato.TestServ.Test
         {
             apiServer.Dispose();
             hotPotatoServer.Dispose();
+			GC.SuppressFinalize(this);
         }
     }
 }
