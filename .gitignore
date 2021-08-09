@@ -17,4 +17,4 @@
 .sonarqube/
 
 # Local launchSettings
-**/Properties/launchSettings.json
+**/[Pp]roperties/launchSettings.json
