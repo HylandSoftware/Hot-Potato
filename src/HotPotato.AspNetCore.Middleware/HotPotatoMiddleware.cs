@@ -68,10 +68,10 @@ namespace HotPotato.AspNetCore.Middleware
 				}
 				catch (AggregateException agex)
 				{
-					if (agex.InnerException != null && agex.InnerException is SpecNotFoundException)
+					SpecNotFoundException spex = agex.InnerException as SpecNotFoundException;
+					if (spex != null)
 					{
-						SpecNotFoundException spex = (SpecNotFoundException)agex.InnerException;
-						log.LogError(agex, $"Failed to retrieve spec - please recheck SpecLocation and SpecToken.{Environment.NewLine}StatusCode: {(int)spex.Response.StatusCode}{Environment.NewLine}ReasonPhrase: {spex.Response.ReasonPhrase}");
+						log.LogError(agex.InnerException, $"Failed to retrieve spec - please recheck SpecLocation and SpecToken.{Environment.NewLine}StatusCode: {(int)spex.Response.StatusCode}{Environment.NewLine}ReasonPhrase: {spex.Response.ReasonPhrase}");
 					}
 					else
 					{

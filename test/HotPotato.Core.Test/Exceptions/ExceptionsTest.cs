@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Net.Http;
 using Xunit;
 
@@ -42,6 +42,17 @@ namespace HotPotato.Core
             Assert.IsType(SpecNotFoundExceptionType, result);
             Assert.Equal(AValidSpecLocation, result.SpecLocation);
             Assert.Equal(ADefaultResponse, result.Response);
+		}
+
+		[Fact]
+		public void As_DoesNotThrowNullReferenceExceptions()
+		{
+			//Wanted to double-check that the exception checking in the Middleware won't throw null exceptions in edge cases 
+			AggregateException subject = new AggregateException();
+
+			SpecNotFoundException result = subject.InnerException as SpecNotFoundException;
+
+			Assert.Null(result);
 		}
     }
 }
