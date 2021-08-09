@@ -1,4 +1,4 @@
-﻿using Newtonsoft.Json;
+using Newtonsoft.Json;
 using NJsonSchema;
 using NSwag;
 using System.Collections.Generic;
@@ -17,7 +17,7 @@ namespace HotPotato.OpenApi.Validators
 
             try
             {
-                XElement xElem = XElement.Parse(xmlBody);
+                XElement.Parse(xmlBody);
             }
             catch (XmlException ex)
             {
