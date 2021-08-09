@@ -81,15 +81,12 @@ namespace HotPotato.AspNetCore.Host
         {
             if (settingValue)
             {
-                Log.LogWarning(
-                    String.Format(
-                        @"IgnoreClientCertificateValidation is set to TRUE! When Hot Potato sends requests to the remote API, SSL/TLS certificate validation errors will be ignored!"));
+                Log.LogWarning(@"IgnoreClientCertificateValidation is set to TRUE! When Hot Potato sends requests to the remote API, SSL/TLS certificate validation errors will be ignored!");
             }
             else
             {
                 Log.LogInformation(
-                    String.Format(
-                        @"IgnoreClientCertificateValidation is set to false. When Hot Potato sends requests to the remote API, SSL/TLS certificate validation problems will cause critical application errors."));
+					@"IgnoreClientCertificateValidation is set to false. When Hot Potato sends requests to the remote API, SSL/TLS certificate validation problems will cause critical application errors.");
             }
         }
     }
