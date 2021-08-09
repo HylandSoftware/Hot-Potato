@@ -1,4 +1,4 @@
-﻿using HotPotato.Core;
+using HotPotato.Core;
 using HotPotato.Core.Proxy;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Configuration;
@@ -19,7 +19,6 @@ namespace HotPotato.AspNetCore.Middleware
 		private readonly IProxy proxy;
 		private readonly ILogger log;
 		private readonly string remoteEndpoint;
-		private readonly string specLocation;
 		private readonly RequestDelegate _next;
 
 		private static readonly HashSet<string> ProxyEndpoints =
@@ -41,7 +40,7 @@ namespace HotPotato.AspNetCore.Middleware
 			this.proxy = proxy;
 			this.log = log;
 			this.remoteEndpoint = configuration[RemoteEndpointKey];
-			this.specLocation = configuration[SpecLocationKey];
+			string specLocation = configuration[SpecLocationKey];
 			log.LogInformation($"Forwarding to {remoteEndpoint}");
 			log.LogInformation($"Spec located at {specLocation}");
 			_next = next;
