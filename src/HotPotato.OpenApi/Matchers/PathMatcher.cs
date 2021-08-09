@@ -49,7 +49,7 @@ namespace HotPotato.OpenApi.Matchers
 
                 if (match)
                 {
-                    string matchedPath = "/" + string.Join('/', pathStack);
+                    string matchedPath = $"/{string.Join('/', pathStack)}";
                     return matchedPath;
                 }
             }
