@@ -1,10 +1,10 @@
-﻿using System.Collections.Generic;
+using System.Collections.Generic;
 using System.Linq;
 using System;
 
 namespace HotPotato.OpenApi.Matchers
 {
-    public class PathMatcher
+    public static class PathMatcher
     {
         /// <summary>
         /// Finds the path in the spec that matches the path in the pair provided.
@@ -47,7 +47,7 @@ namespace HotPotato.OpenApi.Matchers
                     i++;
                 }
 
-                if (match == true)
+                if (match)
                 {
                     string matchedPath = "/" + string.Join('/', pathStack);
                     return matchedPath;

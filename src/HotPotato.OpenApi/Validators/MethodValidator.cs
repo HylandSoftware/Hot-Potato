@@ -1,4 +1,4 @@
-﻿using HotPotato.Core;
+using HotPotato.Core;
 using NSwag;
 using System.Net.Http;
 
@@ -34,7 +34,7 @@ namespace HotPotato.OpenApi.Validators
             }
         }
 
-        private string toOperationMethod(string method)
+        private static string toOperationMethod(string method)
         {
             switch (method)
             {

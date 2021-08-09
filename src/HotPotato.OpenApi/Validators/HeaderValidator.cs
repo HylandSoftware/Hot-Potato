@@ -1,4 +1,4 @@
-﻿using HotPotato.Core.Http;
+using HotPotato.Core.Http;
 using HotPotato.OpenApi.Models;
 using Newtonsoft.Json;
 using NJsonSchema;
@@ -68,7 +68,7 @@ namespace HotPotato.OpenApi.Validators
         /// </summary>
         /// <param name="schema"></param>
         /// <returns></returns>
-        private JsonSchema GetHeaderSchema(JsonSchema schema)
+        private static JsonSchema GetHeaderSchema(JsonSchema schema)
         {
             if (schema.ExtensionData != null &&
                 schema.ExtensionData.ContainsKey("schema") 
