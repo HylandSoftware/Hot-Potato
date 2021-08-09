@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using Microsoft.Extensions.Logging;
 using System.Net;
 
@@ -8,7 +8,6 @@ namespace HotPotato.Core.Http.ForwardProxy.Default
     {
         private ILogger Logger { get; set; }
         private Uri ProxyUri { get; set; }
-        private bool ByPassOnLocal { get; set; }
 
         public HttpForwardProxy(HttpForwardProxyConfig configuration, ILogger<HttpForwardProxy> logger)
         {
