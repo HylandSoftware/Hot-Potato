@@ -1,11 +1,11 @@
-﻿using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 
 namespace HotPotato.AspNetCore.Host
 {
-    class Program
+    public static class Program
     {
         static void Main(string[] args)
         {
@@ -19,7 +19,7 @@ namespace HotPotato.AspNetCore.Host
                     config.SetBasePath(hostingContext.HostingEnvironment.ContentRootPath)
                         .AddJsonFile("appsettings.json", optional: true)
                         .AddEnvironmentVariables()
-                        .AddUserSecrets<Program>()
+                        .AddUserSecrets<Startup>()
                         .AddCommandLine(args);
                 })
                 .ConfigureLogging((hostingContext, logging) =>

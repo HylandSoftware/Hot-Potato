@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -10,7 +10,7 @@ using Microsoft.Extensions.Logging;
 
 namespace HotPotato.Test.Api
 {
-    public class Program
+    public static class Program
     {
         public static void Main(string[] args)
         {
