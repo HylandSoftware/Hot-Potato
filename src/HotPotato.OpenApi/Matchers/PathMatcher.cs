@@ -70,7 +70,7 @@ namespace HotPotato.OpenApi.Matchers
             pathPieces = pathPieces.Where(x => !string.IsNullOrEmpty(x)).ToArray();
             //Reverse here since some server paths have more than one piece, e.g. https://api.hyland.com/ibpaf/rdds
             //In cases like this, the relative path in the request can be /ibpaf/rdds/messages/78,
-            //but will need to be matched with /messages/{messageId}
+            //but will need to be matched with '/messages/{messageId}'
             Array.Reverse(pathPieces);
             return pathPieces;
         }
