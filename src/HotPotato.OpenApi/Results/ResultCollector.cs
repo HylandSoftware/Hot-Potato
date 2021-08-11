@@ -1,4 +1,4 @@
-﻿using HotPotato.Core.Http;
+using HotPotato.Core.Http;
 using HotPotato.OpenApi.Models;
 using HotPotato.OpenApi.Validators;
 using System.Collections.Generic;
@@ -16,7 +16,7 @@ namespace HotPotato.OpenApi.Results
             OverallResult = State.Inconclusive;
         }
 
-        public void Pass(string path, string method, int statusCode, HttpHeaders customHeaders = null)
+        public void Pass(string path, string method, int statusCode, HttpHeaders customHeaders)
         {
             Results.Add(ResultFactory.PassResult(path, method, statusCode, customHeaders));
             //for if the body fails but the header passes
