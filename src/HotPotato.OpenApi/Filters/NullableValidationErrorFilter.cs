@@ -1,4 +1,4 @@
-﻿using HotPotato.OpenApi.Validators;
+using HotPotato.OpenApi.Validators;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using NJsonSchema;
@@ -49,8 +49,6 @@ namespace HotPotato.OpenApi.Filters
 			}
 			catch (Exception ex)
 			{
-				//TODO: use service collection ILogger: https://jira.hyland.com/browse/AUTOTEST-279
-				//the filtering is more of a nice-to-have rather than an essential function, so I want to log instead of fail here
 				Console.WriteLine($"Exception while filtering errors: {ex.Message}{Environment.NewLine}{ex.StackTrace}");
 			}
 		}
