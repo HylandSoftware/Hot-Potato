@@ -40,9 +40,8 @@ namespace HotPotato.AspNetCore.Middleware
 			this.proxy = proxy;
 			this.log = log;
 			this.remoteEndpoint = configuration[RemoteEndpointKey];
-			string specLocation = configuration[SpecLocationKey];
+
 			log.LogInformation($"Forwarding to {remoteEndpoint}");
-			log.LogInformation($"Spec located at {specLocation}");
 			_next = next;
 		}
 

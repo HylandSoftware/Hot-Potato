@@ -1,4 +1,4 @@
-﻿using HotPotato.Core;
+using HotPotato.Core;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
 using Newtonsoft.Json;
@@ -30,7 +30,9 @@ namespace HotPotato.OpenApi.SpecificationProvider
             this.Logger = logger;
             //mirror the security setting used at startup
             this.ignoreClientCertificateValidationErrors = config.GetSection("HttpClientSettings").GetValue<bool>("IgnoreClientHttpsCertificateValidationErrors");
-        }
+
+			Logger.LogInformation($"Spec located at {SpecLocation}");
+		}
         public OpenApiDocument GetSpecDocument()
         {
             Task<OpenApiDocument> swagTask;
