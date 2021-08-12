@@ -56,7 +56,7 @@ namespace HotPotato.AspNetCore.Host
 
             services.AddScoped<IProxy, HotPotato.Core.Proxy.Default.Proxy>();
             services.AddScoped<IHotPotatoClient, HotPotatoClient>();
-            services.AddMvcCore();
+            services.AddMvcCore().AddNewtonsoftJson();
             services.AddSingleton<IWebProxy, Core.Http.ForwardProxy.Default.HttpForwardProxy>();
             services.AddSingleton(Configuration.GetSection("ForwardProxy").Get<HttpForwardProxyConfig>());
             services.AddSingleton<ICookieJar, CookieJar>();
