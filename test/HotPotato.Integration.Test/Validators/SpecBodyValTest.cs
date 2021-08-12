@@ -17,6 +17,7 @@ using System.Linq;
 using System.Net;
 using System.Net.Http;
 using System.Text;
+using System.Threading.Tasks;
 using Xunit;
 
 namespace HotPotato.OpenApi.Validators
@@ -26,7 +27,7 @@ namespace HotPotato.OpenApi.Validators
     {
         [Theory]
         [ClassData(typeof(SpecBodyValidTestData))]
-        public async void BodyValidator_CreatesValidResult(string specSubPath, HttpMethod reqMethod, HttpStatusCode statusCode, string endpointURI, string contentType, object bodyJson)
+        public async Task BodyValidator_CreatesValidResult(string specSubPath, HttpMethod reqMethod, HttpStatusCode statusCode, string endpointURI, string contentType, object bodyJson)
         {
             string specPath = SpecPath(specSubPath, "specification.yaml");
             ServiceProvider provider = GetServiceProvider(specPath);
@@ -60,7 +61,7 @@ namespace HotPotato.OpenApi.Validators
 
         [Theory]
         [ClassData(typeof(SpecBodyInvalidTestData))]
-        public async void BodyValidator_CreatesInvalidResult(string specSubPath, HttpMethod reqMethod, HttpStatusCode statusCode, 
+        public async Task BodyValidator_CreatesInvalidResult(string specSubPath, HttpMethod reqMethod, HttpStatusCode statusCode, 
             string endpointURI, string contentType, object bodyJson, ValidationErrorKind expectedKind1, ValidationErrorKind expectedKind2)
         {
 
@@ -99,7 +100,7 @@ namespace HotPotato.OpenApi.Validators
 
         [Theory]
         [ClassData(typeof(CustomSpecTestData))]
-        public async void BodyValidator_CreatesValidResultWithDiffTypes(string specSubPath, HttpMethod reqMethod, HttpStatusCode statusCode, string endpointURI, string contentType, string bodyString)
+        public async Task BodyValidator_CreatesValidResultWithDiffTypes(string specSubPath, HttpMethod reqMethod, HttpStatusCode statusCode, string endpointURI, string contentType, string bodyString)
         {
             string specPath = SpecPath(specSubPath, "specification.yaml");
             ServiceProvider provider = GetServiceProvider(specPath);
@@ -131,7 +132,7 @@ namespace HotPotato.OpenApi.Validators
 
         [Theory]
         [ClassData(typeof(CustomSpecNegTestData))]
-        public async void BodyValidator_CreatesInvalidResultWithDiffTypes(string specSubPath, HttpMethod reqMethod, 
+        public async Task BodyValidator_CreatesInvalidResultWithDiffTypes(string specSubPath, HttpMethod reqMethod, 
             HttpStatusCode statusCode, string endpointURI, string contentType, string bodyString, ValidationErrorKind errorKind)
         {
             string specPath = SpecPath(specSubPath, "specification.yaml");

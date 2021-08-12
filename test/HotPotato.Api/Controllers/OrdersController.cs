@@ -1,4 +1,4 @@
-﻿using HotPotato.Test.Api.Models;
+using HotPotato.Test.Api.Models;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Net.Http.Headers;
@@ -57,8 +57,6 @@ namespace HotPotato.Test.Api.Controllers
                     ContentTypes = new Microsoft.AspNetCore.Mvc.Formatters.MediaTypeCollection() { new MediaTypeHeaderValue("application/problem+json") }
                 };
             }
-
-            //OrderDataStore.Current.Orders.Add(order);
 
             var uri = $"https://localhost:44366/order/{order.Id}";
 
@@ -274,8 +272,6 @@ namespace HotPotato.Test.Api.Controllers
                 };
             }
 
-            //OrderDataStore.Current.Orders.FirstOrDefault(r => r.Id == id).Items.Remove(item);
-
             var res = new NoContentResult();
 
             Response.Headers.Add("X-header", "SEVBREVS");
@@ -322,7 +318,7 @@ namespace HotPotato.Test.Api.Controllers
 
         #endregion
 
-        private string GetInstance(HttpRequest request)
+        private static string GetInstance(HttpRequest request)
         {
             return $"{request.Scheme}://{request.Host.ToUriComponent()}{request.Path.Value}";
         }

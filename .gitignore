@@ -12,5 +12,9 @@
 
 # MacOS Cruft
 .DS_Store
+
 # Sonarqube
 .sonarqube/
+
+# Local launchSettings
+**/[Pp]roperties/launchSettings.json

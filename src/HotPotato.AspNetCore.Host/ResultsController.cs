@@ -1,4 +1,4 @@
-﻿using HotPotato.OpenApi.Results;
+using HotPotato.OpenApi.Results;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 
@@ -6,8 +6,8 @@ namespace HotPotato.AspNetCore.Host
 {
     public class ResultsController : Controller
     {
-        private IResultCollector _resultCollector;
-        private ILogger _logger;
+        private readonly IResultCollector _resultCollector;
+        private readonly ILogger _logger;
 
         public ResultsController(IResultCollector rc, ILogger<ResultsController> logger)
         {

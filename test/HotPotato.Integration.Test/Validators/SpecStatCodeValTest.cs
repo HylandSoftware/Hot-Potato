@@ -1,4 +1,4 @@
-﻿using static HotPotato.IntegrationTestMethods;
+using static HotPotato.IntegrationTestMethods;
 using HotPotato.OpenApi.Results;
 using Microsoft.Extensions.DependencyInjection;
 using NSwag;
@@ -15,6 +15,7 @@ using System.Linq;
 using System.Net;
 using System.Net.Http;
 using System.Text;
+using System.Threading.Tasks;
 using Xunit;
 
 namespace HotPotato.OpenApi.Validators
@@ -23,7 +24,7 @@ namespace HotPotato.OpenApi.Validators
     {
         [Theory]
         [ClassData(typeof(StatusCodeNoContentTestData))]
-        public async void StatCodeVal_CreatesValidResultWithNullContent(string specSubPath, HttpMethod reqMethod, HttpStatusCode statusCode, string endpointURI)
+        public async Task StatCodeVal_CreatesValidResultWithNullContent(string specSubPath, HttpMethod reqMethod, HttpStatusCode statusCode, string endpointURI)
         {
             string specPath = SpecPath(specSubPath, "specification.yaml");
             ServiceProvider provider = GetServiceProvider(specPath);
@@ -55,7 +56,7 @@ namespace HotPotato.OpenApi.Validators
 
         [Theory]
         [ClassData(typeof(StatusCodeNoContentTestData))]
-        public async void StatCodeVal_CreatesValidResultWithEmptyContent(string specSubPath, HttpMethod reqMethod, HttpStatusCode statusCode, string endpointURI)
+        public async Task StatCodeVal_CreatesValidResultWithEmptyContent(string specSubPath, HttpMethod reqMethod, HttpStatusCode statusCode, string endpointURI)
         {
             string specPath = SpecPath(specSubPath, "specification.yaml");
             ServiceProvider provider = GetServiceProvider(specPath);
@@ -87,7 +88,7 @@ namespace HotPotato.OpenApi.Validators
 
         [Theory]
         [ClassData(typeof(StatusCodeNoContentTestData))]
-        public async void StatCodeVal_CreatesInvalidResultWithUnexpContent(string specSubPath, HttpMethod reqMethod, HttpStatusCode statusCode, string endpointURI)
+        public async Task StatCodeVal_CreatesInvalidResultWithUnexpContent(string specSubPath, HttpMethod reqMethod, HttpStatusCode statusCode, string endpointURI)
         {
             string specPath = SpecPath(specSubPath, "specification.yaml");
             ServiceProvider provider = GetServiceProvider(specPath);

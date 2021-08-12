@@ -1,11 +1,11 @@
-﻿using HotPotato.Core.Cookies;
+using HotPotato.Core.Cookies;
 using Microsoft.AspNetCore.Mvc;
 
 namespace HotPotato.AspNetCore.Host
 {
 	public class CookiesController : ControllerBase
 	{
-		private ICookieJar _cookieJar;
+		private readonly ICookieJar _cookieJar;
 
 		public CookiesController(ICookieJar cookieJar)
 		{

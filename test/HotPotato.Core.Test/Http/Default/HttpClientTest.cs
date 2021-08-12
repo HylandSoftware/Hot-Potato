@@ -1,4 +1,4 @@
-﻿using static HotPotato.Core.CoreTestMethods;
+using static HotPotato.Core.CoreTestMethods;
 using Moq;
 using Moq.Protected;
 using System;
@@ -6,6 +6,7 @@ using System.Net;
 using System.Net.Http;
 using System.Text;
 using System.Threading;
+using System.Threading.Tasks;
 using Xunit;
 
 namespace HotPotato.Core.Http.Default
@@ -17,12 +18,11 @@ namespace HotPotato.Core.Http.Default
         [Fact]
         public void Constructor_ThrowsArgumentNullExceptionWithClient()
         {
-            Action subject = () => new HotPotatoClient(null);
-            Assert.Throws<ArgumentNullException>(subject);
+            Assert.Throws<ArgumentNullException>(() => new HotPotatoClient(null));
         }
 
         [Fact]
-        public async void SendAsync_ExecutesRequest()
+        public async Task SendAsync_ExecutesRequest()
         {
             var handlerMock = GetMockHandler(HttpStatusCode.OK);
             Uri endpointUri = new Uri(AValidEndpoint);
@@ -46,7 +46,7 @@ namespace HotPotato.Core.Http.Default
         }
 
         [Fact]
-        public async void SendAsync_ResponseContainsContent_WithType()
+        public async Task SendAsync_ResponseContainsContent_WithType()
         {
             string expectString = "{\"id\":\"string\"}";
 

@@ -1,5 +1,5 @@
-﻿
 using System.Collections.Generic;
+using System.Collections.Immutable;
 
 namespace HotPotato.OpenApi.Validators
 {
@@ -21,7 +21,7 @@ namespace HotPotato.OpenApi.Validators
         /// <summary>
         /// Currently determined list of status codes that must not have a response body
         /// </summary>
-        public static readonly List<string> NoContentStatusCodes = new List<string>{ "204", "205", "304" };
+        public static readonly ImmutableList<string> NoContentStatusCodes = new List<string>{ "204", "205", "304" }.ToImmutableList();
 
     }
 }

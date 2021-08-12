@@ -1,4 +1,3 @@
-﻿
 using HotPotato.Core.Http;
 using HotPotato.Core.Processor;
 using Microsoft.AspNetCore.Http;
@@ -13,8 +12,6 @@ namespace HotPotato.Core.Proxy.Default
     public class ProxyTest
     {
         private const string AValidEndpoint = "http://foo/v1";
-        private const string AValidPayload = "{foo:bar}";
-        private const string AnInvalidMethod = "FOO";
         private const string DELETE = "DELETE";
         private const string GET = "GET";
         private const string OPTIONS = "OPTIONS";
@@ -25,22 +22,19 @@ namespace HotPotato.Core.Proxy.Default
         [Fact]
         public void Proxy_Constructor_ThrowsArgumentNullExceptionWithClient()
         {
-            Action subject = () => new Proxy(null, null, null);
-            Assert.Throws<ArgumentNullException>(subject);
+            Assert.Throws<ArgumentNullException>(() => new Proxy(null, null, null));
         }
 
         [Fact]
         public void Proxy_Constructor_ThrowsArgumentNullExceptionWithConfig()
         {
-            Action subject = () => new Proxy(Mock.Of<IHotPotatoClient>(), null, null);
-            Assert.Throws<ArgumentNullException>(subject);
+            Assert.Throws<ArgumentNullException>(() => new Proxy(Mock.Of<IHotPotatoClient>(), null, null));
         }
 
         [Fact]
         public void Proxy_Constructor_ThrowsArgumentNullExceptionWithLogger()
         {
-            Action subject = () => new Proxy(null, Mock.Of<ILogger<Proxy>>(), Mock.Of<IProcessor>());
-            Assert.Throws<ArgumentNullException>(subject);
+            Assert.Throws<ArgumentNullException>(() => new Proxy(null, Mock.Of<ILogger<Proxy>>(), Mock.Of<IProcessor>()));
         }
 
         [Theory]
@@ -50,7 +44,7 @@ namespace HotPotato.Core.Proxy.Default
         [InlineData(PATCH)]
         [InlineData(POST)]
         [InlineData(PUT)]
-        public async void ProcessAsync_CallsClient(string method)
+        public async Task ProcessAsync_CallsClient(string method)
         {
             Mock<IHotPotatoResponse> internalResponseMock = new Mock<IHotPotatoResponse>();
             internalResponseMock.SetupGet(x => x.StatusCode).Returns(System.Net.HttpStatusCode.OK);

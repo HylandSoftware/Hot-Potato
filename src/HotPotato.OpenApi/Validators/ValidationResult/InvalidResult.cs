@@ -1,4 +1,5 @@
-﻿using HotPotato.OpenApi.Models;
+using HotPotato.OpenApi.Models;
+using System;
 
 namespace HotPotato.OpenApi.Validators
 {
@@ -12,7 +13,7 @@ namespace HotPotato.OpenApi.Validators
         {
             Valid = false;
             Reason = reason;
-            Errors = new ValidationError[] { };
+			Errors = Array.Empty<ValidationError>();
         }
 
         public InvalidResult(Reason reason, ValidationError[] errors)

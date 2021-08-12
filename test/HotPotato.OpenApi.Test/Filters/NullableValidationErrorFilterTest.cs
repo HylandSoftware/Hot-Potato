@@ -1,4 +1,4 @@
-﻿using HotPotato.OpenApi.Validators;
+using HotPotato.OpenApi.Validators;
 using NJsonSchema;
 using System.Collections.Generic;
 using System.Linq;
@@ -57,6 +57,8 @@ namespace HotPotato.OpenApi.Filters
 			NullableValidationErrorFilter filter = new NullableValidationErrorFilter(schema, AValidJsonArray);
 
 			filter.Filter(errList);
+
+			Assert.Empty(errList);
 		}
 	}
 }

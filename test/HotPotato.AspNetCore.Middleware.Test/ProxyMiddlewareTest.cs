@@ -1,4 +1,4 @@
-﻿using HotPotato.Core.Proxy;
+using HotPotato.Core.Proxy;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
@@ -6,6 +6,7 @@ using Moq;
 using System;
 using System.Net;
 using System.Net.Http;
+using System.Threading.Tasks;
 using Xunit;
 
 namespace HotPotato.AspNetCore.Middleware
@@ -50,7 +51,7 @@ namespace HotPotato.AspNetCore.Middleware
         }
 
         [Fact]
-        public async void Invoke_CallsProxy()
+        public async Task Invoke_CallsProxy()
         {
             Mock<IProxy> proxyMock = new Mock<IProxy>();
             Mock<IConfiguration> configMock = new Mock<IConfiguration>();
@@ -74,7 +75,7 @@ namespace HotPotato.AspNetCore.Middleware
         }
 
         [Fact]
-        public async void Invoke_Throws_SetsInternalServerError()
+        public async Task Invoke_Throws_SetsInternalServerError()
         {
             Mock<IProxy> proxyMock = new Mock<IProxy>();
             proxyMock.Setup(x => x.ProcessAsync(It.IsAny<string>(), It.IsAny<HttpRequest>(), It.IsAny<HttpResponse>()))
@@ -99,7 +100,7 @@ namespace HotPotato.AspNetCore.Middleware
         }
 
         [Fact]
-        public async void Invoke_ThrowsHttpRequestException_SetsBadGateway()
+        public async Task Invoke_ThrowsHttpRequestException_SetsBadGateway()
         {
             Mock<IProxy> proxyMock = new Mock<IProxy>();
             proxyMock.Setup(x => x.ProcessAsync(It.IsAny<string>(), It.IsAny<HttpRequest>(), It.IsAny<HttpResponse>()))

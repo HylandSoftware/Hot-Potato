@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Net;
 using System.Text;
@@ -16,7 +16,7 @@ namespace HotPotato.Core.Http
 {
     public class HttpExtensionsTest
     {
-        private const HttpStatusCode AVAlidStatusCode = HttpStatusCode.OK;
+        private const HttpStatusCode AValidStatusCode = HttpStatusCode.OK;
 
         private const string AValidKey = "x-header-key";
         private const string AnotherValidKey = "x-another-key";
@@ -28,7 +28,7 @@ namespace HotPotato.Core.Http
 
         private readonly MediaTypeHeaderValue AValidMediaType = new MediaTypeHeaderValue("application/json");
         private const string AValidUri = "http://foo/";
-        private const string AVAlidContent = "{'foo':'bar'}";
+        private const string AValidContent = "{'foo':'bar'}";
         private const string AValidContentType = "application/json";
         private const string GET = "GET";
         private const string POST = "POST";
@@ -99,7 +99,7 @@ namespace HotPotato.Core.Http
         public void ToClientRequestMessage_HasContent_SetsContent()
         {
             IHotPotatoRequest request = new Default.HotPotatoRequest(new Uri(AValidUri));
-            request.SetContent(AVAlidContent);
+            request.SetContent(AValidContent);
 
             HttpRequestMessage result = HttpExtensions.ToClientRequestMessage(request);
 
@@ -122,7 +122,7 @@ namespace HotPotato.Core.Http
         [InlineData("x-custom-header", "custom-value")]
         public async Task ToClientResponseAsync_HasHeaders_AppliesHeaders(string key, string value)
         {
-            HttpResponseMessage httpResponseMessage = new HttpResponseMessage(AVAlidStatusCode);
+            HttpResponseMessage httpResponseMessage = new HttpResponseMessage(AValidStatusCode);
             httpResponseMessage.Headers.Add(key, value);
 
             IHotPotatoResponse result = await HttpExtensions.ToClientResponseAsync(httpResponseMessage);
@@ -133,7 +133,7 @@ namespace HotPotato.Core.Http
         [Fact]
         public async Task ToClientResponseAsync_NoContent_DoesNotSetContent()
         {
-            HttpResponseMessage httpResponseMessage = new HttpResponseMessage(AVAlidStatusCode);
+            HttpResponseMessage httpResponseMessage = new HttpResponseMessage(AValidStatusCode);
 
             IHotPotatoResponse result = await HttpExtensions.ToClientResponseAsync(httpResponseMessage);
 
@@ -143,20 +143,20 @@ namespace HotPotato.Core.Http
         [Fact]
         public async Task ToClientResponseAsync_HasContent_SetsContent()
         {
-            HttpResponseMessage httpResponseMessage = new HttpResponseMessage(AVAlidStatusCode);
-            httpResponseMessage.Content = new StringContent(AVAlidContent);
+            HttpResponseMessage httpResponseMessage = new HttpResponseMessage(AValidStatusCode);
+            httpResponseMessage.Content = new StringContent(AValidContent);
 
             IHotPotatoResponse result = await HttpExtensions.ToClientResponseAsync(httpResponseMessage);
 
             Assert.NotNull(result.Content);
-            Assert.Equal(Encoding.UTF8.GetBytes(AVAlidContent), result.Content);
+            Assert.Equal(Encoding.UTF8.GetBytes(AValidContent), result.Content);
         }
 
         [Fact]
         public async Task ToClientResponseAsync_HasContent_WithContentType_SetsContentType()
         {
-            HttpResponseMessage httpResponseMessage = new HttpResponseMessage(AVAlidStatusCode);
-            httpResponseMessage.Content = new StringContent(AVAlidContent, Encoding.UTF8, AValidContentType);
+            HttpResponseMessage httpResponseMessage = new HttpResponseMessage(AValidStatusCode);
+            httpResponseMessage.Content = new StringContent(AValidContent, Encoding.UTF8, AValidContentType);
 
             IHotPotatoResponse result = await HttpExtensions.ToClientResponseAsync(httpResponseMessage);
 
@@ -166,8 +166,8 @@ namespace HotPotato.Core.Http
         [Fact]
         public async Task ToClientResponseAsync_HasContent_WithHeaders_SetsHeaders()
         {
-            HttpResponseMessage httpResponseMessage = new HttpResponseMessage(AVAlidStatusCode);
-            httpResponseMessage.Content = new StringContent(AVAlidContent);
+            HttpResponseMessage httpResponseMessage = new HttpResponseMessage(AValidStatusCode);
+            httpResponseMessage.Content = new StringContent(AValidContent);
             httpResponseMessage.Content.Headers.Add(AValidKey, AValidHeaderValue);
 
             IHotPotatoResponse result = await HttpExtensions.ToClientResponseAsync(httpResponseMessage);
@@ -184,7 +184,7 @@ namespace HotPotato.Core.Http
         }
 
         [Fact]
-        public async void ToProxyRequest_SetsRemoteEndpoint()
+        public async Task ToProxyRequest_SetsRemoteEndpoint()
         {
             MSHTTP.HttpRequest request = new DefaultHttpRequest(new MSHTTP.DefaultHttpContext());
             request.Method = "GET";
@@ -195,7 +195,7 @@ namespace HotPotato.Core.Http
         }
 
         [Fact]
-        public async void ToProxyRequest_WithHeaders_SetsHeaders()
+        public async Task ToProxyRequest_WithHeaders_SetsHeaders()
         {
             MSHTTP.HttpRequest request = new DefaultHttpRequest(new MSHTTP.DefaultHttpContext());
             request.Method = GET;
@@ -210,7 +210,7 @@ namespace HotPotato.Core.Http
         }
 
         [Fact]
-        public async void ToProxyRequest_AppliesCustomHeadersToOnlyCustomHeaders()
+        public async Task ToProxyRequest_AppliesCustomHeadersToOnlyCustomHeaders()
         {
             MSHTTP.HttpRequest request = new DefaultHttpRequest(new MSHTTP.DefaultHttpContext());
             request.Method = GET;
@@ -233,7 +233,7 @@ namespace HotPotato.Core.Http
         [Fact]
         public async Task ToProxyRequest_MethodWithPayload_SetsPayload()
         {
-            byte[] content = Encoding.UTF8.GetBytes(AVAlidContent);
+            byte[] content = Encoding.UTF8.GetBytes(AValidContent);
             using (MemoryStream contentStream = new MemoryStream(content.Length))
             {
                 contentStream.Write(content, 0, content.Length);
@@ -249,7 +249,7 @@ namespace HotPotato.Core.Http
         }
 
         [Fact]
-        public async void ToProxyRequest_MethodWithPayload_NoBody_DoesNotSetPayload()
+        public async Task ToProxyRequest_MethodWithPayload_NoBody_DoesNotSetPayload()
         {
             MSHTTP.HttpRequest request = new DefaultHttpRequest(new MSHTTP.DefaultHttpContext());
             request.Method = POST;
@@ -260,7 +260,7 @@ namespace HotPotato.Core.Http
         }
 
         [Fact]
-        public async void ToProxyRequest_MethodWithoutPayload_DoesNotSetPayload()
+        public async Task ToProxyRequest_MethodWithoutPayload_DoesNotSetPayload()
         {
             MSHTTP.HttpRequest request = new DefaultHttpRequest(new MSHTTP.DefaultHttpContext());
             request.Method = GET;
@@ -289,12 +289,12 @@ namespace HotPotato.Core.Http
         public async Task ToProxyResponseAsync_SetsStatusCode()
         {
             HttpHeaders headers = new HttpHeaders();
-            IHotPotatoResponse httpResponse = new Default.HotPotatoResponse(AVAlidStatusCode, headers, new byte[0], AValidMediaType);
+            IHotPotatoResponse httpResponse = new Default.HotPotatoResponse(AValidStatusCode, headers, Array.Empty<byte>(), AValidMediaType);
             MSHTTP.HttpResponse response = new DefaultHttpResponse(new MSHTTP.DefaultHttpContext());
 
             await HttpExtensions.ToProxyResponseAsync(httpResponse, response);
 
-            Assert.Equal((int)AVAlidStatusCode, response.StatusCode);
+            Assert.Equal((int)AValidStatusCode, response.StatusCode);
         }
 
         [Theory]
@@ -306,7 +306,7 @@ namespace HotPotato.Core.Http
         {
             HttpHeaders headers = new HttpHeaders();
             headers.Add(key, AValidHeaderValue);
-            IHotPotatoResponse httpResponse = new Default.HotPotatoResponse(AVAlidStatusCode, headers, new byte[0], AValidMediaType);
+            IHotPotatoResponse httpResponse = new Default.HotPotatoResponse(AValidStatusCode, headers, Array.Empty<byte>(), AValidMediaType);
             MSHTTP.HttpResponse response = new DefaultHttpResponse(new MSHTTP.DefaultHttpContext());
 
             await HttpExtensions.ToProxyResponseAsync(httpResponse, response);
@@ -320,7 +320,7 @@ namespace HotPotato.Core.Http
             HttpHeaders headers = new HttpHeaders();
             headers.Add(AValidKey, AValidHeaderValue);
             headers.Add(AValidKey, AnotherHeaderValue);
-            IHotPotatoResponse httpResponse = new Default.HotPotatoResponse(AVAlidStatusCode, headers, new byte[0], AValidMediaType);
+            IHotPotatoResponse httpResponse = new Default.HotPotatoResponse(AValidStatusCode, headers, Array.Empty<byte>(), AValidMediaType);
             MSHTTP.HttpResponse response = new DefaultHttpResponse(new MSHTTP.DefaultHttpContext());
 
             await HttpExtensions.ToProxyResponseAsync(httpResponse, response);
@@ -344,7 +344,7 @@ namespace HotPotato.Core.Http
         {
             HttpHeaders headers = new HttpHeaders();
             headers.Add(key, AValidHeaderValue);
-            IHotPotatoResponse httpResponse = new Default.HotPotatoResponse(AVAlidStatusCode, headers, new byte[0], AValidMediaType);
+            IHotPotatoResponse httpResponse = new Default.HotPotatoResponse(AValidStatusCode, headers, Array.Empty<byte>(), AValidMediaType);
             MSHTTP.HttpResponse response = new DefaultHttpResponse(new MSHTTP.DefaultHttpContext());
 
             await HttpExtensions.ToProxyResponseAsync(httpResponse, response);
@@ -356,7 +356,7 @@ namespace HotPotato.Core.Http
         public async Task ToProxyResponseAsync_HasContent_WritesContent()
         {
             HttpHeaders headers = new HttpHeaders();
-            IHotPotatoResponse httpResponse = new Default.HotPotatoResponse(AVAlidStatusCode, headers, Encoding.UTF8.GetBytes(AVAlidContent), AValidMediaType);
+            IHotPotatoResponse httpResponse = new Default.HotPotatoResponse(AValidStatusCode, headers, Encoding.UTF8.GetBytes(AValidContent), AValidMediaType);
             Mock<MSHTTP.HttpResponse> response = new Mock<MSHTTP.HttpResponse>();
             response.Setup(r => r.Body).Returns(Mock.Of<Stream>).Verifiable();
 

@@ -1,4 +1,4 @@
-﻿
+
 using HotPotato.OpenApi.Models;
 using NSwag;
 using System;
@@ -13,8 +13,6 @@ namespace HotPotato.OpenApi.Validators
 
         public Reason FailReason { get; private set; }
         public OpenApiResponse Result { get; private set; }
-
-        private const string NoContentStatusCode = "204";
 
         public StatusCodeValidator(HttpStatusCode statCode, string bodyString)
         {

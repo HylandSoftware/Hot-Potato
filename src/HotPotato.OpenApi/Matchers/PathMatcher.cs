@@ -1,10 +1,10 @@
-﻿using System.Collections.Generic;
+using System.Collections.Generic;
 using System.Linq;
 using System;
 
 namespace HotPotato.OpenApi.Matchers
 {
-    public class PathMatcher
+    public static class PathMatcher
     {
         /// <summary>
         /// Finds the path in the spec that matches the path in the pair provided.
@@ -47,9 +47,9 @@ namespace HotPotato.OpenApi.Matchers
                     i++;
                 }
 
-                if (match == true)
+                if (match)
                 {
-                    string matchedPath = "/" + string.Join('/', pathStack);
+                    string matchedPath = $"/{string.Join('/', pathStack)}";
                     return matchedPath;
                 }
             }
@@ -70,7 +70,7 @@ namespace HotPotato.OpenApi.Matchers
             pathPieces = pathPieces.Where(x => !string.IsNullOrEmpty(x)).ToArray();
             //Reverse here since some server paths have more than one piece, e.g. https://api.hyland.com/ibpaf/rdds
             //In cases like this, the relative path in the request can be /ibpaf/rdds/messages/78,
-            //but will need to be matched with /messages/{messageId}
+            //but will need to be matched with '/messages/{messageId}'
             Array.Reverse(pathPieces);
             return pathPieces;
         }

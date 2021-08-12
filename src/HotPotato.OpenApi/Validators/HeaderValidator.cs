@@ -1,4 +1,4 @@
-﻿using HotPotato.Core.Http;
+using HotPotato.Core.Http;
 using HotPotato.OpenApi.Models;
 using Newtonsoft.Json;
 using NJsonSchema;
@@ -32,10 +32,9 @@ namespace HotPotato.OpenApi.Validators
                         List<string> headerValues = Headers[headerKey];
                         foreach (string value in headerValues)
                         {
-                            // HACK - Need to convert to JSON because that's how NJsonSchema likes it.
                             string jValue = JsonConvert.SerializeObject(value);
 
-                            JsonSchema swagHeaderSchema = null;
+                            JsonSchema swagHeaderSchema;
                             if (swagHeader.Value?.ActualSchema != null)
                             {
                                 swagHeaderSchema = GetHeaderSchema(swagHeader.Value.ActualSchema);
@@ -68,7 +67,7 @@ namespace HotPotato.OpenApi.Validators
         /// </summary>
         /// <param name="schema"></param>
         /// <returns></returns>
-        private JsonSchema GetHeaderSchema(JsonSchema schema)
+        private static JsonSchema GetHeaderSchema(JsonSchema schema)
         {
             if (schema.ExtensionData != null &&
                 schema.ExtensionData.ContainsKey("schema") 

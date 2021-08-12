@@ -1,4 +1,4 @@
-﻿using HotPotato.OpenApi.Models;
+using HotPotato.OpenApi.Models;
 using HotPotato.OpenApi.Validators;
 using System.Collections.Generic;
 using System.Linq;
@@ -24,7 +24,7 @@ namespace HotPotato.OpenApi.Results
 
             ResultCollector subject = new ResultCollector();
 
-            subject.Pass(Path, Get, OkStatusCode);
+            subject.Pass(Path, Get, OkStatusCode, null);
 
             Assert.NotEmpty(subject.Results);
             Assert.Single(subject.Results);
@@ -64,7 +64,7 @@ namespace HotPotato.OpenApi.Results
         {
             ResultCollector subject = new ResultCollector();
 
-            subject.Pass(Path, Get, OkStatusCode);
+            subject.Pass(Path, Get, OkStatusCode, null);
             subject.Fail(Path, Get, NotFoundStatusCode, inputReason, null);
 
             Assert.Equal(State.Fail, subject.OverallResult);
@@ -75,7 +75,7 @@ namespace HotPotato.OpenApi.Results
         {
             ResultCollector subject = new ResultCollector();
 
-            subject.Pass(Path, Get, OkStatusCode);
+            subject.Pass(Path, Get, OkStatusCode, null);
 
             Assert.Equal(State.Pass, subject.OverallResult);
         }
