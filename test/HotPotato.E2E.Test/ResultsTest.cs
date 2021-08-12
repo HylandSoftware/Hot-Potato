@@ -77,13 +77,13 @@ namespace HotPotato.E2E.Test
                 using (HotPotatoRequest req = new HotPotatoRequest(method, new System.Uri(ProxyEndpoint)))
                 {
                     req.HttpHeaders.Add(ACustomHeaderKey, ACustomHeaderValue);
-                    IHotPotatoResponse res = await client.SendAsync(req);
+                    await client.SendAsync(req);
                 }
 
                 //second request to make sure custom header doesn't linger
                 using (HotPotatoRequest req = new HotPotatoRequest(method, new System.Uri(ProxyEndpoint)))
                 {
-                    IHotPotatoResponse res = await client.SendAsync(req);
+					await client.SendAsync(req);
                 }
 
                 FailResultWithCustomHeaders resultWithCustomHeaders = (FailResultWithCustomHeaders)resultCollector.Results.ElementAt(0);
@@ -126,7 +126,7 @@ namespace HotPotato.E2E.Test
 
 				using (HotPotatoRequest req = new HotPotatoRequest(method, new System.Uri(ProxyEndpoint)))
 				{
-					var resp = await client.SendAsync(req);
+					await client.SendAsync(req);
 				}
 
 				using (HotPotatoRequest req = new HotPotatoRequest(method, new System.Uri(ResultsEndpoint)))
