@@ -21,227 +21,227 @@ using Xunit;
 
 namespace HotPotato.OpenApi.Validators
 {
-    public class SpecHeaderValTest
-    {
-        private const string LocationHeader = "location";
-        private const string AValidLocationUri = "http://api.docs.hyland.io/";
-        private const string AnInvalidLocationUri = @"this isn't a uri";
+	public class SpecHeaderValTest
+	{
+		private const string LocationHeader = "location";
+		private const string AValidLocationUri = "http://api.docs.hyland.io/";
+		private const string AnInvalidLocationUri = @"this isn't a uri";
 
-        [Theory]
-        [ClassData(typeof(SpecHeaderTestData))]
-        public async Task HeaderValidator_CreatesValidResultWithoutMatchingCase(string specSubPath, HttpMethod reqMethod, HttpStatusCode statusCode, string endpointURI, string contentType, object bodyJson)
-        {
-            string specPath = SpecPath(specSubPath, "specification.yaml");
-            ServiceProvider provider = GetServiceProvider(specPath);
+		[Theory]
+		[ClassData(typeof(SpecHeaderTestData))]
+		public async Task HeaderValidator_CreatesValidResultWithoutMatchingCase(string specSubPath, HttpMethod reqMethod, HttpStatusCode statusCode, string endpointURI, string contentType, object bodyJson)
+		{
+			string specPath = SpecPath(specSubPath, "specification.yaml");
+			ServiceProvider provider = GetServiceProvider(specPath);
 
-            string bodyString = JsonConvert.SerializeObject(bodyJson);
+			string bodyString = JsonConvert.SerializeObject(bodyJson);
 
-            using (HttpResponseMessage testRespMsg = new HttpResponseMessage(statusCode))
-            {
-                //Made HotPot's HttpHeaders' dict constructor case insensitive for possible edge cases
-                //The key is capital "Location" in the spec
-                testRespMsg.Headers.Add(LocationHeader, AValidLocationUri);
-                testRespMsg.Content = new StringContent(bodyString, Encoding.UTF8, contentType);
-
-
-                var testResponse = await testRespMsg.ToClientResponseAsync();
-
-                using (HotPotatoRequest testRequest = new HotPotatoRequest(reqMethod, new Uri(endpointURI)))
-                using (HttpPair testPair = new HttpPair(testRequest, testResponse))
-                {
-                    ISpecificationProvider specPro = provider.GetService<ISpecificationProvider>();
-                    OpenApiDocument swagDoc = specPro.GetSpecDocument();
-
-                    IProcessor processor = provider.GetService<IProcessor>();
-                    processor.Process(testPair);
-
-                    IResultCollector collector = provider.GetService<IResultCollector>();
-
-                    List<Result> results = collector.Results;
-                    //The validation strategy should now only create one passing result for both body and header
-                    Result result = results.ElementAt(0);
-
-                    Assert.Equal(State.Pass, result.State);
-
-                }
-            }
-        }
+			using (HttpResponseMessage testRespMsg = new HttpResponseMessage(statusCode))
+			{
+				//Made HotPot's HttpHeaders' dict constructor case insensitive for possible edge cases
+				//The key is capital "Location" in the spec
+				testRespMsg.Headers.Add(LocationHeader, AValidLocationUri);
+				testRespMsg.Content = new StringContent(bodyString, Encoding.UTF8, contentType);
 
 
-        [Theory]
-        [ClassData(typeof(SpecHeaderTestData))]
-        public async Task HeaderValidator_CreatesInvalidResultWithIncorrectFormat(string specSubPath, HttpMethod reqMethod, HttpStatusCode statusCode, string endpointURI, string contentType, object bodyJson)
-        {
-            string specPath = SpecPath(specSubPath, "specification.yaml");
-            ServiceProvider provider = GetServiceProvider(specPath);
+				var testResponse = await testRespMsg.ToClientResponseAsync();
 
-            string bodyString = JsonConvert.SerializeObject(bodyJson);
+				using (HotPotatoRequest testRequest = new HotPotatoRequest(reqMethod, new Uri(endpointURI)))
+				using (HttpPair testPair = new HttpPair(testRequest, testResponse))
+				{
+					ISpecificationProvider specPro = provider.GetService<ISpecificationProvider>();
+					OpenApiDocument swagDoc = specPro.GetSpecDocument();
 
-            using (HttpResponseMessage testRespMsg = new HttpResponseMessage(statusCode))
-            {
-                testRespMsg.Headers.Add(LocationHeader, AnInvalidLocationUri);
-                testRespMsg.Content = new StringContent(bodyString, Encoding.UTF8, contentType);
-                var testResponse = await testRespMsg.ToClientResponseAsync();
+					IProcessor processor = provider.GetService<IProcessor>();
+					processor.Process(testPair);
 
-                using (HotPotatoRequest testRequest = new HotPotatoRequest(reqMethod, new Uri(endpointURI)))
-                using (HttpPair testPair = new HttpPair(testRequest, testResponse))
-                {
-                    ISpecificationProvider specPro = provider.GetService<ISpecificationProvider>();
-                    OpenApiDocument swagDoc = specPro.GetSpecDocument();
+					IResultCollector collector = provider.GetService<IResultCollector>();
 
-                    IProcessor processor = provider.GetService<IProcessor>();
-                    processor.Process(testPair);
+					List<Result> results = collector.Results;
+					//The validation strategy should now only create one passing result for both body and header
+					Result result = results.ElementAt(0);
 
-                    IResultCollector collector = provider.GetService<IResultCollector>();
+					Assert.Equal(State.Pass, result.State);
 
-                    List<Result> results = collector.Results;
-                    FailResult result = (FailResult)results.ElementAt(0);
+				}
+			}
+		}
 
-                    Assert.Equal(State.Fail, result.State);
-                    Assert.Equal(Reason.InvalidHeaders, result.Reasons.ElementAt(0));
-                    Assert.Equal(ValidationErrorKind.UriExpected, result.ValidationErrors.ElementAt(0).Kind);
-                }
-            }
-        }
 
-        [Theory]
-        [ClassData(typeof(SpecHeaderTestData))]
-        public async Task HeaderValidator_CreatesMissingHeaderResult(string specSubPath, HttpMethod reqMethod, HttpStatusCode statusCode, string endpointURI, string contentType, object bodyJson)
-        {
-            string specPath = SpecPath(specSubPath, "specification.yaml");
-            ServiceProvider provider = GetServiceProvider(specPath);
+		[Theory]
+		[ClassData(typeof(SpecHeaderTestData))]
+		public async Task HeaderValidator_CreatesInvalidResultWithIncorrectFormat(string specSubPath, HttpMethod reqMethod, HttpStatusCode statusCode, string endpointURI, string contentType, object bodyJson)
+		{
+			string specPath = SpecPath(specSubPath, "specification.yaml");
+			ServiceProvider provider = GetServiceProvider(specPath);
 
-            string bodyString = JsonConvert.SerializeObject(bodyJson);
+			string bodyString = JsonConvert.SerializeObject(bodyJson);
 
-            using (HttpResponseMessage testRespMsg = new HttpResponseMessage(statusCode))
-            {
+			using (HttpResponseMessage testRespMsg = new HttpResponseMessage(statusCode))
+			{
+				testRespMsg.Headers.Add(LocationHeader, AnInvalidLocationUri);
+				testRespMsg.Content = new StringContent(bodyString, Encoding.UTF8, contentType);
+				var testResponse = await testRespMsg.ToClientResponseAsync();
 
-                testRespMsg.Content = new StringContent(bodyString, Encoding.UTF8, contentType);
-                //no headers added
+				using (HotPotatoRequest testRequest = new HotPotatoRequest(reqMethod, new Uri(endpointURI)))
+				using (HttpPair testPair = new HttpPair(testRequest, testResponse))
+				{
+					ISpecificationProvider specPro = provider.GetService<ISpecificationProvider>();
+					OpenApiDocument swagDoc = specPro.GetSpecDocument();
 
-                var testResponse = await testRespMsg.ToClientResponseAsync();
+					IProcessor processor = provider.GetService<IProcessor>();
+					processor.Process(testPair);
 
-                using (HotPotatoRequest testRequest = new HotPotatoRequest(reqMethod, new Uri(endpointURI)))
-                using (HttpPair testPair = new HttpPair(testRequest, testResponse))
-                {
-                    ISpecificationProvider specPro = provider.GetService<ISpecificationProvider>();
-                    OpenApiDocument swagDoc = specPro.GetSpecDocument();
+					IResultCollector collector = provider.GetService<IResultCollector>();
 
-                    IProcessor processor = provider.GetService<IProcessor>();
-                    processor.Process(testPair);
+					List<Result> results = collector.Results;
+					FailResult result = (FailResult)results.ElementAt(0);
 
-                    IResultCollector collector = provider.GetService<IResultCollector>();
+					Assert.Equal(State.Fail, result.State);
+					Assert.Equal(Reason.InvalidHeaders, result.Reasons.ElementAt(0));
+					Assert.Equal(ValidationErrorKind.UriExpected, result.ValidationErrors.ElementAt(0).Kind);
+				}
+			}
+		}
 
-                    List<Result> results = collector.Results;
-                    FailResult result = (FailResult)results.ElementAt(0);
+		[Theory]
+		[ClassData(typeof(SpecHeaderTestData))]
+		public async Task HeaderValidator_CreatesMissingHeaderResult(string specSubPath, HttpMethod reqMethod, HttpStatusCode statusCode, string endpointURI, string contentType, object bodyJson)
+		{
+			string specPath = SpecPath(specSubPath, "specification.yaml");
+			ServiceProvider provider = GetServiceProvider(specPath);
 
-                    Assert.Equal(State.Fail, result.State);
-                    Assert.Equal(Reason.MissingHeaders, result.Reasons.ElementAt(0));
+			string bodyString = JsonConvert.SerializeObject(bodyJson);
 
-                }
-            }
-        }
+			using (HttpResponseMessage testRespMsg = new HttpResponseMessage(statusCode))
+			{
 
-        [Theory]
-        [ClassData(typeof(SpecHeaderWithExpectedNoContentTestData))]
-        public async Task HeaderValidator_CreatesValidResultWithExpectedEmptyBody(string specSubPath, HttpMethod reqMethod, HttpStatusCode statusCode, string endpointURI)
-        {
-            string specPath = SpecPath(specSubPath, "specification.yaml");
-            ServiceProvider provider = GetServiceProvider(specPath);
+				testRespMsg.Content = new StringContent(bodyString, Encoding.UTF8, contentType);
+				//no headers added
 
-            using (HttpResponseMessage testRespMsg = new HttpResponseMessage(statusCode))
-            {
+				var testResponse = await testRespMsg.ToClientResponseAsync();
 
-                testRespMsg.Headers.Add(LocationHeader, AValidLocationUri);
-                testRespMsg.Content = null;
+				using (HotPotatoRequest testRequest = new HotPotatoRequest(reqMethod, new Uri(endpointURI)))
+				using (HttpPair testPair = new HttpPair(testRequest, testResponse))
+				{
+					ISpecificationProvider specPro = provider.GetService<ISpecificationProvider>();
+					OpenApiDocument swagDoc = specPro.GetSpecDocument();
 
-                var testResponse = await testRespMsg.ToClientResponseAsync();
+					IProcessor processor = provider.GetService<IProcessor>();
+					processor.Process(testPair);
 
-                using (HotPotatoRequest testRequest = new HotPotatoRequest(reqMethod, new Uri(endpointURI)))
-                using (HttpPair testPair = new HttpPair(testRequest, testResponse))
-                {
-                    ISpecificationProvider specPro = provider.GetService<ISpecificationProvider>();
-                    OpenApiDocument swagDoc = specPro.GetSpecDocument();
+					IResultCollector collector = provider.GetService<IResultCollector>();
 
-                    IProcessor processor = provider.GetService<IProcessor>();
-                    processor.Process(testPair);
+					List<Result> results = collector.Results;
+					FailResult result = (FailResult)results.ElementAt(0);
 
-                    IResultCollector collector = provider.GetService<IResultCollector>();
+					Assert.Equal(State.Fail, result.State);
+					Assert.Equal(Reason.MissingHeaders, result.Reasons.ElementAt(0));
 
-                    List<Result> results = collector.Results;
-                    Result result = results.ElementAt(0);
+				}
+			}
+		}
 
-                    Assert.Equal(State.Pass, result.State);
-                }
-            }
-        }
+		[Theory]
+		[ClassData(typeof(SpecHeaderWithExpectedNoContentTestData))]
+		public async Task HeaderValidator_CreatesValidResultWithExpectedEmptyBody(string specSubPath, HttpMethod reqMethod, HttpStatusCode statusCode, string endpointURI)
+		{
+			string specPath = SpecPath(specSubPath, "specification.yaml");
+			ServiceProvider provider = GetServiceProvider(specPath);
 
-        [Theory]
-        [ClassData(typeof(SpecHeaderWithUnexpectedContentTestData))]
-        public async Task HeaderValidator_CreatesMissingContentTypeResultWithUnexpectedBodyAndValidHeaders(string specSubPath, HttpMethod reqMethod, HttpStatusCode statusCode, string endpointURI, string contentType, string bodyString)
-        {
-            string specPath = SpecPath(specSubPath, "specification.yaml");
-            ServiceProvider provider = GetServiceProvider(specPath);
+			using (HttpResponseMessage testRespMsg = new HttpResponseMessage(statusCode))
+			{
 
-            using (HttpResponseMessage testRespMsg = new HttpResponseMessage(statusCode))
-            {
+				testRespMsg.Headers.Add(LocationHeader, AValidLocationUri);
+				testRespMsg.Content = null;
 
-                testRespMsg.Headers.Add(LocationHeader, AValidLocationUri);
-                testRespMsg.Content = new StringContent(bodyString, Encoding.UTF8, contentType);
+				var testResponse = await testRespMsg.ToClientResponseAsync();
 
-                var testResponse = await testRespMsg.ToClientResponseAsync();
+				using (HotPotatoRequest testRequest = new HotPotatoRequest(reqMethod, new Uri(endpointURI)))
+				using (HttpPair testPair = new HttpPair(testRequest, testResponse))
+				{
+					ISpecificationProvider specPro = provider.GetService<ISpecificationProvider>();
+					OpenApiDocument swagDoc = specPro.GetSpecDocument();
 
-                using (HotPotatoRequest testRequest = new HotPotatoRequest(reqMethod, new Uri(endpointURI)))
-                using (HttpPair testPair = new HttpPair(testRequest, testResponse))
-                {
-                    ISpecificationProvider specPro = provider.GetService<ISpecificationProvider>();
-                    OpenApiDocument swagDoc = specPro.GetSpecDocument();
+					IProcessor processor = provider.GetService<IProcessor>();
+					processor.Process(testPair);
 
-                    IProcessor processor = provider.GetService<IProcessor>();
-                    processor.Process(testPair);
+					IResultCollector collector = provider.GetService<IResultCollector>();
 
-                    IResultCollector collector = provider.GetService<IResultCollector>();
+					List<Result> results = collector.Results;
+					Result result = results.ElementAt(0);
 
-                    List<Result> results = collector.Results;
-                    FailResult result = (FailResult)results.ElementAt(0);
+					Assert.Equal(State.Pass, result.State);
+				}
+			}
+		}
 
-                    Assert.Equal(State.Fail, result.State);
-                    Assert.Equal(Reason.MissingContentType, result.Reasons.ElementAt(0));
-                }
-            }
-        }
+		[Theory]
+		[ClassData(typeof(SpecHeaderWithUnexpectedContentTestData))]
+		public async Task HeaderValidator_CreatesMissingContentTypeResultWithUnexpectedBodyAndValidHeaders(string specSubPath, HttpMethod reqMethod, HttpStatusCode statusCode, string endpointURI, string contentType, string bodyString)
+		{
+			string specPath = SpecPath(specSubPath, "specification.yaml");
+			ServiceProvider provider = GetServiceProvider(specPath);
 
-        [Theory]
-        [ClassData(typeof(SpecHeaderWithExpectedNoContentTestData))]
-        public async Task HeaderValidator_CreatesOnlyMissingHeadersResultWithExpectedEmptyBody(string specSubPath, HttpMethod reqMethod, HttpStatusCode statusCode, string endpointURI)
-        {
-            string specPath = SpecPath(specSubPath, "specification.yaml");
-            ServiceProvider provider = GetServiceProvider(specPath);
+			using (HttpResponseMessage testRespMsg = new HttpResponseMessage(statusCode))
+			{
 
-            using (HttpResponseMessage testRespMsg = new HttpResponseMessage(statusCode))
-            {
-                testRespMsg.Content = null;
+				testRespMsg.Headers.Add(LocationHeader, AValidLocationUri);
+				testRespMsg.Content = new StringContent(bodyString, Encoding.UTF8, contentType);
 
-                var testResponse = await testRespMsg.ToClientResponseAsync();
+				var testResponse = await testRespMsg.ToClientResponseAsync();
 
-                using (HotPotatoRequest testRequest = new HotPotatoRequest(reqMethod, new Uri(endpointURI)))
-                using (HttpPair testPair = new HttpPair(testRequest, testResponse))
-                {
-                    ISpecificationProvider specPro = provider.GetService<ISpecificationProvider>();
-                    OpenApiDocument swagDoc = specPro.GetSpecDocument();
+				using (HotPotatoRequest testRequest = new HotPotatoRequest(reqMethod, new Uri(endpointURI)))
+				using (HttpPair testPair = new HttpPair(testRequest, testResponse))
+				{
+					ISpecificationProvider specPro = provider.GetService<ISpecificationProvider>();
+					OpenApiDocument swagDoc = specPro.GetSpecDocument();
 
-                    IProcessor processor = provider.GetService<IProcessor>();
-                    processor.Process(testPair);
+					IProcessor processor = provider.GetService<IProcessor>();
+					processor.Process(testPair);
 
-                    IResultCollector collector = provider.GetService<IResultCollector>();
+					IResultCollector collector = provider.GetService<IResultCollector>();
 
-                    List<Result> results = collector.Results;
-                    FailResult result = (FailResult)results.ElementAt(0);
+					List<Result> results = collector.Results;
+					FailResult result = (FailResult)results.ElementAt(0);
 
-                    Assert.Equal(State.Fail, result.State);
-                    Assert.Equal(Reason.MissingHeaders, result.Reasons.ElementAt(0));
-                }
-            }
-        }
-    }
+					Assert.Equal(State.Fail, result.State);
+					Assert.Equal(Reason.MissingContentType, result.Reasons.ElementAt(0));
+				}
+			}
+		}
+
+		[Theory]
+		[ClassData(typeof(SpecHeaderWithExpectedNoContentTestData))]
+		public async Task HeaderValidator_CreatesOnlyMissingHeadersResultWithExpectedEmptyBody(string specSubPath, HttpMethod reqMethod, HttpStatusCode statusCode, string endpointURI)
+		{
+			string specPath = SpecPath(specSubPath, "specification.yaml");
+			ServiceProvider provider = GetServiceProvider(specPath);
+
+			using (HttpResponseMessage testRespMsg = new HttpResponseMessage(statusCode))
+			{
+				testRespMsg.Content = null;
+
+				var testResponse = await testRespMsg.ToClientResponseAsync();
+
+				using (HotPotatoRequest testRequest = new HotPotatoRequest(reqMethod, new Uri(endpointURI)))
+				using (HttpPair testPair = new HttpPair(testRequest, testResponse))
+				{
+					ISpecificationProvider specPro = provider.GetService<ISpecificationProvider>();
+					OpenApiDocument swagDoc = specPro.GetSpecDocument();
+
+					IProcessor processor = provider.GetService<IProcessor>();
+					processor.Process(testPair);
+
+					IResultCollector collector = provider.GetService<IResultCollector>();
+
+					List<Result> results = collector.Results;
+					FailResult result = (FailResult)results.ElementAt(0);
+
+					Assert.Equal(State.Fail, result.State);
+					Assert.Equal(Reason.MissingHeaders, result.Reasons.ElementAt(0));
+				}
+			}
+		}
+	}
 }
