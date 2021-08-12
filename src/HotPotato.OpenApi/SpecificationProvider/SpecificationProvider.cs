@@ -12,83 +12,83 @@ using System.Threading.Tasks;
 
 namespace HotPotato.OpenApi.SpecificationProvider
 {
-    public class SpecificationProvider : ISpecificationProvider
-    {
-        private readonly string SpecLocation;
-        private readonly string SpecToken;
-        private readonly bool ignoreClientCertificateValidationErrors;
+	public class SpecificationProvider : ISpecificationProvider
+	{
+		private readonly string SpecLocation;
+		private readonly string SpecToken;
+		private readonly bool ignoreClientCertificateValidationErrors;
 
-        private ILogger Logger { get; }
+		private ILogger Logger { get; }
 
-        public SpecificationProvider(IConfiguration config, ILogger<SpecificationProvider> logger)
-        {
-            _ = config ?? throw Exceptions.ArgumentNull(nameof(config));
-            _ = logger ?? throw Exceptions.ArgumentNull(nameof(logger));
+		public SpecificationProvider(IConfiguration config, ILogger<SpecificationProvider> logger)
+		{
+			_ = config ?? throw Exceptions.ArgumentNull(nameof(config));
+			_ = logger ?? throw Exceptions.ArgumentNull(nameof(logger));
 
-            this.SpecLocation = config["SpecLocation"];
-            this.SpecToken = config["SpecToken"];
-            this.Logger = logger;
-            //mirror the security setting used at startup
-            this.ignoreClientCertificateValidationErrors = config.GetSection("HttpClientSettings").GetValue<bool>("IgnoreClientHttpsCertificateValidationErrors");
+			this.SpecLocation = config["SpecLocation"];
+			this.SpecToken = config["SpecToken"];
+			this.Logger = logger;
+			//mirror the security setting used at startup
+			this.ignoreClientCertificateValidationErrors = config.GetSection("HttpClientSettings").GetValue<bool>("IgnoreClientHttpsCertificateValidationErrors");
 
 			Logger.LogInformation($"Spec located at {SpecLocation}");
 		}
-        public OpenApiDocument GetSpecDocument()
-        {
-            Task<OpenApiDocument> swagTask;
-            if (Path.IsPathFullyQualified(SpecLocation))
-            {
-                swagTask = FromFileAsync(SpecLocation);
-            }
-            else if (Uri.IsWellFormedUriString(SpecLocation, UriKind.Absolute))
-            {
-                swagTask = FromUrlAsyncWithClient(SpecLocation);
-            }
-            else
-            {
-                throw Exceptions.InvalidOperation("AppSettings does not contain a valid Spec Location");
-            }
-            return swagTask.Result;
-        }
+		public OpenApiDocument GetSpecDocument()
+		{
+			Task<OpenApiDocument> swagTask;
+			if (Path.IsPathFullyQualified(SpecLocation))
+			{
+				swagTask = FromFileAsync(SpecLocation);
+			}
+			else if (Uri.IsWellFormedUriString(SpecLocation, UriKind.Absolute))
+			{
+				swagTask = FromUrlAsyncWithClient(SpecLocation);
+			}
+			else
+			{
+				throw Exceptions.InvalidOperation("AppSettings does not contain a valid Spec Location");
+			}
+			return swagTask.Result;
+		}
 
-        private async Task<OpenApiDocument> FromUrlAsyncWithClient(string url)
-        {
-            using (HttpClientHandler handler = new HttpClientHandler())
-            {
-                if (ignoreClientCertificateValidationErrors)
-                {
-                    //both of these need to be set to avoid the SSL connection error
-                    System.Net.ServicePointManager.ServerCertificateValidationCallback = ((sender, certificate, chain, errors) => true);
-                    handler.ServerCertificateCustomValidationCallback = (message, certificate, chain, errors) =>
-                    {
-                        //output which certificates are being accepted
-                        Console.WriteLine(certificate);
-                        return true;
-                    };
-                }
-                using (HttpClient client = new HttpClient(handler))
-                {
-                    client.BaseAddress = new Uri(url);
-                    using (HttpRequestMessage req = new HttpRequestMessage(HttpMethod.Get, url))
-                    {
-                        if (!string.IsNullOrWhiteSpace(SpecToken))
-                        {
-                            req.Headers.Add("Authorization", $"Bearer {SpecToken}");
-                        }
-                        using (HttpResponseMessage response = await client.SendAsync(req).ConfigureAwait(false))
-                        {
-                            if (!response.IsSuccessStatusCode)
+		private async Task<OpenApiDocument> FromUrlAsyncWithClient(string url)
+		{
+			using (HttpClientHandler handler = new HttpClientHandler())
+			{
+				if (ignoreClientCertificateValidationErrors)
+				{
+					//both of these need to be set to avoid the SSL connection error
+					System.Net.ServicePointManager.ServerCertificateValidationCallback = ((sender, certificate, chain, errors) => true);
+					handler.ServerCertificateCustomValidationCallback = (message, certificate, chain, errors) =>
+					{
+						//output which certificates are being accepted
+						Console.WriteLine(certificate);
+						return true;
+					};
+				}
+				using (HttpClient client = new HttpClient(handler))
+				{
+					client.BaseAddress = new Uri(url);
+					using (HttpRequestMessage req = new HttpRequestMessage(HttpMethod.Get, url))
+					{
+						if (!string.IsNullOrWhiteSpace(SpecToken))
+						{
+							req.Headers.Add("Authorization", $"Bearer {SpecToken}");
+						}
+						using (HttpResponseMessage response = await client.SendAsync(req).ConfigureAwait(false))
+						{
+							if (!response.IsSuccessStatusCode)
 							{
-                                Logger.LogDebug($"Failed to retrieve spec. Response: {response}");
-                                throw Exceptions.SpecNotFound(SpecLocation, response);
-                            }
+								Logger.LogDebug($"Failed to retrieve spec. Response: {response}");
+								throw Exceptions.SpecNotFound(SpecLocation, response);
+							}
 
-                            string data = await response.Content.ReadAsStringAsync().ConfigureAwait(false);
-                            return await FromYamlAsync(data, url).ConfigureAwait(false);
-                        }
-                    }
-                }
-            }
-        }
-    }
+							string data = await response.Content.ReadAsStringAsync().ConfigureAwait(false);
+							return await FromYamlAsync(data, url).ConfigureAwait(false);
+						}
+					}
+				}
+			}
+		}
+	}
 }

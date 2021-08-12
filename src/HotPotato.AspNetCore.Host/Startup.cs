@@ -21,73 +21,73 @@ using System.Net.Http;
 
 namespace HotPotato.AspNetCore.Host
 {
-    public class Startup
-    {
-        public IConfiguration Configuration { get; private set; }
-        public ILogger Log { get; }
+	public class Startup
+	{
+		public IConfiguration Configuration { get; private set; }
+		public ILogger Log { get; }
 
-        public Startup(IConfiguration configuration, ILogger<Startup> log)
-        {
-            _ = configuration ?? throw Exceptions.ArgumentNull(nameof(configuration));
-            _ = log ?? throw Exceptions.ArgumentNull(nameof(log));
+		public Startup(IConfiguration configuration, ILogger<Startup> log)
+		{
+			_ = configuration ?? throw Exceptions.ArgumentNull(nameof(configuration));
+			_ = log ?? throw Exceptions.ArgumentNull(nameof(log));
 
-            Configuration = configuration;
-            Log = log;
-        }
+			Configuration = configuration;
+			Log = log;
+		}
 
-        public void Configure(IApplicationBuilder builder, IWebHostEnvironment env)
-        {
-            if (env.IsDevelopment()) 
-            {
-                builder.UseDeveloperExceptionPage();
-            }
+		public void Configure(IApplicationBuilder builder, IWebHostEnvironment env)
+		{
+			if (env.IsDevelopment()) 
+			{
+				builder.UseDeveloperExceptionPage();
+			}
 
-            builder.UseMiddleware<HotPotatoMiddleware>();
-            builder.UseRouting();
-            builder.UseEndpoints(endpointBuilder => {
-                endpointBuilder.MapControllers();
-            });
-        }
+			builder.UseMiddleware<HotPotatoMiddleware>();
+			builder.UseRouting();
+			builder.UseEndpoints(endpointBuilder => {
+				endpointBuilder.MapControllers();
+			});
+		}
 
-        public void ConfigureServices(IServiceCollection services)
-        {
-            bool ignoreClientCertificateValidationErrors = Configuration.GetSection("HttpClientSettings").GetValue<bool>("IgnoreClientHttpsCertificateValidationErrors");
-            LogTlsValidationSetting(ignoreClientCertificateValidationErrors);
+		public void ConfigureServices(IServiceCollection services)
+		{
+			bool ignoreClientCertificateValidationErrors = Configuration.GetSection("HttpClientSettings").GetValue<bool>("IgnoreClientHttpsCertificateValidationErrors");
+			LogTlsValidationSetting(ignoreClientCertificateValidationErrors);
 
-            services.AddScoped<IProxy, HotPotato.Core.Proxy.Default.Proxy>();
-            services.AddScoped<IHotPotatoClient, HotPotatoClient>();
-            services.AddMvcCore().AddNewtonsoftJson();
-            services.AddSingleton<IWebProxy, Core.Http.ForwardProxy.Default.HttpForwardProxy>();
-            services.AddSingleton(Configuration.GetSection("ForwardProxy").Get<HttpForwardProxyConfig>());
-            services.AddSingleton<ICookieJar, CookieJar>();
-            services.AddHttpClient<IHotPotatoClient, HotPotatoClient>()
-            .ConfigurePrimaryHttpMessageHandler(sp => new HttpClientHandler
-            {
-                AutomaticDecompression = DecompressionMethods.Deflate | DecompressionMethods.GZip,
-                Proxy = sp.GetService<HttpForwardProxyConfig>().Enabled ? sp.GetService<IWebProxy>() : null,
-                CookieContainer = sp.GetService<ICookieJar>().Cookies,
-                ServerCertificateCustomValidationCallback = ignoreClientCertificateValidationErrors ?
-                    HttpClientHandler.DangerousAcceptAnyServerCertificateValidator :
-                    null
-            });
+			services.AddScoped<IProxy, HotPotato.Core.Proxy.Default.Proxy>();
+			services.AddScoped<IHotPotatoClient, HotPotatoClient>();
+			services.AddMvcCore().AddNewtonsoftJson();
+			services.AddSingleton<IWebProxy, Core.Http.ForwardProxy.Default.HttpForwardProxy>();
+			services.AddSingleton(Configuration.GetSection("ForwardProxy").Get<HttpForwardProxyConfig>());
+			services.AddSingleton<ICookieJar, CookieJar>();
+			services.AddHttpClient<IHotPotatoClient, HotPotatoClient>()
+			.ConfigurePrimaryHttpMessageHandler(sp => new HttpClientHandler
+			{
+				AutomaticDecompression = DecompressionMethods.Deflate | DecompressionMethods.GZip,
+				Proxy = sp.GetService<HttpForwardProxyConfig>().Enabled ? sp.GetService<IWebProxy>() : null,
+				CookieContainer = sp.GetService<ICookieJar>().Cookies,
+				ServerCertificateCustomValidationCallback = ignoreClientCertificateValidationErrors ?
+					HttpClientHandler.DangerousAcceptAnyServerCertificateValidator :
+					null
+			});
 
-            services.AddSingleton<ISpecificationProvider, SpecificationProvider>();
-            services.AddSingleton<IResultCollector, ResultCollector>();
+			services.AddSingleton<ISpecificationProvider, SpecificationProvider>();
+			services.AddSingleton<IResultCollector, ResultCollector>();
 
-            services.AddTransient<IProcessor, Processor>();
-        }
+			services.AddTransient<IProcessor, Processor>();
+		}
 
-        private void LogTlsValidationSetting(bool settingValue)
-        {
-            if (settingValue)
-            {
-                Log.LogWarning(@"IgnoreClientCertificateValidation is set to TRUE! When Hot Potato sends requests to the remote API, SSL/TLS certificate validation errors will be ignored!");
-            }
-            else
-            {
-                Log.LogInformation(
+		private void LogTlsValidationSetting(bool settingValue)
+		{
+			if (settingValue)
+			{
+				Log.LogWarning(@"IgnoreClientCertificateValidation is set to TRUE! When Hot Potato sends requests to the remote API, SSL/TLS certificate validation errors will be ignored!");
+			}
+			else
+			{
+				Log.LogInformation(
 					@"IgnoreClientCertificateValidation is set to false. When Hot Potato sends requests to the remote API, SSL/TLS certificate validation problems will cause critical application errors.");
-            }
-        }
-    }
+			}
+		}
+	}
 }
