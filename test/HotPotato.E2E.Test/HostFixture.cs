@@ -7,7 +7,11 @@ using System;
 
 namespace HotPotato.E2E.Test
 {
-    public class HostFixture : IDisposable
+	/// <summary>
+	/// To avoid ambiguity, the purpose of these E2E tests is to run through the full http aspect of the system,
+	/// while truncating the OpenApi aspect by setting up a mock server with a fake endpoint not in the Raw Potato spec.
+	/// </summary>
+	public class HostFixture : IDisposable
     {
         public IWebHost host { get; }
 
