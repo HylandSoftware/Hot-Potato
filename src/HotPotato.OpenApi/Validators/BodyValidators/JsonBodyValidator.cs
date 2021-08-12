@@ -1,4 +1,4 @@
-﻿using HotPotato.OpenApi.Filters;
+using HotPotato.OpenApi.Filters;
 using HotPotato.OpenApi.Models;
 using Newtonsoft.Json;
 using NJsonSchema;
@@ -6,31 +6,31 @@ using System.Collections.Generic;
 
 namespace HotPotato.OpenApi.Validators
 {
-    internal class JsonBodyValidator : BodyValidator
-    {
-        public JsonBodyValidator(string bodyString)
-        {
-            BodyString = bodyString;
-        }
+	internal class JsonBodyValidator : BodyValidator
+	{
+		public JsonBodyValidator(string bodyString)
+		{
+			BodyString = bodyString;
+		}
 
-        public override IValidationResult Validate(JsonSchema schema)
-        {
-            ICollection<NJsonSchema.Validation.ValidationError> errors = schema.Validate(BodyString);
-            List<ValidationError> errList = errors.ToValidationErrorList();
-            List<IValidationErrorFilter> filters = FilterFactory.CreateApplicableFilters(schema, BodyString);
-            foreach (IValidationErrorFilter filter in filters)
-            {
-                filter.Filter(errList);
-            }
-            if (errList.Count == 0)
-            {
-                return new ValidResult();
-            }
-            else
+		public override IValidationResult Validate(JsonSchema schema)
+		{
+			ICollection<NJsonSchema.Validation.ValidationError> errors = schema.Validate(BodyString);
+			List<ValidationError> errList = errors.ToValidationErrorList();
+			List<IValidationErrorFilter> filters = FilterFactory.CreateApplicableFilters(schema, BodyString);
+			foreach (IValidationErrorFilter filter in filters)
 			{
-                ValidationError[] errorArr = errList.ToArray();
-                return new InvalidResult(Reason.InvalidBody, errorArr);
-            }
-        }
-    }
+				filter.Filter(errList);
+			}
+			if (errList.Count == 0)
+			{
+				return new ValidResult();
+			}
+			else
+			{
+				ValidationError[] errorArr = errList.ToArray();
+				return new InvalidResult(Reason.InvalidBody, errorArr);
+			}
+		}
+	}
 }
