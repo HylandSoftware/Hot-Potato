@@ -4,35 +4,35 @@ using Microsoft.Extensions.Logging;
 
 namespace HotPotato.AspNetCore.Host
 {
-    public class ResultsController : Controller
-    {
-        private readonly IResultCollector _resultCollector;
-        private readonly ILogger _logger;
+	public class ResultsController : Controller
+	{
+		private readonly IResultCollector _resultCollector;
+		private readonly ILogger _logger;
 
-        public ResultsController(IResultCollector rc, ILogger<ResultsController> logger)
-        {
-            _resultCollector = rc;
-            _logger = logger;
-        }
+		public ResultsController(IResultCollector rc, ILogger<ResultsController> logger)
+		{
+			_resultCollector = rc;
+			_logger = logger;
+		}
 
-        [HttpGet]
-        [Route("/results")]
-        public IActionResult Get()
-        {
-            _logger.LogDebug("Getting Results...");
+		[HttpGet]
+		[Route("/results")]
+		public IActionResult Get()
+		{
+			_logger.LogDebug("Getting Results...");
 
-            HttpContext.Response.Headers.Add("X-Status", _resultCollector.OverallResult.ToString());
+			HttpContext.Response.Headers.Add("X-Status", _resultCollector.OverallResult.ToString());
 
-            return Ok(_resultCollector.Results);
-        }
+			return Ok(_resultCollector.Results);
+		}
 
-        [HttpDelete]
-        [Route("/results")]
-        public IActionResult ClearResults()
-        {
-            _resultCollector.Results.Clear();
+		[HttpDelete]
+		[Route("/results")]
+		public IActionResult ClearResults()
+		{
+			_resultCollector.Results.Clear();
 
-            return Ok(_resultCollector.Results);
-        }
-    }
+			return Ok(_resultCollector.Results);
+		}
+	}
 }
