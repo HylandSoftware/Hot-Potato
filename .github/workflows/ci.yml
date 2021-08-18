@@ -85,7 +85,7 @@ jobs:
         reporters: cli
 
     - name: Deploy
-      if: ${{ success() && env.isMaster == 'true' }}
+      #if: ${{ success() && env.isMaster == 'true' }}
       run: |
         dotnet pack -p:PackageVersion=${{ env. GitVersion_NuGetVersionV2 }} -c Release --no-build --no-restore --output $GITHUB_WORKSPACE/nuget
         dotnet nuget push $GITHUB_WORKSPACE/nuget/**/*.nupkg -k ${{ secrets.GITHUB_TOKEN }} -s https://nuget.pkg.github.com/HylandSoftware/index.json --skip-duplicate
