@@ -2,7 +2,16 @@
 
   <PropertyGroup>
     <TargetFramework>netcoreapp3.1</TargetFramework>
+
+    <PackageVersion></PackageVersion>
+    <Title>HotPotato.Extensions</Title>
+    <Authors>Test Automation Team | GRP-AutomatedTesting@.hyland.com</Authors>
+    <Description>HotPotato.Extensions contains an extension method for setting up HotPotato on a given TestServer, as well as a custom Is method for NUnit's Assert.That to assist with troubleshooting failed tests.</Description>
+    <RepositoryUrl>https://github.com/HylandSoftware/Hot-Potato</RepositoryUrl>
+    <Configurations>Debug;Release;Docker</Configurations>
   </PropertyGroup>
+
+  
 
   <ItemGroup>
     <PackageReference Include="Microsoft.AspNetCore.TestHost" Version="3.1.3" />

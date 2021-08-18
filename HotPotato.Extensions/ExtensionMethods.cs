@@ -8,7 +8,7 @@ using Microsoft.Extensions.Logging;
 
 namespace HotPotato.Extensions
 {
-	public static class Extensions
+	public static class ExtensionMethods
 	{
 		public static TestServer SetupHotPotatoServer(this TestServer apiServer, string testServerAddress)
 		{

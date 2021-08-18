@@ -1,16 +1,40 @@
 using HotPotato.OpenApi.Models;
 using HotPotato.OpenApi.Results;
 using Newtonsoft.Json;
-using NUnit.Framework;
+using NUnit.Framework.Constraints;
 
 namespace HotPotato.Extensions
 {
-	public class AssertionHelpers
+	public class HotPotatoResultConstraint : Constraint
 	{
-		public void AssertHotPotatoApproves(IResultCollector resultCollector)
+		public override ConstraintResult ApplyTo<TActual>(TActual actual)
 		{
-			//TODO: after some thinking, it seems weird that this project would have to refer to its own NUnit reference when its caller would already have to be using an NUnit itself. Ideally this method would be more of a macro to be performed by its caller than logic performed within this project.
-			Assert.That(resultCollector.OverallResult, Is.EqualTo(State.Pass), JsonConvert.SerializeObject(resultCollector.Results));
+			IResultCollector resultCollector = actual as IResultCollector;
+
+			//type check necessary since ApplyTo can't be given a specific type constraint
+			if (resultCollector is null)
+			{
+				Description = "an IResultCollector as input"; 
+				return new ConstraintResult(this, actual, false);
+			}
+
+			Description = "an OverallResult of State.Pass";
+			return new ConstraintResult(this, JsonConvert.SerializeObject(resultCollector.Results), resultCollector.OverallResult == State.Pass);
+		}
+	}
+
+	public class Is : NUnit.Framework.Is
+	{
+		/// <summary>
+		///   This method checks to see whether HotPotato reported Pass on all methods.
+		///   If something failed, HotPotato's results will be printed to help troubleshoot what went wrong.
+		/// </summary>
+		/// <example><code>
+		///	  Assert.That(ResultCollector, Is.ApprovedByHotPotato());
+		/// </code></example>
+		public static HotPotatoResultConstraint ApprovedByHotPotato()
+		{
+			return new HotPotatoResultConstraint();
 		}
 	}
 }
