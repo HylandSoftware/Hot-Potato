@@ -1,9 +1,10 @@
 using HotPotato.OpenApi.Models;
 using HotPotato.OpenApi.Results;
 using Newtonsoft.Json;
+using NUnit.Framework;
 using NUnit.Framework.Constraints;
 
-namespace HotPotato.Extensions
+namespace HotPotato
 {
 	public class HotPotatoResultConstraint : Constraint
 	{
@@ -14,7 +15,7 @@ namespace HotPotato.Extensions
 			//type check necessary since ApplyTo can't be given a specific type constraint
 			if (resultCollector is null)
 			{
-				Description = "an IResultCollector as input"; 
+				Description = "an IResultCollector as input";
 				return new ConstraintResult(this, actual, false);
 			}
 

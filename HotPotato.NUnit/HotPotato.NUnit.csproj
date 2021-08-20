@@ -1,0 +1,26 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netcoreapp3.1</TargetFramework>
+
+    <PackageVersion></PackageVersion>
+    <Title>HotPotato.NUnit</Title>
+    <Authors>Test Automation Team | GRP-AutomatedTesting@.hyland.com</Authors>
+    <Description>HotPotato.NUnit extends NUnit's Is class to provide a convenient way to Assert for successful HotPotato results and expose useful troubleshooting information if there's a failure.</Description>
+    <RepositoryUrl>https://github.com/HylandSoftware/Hot-Potato</RepositoryUrl>
+    <Configurations>Debug;Release;Docker</Configurations>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.NET.Test.Sdk" Version="16.11.0" />
+    <PackageReference Include="NSubstitute" Version="4.2.2" />
+    <PackageReference Include="NSubstitute.Analyzers.CSharp" Version="1.0.14" />
+    <PackageReference Include="NUnit" Version="3.13.2" />
+    <PackageReference Include="NUnit3TestAdapter" Version="4.0.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\src\HotPotato.OpenApi\HotPotato.OpenApi.csproj" />
+  </ItemGroup>
+
+</Project>

@@ -2,11 +2,10 @@ using HotPotato.Core.Http.Default;
 using HotPotato.AspNetCore.Middleware;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.TestHost;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
 
-namespace HotPotato.Extensions
+namespace Microsoft.AspNetCore.TestHost
 {
 	public static class ExtensionMethods
 	{
