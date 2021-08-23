@@ -12,6 +12,7 @@ namespace HotPotato.NUnitHelpers
 		[Test]
 		public void ApprovedByHotPotato_FailsOnWrongType()
 		{
+			//because this is a test ApprovedByHotPotato(), it's ok that this test is nothing but a single assert
 			Assert.That("this is a string, not an IResultCollector", Is.Not.ApprovedByHotPotato());
 		}
 
