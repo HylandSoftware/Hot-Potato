@@ -18,8 +18,8 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\src\HotPotato.AspNetCore.Middleware\HotPotato.AspNetCore.Middleware.csproj" />
-    <ProjectReference Include="..\src\HotPotato.Core\HotPotato.Core.csproj" />
+    <ProjectReference Include="..\..\src\HotPotato.AspNetCore.Middleware\HotPotato.AspNetCore.Middleware.csproj" />
+    <ProjectReference Include="..\..\src\HotPotato.Core\HotPotato.Core.csproj" />
   </ItemGroup>
 
 </Project>

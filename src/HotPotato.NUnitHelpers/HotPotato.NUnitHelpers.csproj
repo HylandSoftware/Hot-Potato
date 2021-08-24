@@ -20,7 +20,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\src\HotPotato.OpenApi\HotPotato.OpenApi.csproj" />
+    <ProjectReference Include="..\..\src\HotPotato.OpenApi\HotPotato.OpenApi.csproj" />
   </ItemGroup>
 
 </Project>
