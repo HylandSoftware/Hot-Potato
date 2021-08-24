@@ -1,0 +1,25 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netcoreapp3.1</TargetFramework>
+
+    <PackageVersion></PackageVersion>
+    <Title>HotPotato.Extensions</Title>
+    <Authors>Test Automation Team | GRP-AutomatedTesting@.hyland.com</Authors>
+    <Description>HotPotato.Extensions contains an extension method for setting up HotPotato on a given TestServer.</Description>
+    <RepositoryUrl>https://github.com/HylandSoftware/Hot-Potato</RepositoryUrl>
+    <Configurations>Debug;Release;Docker</Configurations>
+  </PropertyGroup>
+
+  
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.AspNetCore.TestHost" Version="3.1.3" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\src\HotPotato.AspNetCore.Middleware\HotPotato.AspNetCore.Middleware.csproj" />
+    <ProjectReference Include="..\..\src\HotPotato.Core\HotPotato.Core.csproj" />
+  </ItemGroup>
+
+</Project>
