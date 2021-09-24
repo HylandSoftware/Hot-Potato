@@ -1,0 +1,116 @@
+components:
+  parameters:
+    Origin:
+      name: Origin
+      in: header
+      description: |-
+        The <a href="https://tools.ietf.org/html/rfc6454#section-7">Origin</a>
+        request header indicates which origin(s) a request originated from.
+        Origin only includes the server name and no path information.
+      required: false
+      schema:
+        type: string
+      example: 'https://example.net'
+    Access-Control-Request-Method:
+      name: Access-Control-Request-Method
+      in: header
+      description: |-
+        The <a
+        href="https://fetch.spec.whatwg.org/#http-access-control-request-method">Access-Control-Request-Method</a>
+        request header is used when issuing a `CORS` preflight request to let
+        the server know which HTTP method will be used when the actual request
+        is made.
+      required: false
+      schema:
+        type: string
+      example: 'GET'
+    Access-Control-Request-Headers:
+      name: Access-Control-Request-Headers
+      in: header
+      description: |-
+        The <a
+        href="https://fetch.spec.whatwg.org/#http-access-control-request-headers">Access-Control-Request-Headers</a>
+        request header is used when issuing a `CORS` preflight request to let
+        the server know which HTTP headers will be used when the actual request
+        is made.
+      required: false
+      schema:
+        type: string
+      example: 'Range'
+    Accept-Language:
+      name: Accept-Language
+      in: header
+      description: |-
+        The <a href="https://tools.ietf.org/html/rfc7231#section-5.3.5">Accept-Language</a>
+        header field can be used by user agents to
+        indicate the set of natural languages that are preferred in the
+        response.  Language tags are defined in RFC 5646. If none of the 
+        languages given are supported, a default language will be returned.
+      required: false
+      schema:
+        type: string
+      example: 'en-US'
+    Range:
+      name: Range
+      in: header
+      description: |-
+        The <a href="https://tools.ietf.org/html/rfc7233#section-3.1">Range</a>
+        header field on a request modifies the method semantics to request
+        transfer of only one or more subranges of the selected representation
+        data, rather than the entire selected representation data.
+
+        The Range unit `bytes` is supported to represent byte ranges of the
+        page or document of the specific rendition's content. 
+
+        For the cases where the Range header is omitted, the full document or page will be 
+        returned. 
+      required: false
+      schema:
+        type: string
+      example: 'bytes 1-1000'
+    Accept:
+      name: Accept
+      in: header
+      description: |-
+        The <a
+        href="https://tools.ietf.org/html/rfc7231#section-5.3.2">Accept</a>
+        header field can be used by consumers to specify response media types
+        that are preferred.
+
+        Upon receiving this header the server will use <a
+        href="https://tools.ietf.org/html/rfc7231#section-3.4.1">Proactive
+        Content Negotiation</a> to determine the "best guess" format for the
+        consumer.
+
+        In cases where the underlying resource can not be returned as a
+        requested format, the server may make a determination of which format
+        of the content will be returned.
+
+        In cases where the Accept header is omitted or has the value `*/*`, the
+        server will make a determination of which format of the content will
+        be returned.
+
+        Consumers should inspect the `Content-Type` response header to determine
+        the actual format of the content returned.
+
+        Review documentation for the specific end point for more detailed information.
+        on Content Negotiation or how the Accept header.
+      required: false
+      schema:
+        type: string
+      example: '*/*'
+    If-Match:
+      name: If-Match
+      in: header
+      description: |-
+        The <a href="https://tools.ietf.org/html/rfc7232#section-3.1">If-Match</a>
+        header field makes the request method conditional on
+        the recipient origin server either having at least one current
+        representation of the target resource, when the field-value is "*",
+        or having a current representation of the target resource that has an
+        entity-tag matching a member of the list of entity-tags provided in
+        the field-value.
+      required: false
+      schema:
+        type: string
+      example: '0731961c81c7403389c42cffd60f209d'

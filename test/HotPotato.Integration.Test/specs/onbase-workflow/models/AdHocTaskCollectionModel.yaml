@@ -1,0 +1,11 @@
+AdHocTaskCollectionModel:
+  description: |-
+    Information relating to an ad-hoc task.
+  properties:
+    items:
+      description: List of ad-hoc tasks in the life cycle and queue
+      type: array
+      items:
+        $ref: 'AdHocTaskModel.yaml#/AdHocTaskModel'
+  required:
+    - items

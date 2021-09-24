@@ -1,0 +1,11 @@
+ApprovalRoleCollectionModel:
+  description: |-
+    Information relating to a list of workflow approvals management approval roles
+  properties:
+    items:
+      description: List of approval roles
+      type: array
+      items:
+        $ref: 'ApprovalRoleModel.yaml#/ApprovalRoleModel'
+  required:
+    - items

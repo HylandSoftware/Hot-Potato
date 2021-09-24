@@ -1,0 +1,1984 @@
+openapi: 3.0.1
+info:
+  title: OnBase Workflow REST API
+  version: EP4
+  description: Provides OnBase Workflow functionality.
+  contact:
+    name: Workflow
+    email: GRP-Workflow@onbase.com
+  x-api-product:
+    program: Solution Building Platform
+    name: OnBase Workflow
+  x-releases:
+    - label: Spec-Implemented (EP2)
+      commit: a7156b4ee8c85a7f32f3d5f0aa1cc0160da9ac06
+      path: specs/onbase-workflow/specification.yaml
+    - label: Spec-Implemented (EP3)
+      commit: 7c0772fdd0540fcafa5862c1ec1380ca1f56f3d2
+      path: specs/onbase-workflow/specification.yaml
+    - label: Spec-Implemented (EP4)
+      commit: 8aa39babcadc37f96c400c2f34c7b3f4f73b02a7
+      path: specs/onbase-workflow/specification.yaml
+    - label: Spec-Implemented (EP5)
+      commit: 1daaf752975743c9881da42456ed44b32a3d639e
+      path: specs/onbase-workflow/specification.yaml
+  x-public: true
+servers:
+  - url: '{protocol}://{server}/{product}'
+    variables:
+      protocol:
+        enum:
+          - http
+          - https
+        default: https
+      server:
+        default: localhost/apiserver
+        description: |-
+          This is the server being used to host the API in the current environment.
+      product:
+        default: onbase/workflow
+        description: |-
+          The prefix used for all APIs described in this specification.
+tags:
+  - name: Ad Hoc Tasks
+  - name: Life Cycles
+  - name: Queues
+  - name: System Tasks
+  - name: Tasks
+  - name: Work Items
+  - name: Workflow Approvals Management
+
+#Apply security to all APIs
+security:
+  - Bearer: []
+
+paths:
+  #--------------------------------------------------------------------------------
+  # /life-cycles
+  #--------------------------------------------------------------------------------
+  /life-cycles:
+    get:
+      summary: |-
+        Gets a list of life cycles.
+      description: |-
+        Gets a list of life cycles the user has rights to access in a client.
+      operationId: GetLifeCycles
+      tags:
+        - Life Cycles
+      parameters:
+        - in: query
+          name: id
+          schema:
+            type: array
+            items:
+              type: string
+          description: |-
+            The unique indentifiers of life cycles.  This parameter cannot be used in conjuntion
+            with the systemName parameter.  Multiple values are supported and in a URL should be
+            joined using the "&" character. Ex: ?id=101&id=102
+        - in: query
+          name: systemName
+          schema:
+            type: array
+            items:
+              type: string
+          description: |-
+            The name of life cycles.  This parameter cannot be used in conjunction
+            with the id parameter.  Multiple values are supported and in a URL should be
+            joined using the "&" character. Ex: ?name=lifecycle_1&name=lifecycle_2
+        - $ref: '../common-items/parameters.yaml#/components/parameters/Accept-Language'
+      responses:
+        200:
+          description: OK
+          headers:
+            Content-Language:
+              $ref: '../common-items/headers.yaml#/components/headers/Content-Language'
+          content:
+            application/json:
+              schema:
+                $ref: 'models/LifeCycleCollectionModel.yaml#/LifeCycleCollectionModel'
+        400:
+          description: |-
+            Response when the user tries to combine id and systemName query parameters.
+          content:
+            application/problem+json:
+              schema:
+                $ref: 'models/ProblemModel.yaml#/ProblemModel'
+        401:
+          $ref: 'responses/401Unauthorized.yaml#/401Unauthorized'
+        403:
+          $ref: 'responses/403LicenseNotAvailable.yaml#/403LicenseNotAvailable'
+
+  #--------------------------------------------------------------------------------
+  # /life-cycles/{lifeCycleId}
+  #--------------------------------------------------------------------------------
+  /life-cycles/{lifeCycleId}:
+    get:
+      summary: Gets the life cycle with the associated id.
+      operationId: GetLifeCycleById
+      tags:
+        - Life Cycles
+      parameters:
+        - $ref: 'parameters/lifeCycleId.yaml#/lifeCycleId_path'
+        - $ref: '../common-items/parameters.yaml#/components/parameters/Accept-Language'
+      responses:
+        200:
+          description: OK
+          headers:
+            Content-Language:
+              $ref: '../common-items/headers.yaml#/components/headers/Content-Language'
+          content:
+            application/json:
+              schema:
+                $ref: 'models/LifeCycleModel.yaml#/LifeCycleModel'
+        401:
+          $ref: 'responses/401Unauthorized.yaml#/401Unauthorized'
+        403:
+          $ref: 'responses/403LicenseNotAvailable.yaml#/403LicenseNotAvailable'
+        404:
+          description: Response when the life cycle id does not exist or the user does not have rights to it
+          content:
+            application/problem+json:
+              schema:
+                $ref: 'models/ProblemModel.yaml#/ProblemModel'
+              example:
+                title: The life cycle id does not exist or the user does not have rights to it
+                status: 404
+                instance: /example-resource
+
+  #--------------------------------------------------------------------------------
+  # /queues
+  #--------------------------------------------------------------------------------
+  /queues:
+    get:
+      summary: |-
+        Gets a list of queues.
+      description: |-
+        Gets a list of queues the user has rights to access in a client.
+      operationId: GetQueues
+      tags:
+        - Queues
+      parameters:
+        - in: query
+          name: id
+          schema:
+            type: array
+            items:
+              type: string
+          description: |-
+            The unique indentifiers of queues.  This parameter cannot be used in conjuntion
+            with the systemName parameter.  Multiple values are supported and in a URL should be
+            joined using the "&" character. Ex: ?id=101&id=102
+        - in: query
+          name: systemName
+          schema:
+            type: array
+            items:
+              type: string
+          description: |-
+            The name of queues.  This parameter cannot be used in conjunction
+            with the id parameter.  Multiple values are supported and in a URL should be
+            joined using the "&" character. Ex: ?name=queue_1&name=queue_2
+        - $ref: '../common-items/parameters.yaml#/components/parameters/Accept-Language'
+        - in: query
+          name: lifeCycleId
+          schema:
+            type: string
+          description: |-
+            If specified only the queues the user has rights to and are in the specified life cycle
+            will be returned. If the life cycle Id does not exist, or the user does not have rights
+            to the life cycle then an empty list of queues will be returned.
+        - in: query
+          name: lifeCycleName
+          description: |-
+            If specified only the queues the user has rights to and are in the specified life cycle
+            will be returned. If a life cycle with this name does not exist, or the user does not have rights
+            to the life cycle then an empty list of queues will be returned.
+          schema:
+            type: string
+      responses:
+        200:
+          description: OK
+          headers:
+            Content-Language:
+              $ref: '../common-items/headers.yaml#/components/headers/Content-Language'
+          content:
+            application/json:
+              schema:
+                $ref: 'models/QueueCollectionModel.yaml#/QueueCollectionModel'
+        400:
+          description: |-
+            Response when the user tries to combine id and systemName query parameters.
+          content:
+            application/problem+json:
+              schema:
+                $ref: 'models/ProblemModel.yaml#/ProblemModel'
+        401:
+          $ref: 'responses/401Unauthorized.yaml#/401Unauthorized'
+        403:
+          $ref: 'responses/403LicenseNotAvailable.yaml#/403LicenseNotAvailable'
+
+  #--------------------------------------------------------------------------------
+  # /queues/{queueId}
+  #--------------------------------------------------------------------------------
+  /queues/{queueId}:
+    get:
+      summary: Gets the queue with the associated id.
+      operationId: GetQueueById
+      tags:
+        - Queues
+      parameters:
+        - $ref: 'parameters/queueId.yaml#/queueId_path'
+        - $ref: '../common-items/parameters.yaml#/components/parameters/Accept-Language'
+      responses:
+        200:
+          description: OK
+          headers:
+            Content-Language:
+              $ref: '../common-items/headers.yaml#/components/headers/Content-Language'
+          content:
+            application/json:
+              schema:
+                $ref: 'models/QueueModel.yaml#/QueueModel'
+        401:
+          $ref: 'responses/401Unauthorized.yaml#/401Unauthorized'
+        403:
+          $ref: 'responses/403LicenseNotAvailable.yaml#/403LicenseNotAvailable'
+        404:
+          description: Response when the queue id does not exist or the user does not have rights to it
+          content:
+            application/problem+json:
+              schema:
+                $ref: 'models/ProblemModel.yaml#/ProblemModel'
+              example:
+                title: The queue id does not exist or the user does not have rights to it
+                status: 404
+                instance: /example-resource
+
+  #--------------------------------------------------------------------------------
+  # /queues/{queueId}/filters
+  #--------------------------------------------------------------------------------
+  /queues/{queueId}/filters:
+    get:
+      summary: Gets the list of filters that can be applied to the queue that the user has rights to.
+      operationId: GetInboxFiltersByQueueId
+      tags:
+        - Queues
+      parameters:
+        - $ref: 'parameters/queueId.yaml#/queueId_path'
+        - $ref: '../common-items/parameters.yaml#/components/parameters/Accept-Language'
+      responses:
+        200:
+          description: OK
+          headers:
+            Content-Language:
+              $ref: '../common-items/headers.yaml#/components/headers/Content-Language'
+          content:
+            application/json:
+              schema:
+                $ref: 'models/WorkflowFilterCollectionModel.yaml#/WorkflowFilterCollectionModel'
+        401:
+          $ref: 'responses/401Unauthorized.yaml#/401Unauthorized'
+        403:
+          $ref: 'responses/403LicenseNotAvailable.yaml#/403LicenseNotAvailable'
+        404:
+          description: Response when the queue id does not exist or the user does not have rights to it
+          content:
+            application/problem+json:
+              schema:
+                $ref: 'models/ProblemModel.yaml#/ProblemModel'
+              example:
+                title: The queue id does not exist or the user does not have rights to it
+                status: 404
+                instance: /example-resource
+
+  #--------------------------------------------------------------------------------
+  # /queues/{queueId}/work-items
+  #--------------------------------------------------------------------------------
+  /queues/{queueId}/work-items:
+    post:
+      summary: |-
+        Gets the list of work items in the queue.
+      operationId: GetQueueWorkItems
+      tags:
+       - Work Items
+      parameters:
+       - $ref: 'parameters/queueId.yaml#/queueId_path'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              properties:
+                queryType:
+                  description: |-
+                    Type of query to execute.
+                     * `CurrentUserWorkItems`: If the queue is a:
+                       * **Standard queue**: All work items in the queue will be returned.
+                       * **Load balanced queue**: All work items assigned to the current user will be returned.
+                       * **Queue contained in a life cycle supporting ownership**: All work items owned by the current user and all work items owned by no one will be returned.
+                       * **Queue contained in a life cycle supporting ownership and load balanced**: All work items owned by the current user and all work items assigned to the current user (load balanced) will be returned.
+                       * **Approval queue**: All work items that are waiting the current users approval will be returned.
+                  type: string
+                  enum:
+                   - CurrentUserWorkItems
+                  example: CurrentUserWorkItems
+                applyDefaultFilter:
+                  description: |-
+                    If true and the queue has a default filter configured then the work items returned will be from the filter.
+                    Default is true.
+                  type: boolean
+                  example: true
+                filterId:
+                  description: |-
+                    If specified, the list of work items will be filtered. This property cannot be set with 'applyDefaultFilter' property.
+                  type: integer
+                  example: 101
+                maxResults:
+                  description: |-
+                    Limits the number of results that the execution of a query can create.  Default is 2000 items.
+                  type: integer
+                  format: int32
+                  example: 2000
+              required:
+                - queryType
+      responses:
+        200:
+          description: OK
+          headers:
+            Content-Language:
+              $ref: '../common-items/headers.yaml#/components/headers/Content-Language'
+          content:
+            application/json:
+              schema:
+                $ref: 'models/QueueQueryResultModel.yaml#/QueueQueryResultModel'
+        400:
+          description: The query is not valid for the queue.
+          content:
+            application/problem+json:
+              schema:
+                $ref: 'models/ProblemModel.yaml#/ProblemModel'
+              example:
+                title: The query is not valid for the queue
+                status: 400
+                detail: The queue is an auto-feed queue which is not supported by the query
+                instance: /example-resource
+        401:
+          $ref: 'responses/401Unauthorized.yaml#/401Unauthorized'
+        403:
+          $ref: 'responses/403LicenseNotAvailable.yaml#/403LicenseNotAvailable'
+        404:
+          description: Response when the queue id does not exist or the user does not have rights to it
+          content:
+            application/problem+json:
+              schema:
+                $ref: 'models/ProblemModel.yaml#/ProblemModel'
+              example:
+                title: The queue id does not exist or the user does not have rights to it
+                status: 404
+                instance: /example-resource
+
+  #--------------------------------------------------------------------------------
+  # /ad-hoc-tasks
+  #--------------------------------------------------------------------------------
+  /ad-hoc-tasks:
+    get:
+      summary: |-
+        Gets a list of ad-hoc tasks.
+      description: |-
+        Gets a list of ad-hoc tasks the user has rights to in the given queue.
+      operationId: GetAdHocTasks
+      tags:
+       - Ad Hoc Tasks
+      parameters:
+        - $ref: 'parameters/queueId.yaml#/queueId_not_required_query'
+        - $ref: '../common-items/parameters.yaml#/components/parameters/Accept-Language'
+      responses:
+         200:
+           description: OK
+           headers:
+             Content-Language:
+               $ref: '../common-items/headers.yaml#/components/headers/Content-Language'
+           content:
+             application/json:
+               schema:
+                 $ref: 'models/AdHocTaskCollectionModel.yaml#/AdHocTaskCollectionModel'
+         401:
+          $ref: 'responses/401Unauthorized.yaml#/401Unauthorized'
+         403:
+          $ref: 'responses/403LicenseNotAvailable.yaml#/403LicenseNotAvailable'
+
+  #--------------------------------------------------------------------------------
+  # /ad-hoc-tasks/{adhocTaskId}
+  #--------------------------------------------------------------------------------
+  /ad-hoc-tasks/{adhocTaskId}:
+    get:
+      summary: |-
+        Gets the information about an ad hoc task.
+      operationId: GetAdHocTaskById
+      tags:
+       - Ad Hoc Tasks
+      parameters:
+       - $ref: 'parameters/adhocTaskId.yaml#/adhocTaskId_path'
+       - $ref: '../common-items/parameters.yaml#/components/parameters/Accept-Language'
+      responses:
+        200:
+          description: OK
+          headers:
+            Content-Language:
+              $ref: '../common-items/headers.yaml#/components/headers/Content-Language'
+          content:
+            application/json:
+              schema:
+                 $ref: 'models/AdHocTaskModel.yaml#/AdHocTaskModel'
+        401:
+          $ref: 'responses/401Unauthorized.yaml#/401Unauthorized'
+        403:
+          $ref: 'responses/403LicenseNotAvailable.yaml#/403LicenseNotAvailable'
+        404:
+          description: Response when the ad-hoc task id does not exist or the user does not have rights to it
+          content:
+            application/problem+json:
+              schema:
+                $ref: 'models/ProblemModel.yaml#/ProblemModel'
+              example:
+                title: The ad-hoc task id does not exist or the user does not have rights to it
+                status: 404
+                instance: /example-resource
+
+  #--------------------------------------------------------------------------------
+  # /ad-hoc-tasks/{adhocTaskId}/execute
+  #--------------------------------------------------------------------------------
+  /ad-hoc-tasks/{adhocTaskId}/execute:
+    post:
+      summary: |-
+        Executes an ad hoc task
+      description: |-
+        Executes an ad hoc task.
+
+        **WARNING:** The API will not return until the ad hoc task has completed execution or requires
+        user interaction.  If the ad hoc task execution takes a while to complete it may result in
+        request timeout errors.
+      operationId: ExecuteAdHocTask
+      tags:
+       - Ad Hoc Tasks
+      parameters:
+       - $ref: 'parameters/adhocTaskId.yaml#/adhocTaskId_path'
+       - $ref: 'parameters/queueId.yaml#/queueId_query'
+       - $ref: '../common-items/parameters.yaml#/components/parameters/Accept-Language'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: 'models/ExecuteTaskModel.yaml#/ExecuteTaskModel'
+      responses:
+        200:
+          description: |-
+            Task execution is complete
+          headers:
+            Content-Language:
+              $ref: '../common-items/headers.yaml#/components/headers/Content-Language'
+          content:
+            application/json:
+              schema:
+                $ref: 'models/ExecuteTaskResultModel.yaml#/ExecuteTaskResultModel'
+        201:
+          headers:
+            Content-Language:
+              $ref: '../common-items/headers.yaml#/components/headers/Content-Language'
+          description: Execution requires user interaction to continue.
+          content:
+            application/json:
+              schema:
+                $ref: 'models/ExecuteTaskRequiresUIModel.yaml#/ExecuteTaskRequiresUIModel'
+        400:
+          description: |-
+            Response when one of the following occurs:
+             * The client specifies an invalid queue or ad hoc task ID.
+             * The client does not have rights to the queue or ad hoc task.
+             * The request body does not contain the required information.
+             * An error was encountered executing the task
+          content:
+            application/problem+json:
+              schema:
+                $ref: 'models/ProblemModel.yaml#/ProblemModel'
+              example:
+                title: The queue id '101' does not exist or you do not have rights to it
+                status: 400
+                instance: /example-resource
+        401:
+          $ref: 'responses/401Unauthorized.yaml#/401Unauthorized'
+        403:
+          $ref: 'responses/403LicenseNotAvailable.yaml#/403LicenseNotAvailable'
+
+  #--------------------------------------------------------------------------------
+  # /system-tasks
+  #--------------------------------------------------------------------------------
+  /system-tasks:
+    get:
+      summary: |-
+        Gets the information about system tasks.
+      operationId: GetSystemTasks
+      tags:
+       - System Tasks
+      parameters:
+        - in: query
+          name: id
+          schema:
+            type: array
+            items:
+              type: string
+          description: |-
+            The unique indentifiers of system tasks.  This parameter cannot be used in conjuntion
+            with the systemName parameter.  Multiple values are supported and in a URL should be
+            joined using the "&" character. Ex: ?id=101&id=102
+        - in: query
+          name: systemName
+          schema:
+            type: array
+            items:
+              type: string
+          description: |-
+            The name of system tasks.  This parameter cannot be used in conjunction
+            with the id parameter.  Multiple values are supported and in a URL should be
+            joined using the "&" character. Ex: ?name=systask_1&name=systask_2
+        - $ref: 'parameters/workItemType.yaml#/workItemType_query'
+        - $ref: 'parameters/itemTypeId.yaml#/itemTypeId_query'
+        - $ref: '../common-items/parameters.yaml#/components/parameters/Accept-Language'
+      responses:
+        200:
+          description: OK
+          headers:
+            Content-Language:
+              $ref: '../common-items/headers.yaml#/components/headers/Content-Language'
+          content:
+            application/json:
+              schema:
+                $ref: 'models/SystemTaskCollectionModel.yaml#/SystemTaskCollectionModel'
+        400:
+          description: |-
+            Response when the user tries to combine id and systemName query parameters.
+          content:
+            application/problem+json:
+              schema:
+                $ref: 'models/ProblemModel.yaml#/ProblemModel'
+        401:
+          $ref: 'responses/401Unauthorized.yaml#/401Unauthorized'
+        403:
+          $ref: 'responses/403LicenseNotAvailable.yaml#/403LicenseNotAvailable'
+
+  #--------------------------------------------------------------------------------
+  # /system-tasks/{systemTaskId}
+  #--------------------------------------------------------------------------------
+  /system-tasks/{systemTaskId}:
+    get:
+      summary: |-
+        Gets the information about a system task.
+      operationId: GetSystemTaskById
+      tags:
+       - System Tasks
+      parameters:
+        - $ref: 'parameters/systemTaskId.yaml#/systemTaskId_path'
+        - $ref: '../common-items/parameters.yaml#/components/parameters/Accept-Language'
+      responses:
+        200:
+          description: OK
+          headers:
+            Content-Language:
+              $ref: '../common-items/headers.yaml#/components/headers/Content-Language'
+          content:
+            application/json:
+              schema:
+                $ref: 'models/SystemTaskModel.yaml#/SystemTaskModel'
+        401:
+          $ref: 'responses/401Unauthorized.yaml#/401Unauthorized'
+        403:
+          $ref: 'responses/403LicenseNotAvailable.yaml#/403LicenseNotAvailable'
+        404:
+          description: Response when the system task id does not exist or the user does not have rights to it
+          content:
+            application/problem+json:
+              schema:
+                $ref: 'models/ProblemModel.yaml#/ProblemModel'
+              example:
+                title: The system task id does not exist or the user does not have rights to it
+                status: 404
+                instance: /example-resource
+
+  #--------------------------------------------------------------------------------
+  # /system-tasks/{systemTaskId}/execute
+  #--------------------------------------------------------------------------------
+  /system-tasks/{systemTaskId}/execute:
+    post:
+      summary: |-
+        Executes a system task
+      description: |-
+        Executes a system task.
+
+        **WARNING:** The API will not return until the system has completed execution or requires
+        user interaction.  If the system task execution takes a while to complete it may result in
+        request timeout errors.
+      operationId: ExecuteSystemTask
+      tags:
+       - System Tasks
+      parameters:
+       - $ref: 'parameters/systemTaskId.yaml#/systemTaskId_path'
+       - $ref: '../common-items/parameters.yaml#/components/parameters/Accept-Language'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: 'models/ExecuteTaskModel.yaml#/ExecuteTaskModel'
+      responses:
+        200:
+          description: |-
+            Task execution is complete
+          headers:
+            Content-Language:
+              $ref: '../common-items/headers.yaml#/components/headers/Content-Language'
+          content:
+            application/json:
+              schema:
+                $ref: 'models/ExecuteTaskResultModel.yaml#/ExecuteTaskResultModel'
+        201:
+          description: Execution requires user interaction to continue.
+          headers:
+            Content-Language:
+              $ref: '../common-items/headers.yaml#/components/headers/Content-Language'
+          content:
+            application/json:
+              schema:
+                $ref: 'models/ExecuteTaskRequiresUIModel.yaml#/ExecuteTaskRequiresUIModel'
+        400:
+          description: |-
+            Response when one of the following occurs:
+             * The client specifies an invalid system task ID.
+             * The client does not have rights to the system task.
+             * The request body does not contain the required information.
+             * An error was encountered executing the task
+          content:
+            application/problem+json:
+              schema:
+                $ref: 'models/ProblemModel.yaml#/ProblemModel'
+              example:
+                title: The queue id '101' does not exist or you do not have rights to it
+                status: 400
+                instance: /example-resource
+        401:
+          $ref: 'responses/401Unauthorized.yaml#/401Unauthorized'
+        403:
+          $ref: 'responses/403LicenseNotAvailable.yaml#/403LicenseNotAvailable'
+
+  #--------------------------------------------------------------------------------
+  # /tasks/operations/{operationId}/cancel
+  #--------------------------------------------------------------------------------
+  /tasks/operations/{operationId}/cancel:
+    post:
+      summary: |-
+        Cancels/aborts task execution
+      description: |-
+        Cancels/aborts a task execution that is waiting for user interaction.
+      operationId: CancelTask
+      tags:
+       - Tasks
+      parameters:
+       - $ref: 'parameters/operationId.yaml#/operationId_path'
+      responses:
+        204:
+          description: Task execution was canceled
+        401:
+          $ref: 'responses/401Unauthorized.yaml#/401Unauthorized'
+        403:
+          $ref: 'responses/403LicenseNotAvailable.yaml#/403LicenseNotAvailable'
+        404:
+          description: Response when the operation id does not exist
+          content:
+            application/problem+json:
+              schema:
+                $ref: 'models/ProblemModel.yaml#/ProblemModel'
+              example:
+                title: The operation id does not exist
+                status: 404
+                instance: /example-resource
+
+  #--------------------------------------------------------------------------------
+  # /tasks/operations/{operationId}/ui-interaction
+  #--------------------------------------------------------------------------------
+  /tasks/operations/{operationId}/ui-interaction:
+    post:
+      summary: |-
+        Posts the results of a task execution requiring user interaction
+      operationId: ResumeTaskUserInteraction
+      tags:
+       - Tasks
+      parameters:
+       - $ref: 'parameters/operationId.yaml#/operationId_path'
+       - $ref: '../common-items/parameters.yaml#/components/parameters/Accept-Language'
+      requestBody:
+        description: |-
+          Contains the information required to resume the task execution.
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: 'models/ExecuteTaskRequiresUIResponseModel.yaml#/ExecuteTaskRequiresUIResponseModel'
+      responses:
+        200:
+          description: |-
+            Task execution is complete
+          headers:
+            Content-Language:
+              $ref: '../common-items/headers.yaml#/components/headers/Content-Language'
+          content:
+            application/json:
+              schema:
+                $ref: 'models/ExecuteTaskResultModel.yaml#/ExecuteTaskResultModel'
+        201:
+          description: Execution requires user interaction to continue.
+          headers:
+            Content-Language:
+              $ref: '../common-items/headers.yaml#/components/headers/Content-Language'
+          content:
+            application/json:
+              schema:
+                $ref: 'models/ExecuteTaskRequiresUIModel.yaml#/ExecuteTaskRequiresUIModel'
+        400:
+          description: |-
+            Response when the request body does not contain the required information.
+          content:
+            application/problem+json:
+              schema:
+                $ref: 'models/ProblemModel.yaml#/ProblemModel'
+              example:
+                title: The queue id '101' does not exist or you do not have rights to it
+                status: 400
+                instance: /example-resource
+        401:
+          $ref: 'responses/401Unauthorized.yaml#/401Unauthorized'
+        403:
+          $ref: 'responses/403LicenseNotAvailable.yaml#/403LicenseNotAvailable'
+        404:
+          description: Response when the operation id does not exist
+          content:
+            application/problem+json:
+              schema:
+                $ref: 'models/ProblemModel.yaml#/ProblemModel'
+              example:
+                title: The operation id does not exist
+                status: 404
+                instance: /example-resource
+
+  #--------------------------------------------------------------------------------
+  # /work-items/locations
+  #--------------------------------------------------------------------------------
+  /work-items/locations:
+    get:
+      summary: |-
+        Gets the locations where a work item is within workflow.
+      operationId: GetWorkItemLocations
+      tags:
+       - Work Items
+      parameters:
+       - $ref: 'parameters/workItemType.yaml#/workItemType_query'
+       - in: query
+         name: id
+         schema:
+           type: string
+         required: true
+         description: |-
+          ID of work item.
+          For documents this is the document ID, for WorkView this is the WorkView object id.
+       - in: query
+         name: classId
+         schema:
+           type: string
+         required: false
+         description: |-
+          Class ID of work item.
+          Required for WorkView, Entity and EISMessageItem work item types
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: 'models/WorkItemLocationCollectionModel.yaml#/WorkItemLocationCollectionModel'
+        401:
+          $ref: 'responses/401Unauthorized.yaml#/401Unauthorized'
+        403:
+          $ref: 'responses/403LicenseNotAvailable.yaml#/403LicenseNotAvailable'
+        404:
+          description: Response when the work item does not exist or the user does not have rights to it
+          content:
+            application/problem+json:
+              schema:
+                $ref: 'models/ProblemModel.yaml#/ProblemModel'
+              example:
+                title: The work item does not exist or the user does not have rights to it
+                status: 404
+                instance: /example-resource
+
+  #--------------------------------------------------------------------------------
+  # /work-items/tasks
+  #--------------------------------------------------------------------------------
+  /work-items/tasks:
+    get:
+      summary: |-
+        Gets the list of ad hoc and system tasks that are available to work items.
+      description: |-
+        Gets the list of ad hoc and system tasks that are available to be executed
+        on the specified list of work items.
+      operationId: GetWorkItemsAdHocAndSystemTasks
+      tags:
+       - Work Items
+      parameters:
+        - in: query
+          name: queueId
+          schema:
+            type: string
+          description: |-
+            If specified, the list of ad hoc tasks will be limited to those that are
+            specified in this queue.
+        - $ref: 'parameters/workItems.yaml#/workItems_query'
+        - $ref: '../common-items/parameters.yaml#/components/parameters/Accept-Language'
+      responses:
+        200:
+          description: OK
+          headers:
+            Content-Language:
+              $ref: '../common-items/headers.yaml#/components/headers/Content-Language'
+          content:
+            application/json:
+              schema:
+                $ref: 'models/AdHocAndSystemTasksModel.yaml#/AdHocAndSystemTasksModel'
+        400:
+          $ref: 'responses/400InvalidFIQLQuery.yaml#/400InvalidFIQLQuery'
+        401:
+          $ref: 'responses/401Unauthorized.yaml#/401Unauthorized'
+        403:
+          $ref: 'responses/403LicenseNotAvailable.yaml#/403LicenseNotAvailable'
+        404:
+          description: |-
+            Response when the queue id is invalid or the user does not have rights to it
+          content:
+            application/problem+json:
+              schema:
+                $ref: 'models/ProblemModel.yaml#/ProblemModel'
+              example:
+                title: The queue '101' does not exist or you do not have rights to it
+                status: 404
+                instance: /example-resource
+
+  #--------------------------------------------------------------------------------
+  # /actions
+  #--------------------------------------------------------------------------------
+  /actions:
+    get:
+      summary: |-
+        Gets a list of actions.
+      operationId: GetActions
+      tags:
+        - Tasks
+      parameters:
+        - in: query
+          name: id
+          schema:
+            type: array
+            items:
+              type: string
+          description: |-
+            If specified then the list of actions is filtered to only include actions
+            with the specified ids.
+        - in: query
+          name: lifeCycleId
+          schema:
+            type: integer
+          description: |-
+            If specified then the list of actions is filtered to only include actions
+            in the specified life cycle.
+      responses:
+        200:
+          description: OK
+          headers:
+            Content-Language:
+              $ref: '../common-items/headers.yaml#/components/headers/Content-Language'
+          content:
+            application/json:
+              schema:
+                $ref: 'models/ActionCollectionModel.yaml#/ActionCollectionModel'
+        401:
+          $ref: 'responses/401Unauthorized.yaml#/401Unauthorized'
+        403:
+          $ref: 'responses/403LicenseNotAvailable.yaml#/403LicenseNotAvailable'
+
+  #--------------------------------------------------------------------------------
+  # /actions/{actionId}
+  #--------------------------------------------------------------------------------
+  /actions/{actionId}:
+    get:
+      summary: Gets the action with the associated id.
+      operationId: GetActionById
+      tags:
+        - Tasks
+      parameters:
+        - in: path
+          name: actionId
+          schema:
+            type: string
+          description: The id of the action to retrieve
+          required: true
+      responses:
+        200:
+          description: OK
+          headers:
+            Content-Language:
+              $ref: '../common-items/headers.yaml#/components/headers/Content-Language'
+          content:
+            application/json:
+              schema:
+                $ref: 'models/ActionModel.yaml#/ActionModel'
+        401:
+          $ref: 'responses/401Unauthorized.yaml#/401Unauthorized'
+        403:
+          $ref: 'responses/403LicenseNotAvailable.yaml#/403LicenseNotAvailable'
+        404:
+          description: Response when the action id does not exist
+          content:
+            application/problem+json:
+              schema:
+                $ref: 'models/ProblemModel.yaml#/ProblemModel'
+              example:
+                title: The action id does not exist
+                status: 404
+                instance: /example-resource
+
+  #--------------------------------------------------------------------------------
+  # /rules
+  #--------------------------------------------------------------------------------
+  /rules:
+    get:
+      summary: |-
+        Gets a list of rules.
+      operationId: GetRules
+      tags:
+        - Tasks
+      parameters:
+        - in: query
+          name: id
+          schema:
+            type: array
+            items:
+              type: string
+          description: |-
+            If specified then the list of rules is filtered to only include rules
+            with the specified ids.
+        - in: query
+          name: lifeCycleId
+          schema:
+            type: integer
+          description: |-
+            If specified then the list of rules is filtered to only include rules
+            in the specified life cycle.
+      responses:
+        200:
+          description: OK
+          headers:
+            Content-Language:
+              $ref: '../common-items/headers.yaml#/components/headers/Content-Language'
+          content:
+            application/json:
+              schema:
+                $ref: 'models/RuleCollectionModel.yaml#/RuleCollectionModel'
+        401:
+          $ref: 'responses/401Unauthorized.yaml#/401Unauthorized'
+        403:
+          $ref: 'responses/403LicenseNotAvailable.yaml#/403LicenseNotAvailable'
+
+  #--------------------------------------------------------------------------------
+  # /rules/{ruleId}
+  #--------------------------------------------------------------------------------
+  /rules/{ruleId}:
+    get:
+      summary: Gets the rule with the associated id.
+      operationId: GetRuleById
+      tags:
+        - Tasks
+      parameters:
+        - in: path
+          name: ruleId
+          schema:
+            type: string
+          description: The id of the rule to retrieve
+          required: true
+      responses:
+        200:
+          description: OK
+          headers:
+            Content-Language:
+              $ref: '../common-items/headers.yaml#/components/headers/Content-Language'
+          content:
+            application/json:
+              schema:
+                $ref: 'models/RuleModel.yaml#/RuleModel'
+        401:
+          $ref: 'responses/401Unauthorized.yaml#/401Unauthorized'
+        403:
+          $ref: 'responses/403LicenseNotAvailable.yaml#/403LicenseNotAvailable'
+        404:
+          description: Response when the rule id does not exist
+          content:
+            application/problem+json:
+              schema:
+                $ref: 'models/ProblemModel.yaml#/ProblemModel'
+              example:
+                title: The rule id does not exist
+                status: 404
+                instance: /example-resource
+
+  #--------------------------------------------------------------------------------
+  # /tasklists
+  #--------------------------------------------------------------------------------
+  /tasklists:
+    get:
+      summary: |-
+        Gets a list of task lists.
+      operationId: GetTaskLists
+      tags:
+        - Tasks
+      parameters:
+        - in: query
+          name: id
+          schema:
+            type: array
+            items:
+              type: string
+          description: |-
+            If specified then the list of task lists is filtered to only include task lists
+            with the specified ids.
+        - in: query
+          name: lifeCycleId
+          schema:
+            type: integer
+          description: |-
+            If specified then the list of task lists is filtered to only include task lists
+            in the specified life cycle.
+      responses:
+        200:
+          description: OK
+          headers:
+            Content-Language:
+              $ref: '../common-items/headers.yaml#/components/headers/Content-Language'
+          content:
+            application/json:
+              schema:
+                $ref: 'models/TaskListCollectionModel.yaml#/TaskListCollectionModel'
+        401:
+          $ref: 'responses/401Unauthorized.yaml#/401Unauthorized'
+        403:
+          $ref: 'responses/403LicenseNotAvailable.yaml#/403LicenseNotAvailable'
+
+  #--------------------------------------------------------------------------------
+  # /tasklists/{tasklistId}
+  #--------------------------------------------------------------------------------
+  /tasklists/{tasklistId}:
+    get:
+      summary: Gets the task list with the associated id.
+      operationId: GetTaskListById
+      tags:
+        - Tasks
+      parameters:
+        - in: path
+          name: tasklistId
+          schema:
+            type: string
+          description: The id of the task list to retrieve
+          required: true
+      responses:
+        200:
+          description: OK
+          headers:
+            Content-Language:
+              $ref: '../common-items/headers.yaml#/components/headers/Content-Language'
+          content:
+            application/json:
+              schema:
+                $ref: 'models/TaskListModel.yaml#/TaskListModel'
+        401:
+          $ref: 'responses/401Unauthorized.yaml#/401Unauthorized'
+        403:
+          $ref: 'responses/403LicenseNotAvailable.yaml#/403LicenseNotAvailable'
+        404:
+          description: Response when the task list id does not exist
+          content:
+            application/problem+json:
+              schema:
+                $ref: 'models/ProblemModel.yaml#/ProblemModel'
+              example:
+                title: The task list id does not exist
+                status: 404
+                instance: /example-resource
+
+  #--------------------------------------------------------------------------------
+  # /wam/approval-roles
+  #--------------------------------------------------------------------------------
+  /wam/approval-roles:
+    get:
+      summary: |-
+        Gets a list of approval roles.
+      operationId: GetWamApprovalRoles
+      tags:
+        - Workflow Approvals Management
+      parameters:
+        - in: query
+          name: id
+          schema:
+            type: array
+            items:
+              type: string
+          description: |-
+            The unique indentifiers of approval roles.  This parameter cannot be used in conjuntion
+            with the systemName parameter.  Multiple values are supported and in a URL should be
+            joined using the "&" character. Ex: ?id=101&id=102
+        - in: query
+          name: systemName
+          schema:
+            type: array
+            items:
+              type: string
+          description: |-
+            The name of approval roles.  This parameter cannot be used in conjunction
+            with the id parameter.  Multiple values are supported and in a URL should be
+            joined using the "&" character. Ex: ?name=role_1&name=role_2
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: 'models/ApprovalRoleCollectionModel.yaml#/ApprovalRoleCollectionModel'
+        400:
+          description: |-
+            Response when the user tries to combine id and systemName query parameters.
+          content:
+            application/problem+json:
+              schema:
+                $ref: 'models/ProblemModel.yaml#/ProblemModel'
+        401:
+          $ref: 'responses/401Unauthorized.yaml#/401Unauthorized'
+        403:
+          $ref: 'responses/403LicenseNotAvailable.yaml#/403LicenseNotAvailable'
+
+  #--------------------------------------------------------------------------------
+  # /wam/approval-roles/{approvalroleId}
+  #--------------------------------------------------------------------------------
+  /wam/approval-roles/{approvalRoleId}:
+    get:
+      summary: Gets the approval role with the associated id.
+      operationId: GetWamApprovalRoleById
+      tags:
+        - Workflow Approvals Management
+      parameters:
+        - in: path
+          name: approvalRoleId
+          schema:
+            type: string
+          description: The id of the approval role to retrieve
+          required: true
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: 'models/ApprovalRoleModel.yaml#/ApprovalRoleModel'
+        401:
+          $ref: 'responses/401Unauthorized.yaml#/401Unauthorized'
+        403:
+          $ref: 'responses/403LicenseNotAvailable.yaml#/403LicenseNotAvailable'
+        404:
+          description: Response when the approval role id does not exist
+          content:
+            application/problem+json:
+              schema:
+                $ref: 'models/ProblemModel.yaml#/ProblemModel'
+              example:
+                title: The approval role id does not exist
+                status: 404
+                instance: /example-resource
+
+  #--------------------------------------------------------------------------------
+  # /healthcheck
+  #--------------------------------------------------------------------------------
+  /healthcheck:
+    get:
+      summary: |-
+        Performs a healthcheck for the REST APIs
+      description: |-
+        Performs a healthcheck for the REST APIs
+      operationId: Healthcheck
+      tags:
+       - Miscellaneous
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  coreVersion:
+                    type: string
+                    description: |-
+                      The version of the core the REST APIs are using.
+                    example: 19.12.0.30
+                  RestApiVersion:
+                    type: string
+                    description: |-
+                      The version of the REST APIs.
+                    example: 19.12.0.31
+
+#--------------------------------------------------------------------------------
+# Components
+#--------------------------------------------------------------------------------
+components:
+  schemas:
+
+    #--------------------------------------------------------------------------------
+    # NOTE: These models cannot be in separate files due to a bug in redoc when
+    # using a discriminator.  See https://github.com/Redocly/redoc/issues/862
+    #--------------------------------------------------------------------------------
+
+    #--------------------------------------------------------------------------------
+    # Model returned when the task execution was completed
+    #--------------------------------------------------------------------------------
+    ExecuteTaskCompletedModel:
+      description: |-
+        Information that is returned when a task has completed executing.
+      allOf:
+        - $ref: 'models/ExecuteTaskResultModel.yaml#/ExecuteTaskResultModel'
+        - type: object
+          properties:
+            items:
+              description: |-
+                List of work items that were not executed on due to them being locked by another user, not in the queue etc...
+              type: array
+              items:
+                properties:
+                  reason:
+                    type: string
+                    enum:
+                      - Locked
+                      - NotInQueue
+                      - NotOwnedByUser
+                      - Other
+                    description: |-
+                      The reason why the task was not executed on the work item.
+                      - Locked: The work item was locked by another user.
+                      - NotInQueue: The work item was no longer in the queue.
+                      - NotOwnedByUser: The work item was not owned by the user and the task was configured to take ownership.
+                      - Other: The work item was not execute on due to other reasons.
+                    example: Locked
+                allOf:
+                  - $ref: "models/WorkItemIDModel.yaml#/WorkItemIDModel"
+                required:
+                  - reason
+
+    #--------------------------------------------------------------------------------
+    # Model returned when the task execution encountered an error
+    #--------------------------------------------------------------------------------
+    ExecuteTaskFailedModel:
+      description: |-
+        Information that is returned when a task failed to execute a task.
+      allOf:
+        - $ref: 'models/ExecuteTaskResultModel.yaml#/ExecuteTaskResultModel'
+        - type: object
+          properties:
+            details:
+              $ref: 'models/ProblemModel.yaml#/ProblemModel'
+
+    #--------------------------------------------------------------------------------
+    # Breakpoint - suspended task request/response models
+    #--------------------------------------------------------------------------------
+    ExecuteTaskUIRequestBreakpointModel:
+      description: |-
+        Information that a client should display relating to the current action/rule being executed.
+        This interaction type is generated just prior to an action/rule/task list execution for
+        action/rule/task lists that have the **Enable Debug Breakpoint** option set.
+      allOf:
+        - $ref: 'models/ExecuteTaskRequiresUIModel.yaml#/ExecuteTaskRequiresUIModel'
+        - type: object
+          properties:
+            userInteraction:
+              type: object
+              properties:
+                taskId:
+                  description: Id of the task that is about to be executed
+                  type: string
+                taskType:
+                  description: Determines if the taskId property is the id of an action, rule or task list
+                  type: string
+                  enum:
+                  - "Action"
+                  - "Rule"
+                  - "TaskList"
+                lifeCycleId:
+                  description: If an ad hoc task is being executed then this is the life cycle ID the task is contained in.
+                  type: string
+                queueId:
+                  description: If an ad hoc task is being executed then this is the queue ID the task is contained in.
+                  type: string
+
+    ExecuteTaskUIResponseBreakpointModel:
+      description: |-
+        Contains the response information from a client for a task execution
+        that requires information for the Breakpoint user interaction type.
+      allOf:
+        - $ref: 'models/ExecuteTaskRequiresUIResponseModel.yaml#/ExecuteTaskRequiresUIResponseModel'
+
+    #--------------------------------------------------------------------------------
+    # CreateAgendaItem - suspended task request/response models
+    #--------------------------------------------------------------------------------
+    ExecuteTaskUIRequestCreateAgendaItemModel:
+      description: |-
+        Information the message the client should display to the user asking if they
+        want to create the agenda item.
+      allOf:
+        - $ref: 'models/ExecuteTaskRequiresUIModel.yaml#/ExecuteTaskRequiresUIModel'
+        - type: object
+          properties:
+            userInteraction:
+              type: object
+              properties:
+                message:
+                  description: |-
+                    The message to display to the user asking if they would like
+                    to create the agenda item.
+                  type: string
+
+    ExecuteTaskUIResponseCreateAgendaItemModel:
+      description: |-
+        Contains the response information from a client for a task execution
+        that requires information for the CreateAgendaItem user interaction type.
+      allOf:
+        - $ref: 'models/ExecuteTaskRequiresUIResponseModel.yaml#/ExecuteTaskRequiresUIResponseModel'
+        - type: object
+          properties:
+            result:
+              description: |-
+                The users response to the message.  Workflow uses this to determine if it should
+                create the agenda item.
+              type: string
+              enum:
+              - "Yes"
+              - "No"
+          required:
+          - result
+
+    #--------------------------------------------------------------------------------
+    # CreateNote - suspended task request/response models
+    #--------------------------------------------------------------------------------
+    ExecuteTaskUIRequestCreateNoteModel:
+      description: |-
+        Information the client needs to display to allow the user to create a note.
+      allOf:
+        - $ref: 'models/ExecuteTaskRequiresUIModel.yaml#/ExecuteTaskRequiresUIModel'
+        - type: object
+          properties:
+            userInteraction:
+              type: object
+              properties:
+                noteText:
+                  description: The default note text
+                  type: string
+                displayNoteText:
+                  description: Determines if the user should be able to view/modify the note text
+                  type: boolean
+                promptForPage:
+                  description: Determines if the user should be able to select which page to add the note to
+                  type: boolean
+
+    ExecuteTaskUIResponseCreateNoteModel:
+      description: |-
+        Contains the response information from a client for a task execution
+        that requires information for the CreateNote user interaction type.
+      allOf:
+        - $ref: 'models/ExecuteTaskRequiresUIResponseModel.yaml#/ExecuteTaskRequiresUIResponseModel'
+        - type: object
+          properties:
+            result:
+              description: |-
+                Determines if workflow should create the note, or if the user canceled the creation.
+              type: string
+              enum:
+              - "CreateNote"
+              - "Cancel"
+            pageNumber:
+              description: |-
+                Index of the page to place the note on. Required if pageOption is SpecifiedPage.  If promptForPage was false
+                then this should be set to the currently display page.
+              type: integer
+            noteText:
+              description: Contents of the note text
+              type: string
+            pageOption:
+              description: |-
+                Determines what page the note should be placed on.  If promptForPage was false then this should be set to
+                SpecifiedPage
+              type: string
+              enum:
+                - FirstPage
+                - FirstNonBlankPage
+                - LastPage
+                - SpecifiedPage
+          required:
+            - result
+
+    #--------------------------------------------------------------------------------
+    # DisplayHtmlForm - suspended task request/response models
+    #--------------------------------------------------------------------------------
+    ExecuteTaskUIRequestDisplayHtmlFormModel:
+      description: |-
+        Information the client needs in order to display a HTML form
+      allOf:
+        - $ref: 'models/ExecuteTaskRequiresUIModel.yaml#/ExecuteTaskRequiresUIModel'
+        - type: object
+          properties:
+            userInteraction:
+              type: object
+              properties:
+                html:
+                  description: The HTML form to display
+                  type: string
+
+    ExecuteTaskUIResponseDisplayHtmlFormModel:
+      description: |-
+        Contains the response information from a client for a task execution
+        that requires information for the DisplayHtmlForm user interaction type.
+      allOf:
+        - $ref: 'models/ExecuteTaskRequiresUIResponseModel.yaml#/ExecuteTaskRequiresUIResponseModel'
+        - type: object
+          properties:
+            fields:
+              description: |-
+                List of name/value pairs containing the information from the form
+                being submitted by the user.
+              type: array
+              items:
+                $ref: "models/PostDataItemModel.yaml#/PostDataItemModel"
+
+    #--------------------------------------------------------------------------------
+    # DisplayFormUrl - suspended task request/response models
+    #--------------------------------------------------------------------------------
+    ExecuteTaskUIRequestDisplayFormUrlModel:
+      description: |-
+        Information the client needs in order to display a URL
+      allOf:
+        - $ref: 'models/ExecuteTaskRequiresUIModel.yaml#/ExecuteTaskRequiresUIModel'
+        - type: object
+          properties:
+            userInteraction:
+              type: object
+              properties:
+                url:
+                  description: The URL to display
+                  type: string
+
+    ExecuteTaskUIResponseDisplayFormUrlModel:
+      description: |-
+        Contains the response information from a client for a task execution
+        that requires information for the DisplayFormUrl user interaction type.
+      allOf:
+        - $ref: 'models/ExecuteTaskRequiresUIResponseModel.yaml#/ExecuteTaskRequiresUIResponseModel'
+        - type: object
+          properties:
+            fields:
+              description: |-
+                List of name/value pairs containing the information from the form
+                being submitted by the user.
+              type: array
+              items:
+                $ref: "models/PostDataItemModel.yaml#/PostDataItemModel"
+
+    #--------------------------------------------------------------------------------
+    # DisplayHtml - suspended task request/response models
+    #--------------------------------------------------------------------------------
+    ExecuteTaskUIRequestDisplayHtmlModel:
+      description: |-
+        Information the client needs in order to display HTML
+      allOf:
+        - $ref: 'models/ExecuteTaskRequiresUIModel.yaml#/ExecuteTaskRequiresUIModel'
+        - type: object
+          properties:
+            userInteraction:
+              type: object
+              properties:
+                html:
+                  description: The HTML to display
+                  type: string
+
+    ExecuteTaskUIResponseDisplayHtmlModel:
+      description: |-
+        Contains the response information from a client for a task execution
+        that requires information for the DisplayHtml user interaction type.
+      allOf:
+        - $ref: 'models/ExecuteTaskRequiresUIResponseModel.yaml#/ExecuteTaskRequiresUIResponseModel'
+        - type: object
+          properties:
+            fields:
+              description: |-
+                List of name/value pairs containing the information from the form
+                being submitted by the user.
+              type: array
+              items:
+                $ref: "models/PostDataItemModel.yaml#/PostDataItemModel"
+
+    #--------------------------------------------------------------------------------
+    # DisplayUrl - suspended task request/response models
+    #--------------------------------------------------------------------------------
+    ExecuteTaskUIRequestDisplayUrlModel:
+      description: |-
+        Information the client needs in order to display a URL
+      allOf:
+        - $ref: 'models/ExecuteTaskRequiresUIModel.yaml#/ExecuteTaskRequiresUIModel'
+        - type: object
+          properties:
+            userInteraction:
+              type: object
+              properties:
+                url:
+                  description: URL to display
+                  type: string
+
+    ExecuteTaskUIResponseDisplayUrlModel:
+      description: |-
+        Contains the response information from a client for a task execution
+        that requires information for the DisplayUrl user interaction type.
+      allOf:
+        - $ref: 'models/ExecuteTaskRequiresUIResponseModel.yaml#/ExecuteTaskRequiresUIResponseModel'
+        - type: object
+          properties:
+            fields:
+              description: |-
+                List of name/value pairs containing the information from the form
+                being submitted by the user.
+              type: array
+              items:
+                $ref: "models/PostDataItemModel.yaml#/PostDataItemModel"
+
+    #--------------------------------------------------------------------------------
+    # DisplayWorkItemList - suspended task request/response models
+    #--------------------------------------------------------------------------------
+    ExecuteTaskUIRequestDisplayWorkItemListModel:
+      description: |-
+        Information the client needs to display a list of work items the user can select from.
+      allOf:
+        - $ref: 'models/ExecuteTaskRequiresUIModel.yaml#/ExecuteTaskRequiresUIModel'
+        - type: object
+          properties:
+            userInteraction:
+              type: object
+              properties:
+                workItems:
+                  description: List of work items the user can select from
+                  type: array
+                  items:
+                    $ref: "models/WorkItemIDModel.yaml#/WorkItemIDModel"
+
+    ExecuteTaskUIResponseDisplayWorkItemListModel:
+      description: |-
+        Contains the response information from a client for a task execution
+        that requires information for the DisplayWorkItemList user interaction type.
+      allOf:
+        - $ref: 'models/ExecuteTaskRequiresUIResponseModel.yaml#/ExecuteTaskRequiresUIResponseModel'
+        - type: object
+          properties:
+            workItems:
+              description: List of work items selected by the user
+              type: array
+              items:
+                $ref: "models/WorkItemIDModel.yaml#/WorkItemIDModel"
+
+    #--------------------------------------------------------------------------------
+    # MessageBox - suspended task request/response models
+    #--------------------------------------------------------------------------------
+    ExecuteTaskUIRequestMessageBoxModel:
+      description: |-
+        Information describing the message box a client should display.
+      allOf:
+        - $ref: 'models/ExecuteTaskRequiresUIModel.yaml#/ExecuteTaskRequiresUIModel'
+        - type: object
+          properties:
+            userInteraction:
+              type: object
+              properties:
+                message:
+                  type: string
+                  description: Message to display to the user.
+
+    ExecuteTaskUIResponseMessageBoxModel:
+      description: |-
+        Contains the response information from a client for a task execution
+        that requires information for a MessageBox user interaction type.
+      allOf:
+        - $ref: 'models/ExecuteTaskRequiresUIResponseModel.yaml#/ExecuteTaskRequiresUIResponseModel'
+
+    #--------------------------------------------------------------------------------
+    # QuestionBox - suspended task request/response models
+    #--------------------------------------------------------------------------------
+    ExecuteTaskUIRequestQuestionBoxModel:
+      description: |-
+        Information describing a question box a client should display
+      allOf:
+        - $ref: 'models/ExecuteTaskRequiresUIModel.yaml#/ExecuteTaskRequiresUIModel'
+        - type: object
+          properties:
+            userInteraction:
+              type: object
+              properties:
+                message:
+                  type: string
+                  description: Message to display to the user.
+                yesButtonCaption:
+                  type: string
+                  description: Text to display on the Yes button.
+                noButtonCaption:
+                  type: string
+                  description: Text to display on the No button.
+                cancelButtonCaption:
+                  type: string
+                  description: Text to display on the Cancel button.
+                includeCancelButton:
+                  type: boolean
+                  description: Determines if the Cancel button should be displayed in the message prompt.
+
+    ExecuteTaskUIResponseQuestionBoxModel:
+      description: |-
+        Contains the response information from a client for a task execution
+        that requires information for a QuestionBox user interaction type.
+      allOf:
+        - $ref: 'models/ExecuteTaskRequiresUIResponseModel.yaml#/ExecuteTaskRequiresUIResponseModel'
+        - type: object
+          properties:
+            result:
+              type: string
+              enum:
+              - "Yes"
+              - "No"
+              - "Cancel"
+              description: The button the user pressed.
+          required:
+          - result
+
+    #--------------------------------------------------------------------------------
+    # SignDocument - suspended task request/response models
+    #--------------------------------------------------------------------------------
+    ExecuteTaskUIRequestSignDocumentModel:
+      description: |-
+        Information the client needs to allow the user to select a certificate to sign the document with.
+      allOf:
+        - $ref: 'models/ExecuteTaskRequiresUIModel.yaml#/ExecuteTaskRequiresUIModel'
+        - type: object
+          properties:
+            userInteraction:
+              type: object
+              properties:
+                certificates:
+                  description: List of certificates the user should choose from
+                  type: array
+                  items:
+                    $ref: 'models/X509Certificate2Model.yaml#/X509Certificate2Model'
+
+    ExecuteTaskUIResponseSignDocumentModel:
+      description: |-
+        Contains the response information from a client for a task execution
+        that requires information for the SignDocument user interaction type.
+      allOf:
+        - $ref: 'models/ExecuteTaskRequiresUIResponseModel.yaml#/ExecuteTaskRequiresUIResponseModel'
+        - type: object
+          properties:
+            result:
+              description: |-
+                Determines if a certificate was selected
+                <table>
+                  <tr>
+                    <th>CertificateSelected</th>
+                    <td>The user selected a certificate</td>
+                  </tr>
+                  <tr>
+                    <th>Cancel</th>
+                    <td>The user canceled the certificate selection</td>
+                  </tr>
+                </table>
+              type: string
+              enum:
+                - "CertificateSelected"
+                - "Cancel"
+            thumbPrint:
+              description: The thumb print of the user selected certificate.  **Required** when result is CertificateSelected.
+              type: string
+          required:
+            - result
+
+    #--------------------------------------------------------------------------------
+    # StampVersion - suspended task request/response models
+    #--------------------------------------------------------------------------------
+    ExecuteTaskUIRequestStampVersionModel:
+      description: |-
+        Information the client needs in order to version stamp the document
+      allOf:
+        - $ref: 'models/ExecuteTaskRequiresUIModel.yaml#/ExecuteTaskRequiresUIModel'
+        - type: object
+          properties:
+            userInteraction:
+              type: object
+              properties:
+                releaseDate:
+                  description: The release date of the verion. <a href="https://en.wikipedia.org/wiki/ISO_8601">ISO-8601 Date</a>.
+                  type: string
+
+    ExecuteTaskUIResponseStampVersionModel:
+      description: |-
+        Contains the response information from a client for a task execution
+        that requires information for the SignDocument user interaction type.
+      allOf:
+        - $ref: 'models/ExecuteTaskRequiresUIResponseModel.yaml#/ExecuteTaskRequiresUIResponseModel'
+        - type: object
+          properties:
+            result:
+              description: |-
+                Determines if workflow should version stamp the document
+                <table>
+                  <tr>
+                    <th>StampVersion</th>
+                    <td>Workflow should version stamp the document</td>
+                  </tr>
+                  <tr>
+                    <th>Cancel</th>
+                    <td>The user canceled the version stamping</td>
+                  </tr>
+                </table>
+              type: string
+              enum:
+                - "StampVersion"
+                - "Cancel"
+            versionName:
+              description: The name of the stamped version
+              type: string
+          required:
+            - result
+
+    #--------------------------------------------------------------------------------
+    # StepBreakpoint - suspended task request/response models
+    #--------------------------------------------------------------------------------
+    ExecuteTaskUIRequestStepBreakpointModel:
+      description: |-
+        Information that a client should display relating to the action/rule/task list that has just been executed.
+      allOf:
+        - $ref: 'models/ExecuteTaskRequiresUIModel.yaml#/ExecuteTaskRequiresUIModel'
+        - type: object
+          properties:
+            userInteraction:
+              type: object
+              properties:
+                taskId:
+                  description: Id of the task that was executed
+                  type: string
+                taskType:
+                  description: Determines if the taskId property is the id of an action, rule or task list
+                  type: string
+                  enum:
+                  - "Action"
+                  - "Rule"
+                  - "TaskList"
+                lifeCycleId:
+                  description: If an ad hoc task is being executed then this is the life cycle ID the task is contained in.
+                  type: string
+                queueId:
+                  description: If an ad hoc task is being executed then this is the queue ID the task is contained in.
+                  type: string
+
+    ExecuteTaskUIResponseStepBreakpointModel:
+      description: |-
+        Contains the response information from a client for a task execution
+        that requires information for the StepBreakpoint user interaction type.
+      allOf:
+        - $ref: 'models/ExecuteTaskRequiresUIResponseModel.yaml#/ExecuteTaskRequiresUIResponseModel'
+
+    #--------------------------------------------------------------------------------
+    # SelectAutoFillKeywordSet - suspended task request/response models
+    #--------------------------------------------------------------------------------
+    ExecuteTaskUIRequestSelectAutoFillKeywordSetModel:
+      description: |-
+        Information describing a select auto fill keyword sets a client should display.
+      allOf:
+        - $ref: 'models/ExecuteTaskRequiresUIModel.yaml#/ExecuteTaskRequiresUIModel'
+        - type: object
+          properties:
+            userInteraction:
+              type: object
+              properties:
+                autoFillKeywordSetId:
+                  description: Id of the auto fill keyword set
+                  type: string
+                keywordSetInstances:
+                  type: array
+                  items:
+                    $ref: 'models/AutoFillKeywordSetDataModel.yaml#/AutoFillKeywordSetDataModel'
+
+    ExecuteTaskUIResponseSelectAutoFillKeywordSetModel:
+      description: |-
+        Contains the response information from a client for a task execution
+        that requires information for a SelectAutoFillKeywordSet user interaction type.
+      allOf:
+        - $ref: 'models/ExecuteTaskRequiresUIResponseModel.yaml#/ExecuteTaskRequiresUIResponseModel'
+        - type: object
+          properties:
+            selectedInstanceIds:
+              type: array
+              description: List of auto fill keyword set instance ids selected by the user
+              items:
+                type: string
+            result:
+              type: string
+              enum:
+                - 'InstanceSelected'
+                - 'Cancel'
+              description: The action the user has taken.
+          required:
+            - result
+
+    #--------------------------------------------------------------------------------
+    # SelectUser - suspended task request/response models
+    #--------------------------------------------------------------------------------
+    ExecuteTaskUIRequestSelectUserModel:
+      description: |-
+        Information describing the instruction and list of OnBase user accounts that a client should display.
+      allOf:
+        - $ref: 'models/ExecuteTaskRequiresUIModel.yaml#/ExecuteTaskRequiresUIModel'
+        - type: object
+          properties:
+            userInteraction:
+              type: object
+              properties:
+                userIds:
+                  description: List of OnBase user account ids
+                  type: array                  
+                  items:
+                    type: string
+                instructions:
+                  description: Instructions to display in the user interface
+                  type: string
+
+    ExecuteTaskUIResponseSelectUserModel:
+      description: |-
+        Contains the response information from a client for a task execution
+        that requires information for a SelectUser interaction type.
+      allOf:
+        - $ref: 'models/ExecuteTaskRequiresUIResponseModel.yaml#/ExecuteTaskRequiresUIResponseModel'
+        - type: object
+          properties:
+            selectedUserId:
+              type: string
+              description: Selected OnBase user account id
+            result:
+              type: string
+              enum:
+                - 'Selected'
+                - 'Cancel'
+              description: The action that user has taken.
+          required:
+            - result
+
+    #--------------------------------------------------------------------------------
+    # SelectUserGroup - suspended task request/response models
+    #--------------------------------------------------------------------------------
+    ExecuteTaskUIRequestSelectUserGroupModel:
+      description: |-
+        Information describing the instruction and list of OnBase user groups that a client should display.
+      allOf:
+        - $ref: 'models/ExecuteTaskRequiresUIModel.yaml#/ExecuteTaskRequiresUIModel'
+        - type: object
+          properties:
+            userInteraction:
+              type: object
+              properties:
+                userGroupIds:
+                  description: List of OnBase user group ids
+                  type: array                  
+                  items:
+                    type: string
+                instructions:
+                  description: Instructions to display in the user interface
+                  type: string
+
+    ExecuteTaskUIResponseSelectUserGroupModel:
+      description: |-
+        Contains the response information from a client for a task execution
+        that requires information for a SelectUserGroup interaction type.
+      allOf:
+        - $ref: 'models/ExecuteTaskRequiresUIResponseModel.yaml#/ExecuteTaskRequiresUIResponseModel'
+        - type: object
+          properties:
+            selectedUserGroupId:
+              type: string
+              description: Selected OnBase user group id
+            result:
+              type: string
+              enum:
+                - 'Selected'
+                - 'Cancel'
+              description: The action that user has taken.
+          required:
+            - result
+
+    #--------------------------------------------------------------------------------
+    # SelectRole - suspended task request/response models
+    #--------------------------------------------------------------------------------
+    ExecuteTaskUIRequestSelectRoleModel:
+      description: |-
+        Information describing the instruction and list of OnBase roles that a client should display.
+      allOf:
+        - $ref: 'models/ExecuteTaskRequiresUIModel.yaml#/ExecuteTaskRequiresUIModel'
+        - type: object
+          properties:
+            userInteraction:
+              type: object
+              properties:
+                roleIds:
+                  description: List of OnBase role ids
+                  type: array                  
+                  items:
+                    type: string
+                instructions:
+                  description: Instructions to display in the user interface
+                  type: string
+
+    ExecuteTaskUIResponseSelectRoleModel:
+      description: |-
+        Contains the response information from a client for a task execution
+        that requires information for a SelectRole interaction type.
+      allOf:
+        - $ref: 'models/ExecuteTaskRequiresUIResponseModel.yaml#/ExecuteTaskRequiresUIResponseModel'
+        - type: object
+          properties:
+            selectedRoleId:
+              type: string
+              description: Selected OnBase role id
+            result:
+              type: string
+              enum:
+                - 'Selected'
+                - 'Cancel'
+              description: The action that user has taken.
+          required:
+            - result
+
+  #--------------------------------------------------------------------------------
+  # Security schemes
+  #--------------------------------------------------------------------------------
+  securitySchemes:
+    Bearer:
+      type: http
+      scheme: bearer

@@ -1,0 +1,15 @@
+WorkItemIDModel:
+  description: |-
+    Contains the information that uniquely identifies a work item.
+  properties:
+    id:
+      type: string
+      description: ID of work item.
+    classId:
+      type: string
+      description: Class ID of work item if required.
+    type:
+      $ref: '../enums/WorkItemTypeEnum.yaml#/WorkItemTypeEnum'
+  required:
+    - id
+    - type

@@ -1,0 +1,22 @@
+ExecuteTaskModel:
+  description: Information required for workflow to execute an ad hoc or system task.
+  properties:
+    allowedInteractions:
+      type: array
+      items:
+        $ref: '../enums/TaskInteractionTypeEnum.yaml#/TaskInteractionTypeEnum'
+      example:
+        - MessageBox
+        - QuestionBox
+      description: |-
+        List of task interaction types the client supports.  An action or rule may perform
+        a default operation if it is executed and wanted to require a task interaction
+        that is not in this list.
+    workItems:
+      type: array
+      items:
+        $ref: 'WorkItemIDModel.yaml#/WorkItemIDModel'
+      description: |-
+        List of work items to execute the task on.
+  required:
+    - workItems

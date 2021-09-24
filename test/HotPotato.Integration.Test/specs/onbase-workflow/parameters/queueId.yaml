@@ -1,0 +1,23 @@
+queueId_path:
+  in: path
+  name: queueId
+  description: The unique identifier of a queue.
+  required: true
+  schema:
+    type: string
+
+queueId_query:
+  in: query
+  name: queueId
+  description: The unique identifier of a queue.
+  required: true
+  schema:
+    type: string
+    
+queueId_not_required_query:
+  in: query
+  name: queueId
+  description: The unique identifier of a queue.
+  required: false
+  schema:
+    type: string

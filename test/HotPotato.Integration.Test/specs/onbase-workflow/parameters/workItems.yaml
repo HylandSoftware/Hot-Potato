@@ -1,0 +1,28 @@
+workItems_query:
+  in: query
+  name: workItems
+  schema:
+    type: string
+  required: true
+  description: |-
+    <a href="https://tools.ietf.org/id/draft-nottingham-atompub-fiql-00.txt">FIQL</a> query
+    describing a list of work items to retrieve the list of ad hoc and system tasks for.
+
+    If an ad hoc task has filter rules configured, then they will be evaluated and tasks that
+    do not meet the filter rules conditions will not be returned.
+
+    An example of specifying document id 101 and 102
+    ```
+    (type==document;id==101),(type==document;id==102)
+    ```
+
+    An example of specifying a WorkView object id 101 and 102 in class 201
+    ```
+    (type==workview;classid==201;id==101),(type==workview;classid==201;id==101)
+    ```
+
+    Only the equals operator will be supported, submitting a query with any other
+    operator will result in a 400 Bad Request response.
+
+    For information about how FIQL is used for this parameter see 
+    https://confluence.hyland.com/display/WF/APIs+using+FIQL+for+Work+Items

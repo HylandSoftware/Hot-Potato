@@ -1,0 +1,11 @@
+ActionCollectionModel:
+  description: |-
+    Information relating to a list of workflow actions.
+  properties:
+    items:
+      description: List of actions
+      type: array
+      items:
+        $ref: 'ActionModel.yaml#/ActionModel'
+  required:
+    - items

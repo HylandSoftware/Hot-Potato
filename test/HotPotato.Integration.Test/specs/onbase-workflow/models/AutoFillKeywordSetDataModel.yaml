@@ -1,0 +1,13 @@
+AutoFillKeywordSetDataModel:
+  description: |-
+    The data for a single instance of an AutoFill Keyword Set row
+  properties:
+    id:
+      description: The unique identifier of the instance
+      type: string
+      example: 101
+    keywords:
+      description: The list of keywords in the instance
+      type: array
+      items: 
+        $ref: "AutoFillKeywordSetKeywordModel.yaml#/AutoFillKeywordSetKeywordModel"        

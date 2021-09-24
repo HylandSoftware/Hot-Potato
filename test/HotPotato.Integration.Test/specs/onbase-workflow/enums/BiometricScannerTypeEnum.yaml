@@ -1,0 +1,11 @@
+BiometricScannerTypeEnum:
+  description: |-
+    Type of biometric device
+  type: string
+  enum: 
+    - Unknown
+    - FingerPrint
+    - Face
+    - Iris
+    - PalmVein
+    

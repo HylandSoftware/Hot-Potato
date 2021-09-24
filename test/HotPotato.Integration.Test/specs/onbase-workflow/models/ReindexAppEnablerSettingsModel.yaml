@@ -1,0 +1,25 @@
+ReindexAppEnablerSettingsModel:
+  description: |-
+    Settings relating to application enabler and the  reindex action
+  properties:
+    clearKeywords:
+      description: Determines if application enabler should clear the keywords
+      type: boolean
+    replaceKeywords:
+      description: Determines if application enabler should replace the keywords
+      type: boolean
+    autoIndexDocuments:
+      description: Determines if application enabler should auto-index document
+      type: boolean
+    userMustResolveDocumentType:
+      description: Determines if the user must resolve the document type
+      type: boolean
+    useOnlyActiveKeywords:
+      description: Determines if application enabler should only use the active keywords
+      type: boolean
+    allowChangeDocumentType:
+      description: Determines if application enabler should be able to change the document type
+      type: boolean
+    preventAutoFillExpansion:
+      description: Determines if application enabler should prevent AutoFill expansion
+      type: boolean

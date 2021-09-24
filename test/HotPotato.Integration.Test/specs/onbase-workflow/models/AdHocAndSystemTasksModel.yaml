@@ -1,0 +1,19 @@
+AdHocAndSystemTasksModel:
+  description: |-
+    Gets the list of ad hoc and system tasks that can be executed on the work items.
+  properties:
+    adhocTasks:
+      description: |-
+        List of ad hoc tasks and the queues they are in which can be executed on the work items.
+      type: array
+      items:
+        $ref: 'QueueIdAndAdHocTasksModel.yaml#/QueueIdAndAdHocTasksModel'
+    systemTasks:
+      description: |-
+        List of system tasks that can be executed on the work items.
+      type: array
+      items:
+        $ref: 'SystemTaskModel.yaml#/SystemTaskModel'
+  required:
+    - adhocTasks
+    - systemTasks

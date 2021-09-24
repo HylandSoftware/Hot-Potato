@@ -1,0 +1,13 @@
+401Unauthorized:
+  description: |-
+    Response when the client does not supply authorization credentials.
+  content:
+    application/problem+json:
+      schema:
+        $ref: '../models/ProblemModel.yaml#/ProblemModel'
+      example:
+        type: https://example.net/unauthorized
+        title: Unauthorized
+        status: 401
+        detail: Not authorized to perform this action
+        instance: /example-resource

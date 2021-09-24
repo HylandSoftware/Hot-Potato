@@ -1,0 +1,9 @@
+QueueCollectionModel:
+  description: |-
+    A list of queues.
+  properties:
+    items:
+      description: List of queues.
+      type: array
+      items:
+        $ref: 'QueueModel.yaml#/QueueModel'

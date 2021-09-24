@@ -1,0 +1,12 @@
+PageRangeModel:
+  description: |-
+    Contains a page range
+  type: object
+  properties:
+    pageStart:
+      description: The start of the page range
+      type: integer
+    pageEnd:
+      description: The end of the page range
+      type: integer
+      

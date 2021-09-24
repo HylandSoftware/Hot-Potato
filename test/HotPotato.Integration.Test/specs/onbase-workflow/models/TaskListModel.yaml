@@ -1,0 +1,19 @@
+TaskListModel:
+  description: |-
+    Information relating to a  workflow task list.
+  properties:
+    id:
+      description: |-
+        The unique identifier of the task list.
+      type: string
+      example: 101
+    systemName:
+      description: |-
+        The name of the task list.
+      type: string
+      example: Transition Item
+    lifeCycleId:
+      description: |- 
+        The life cycle id this task list is scoped to
+      type: string
+      example: 301

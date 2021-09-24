@@ -1,0 +1,15 @@
+WorkItemLocationModel:
+  description: |-
+    Contains the life cycle and queue id a work item is in.  If the user does not have rights
+    to the life cycle and/or queue the id will be zero.
+  properties:
+    lifeCycleId:
+      description: |-
+        The unique identifier of the life cycle or zero if the user does not have rights to the life cycle.
+      type: string
+      example: 101
+    queueId:
+      description: |-
+        The unique identifier of the queue or zero if the user does not have rights to the queue.
+      type: string
+      example: 102

@@ -1,0 +1,39 @@
+QueueModel:
+  description: |-
+    Gets the queue with the associated id.
+  properties:
+    id:
+      description: |-
+        The unique identifier of the queue.
+      type: string
+      example: 101
+    systemName:
+      description: |-
+        The untranslated system name of the queue.  Localization is controlled by the Accept-Language header and the 
+        language of the response is represented by the Content-Language header.
+      type: string
+      example: Invoice Entry Queue
+    name:
+      description: |-
+        The localized name of the queue.
+      type: string
+      example: Invoice Entry Queue
+    smallImageID:
+      description: |-
+        The document ID in SYS System Icons or SYS System Bitmaps which is the image for the item.
+      type: string
+      example: 201
+    largeImageID:
+      description: |-
+        The document ID in SYS System Icons or SYS System Bitmaps which is the image for the item.
+      type: string
+      example: 202
+    lifeCycleId:
+      description: The unique identifier of the life cycle containing this queue.
+      type: string
+      example: 301
+    sequence:
+      description: The order of this queue relative to other queues in the same life cycle.
+      type: integer
+      format: int32
+      example: 0

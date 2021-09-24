@@ -1,0 +1,6 @@
+WorkItemTypeEnum:
+  description: |-
+    Type of work item.
+  type: string
+  enum: [Document,Folder,WorkView,Entity,EISMessageItem]
+  example: Document

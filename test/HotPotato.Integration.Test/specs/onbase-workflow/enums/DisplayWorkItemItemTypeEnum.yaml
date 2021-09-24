@@ -1,0 +1,10 @@
+DisplayWorkItemItemTypeEnum:
+  description: |-
+    Locations where a work item can be displayed in the client
+  type: string
+  enum: 
+    - PrimaryPane
+    - SecondaryPane
+    - SeparateWindow
+    - TopLevelWindow
+    

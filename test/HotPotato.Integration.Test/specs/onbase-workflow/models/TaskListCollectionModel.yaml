@@ -1,0 +1,11 @@
+TaskListCollectionModel:
+  description: |-
+    Information relating to a list of workflow task lists.
+  properties:
+    items:
+      description: List of task lists
+      type: array
+      items:
+        $ref: 'TaskListModel.yaml#/TaskListModel'
+  required:
+    - items

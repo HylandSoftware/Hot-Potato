@@ -1,0 +1,30 @@
+SystemTaskModel:
+  description: |-
+    Information relating to a system task.
+  properties:
+    id:
+      description: |-
+        The unique identifier of the system task.
+      type: string
+      example: 101
+    systemName:
+      description: |-
+        The untranslated system name of the system task.  Localization is controlled by the Accept-Language header and the
+        language of the response is represented by the Content-Language header.
+      type: string
+      example: Transition Item
+    name:
+      description: |-
+        The localized name of the system task.
+      type: string
+      example: Transition Item
+    smallImageID:
+      description: |-
+        The document ID in SYS System Icons or SYS System Bitmaps which is the image for the item.
+      type: string
+      example: 201
+    largeImageId:
+      description: |-
+        The document ID in SYS System Icons or SYS System Bitmaps which is the image for the item.
+      type: string
+      example: 201

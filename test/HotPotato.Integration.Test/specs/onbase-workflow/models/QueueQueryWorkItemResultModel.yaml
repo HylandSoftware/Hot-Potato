@@ -1,0 +1,31 @@
+QueueQueryWorkItemResultModel:
+  description: |-
+    Represents a work item returned from a queue query
+  properties:
+    id:
+      description: |-
+        ID of the work item.
+      type: string
+      example: 101
+    classId:
+      description: |-
+        Class ID of the work item.
+      type: string
+      example: 0
+    workItemType:
+      description: |-
+        Type of work item.
+      type: string
+      enum:
+       - Document
+       - Folder
+       - WorkView
+       - Entity
+       - EISMessageItem
+      example: Document
+    displayColumns:
+      description: |-
+        List of display columns returned from executing the query
+      type: array
+      items:
+        $ref: 'DisplayColumnModel.yaml#/DisplayColumnModel'

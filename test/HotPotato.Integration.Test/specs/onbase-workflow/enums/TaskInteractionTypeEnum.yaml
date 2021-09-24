@@ -1,0 +1,22 @@
+TaskInteractionTypeEnum:
+  description: |-
+    Interaction types that tasks can require.
+  type: string
+  enum:
+    - Breakpoint
+    - CreateAgendaItem
+    - CreateNote
+    - DisplayHtmlForm
+    - DisplayFormUrl
+    - DisplayHtml
+    - DisplayUrl
+    - DisplayWorkItemList
+    - MessageBox
+    - QuestionBox
+    - SelectAutoFillKeywordSet
+    - SelectRole
+    - SelectUser
+    - SelectUserGroup
+    - SignDocument
+    - StampVersion
+    - StepBreakpoint

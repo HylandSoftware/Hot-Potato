@@ -1,0 +1,11 @@
+SystemTaskCollectionModel:
+  description: |-
+    Information relating to an system task.
+  properties:
+    items:
+      description: List of system tasks in the life cycle and queue
+      type: array
+      items:
+        $ref: 'SystemTaskModel.yaml#/SystemTaskModel'
+  required:
+    - items

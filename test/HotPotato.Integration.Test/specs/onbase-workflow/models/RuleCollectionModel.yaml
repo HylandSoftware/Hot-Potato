@@ -1,0 +1,11 @@
+RuleCollectionModel:
+  description: |-
+    Information relating to a list of workflow rules.
+  properties:
+    items:
+      description: List of rules
+      type: array
+      items:
+        $ref: 'RuleModel.yaml#/RuleModel'
+  required:
+    - items

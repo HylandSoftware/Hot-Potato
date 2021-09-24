@@ -1,0 +1,15 @@
+DisplayColumnModel:
+  description: |-
+    Display column values
+  properties:
+    index:
+      description: |-
+        Index representing the Display column configuration associated with this display column.
+      type: integer
+      format: int32
+      example: 0
+    value:
+      description: |-
+        Display column value.
+      type: string
+      example: 'Purchase Order 989 for COMPUTERS ARE US in the amount of $959.00'
