@@ -37,6 +37,9 @@ namespace HotPotato.OpenApi.Validators
 			using (HttpResponseMessage testRespMsg = new HttpResponseMessage(statusCode))
 			{
 				testRespMsg.Content = new StringContent(bodyString, Encoding.UTF8, contentType);
+				//Content-Language header now needs to be set for workflow spec -
+				//it also doubles up as a good test for external ref handling
+				testRespMsg.Content.Headers.Add("Content-Language", "en-US");
 				var testResponse = await testRespMsg.ToClientResponseAsync();
 
 				using (HotPotatoRequest testRequest = new HotPotatoRequest(reqMethod, new Uri(endpointURI)))
