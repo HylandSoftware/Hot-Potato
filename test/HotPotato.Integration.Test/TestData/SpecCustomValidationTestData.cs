@@ -33,7 +33,7 @@ namespace HotPotato.Http.Default
 						"10101" };
 
 			yield return new object[] { "specs/rdds/configurationservice/", HttpMethod.Get,
-			HttpStatusCode.OK, "https://api.hyland.com/ibpaf/rdds/configurations/48/content", "text/plain", "Configuration Content"};
+				HttpStatusCode.OK, "https://api.hyland.com/ibpaf/rdds/configurations/48/content", "text/plain", "Configuration Content"};
 		}
 		IEnumerator IEnumerable.GetEnumerator() => GetEnumerator();
 	}
