@@ -28,5 +28,10 @@ namespace HotPotato.OpenApi.Models
 			Reasons = reasons;
 			ValidationErrors = validationErrors;
 		}
+
+		public override string ToString()
+		{
+			return JsonConvert.SerializeObject(this);
+		}
 	}
 }
