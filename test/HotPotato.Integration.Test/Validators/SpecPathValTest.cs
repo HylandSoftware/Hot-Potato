@@ -19,8 +19,6 @@ namespace HotPotato.OpenApi.Validators
 			ISpecificationProvider specPro = provider.GetService<ISpecificationProvider>();
 			OpenApiDocument swagDoc = specPro.GetSpecDocument();
 
-			ResultCollector resColl = new ResultCollector();
-
 			PathValidator subject = new PathValidator("http://api.docs.hyland.io/keyword/keyword-type-groups/48732/keyword-types");
 
 			Assert.True(subject.Validate(swagDoc));
@@ -30,15 +28,13 @@ namespace HotPotato.OpenApi.Validators
 		[Fact]
 		public void PathValidator_GeneratesSpecPathWithoutParam()
 		{
-			string specPath = SpecPath("specs/workflow/", "specification.yaml");
+			string specPath = SpecPath("specs/onbase-workflow/", "specification.yaml");
 			ServiceProvider provider = GetServiceProvider(specPath);
 
 			ISpecificationProvider specPro = provider.GetService<ISpecificationProvider>();
 			OpenApiDocument swagDoc = specPro.GetSpecDocument();
 
-			ResultCollector resColl = new ResultCollector();
-
-			PathValidator subject = new PathValidator("https://api.hyland.com/workflow/life-cycles");
+			PathValidator subject = new PathValidator("https://api.hyland.com/onbase-workflow/life-cycles");
 
 			Assert.True(subject.Validate(swagDoc));
 			Assert.Equal("get", subject.Result.Keys.ElementAt(0).ToLower());

@@ -61,7 +61,14 @@ namespace HotPotato.OpenApi.Validators
 					//The validation strategy should now only create one passing result for both body and header
 					Result result = results.ElementAt(0);
 
-					Assert.Equal(State.Pass, result.State);
+					try
+					{
+						Assert.True(result.State == State.Pass, result.ToString());
+					}
+					finally
+					{
+						results.Clear();
+					}
 
 				}
 			}
@@ -137,7 +144,6 @@ namespace HotPotato.OpenApi.Validators
 
 					Assert.Equal(State.Fail, result.State);
 					Assert.Equal(Reason.MissingHeaders, result.Reasons.ElementAt(0));
-
 				}
 			}
 		}
@@ -171,7 +177,7 @@ namespace HotPotato.OpenApi.Validators
 					List<Result> results = collector.Results;
 					Result result = results.ElementAt(0);
 
-					Assert.Equal(State.Pass, result.State);
+					Assert.True(result.State == State.Pass, result.ToString());
 				}
 			}
 		}

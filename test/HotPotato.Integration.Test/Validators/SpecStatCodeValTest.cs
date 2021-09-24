@@ -48,8 +48,7 @@ namespace HotPotato.OpenApi.Validators
 					List<Result> results = collector.Results;
 					Result result = results.ElementAt(0);
 
-					Assert.Equal(State.Pass, result.State);
-
+					Assert.True(result.State == State.Pass, result.ToString());
 				}
 			}
 		}
@@ -80,8 +79,7 @@ namespace HotPotato.OpenApi.Validators
 					List<Result> results = collector.Results;
 					Result result = results.ElementAt(0);
 
-					Assert.Equal(State.Pass, result.State);
-
+					Assert.True(result.State == State.Pass, result.ToString());
 				}
 			}
 		}

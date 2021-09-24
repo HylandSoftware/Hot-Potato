@@ -53,15 +53,14 @@ namespace HotPotato.OpenApi.Validators
 					List<Result> results = collector.Results;
 					Result result = results.ElementAt(0);
 
-					Assert.Equal(State.Pass, result.State);
-
+					Assert.True(result.State == State.Pass, result.ToString());
 				}
 			}
 		}
 
 		[Theory]
 		[ClassData(typeof(SpecBodyInvalidTestData))]
-		public async Task BodyValidator_CreatesInvalidResult(string specSubPath, HttpMethod reqMethod, HttpStatusCode statusCode, 
+		public async Task BodyValidator_CreatesInvalidResult(string specSubPath, HttpMethod reqMethod, HttpStatusCode statusCode,
 			string endpointURI, string contentType, object bodyJson, ValidationErrorKind expectedKind1, ValidationErrorKind expectedKind2)
 		{
 
@@ -124,15 +123,14 @@ namespace HotPotato.OpenApi.Validators
 					List<Result> results = collector.Results;
 					Result result = results.ElementAt(0);
 
-					Assert.Equal(State.Pass, result.State);
-
+					Assert.True(result.State == State.Pass, result.ToString());
 				}
 			}
 		}
 
 		[Theory]
 		[ClassData(typeof(CustomSpecNegTestData))]
-		public async Task BodyValidator_CreatesInvalidResultWithDiffTypes(string specSubPath, HttpMethod reqMethod, 
+		public async Task BodyValidator_CreatesInvalidResultWithDiffTypes(string specSubPath, HttpMethod reqMethod,
 			HttpStatusCode statusCode, string endpointURI, string contentType, string bodyString, ValidationErrorKind errorKind)
 		{
 			string specPath = SpecPath(specSubPath, "specification.yaml");
