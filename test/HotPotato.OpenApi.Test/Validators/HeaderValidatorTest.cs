@@ -19,7 +19,7 @@ namespace HotPotato.OpenApi.Validators
 		public void HeaderValidator_ReturnsFalseWithMissingHeaders()
 		{
 			OpenApiResponse swagResp = new OpenApiResponse();
-			swagResp.Headers.Add(AValidHeaderKey, new JsonSchema());
+			swagResp.Headers.Add(AValidHeaderKey, new OpenApiHeader());
 			Core.Http.HttpHeaders headers = new Core.Http.HttpHeaders();
 
 			HeaderValidator subject = new HeaderValidator(headers);
@@ -33,7 +33,7 @@ namespace HotPotato.OpenApi.Validators
 		public void HeaderValidator_ReturnsFalseWithNullHeaders()
 		{
 			OpenApiResponse swagResp = new OpenApiResponse();
-			swagResp.Headers.Add(AValidHeaderKey, new JsonSchema());
+			swagResp.Headers.Add(AValidHeaderKey, new OpenApiHeader());
 
 			HeaderValidator subject = new HeaderValidator(null);
 			InvalidResult result = (InvalidResult)subject.Validate(swagResp);
@@ -46,7 +46,7 @@ namespace HotPotato.OpenApi.Validators
 		public void HeaderValidator_ReturnsFalseWithNullOpenApiResponse()
 		{
 			OpenApiResponse swagResp = new OpenApiResponse();
-			swagResp.Headers.Add(AValidHeaderKey, new JsonSchema());
+			swagResp.Headers.Add(AValidHeaderKey, new OpenApiHeader());
 
 			HeaderValidator subject = new HeaderValidator(null);
 			InvalidResult result = (InvalidResult)subject.Validate(swagResp);
@@ -59,7 +59,11 @@ namespace HotPotato.OpenApi.Validators
 		public void HeaderValidator_ReturnsTrueWithValidSchema()
 		{
 			OpenApiResponse swagResp = new OpenApiResponse();
-			swagResp.Headers.Add(AValidHeaderKey, JsonSchema.CreateAnySchema());
+			OpenApiHeader header = new OpenApiHeader()
+			{
+				Schema = JsonSchema.CreateAnySchema()
+			};
+			swagResp.Headers.Add(AValidHeaderKey, header);
 
 			Core.Http.HttpHeaders headers = new Core.Http.HttpHeaders();
 			headers.Add(AValidHeaderKey, AValidHeaderValue);
@@ -74,7 +78,12 @@ namespace HotPotato.OpenApi.Validators
 		public void HeaderValidator_ReturnsFalseWithInvalidSchema()
 		{
 			OpenApiResponse swagResp = new OpenApiResponse();
-			swagResp.Headers.Add(AValidHeaderKey, JsonSchema.FromJsonAsync(AValidSchema).Result);
+			OpenApiHeader header = new OpenApiHeader()
+			{
+				Schema = JsonSchema.FromJsonAsync(AValidSchema).Result
+			};
+
+			swagResp.Headers.Add(AValidHeaderKey, header);
 
 			Core.Http.HttpHeaders headers = new Core.Http.HttpHeaders();
 			headers.Add(AValidHeaderKey, AnInvalidValue);
@@ -93,8 +102,13 @@ namespace HotPotato.OpenApi.Validators
 			uriSchema.Type = JsonObjectType.String;
 			uriSchema.Format = JsonFormatStrings.Uri;
 
+			OpenApiHeader header = new OpenApiHeader()
+			{
+				Schema = uriSchema
+			};
+
 			OpenApiResponse swagResp = new OpenApiResponse();
-			swagResp.Headers.Add(AValidHeaderKey, uriSchema);
+			swagResp.Headers.Add(AValidHeaderKey, header);
 
 			Core.Http.HttpHeaders headers = new Core.Http.HttpHeaders();
 			headers.Add(AValidHeaderKey, NotAUriString);
@@ -114,8 +128,13 @@ namespace HotPotato.OpenApi.Validators
 			byteSchema.Type = JsonObjectType.String;
 			byteSchema.Format = JsonFormatStrings.Byte;
 
+			OpenApiHeader header = new OpenApiHeader()
+			{
+				Schema = byteSchema
+			};
+
 			OpenApiResponse swagResp = new OpenApiResponse();
-			swagResp.Headers.Add(AValidHeaderKey, byteSchema);
+			swagResp.Headers.Add(AValidHeaderKey, header);
 
 			Core.Http.HttpHeaders headers = new Core.Http.HttpHeaders();
 			headers.Add(AValidHeaderKey, AValidEncodedHeaderValue);
