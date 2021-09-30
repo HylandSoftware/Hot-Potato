@@ -17,6 +17,7 @@ namespace HotPotato.E2E.Test
 	public class SanityTest
 	{
 		private IWebHost host;
+		private bool specTokenExists;
 
 		private const string ApiLocation = "http://localhost:5000";
 		private const string Endpoint = "/endpoint";
@@ -32,11 +33,14 @@ namespace HotPotato.E2E.Test
 		public SanityTest(HostFixture fixture)
 		{
 			host = fixture.host;
+			specTokenExists = fixture.specTokenExists;
 		}
 
-		[Fact]
+		[SkippableFact]
 		public async Task HotPotato_Should_Return_OK_And_A_String()
 		{
+			Skip.IfNot(specTokenExists, TestConstants.SkipMessage);
+
 			var servicePro = host.Services;
 
 			//Setting up mock server to hit
@@ -73,9 +77,11 @@ namespace HotPotato.E2E.Test
 			}
 		}
 
-		[Fact]
+		[SkippableFact]
 		public async Task HotPotato_Should_Return_OK_And_A_JSON_Object()
 		{
+			Skip.IfNot(specTokenExists, TestConstants.SkipMessage);
+
 			var servicePro = host.Services;
 
 			//Setting up mock server to hit
@@ -120,9 +126,11 @@ namespace HotPotato.E2E.Test
 			}
 		}
 
-		[Fact]
+		[SkippableFact]
 		public async Task HotPotato_Should_Return_404_Error()
 		{
+			Skip.IfNot(specTokenExists, TestConstants.SkipMessage);
+
 			var servicePro = host.Services;
 
 			using (var server = FluentMockServer.Start(ApiLocation))
@@ -155,9 +163,11 @@ namespace HotPotato.E2E.Test
 			}
 		}
 
-		[Fact]
+		[SkippableFact]
 		public async Task HotPotato_Should_Return_500_Error()
 		{
+			Skip.IfNot(specTokenExists, TestConstants.SkipMessage);
+
 			var servicePro = host.Services;
 
 			using (var server = FluentMockServer.Start(ApiLocation))

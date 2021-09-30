@@ -18,6 +18,7 @@ namespace HotPotato.E2E.Test
 	public class AutomaticDecompressionTest
 	{
 		private IWebHost host;
+		private bool specTokenExists;
         
 		private const string ApiLocation = "http://localhost:5000";
 		private const string Endpoint = "/endpoint";
@@ -41,12 +42,15 @@ namespace HotPotato.E2E.Test
 
 		public AutomaticDecompressionTest(HostFixture fixture)
 		{
-			host = fixture.host;          
+			host = fixture.host;
+			specTokenExists = fixture.specTokenExists;
 		}
 
-		[Fact]
+		[SkippableFact]
 		public async Task HotPotato_ShouldAutomaticallyDecompressGZip()
 		{
+			Skip.IfNot(specTokenExists, TestConstants.SkipMessage);
+
 			var servicePro = host.Services;
 
 			using (var server = FluentMockServer.Start(ApiLocation))
@@ -78,9 +82,11 @@ namespace HotPotato.E2E.Test
 			}
 		}
 
-		[Fact]
+		[SkippableFact]
 		public async Task HotPotato_ShouldAutomaticallyDecompressDeflate()
 		{
+			Skip.IfNot(specTokenExists, TestConstants.SkipMessage);
+
 			var servicePro = host.Services;
 
 			using (var server = FluentMockServer.Start(ApiLocation))

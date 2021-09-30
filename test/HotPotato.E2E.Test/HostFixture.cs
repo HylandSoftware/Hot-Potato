@@ -1,5 +1,6 @@
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using HotPotato.AspNetCore.Host;
@@ -14,6 +15,7 @@ namespace HotPotato.E2E.Test
 	public class HostFixture : IDisposable
 	{
 		public IWebHost host { get; }
+		public bool specTokenExists { get; }
 
 		public HostFixture()
 		{
@@ -41,6 +43,12 @@ namespace HotPotato.E2E.Test
 				.UseUrls("http://0.0.0.0:3232")
 				.UseStartup<Startup>()
 			.Build();
+
+			IConfiguration configuration = host.Services.GetService<IConfiguration>();
+			if (!string.IsNullOrWhiteSpace(configuration["SpecToken"]))
+			{
+				specTokenExists = true;
+			}
 
 			host.Start();
 		}

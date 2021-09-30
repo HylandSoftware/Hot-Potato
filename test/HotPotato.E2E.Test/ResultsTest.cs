@@ -24,6 +24,7 @@ namespace HotPotato.E2E.Test
 	public class ResultsTest
 	{
 		private IWebHost host;
+		private bool specTokenExists;
 
 		private const string ApiLocation = "http://localhost:5000";
 		private const string Endpoint = "/mockendpoint";
@@ -41,12 +42,15 @@ namespace HotPotato.E2E.Test
 		public ResultsTest(HostFixture fixture)
 		{
 			host = fixture.host;
+			specTokenExists = fixture.specTokenExists;
 		}
 
 
-		[Fact]
+		[SkippableFact]
 		public async Task HotPotato_Should_Set_Respective_Custom_Headers()
 		{
+			Skip.IfNot(specTokenExists, TestConstants.SkipMessage);
+
 			var servicePro = host.Services;
 
 			//Setting up mock server to hit
@@ -94,9 +98,11 @@ namespace HotPotato.E2E.Test
 			}
 		}
 
-		[Fact]
+		[SkippableFact]
 		public async Task HotPotato_ResultState_ShouldSerializeCorrectly()
 		{
+			Skip.IfNot(specTokenExists, TestConstants.SkipMessage);
+
 			var servicePro = host.Services;
 
 			//Setting up mock server to hit
