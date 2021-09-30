@@ -23,6 +23,7 @@ namespace HotPotato.E2E.Test
 				.ConfigureAppConfiguration((hostingContext, config) =>
 				{
 					config.SetBasePath(hostingContext.HostingEnvironment.ContentRootPath);
+					//this uses the appsetting.json from the HotPotato.AspNetCore.Host
 					config.AddJsonFile("appsettings.json", optional: true);
 					config.AddEnvironmentVariables();
 					config.AddUserSecrets<HostFixture>();
