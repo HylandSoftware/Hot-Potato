@@ -1,9 +1,0 @@
-WorkViewObjectDisplayTypeEnum:
-  description: |-
-    Determines how a WorkView object should be displayed
-  type: string
-  enum: 
-    - NewWindow
-    - SameWindow
-    - UserOption
-    

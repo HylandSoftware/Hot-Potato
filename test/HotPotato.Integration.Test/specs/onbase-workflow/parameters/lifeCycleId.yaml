@@ -1,7 +1,0 @@
-lifeCycleId_path:
-  in: path
-  name: lifeCycleId
-  description: The unique identifier of a life cycle.
-  required: true
-  schema:
-    type: string

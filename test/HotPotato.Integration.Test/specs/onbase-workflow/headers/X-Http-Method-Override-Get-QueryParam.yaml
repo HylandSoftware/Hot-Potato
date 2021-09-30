@@ -1,9 +1,0 @@
-X-Http-Method-Override-Get-QueryParam:
-  in: header
-  name: X-HTTP-Method-Override
-  description: |-
-    Method override is used to get around a 414 - Request URI Too Long error.
-  required: true
-  schema:
-    type: string
-    enum: [Get]

@@ -1,8 +1,0 @@
-DefaultInitiateWorkflowEnum:
-  description: Default state of the initiate workflow option in the UI    
-  type: string
-  enum: 
-    - On
-    - Off
-    - Default
-    

@@ -1,9 +1,0 @@
-WorkflowFilterCollectionModel:
-  description: |-
-    A list of Workflow filters.
-  properties:
-    items:
-      description: List of Workflow filters.
-      type: array
-      items:
-        $ref: 'WorkflowFilterModel.yaml#/WorkflowFilterModel'

@@ -1,8 +1,0 @@
-operationId_path:
-  in: path
-  name: operationId
-  description: |-
-    The unique identifier representing an ad hoc or system task execution that is waiting for user interaction.
-  required: true
-  schema:
-    type: string

@@ -1,7 +1,0 @@
-systemTaskId_path:
-  in: path
-  name: systemTaskId
-  description: The unique identifier of a system task.
-  required: true
-  schema:
-    type: string

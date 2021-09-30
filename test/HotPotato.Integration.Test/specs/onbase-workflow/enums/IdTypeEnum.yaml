@@ -1,8 +1,0 @@
-IdTypeEnum:
-  description: |-
-    Type of identifier
-  type: string
-  enum: 
-    - All
-    - CurrentId
-    - SpecifiedId

@@ -1,9 +1,0 @@
-WorkItemLocationCollectionModel:
-  description: |-
-    List of life cycle and queue locations a work item is in.  
-  properties:
-    items:
-      description: List of life cycle and queue locations a work item is in.
-      type: array
-      items:
-        $ref: 'WorkItemLocationModel.yaml#/WorkItemLocationModel'

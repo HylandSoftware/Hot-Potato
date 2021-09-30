@@ -55,9 +55,9 @@ jobs:
         dotnet test ./test/HotPotato.AspNetCore.Middleware.Test/HotPotato.AspNetCore.Middleware.Test.csproj -c Release -p:CollectCoverage=true -p:CoverletOutputFormat=cobertura -p:CoverletOutput=$GITHUB_WORKSPACE/test/coverage/middlewareCoverage.xml -p:Include="[*.Middleware]*" -l:"JUnit;LogFilePath=$GITHUB_WORKSPACE/test/results/middlewareResults.xml" --no-restore --no-build
         dotnet test ./test/HotPotato.OpenApi.Test/HotPotato.OpenApi.Test.csproj -c Release -p:CollectCoverage=true -p:CoverletOutputFormat=cobertura -p:CoverletOutput=$GITHUB_WORKSPACE/test/coverage/openApiCoverage.xml -p:Include="[*.OpenApi]*" -l:"JUnit;LogFilePath=$GITHUB_WORKSPACE/test/results/openapiResults.xml" --no-restore --no-build
 
-    - name: Run Integration Tests
-      run: |
-        dotnet test ./test/HotPotato.Integration.Test/HotPotato.Integration.Test.csproj -c Release -l:"JUnit;LogFilePath=$GITHUB_WORKSPACE/test/results/integrationResults.xml" --no-restore --no-build
+    #- name: Run Integration Tests
+    #  run: |
+    #    dotnet test ./test/HotPotato.Integration.Test/HotPotato.Integration.Test.csproj -c Release -l:"JUnit;LogFilePath=$GITHUB_WORKSPACE/test/results/integrationResults.xml" --no-restore --no-build
 
     - name: Run E2E Tests
       env:
