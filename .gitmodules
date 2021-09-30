@@ -1,0 +1,3 @@
+[submodule "test/HotPotato.Integration.Test/specs"]
+	path = test/HotPotato.Integration.Test/specs
+	url = https://github.com/HylandSoftware/Hot-Potato-Specs.git
