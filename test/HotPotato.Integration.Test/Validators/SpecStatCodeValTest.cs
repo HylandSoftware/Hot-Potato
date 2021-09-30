@@ -22,11 +22,13 @@ namespace HotPotato.OpenApi.Validators
 {
 	public class SpecStatCodeValTest
 	{
-		[Theory]
+		[SkippableTheory]
 		[ClassData(typeof(StatusCodeNoContentTestData))]
 		public async Task StatCodeVal_CreatesValidResultWithNullContent(string specSubPath, HttpMethod reqMethod, HttpStatusCode statusCode, string endpointURI)
 		{
 			string specPath = SpecPath(specSubPath, "specification.yaml");
+			Skip.If(string.IsNullOrEmpty(specPath), "This test is for internal use only");
+
 			ServiceProvider provider = GetServiceProvider(specPath);
 
 			using (HttpResponseMessage testRespMsg = new HttpResponseMessage(statusCode))
@@ -53,11 +55,13 @@ namespace HotPotato.OpenApi.Validators
 			}
 		}
 
-		[Theory]
+		[SkippableTheory]
 		[ClassData(typeof(StatusCodeNoContentTestData))]
 		public async Task StatCodeVal_CreatesValidResultWithEmptyContent(string specSubPath, HttpMethod reqMethod, HttpStatusCode statusCode, string endpointURI)
 		{
 			string specPath = SpecPath(specSubPath, "specification.yaml");
+			Skip.If(string.IsNullOrEmpty(specPath), "This test is for internal use only");
+
 			ServiceProvider provider = GetServiceProvider(specPath);
 
 			using (HttpResponseMessage testRespMsg = new HttpResponseMessage(statusCode))
@@ -84,11 +88,13 @@ namespace HotPotato.OpenApi.Validators
 			}
 		}
 
-		[Theory]
+		[SkippableTheory]
 		[ClassData(typeof(StatusCodeNoContentTestData))]
 		public async Task StatCodeVal_CreatesInvalidResultWithUnexpContent(string specSubPath, HttpMethod reqMethod, HttpStatusCode statusCode, string endpointURI)
 		{
 			string specPath = SpecPath(specSubPath, "specification.yaml");
+			Skip.If(string.IsNullOrEmpty(specPath), "This test is for internal use only");
+
 			ServiceProvider provider = GetServiceProvider(specPath);
 
 			using (HttpResponseMessage testRespMsg = new HttpResponseMessage(statusCode))

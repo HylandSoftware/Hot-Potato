@@ -25,11 +25,13 @@ namespace HotPotato.OpenApi.Validators
 
 	public class SpecBodyValTest
 	{
-		[Theory]
+		[SkippableTheory]
 		[ClassData(typeof(SpecBodyValidTestData))]
 		public async Task BodyValidator_CreatesValidResult(string specSubPath, HttpMethod reqMethod, HttpStatusCode statusCode, string endpointURI, string contentType, object bodyJson)
 		{
 			string specPath = SpecPath(specSubPath, "specification.yaml");
+			Skip.If(string.IsNullOrEmpty(specPath), "This test is for internal use only");
+
 			ServiceProvider provider = GetServiceProvider(specPath);
 
 			string bodyString = JsonConvert.SerializeObject(bodyJson);
@@ -61,13 +63,14 @@ namespace HotPotato.OpenApi.Validators
 			}
 		}
 
-		[Theory]
+		[SkippableTheory]
 		[ClassData(typeof(SpecBodyInvalidTestData))]
 		public async Task BodyValidator_CreatesInvalidResult(string specSubPath, HttpMethod reqMethod, HttpStatusCode statusCode,
 			string endpointURI, string contentType, object bodyJson, ValidationErrorKind expectedKind1, ValidationErrorKind expectedKind2)
 		{
-
 			string specPath = SpecPath(specSubPath, "specification.yaml");
+			Skip.If(string.IsNullOrEmpty(specPath), "This test is for internal use only");
+
 			ServiceProvider provider = GetServiceProvider(specPath);
 
 			string bodyString = JsonConvert.SerializeObject(bodyJson);
@@ -100,11 +103,13 @@ namespace HotPotato.OpenApi.Validators
 
 		}
 
-		[Theory]
+		[SkippableTheory]
 		[ClassData(typeof(CustomSpecTestData))]
 		public async Task BodyValidator_CreatesValidResultWithDiffTypes(string specSubPath, HttpMethod reqMethod, HttpStatusCode statusCode, string endpointURI, string contentType, string bodyString)
 		{
 			string specPath = SpecPath(specSubPath, "specification.yaml");
+			Skip.If(string.IsNullOrEmpty(specPath), "This test is for internal use only");
+
 			ServiceProvider provider = GetServiceProvider(specPath);
 
 			using (HttpResponseMessage testRespMsg = new HttpResponseMessage(statusCode))
@@ -131,12 +136,14 @@ namespace HotPotato.OpenApi.Validators
 			}
 		}
 
-		[Theory]
+		[SkippableTheory]
 		[ClassData(typeof(CustomSpecNegTestData))]
 		public async Task BodyValidator_CreatesInvalidResultWithDiffTypes(string specSubPath, HttpMethod reqMethod,
 			HttpStatusCode statusCode, string endpointURI, string contentType, string bodyString, ValidationErrorKind errorKind)
 		{
 			string specPath = SpecPath(specSubPath, "specification.yaml");
+			Skip.If(string.IsNullOrEmpty(specPath), "This test is for internal use only");
+
 			ServiceProvider provider = GetServiceProvider(specPath);
 
 			using (HttpResponseMessage testRespMsg = new HttpResponseMessage(statusCode))
