@@ -46,10 +46,10 @@ namespace HotPotato.E2E.Test
 		}
 
 
-		[SkippableFact]
+		[Fact]
 		public async Task HotPotato_Should_Set_Respective_Custom_Headers()
 		{
-			Skip.IfNot(specTokenExists, TestConstants.SkipMessage);
+			Assert.True(specTokenExists, TestConstants.MissingSpecToken);
 
 			var servicePro = host.Services;
 
@@ -98,10 +98,10 @@ namespace HotPotato.E2E.Test
 			}
 		}
 
-		[SkippableFact]
+		[Fact]
 		public async Task HotPotato_ResultState_ShouldSerializeCorrectly()
 		{
-			Skip.IfNot(specTokenExists, TestConstants.SkipMessage);
+			Assert.True(specTokenExists, TestConstants.MissingSpecToken);
 
 			var servicePro = host.Services;
 
