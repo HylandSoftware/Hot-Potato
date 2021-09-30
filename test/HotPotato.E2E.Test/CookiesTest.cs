@@ -35,8 +35,8 @@ namespace HotPotato.E2E.Test
 
 		public CookiesTest(HostFixture fixture)
 		{
-			host = fixture.host;
-			specTokenExists = fixture.specTokenExists;
+			host = fixture.Host;
+			specTokenExists = fixture.SpecTokenExists;
 		}
 
 		[Fact]

@@ -41,8 +41,8 @@ namespace HotPotato.E2E.Test
 
 		public ResultsTest(HostFixture fixture)
 		{
-			host = fixture.host;
-			specTokenExists = fixture.specTokenExists;
+			host = fixture.Host;
+			specTokenExists = fixture.SpecTokenExists;
 		}
 
 

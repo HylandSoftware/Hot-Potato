@@ -14,16 +14,16 @@ namespace HotPotato.E2E.Test
 	/// </summary>
 	public class HostFixture : IDisposable
 	{
-		public IWebHost host { get; }
-		public bool specTokenExists { get; }
+		public IWebHost Host { get; }
+		public bool SpecTokenExists { get; }
 
 		public HostFixture()
 		{
-			host = new WebHostBuilder()
+			Host = new WebHostBuilder()
 				.ConfigureAppConfiguration((hostingContext, config) =>
 				{
 					config.SetBasePath(hostingContext.HostingEnvironment.ContentRootPath);
-					//this uses the appsetting.json from the HotPotato.AspNetCore.Host
+					//this uses the appsetting.json from the HotPotato.AspNetCore.Host project
 					config.AddJsonFile("appsettings.json", optional: true);
 					config.AddEnvironmentVariables();
 					config.AddUserSecrets<HostFixture>();
@@ -45,18 +45,18 @@ namespace HotPotato.E2E.Test
 				.UseStartup<Startup>()
 			.Build();
 
-			IConfiguration configuration = host.Services.GetService<IConfiguration>();
+			IConfiguration configuration = Host.Services.GetService<IConfiguration>();
 			if (!string.IsNullOrWhiteSpace(configuration["SpecToken"]))
 			{
-				specTokenExists = true;
+				SpecTokenExists = true;
 			}
 
-			host.Start();
+			Host.Start();
 		}
 
 		public void Dispose()
 		{
-			host.Dispose();
+			Host.Dispose();
 			GC.SuppressFinalize(this);
 		}
 	}
