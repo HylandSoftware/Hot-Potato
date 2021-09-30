@@ -27,7 +27,7 @@ namespace HotPotato.OpenApi.Validators
 		public async Task StatCodeVal_CreatesValidResultWithNullContent(string specSubPath, HttpMethod reqMethod, HttpStatusCode statusCode, string endpointURI)
 		{
 			string specPath = SpecPath(specSubPath, "specification.yaml");
-			Skip.If(string.IsNullOrEmpty(specPath), "This test is for internal use only");
+			Skip.If(string.IsNullOrEmpty(specPath), TestConstants.SkipMessage);
 
 			ServiceProvider provider = GetServiceProvider(specPath);
 
@@ -60,7 +60,7 @@ namespace HotPotato.OpenApi.Validators
 		public async Task StatCodeVal_CreatesValidResultWithEmptyContent(string specSubPath, HttpMethod reqMethod, HttpStatusCode statusCode, string endpointURI)
 		{
 			string specPath = SpecPath(specSubPath, "specification.yaml");
-			Skip.If(string.IsNullOrEmpty(specPath), "This test is for internal use only");
+			Skip.If(string.IsNullOrEmpty(specPath), TestConstants.SkipMessage);
 
 			ServiceProvider provider = GetServiceProvider(specPath);
 
@@ -93,7 +93,7 @@ namespace HotPotato.OpenApi.Validators
 		public async Task StatCodeVal_CreatesInvalidResultWithUnexpContent(string specSubPath, HttpMethod reqMethod, HttpStatusCode statusCode, string endpointURI)
 		{
 			string specPath = SpecPath(specSubPath, "specification.yaml");
-			Skip.If(string.IsNullOrEmpty(specPath), "This test is for internal use only");
+			Skip.If(string.IsNullOrEmpty(specPath), TestConstants.SkipMessage);
 
 			ServiceProvider provider = GetServiceProvider(specPath);
 

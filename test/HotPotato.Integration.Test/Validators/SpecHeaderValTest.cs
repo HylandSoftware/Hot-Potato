@@ -32,7 +32,7 @@ namespace HotPotato.OpenApi.Validators
 		public async Task HeaderValidator_CreatesValidResultWithoutMatchingCase(string specSubPath, HttpMethod reqMethod, HttpStatusCode statusCode, string endpointURI, string contentType, object bodyJson)
 		{
 			string specPath = SpecPath(specSubPath, "specification.yaml");
-			Skip.If(string.IsNullOrEmpty(specPath), "This test is for internal use only");
+			Skip.If(string.IsNullOrEmpty(specPath), TestConstants.SkipMessage);
 
 			ServiceProvider provider = GetServiceProvider(specPath);
 
@@ -82,7 +82,7 @@ namespace HotPotato.OpenApi.Validators
 		public async Task HeaderValidator_CreatesInvalidResultWithIncorrectFormat(string specSubPath, HttpMethod reqMethod, HttpStatusCode statusCode, string endpointURI, string contentType, object bodyJson)
 		{
 			string specPath = SpecPath(specSubPath, "specification.yaml");
-			Skip.If(string.IsNullOrEmpty(specPath), "This test is for internal use only");
+			Skip.If(string.IsNullOrEmpty(specPath), TestConstants.SkipMessage);
 
 			ServiceProvider provider = GetServiceProvider(specPath);
 
@@ -120,7 +120,7 @@ namespace HotPotato.OpenApi.Validators
 		public async Task HeaderValidator_CreatesMissingHeaderResult(string specSubPath, HttpMethod reqMethod, HttpStatusCode statusCode, string endpointURI, string contentType, object bodyJson)
 		{
 			string specPath = SpecPath(specSubPath, "specification.yaml");
-			Skip.If(string.IsNullOrEmpty(specPath), "This test is for internal use only");
+			Skip.If(string.IsNullOrEmpty(specPath), TestConstants.SkipMessage);
 
 			ServiceProvider provider = GetServiceProvider(specPath);
 
@@ -159,7 +159,7 @@ namespace HotPotato.OpenApi.Validators
 		public async Task HeaderValidator_CreatesValidResultWithExpectedEmptyBody(string specSubPath, HttpMethod reqMethod, HttpStatusCode statusCode, string endpointURI)
 		{
 			string specPath = SpecPath(specSubPath, "specification.yaml");
-			Skip.If(string.IsNullOrEmpty(specPath), "This test is for internal use only");
+			Skip.If(string.IsNullOrEmpty(specPath), TestConstants.SkipMessage);
 
 			ServiceProvider provider = GetServiceProvider(specPath);
 
@@ -195,7 +195,7 @@ namespace HotPotato.OpenApi.Validators
 		public async Task HeaderValidator_CreatesMissingContentTypeResultWithUnexpectedBodyAndValidHeaders(string specSubPath, HttpMethod reqMethod, HttpStatusCode statusCode, string endpointURI, string contentType, string bodyString)
 		{
 			string specPath = SpecPath(specSubPath, "specification.yaml");
-			Skip.If(string.IsNullOrEmpty(specPath), "This test is for internal use only");
+			Skip.If(string.IsNullOrEmpty(specPath), TestConstants.SkipMessage);
 
 			ServiceProvider provider = GetServiceProvider(specPath);
 
@@ -232,7 +232,7 @@ namespace HotPotato.OpenApi.Validators
 		public async Task HeaderValidator_CreatesOnlyMissingHeadersResultWithExpectedEmptyBody(string specSubPath, HttpMethod reqMethod, HttpStatusCode statusCode, string endpointURI)
 		{
 			string specPath = SpecPath(specSubPath, "specification.yaml");
-			Skip.If(string.IsNullOrEmpty(specPath), "This test is for internal use only");
+			Skip.If(string.IsNullOrEmpty(specPath), TestConstants.SkipMessage);
 
 			ServiceProvider provider = GetServiceProvider(specPath);
 

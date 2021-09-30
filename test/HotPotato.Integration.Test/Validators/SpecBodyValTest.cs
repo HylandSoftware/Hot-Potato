@@ -30,7 +30,7 @@ namespace HotPotato.OpenApi.Validators
 		public async Task BodyValidator_CreatesValidResult(string specSubPath, HttpMethod reqMethod, HttpStatusCode statusCode, string endpointURI, string contentType, object bodyJson)
 		{
 			string specPath = SpecPath(specSubPath, "specification.yaml");
-			Skip.If(string.IsNullOrEmpty(specPath), "This test is for internal use only");
+			Skip.If(string.IsNullOrEmpty(specPath), TestConstants.SkipMessage);
 
 			ServiceProvider provider = GetServiceProvider(specPath);
 
@@ -69,7 +69,7 @@ namespace HotPotato.OpenApi.Validators
 			string endpointURI, string contentType, object bodyJson, ValidationErrorKind expectedKind1, ValidationErrorKind expectedKind2)
 		{
 			string specPath = SpecPath(specSubPath, "specification.yaml");
-			Skip.If(string.IsNullOrEmpty(specPath), "This test is for internal use only");
+			Skip.If(string.IsNullOrEmpty(specPath), TestConstants.SkipMessage);
 
 			ServiceProvider provider = GetServiceProvider(specPath);
 
@@ -108,7 +108,7 @@ namespace HotPotato.OpenApi.Validators
 		public async Task BodyValidator_CreatesValidResultWithDiffTypes(string specSubPath, HttpMethod reqMethod, HttpStatusCode statusCode, string endpointURI, string contentType, string bodyString)
 		{
 			string specPath = SpecPath(specSubPath, "specification.yaml");
-			Skip.If(string.IsNullOrEmpty(specPath), "This test is for internal use only");
+			Skip.If(string.IsNullOrEmpty(specPath), TestConstants.SkipMessage);
 
 			ServiceProvider provider = GetServiceProvider(specPath);
 
@@ -142,7 +142,7 @@ namespace HotPotato.OpenApi.Validators
 			HttpStatusCode statusCode, string endpointURI, string contentType, string bodyString, ValidationErrorKind errorKind)
 		{
 			string specPath = SpecPath(specSubPath, "specification.yaml");
-			Skip.If(string.IsNullOrEmpty(specPath), "This test is for internal use only");
+			Skip.If(string.IsNullOrEmpty(specPath), TestConstants.SkipMessage);
 
 			ServiceProvider provider = GetServiceProvider(specPath);
 
