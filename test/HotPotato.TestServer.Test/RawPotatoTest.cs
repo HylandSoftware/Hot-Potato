@@ -48,6 +48,7 @@ namespace HotPotato.TestServ.Test
 		[InlineData("http://localhost:3232/order/1/items/3", "DELETE", 204)]
 		[InlineData("http://localhost:3232/order/2", "OPTIONS", 200)]
 		[InlineData("http://localhost:3232/order/4", "GET", 200)]
+		[InlineData("http://localhost:3232/order-cycles", "GET", 200)]
 		public async Task HotPotato_Should_Process_RawPotato_HappyPaths(string path, string methodString, int expectedStatusCode, bool hasRequestBody = false)
 		{
 			Assert.True(specTokenExists, TestConstants.MissingSpecToken);

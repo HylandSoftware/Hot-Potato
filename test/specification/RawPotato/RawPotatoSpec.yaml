@@ -1,0 +1,375 @@
+openapi: '3.0.0'
+info:
+  version: 1.0.0
+  title: Raw Potato Test API
+paths:
+  /:
+    get:
+      summary: landing page of this API
+      description: >-
+        The landing page provides links to the API definition, the Conformance
+        statements and the metadata about the feature data in this dataset.
+      operationId: getLandingPage
+      tags:
+        - Capabilities
+      responses:
+        '200':
+          description: links to the API capabilities
+          content:
+            text/plain:
+              schema:
+                type: string
+  /order:
+    post:
+      summary: Add a new order
+      requestBody:
+      description: Creating a new order with all properties
+      required: true
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Order'
+      responses:
+        '201':
+          description: Order created successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Order'
+        '400':
+          description: Bad Request
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/Problem-Detail'
+    get:
+      summary: Get all orders
+      responses:
+        '200':
+          description: Request successfully processed
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/OrderList'
+  /order/{id}:
+    get:
+      summary: Returns order with certain ID
+      parameters: 
+        - in: path 
+          name: id 
+          description: ID of the order to be retrieved. 
+          required: true 
+          schema: 
+            type: integer
+      responses:
+        '200':
+          description: Returns order OK
+          content: 
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Order'
+        '404':
+          description: Returns 404 Not Found
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/Problem-Detail'
+    put:
+      summary: Replace existing order with certain ID
+      parameters: 
+        - in: path 
+          name: id 
+          description: ID of the order to be retrieved. 
+          required: true 
+          schema: 
+          type: integer
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Order'
+      responses:
+        '201':
+          description: Created new order for ID
+          content: 
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Order'
+        '204':
+          description: No Content
+        '404':
+          description: Returns 404 Not Found
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/Problem-Detail'
+    options:
+      summary: List all methods gor given path.
+      parameters: 
+        - in: path 
+          name: id 
+          description: ID of the order to be retrieved. 
+          required: true 
+          schema: 
+            type: integer
+      responses:
+        '200':
+          description: Returns order OK
+          headers:
+            Allow:
+              description: Allow header
+              schema:
+                type: string
+          content:
+            text/plain:
+              schema:
+                type: string
+  /order/{id}/price:
+    get:
+      summary: Returns price of an order
+      description: >-
+        Returns the price of an order found by the order's ID.
+      parameters:
+        - in: path
+          name: id
+          description: ID of the order to be retrieved.
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: Request successfully processed
+          content:
+            text/plain:
+              schema:
+                type: string
+              example:
+                '52.00'
+        '404':
+          description: Not Found. Oder or item with certain ID does not exist.
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/Problem-Detail'
+  /order/{id}/items:
+    get:
+      summary: Returns all items in an order
+      parameters:
+        - in: path
+          name: id
+          description: ID of the order to be retrieved.
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: Request successfully processed
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ItemsList'
+        '404':
+          description: Not Found. Oder or item with certain ID does not exist.
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/Problem-Detail'
+  /order/{id}/items/{itemId}:
+    get:
+      tags:
+        - order
+      summary: Returns item with specific id
+      description: Returns item with id from an order with id.
+      operationId: getItemWithId
+      parameters:
+        - name: id
+          in: path
+          description: ID of order to fetch the items
+          required: true
+          schema:
+            type: integer
+        - name: itemId
+          in: path
+          description: ID of an item to fetch in a specific order
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: Returns the item
+          content:
+            application/pdf:
+              schema:
+                type: string
+                format: binary
+        '404':
+          description: Not Found. Oder or item with certain ID does not exist.
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/Problem-Detail'
+    delete:
+      summary: Deletes item with specific id
+      operationId: deleteItemWithId
+      parameters:
+        - name: id
+          in: path
+          description: ID of order to fetch the items
+          required: true
+          schema:
+            type: integer
+        - name: itemId
+          in: path
+          description: ID of an item to fetch in a specific order
+          required: true
+          schema:
+            type: integer
+      responses:
+        '204':
+          description: No Content
+          headers:
+            X-header:
+              schema:
+                type: string
+                format: byte
+        '404':
+          description: Not Found
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/Problem-Detail'
+  /order-cycles:
+    get:
+      summary: |-
+        Gets a list of order cycles.
+      description: |-
+        Gets a list of cycles the user has rights to access in a client.
+      operationId: GetLifeCycles
+      tags:
+        - Order Cycles
+      parameters:
+        - $ref: '../common-items/parameters.yaml#/components/parameters/Accept-Language'
+      responses:
+        200:
+          description: OK
+          headers:
+            Content-Language:
+              $ref: '../common-items/headers.yaml#/components/headers/Content-Language'
+          content:
+            application/json:
+              schema:
+                $ref: 'models/OrderCycleCollectionModel.yaml#/OrderCycleCollectionModel'
+
+#### Not in Spec paths ####
+
+  /missingmethod:
+    post:
+      summary: Add a new something...
+      requestBody:
+        description: Creating something...
+        required: true
+      content:
+        text/html:
+          schema:
+            type: string
+      responses:
+        '201':
+          description: Order created successfully
+          content:
+            text/html:
+              schema:
+                type: string 
+  /missingcode:
+    get:
+      summary: Gets something...
+      responses:
+        '204':
+          description: Returns No Content
+    
+components:
+  schemas:
+    Order:
+      required:
+        - id
+        - price
+        - items
+      properties:
+        id:
+          type: integer
+        price:
+          type: number
+          nullable: true
+        items:
+          type:
+            schema:
+              $ref: '#/components/schemas/ItemsList'
+    OrderList:
+      type: array
+      items:
+        type:
+          schema:
+            $ref: '#/components/schemas/Order'
+    Item:
+      required:
+        - itemId
+        - name
+        - price
+      properties:
+        itemId:
+          type: integer
+        name:
+          type: string
+        price:
+          type: number
+          nullable: true
+    ItemsList:
+      type: array
+      items:
+        type:
+          schema:
+            $ref: '#/components/schemas/Item'
+    Problem-Detail:
+      type: object
+      description: |-
+        The <a href="https://tools.ietf.org/html/rfc7807">Problem Detail</a>
+        format defines a way to carry machine-readable details of errors in a
+        HTTP response to avoid the need to define new error response formats for
+        HTTP APIs.
+
+        Problem details can be extended and defined for specific
+        problem types.
+      properties:
+        type:
+          type: string
+          format: uri
+          description: |-
+            An absolute URI that identifies the problem type. When
+            dereferenced, it should provide human-readable documentation
+            for the problem type (e.g., using HTML).
+        title:
+          type: string
+          description: |-
+            A short, human-readable summary of the problem type. It should
+            not change from occurrence to occurrence of the problem.
+        status:
+          type: integer
+          format: int32
+          description: |-
+            The HTTP status code generated by the origin server for this
+            occurrence of the problem.
+          minimum: 100
+          maximum: 600
+          exclusiveMaximum: true
+        detail:
+          type: string
+          description: |-
+            A human readable explanation specific to this occurrence of the
+            problem.
+        instance:
+          type: string
+          format: uri
+          description: |-
+            A URI reference that identifies the specific occurrence of
+            the problem. It may or may not yield further information
+            if dereferenced.

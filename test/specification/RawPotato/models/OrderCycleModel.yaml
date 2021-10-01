@@ -1,0 +1,19 @@
+OrderCycleModel:
+  description: |-
+    Gets the order cycle with the associated id.
+  properties:
+    id:
+      description: |-
+        The unique identifier of the order cycle.
+      type: int
+      example: 101
+    category:
+      description: |-
+        Category of items in the order cycle
+      type: string
+      example: School Supplies
+    cycleTime:
+      description: |-
+        (Time order is shipped from the warehouse) – (time order is placed by the customer) in seconds
+      type: int
+      example: 4800
