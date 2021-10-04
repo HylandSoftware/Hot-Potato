@@ -14,7 +14,7 @@ namespace HotPotato.OpenApi.Validators
 		public void PathValidator_GeneratesSpecPathWithParam()
 		{
 			string specPath = SpecPath("specs/keyword/", "specification.yaml");
-			Skip.If(string.IsNullOrEmpty(specPath), TestConstants.SkipMessage);
+			Skip.If(string.IsNullOrEmpty(specPath), TestConstants.InternalUseOnlyMessage);
 
 			ServiceProvider provider = GetServiceProvider(specPath);
 
@@ -31,7 +31,7 @@ namespace HotPotato.OpenApi.Validators
 		public void PathValidator_GeneratesSpecPathWithoutParam()
 		{
 			string specPath = SpecPath("specs/onbase-workflow/", "specification.yaml");
-			Skip.If(string.IsNullOrEmpty(specPath), TestConstants.SkipMessage);
+			Skip.If(string.IsNullOrEmpty(specPath), TestConstants.InternalUseOnlyMessage);
 
 			ServiceProvider provider = GetServiceProvider(specPath);
 

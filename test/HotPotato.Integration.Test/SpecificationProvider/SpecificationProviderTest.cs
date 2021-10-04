@@ -13,7 +13,7 @@ namespace HotPotato.OpenApi.SpecificationProvider
 		public void ISpecificationProvider_GetSpecDocument_ReturnsDocumentFromPath()
 		{
 			string specPath = SpecPath("specs/keyword/", "specification.yaml");
-			Skip.If(string.IsNullOrEmpty(specPath), TestConstants.SkipMessage);
+			Skip.If(string.IsNullOrEmpty(specPath), TestConstants.InternalUseOnlyMessage);
 
 			ServiceProvider provider = GetServiceProvider(specPath);
 
