@@ -4,6 +4,9 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 VisualStudioVersion = 16.0.30523.141
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tests", "Tests", "{18D73CFF-6ECA-4A0C-8A6A-97F84BC3E1C8}"
+	ProjectSection(SolutionItems) = preProject
+		test\RawPotatoSpec.yaml = test\RawPotatoSpec.yaml
+	EndProjectSection
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "HotPotato.Integration.Test", "test\HotPotato.Integration.Test\HotPotato.Integration.Test.csproj", "{23CDAEF7-947F-463C-9162-3C8692FC103D}"
 EndProject
@@ -40,26 +43,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "HotPotato.TestServ.Test", "
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "HotPotato.Extensions", "src\HotPotato.Extensions\HotPotato.Extensions.csproj", "{FFEDDFCF-DE15-48DD-A7D5-E7375B9B2DAA}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "HotPotato.NUnitHelpers", "src\HotPotato.NUnitHelpers\HotPotato.NUnitHelpers.csproj", "{DB886999-5A93-4BE8-9AEE-A1FDAB136F6C}"
-EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "specification", "specification", "{FF93C14C-E406-4672-8EB4-8FF52417EDCB}"
-EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "RawPotato", "RawPotato", "{6A1CAC9D-4E5A-4433-B0D4-FF283AD28A07}"
-	ProjectSection(SolutionItems) = preProject
-		test\specification\RawPotato\RawPotatoSpec.yaml = test\specification\RawPotato\RawPotatoSpec.yaml
-	EndProjectSection
-EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "models", "models", "{9EA20719-70D3-488B-BE5D-87EA837D3F7A}"
-	ProjectSection(SolutionItems) = preProject
-		test\specification\RawPotato\models\OrderCycleCollectionModel.yaml = test\specification\RawPotato\models\OrderCycleCollectionModel.yaml
-		test\specification\RawPotato\models\OrderCycleModel.yaml = test\specification\RawPotato\models\OrderCycleModel.yaml
-	EndProjectSection
-EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "common-items", "common-items", "{55655675-F784-41AC-B7D2-6E9E93992312}"
-	ProjectSection(SolutionItems) = preProject
-		test\specification\common-items\headers.yaml = test\specification\common-items\headers.yaml
-		test\specification\common-items\parameters.yaml = test\specification\common-items\parameters.yaml
-	EndProjectSection
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HotPotato.NUnitHelpers", "src\HotPotato.NUnitHelpers\HotPotato.NUnitHelpers.csproj", "{DB886999-5A93-4BE8-9AEE-A1FDAB136F6C}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -151,10 +135,6 @@ Global
 		{9F37DBB8-2971-4155-BCBD-D82DB5C8D1DC} = {18D73CFF-6ECA-4A0C-8A6A-97F84BC3E1C8}
 		{573BE9CC-36D6-40C9-A005-2DAB411861BA} = {18D73CFF-6ECA-4A0C-8A6A-97F84BC3E1C8}
 		{06E2B4CF-A84A-4E9A-91F8-F2794F5B7B8A} = {18D73CFF-6ECA-4A0C-8A6A-97F84BC3E1C8}
-		{FF93C14C-E406-4672-8EB4-8FF52417EDCB} = {18D73CFF-6ECA-4A0C-8A6A-97F84BC3E1C8}
-		{6A1CAC9D-4E5A-4433-B0D4-FF283AD28A07} = {FF93C14C-E406-4672-8EB4-8FF52417EDCB}
-		{9EA20719-70D3-488B-BE5D-87EA837D3F7A} = {6A1CAC9D-4E5A-4433-B0D4-FF283AD28A07}
-		{55655675-F784-41AC-B7D2-6E9E93992312} = {FF93C14C-E406-4672-8EB4-8FF52417EDCB}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {2836D304-9C78-41F8-9A22-517D86241D2C}

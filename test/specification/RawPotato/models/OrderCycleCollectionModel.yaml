@@ -1,9 +1,0 @@
-OrderCycleCollectionModel:
-  description: |-
-    A list of order cycles.
-  properties:
-    items:
-      description: List of order cycles.
-      type: array
-      items:
-        $ref: 'OrderCycleModel.yaml#/OrderCycleModel'

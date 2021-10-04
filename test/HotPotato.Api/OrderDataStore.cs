@@ -7,7 +7,6 @@ namespace HotPotato.Test.Api
 	{
 		public static OrderDataStore Current { get; set; } = new OrderDataStore();
 		public List<Order> Orders { get; set; }
-		public List<OrderCycle> Cycles { get; set; }
 
 		public OrderDataStore()
 		{
@@ -85,22 +84,6 @@ namespace HotPotato.Test.Api
 							Price = null
 						}
 					}
-				}
-			};
-
-			Cycles = new List<OrderCycle>()
-			{
-				new OrderCycle()
-				{
-					id = 1,
-					category = "School Supplies",
-					cycleTime = 3600
-				},
-				new OrderCycle()
-				{
-					id = 2,
-					category = "Electronics",
-					cycleTime = 4800
 				}
 			};
 		}

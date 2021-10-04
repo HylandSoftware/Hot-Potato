@@ -279,13 +279,6 @@ namespace HotPotato.Test.Api.Controllers
 			return res;
 		}
 
-		[HttpGet("/order-cycles")]
-		public IActionResult GetOrderCycles()
-		{
-			Response.Headers.Add("Content-Language", "en-US");
-			return Ok(OrderDataStore.Current.Cycles);
-		}
-
 		#endregion
 
 		#region NOT IN SPEC PATHS
