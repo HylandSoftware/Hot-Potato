@@ -71,14 +71,15 @@ namespace HotPotato.TestServ.Test
 			hotPotatoServer = new TestServer(hotPotatoBuilder);
 			hotPotatoServer.BaseAddress = new Uri(HotPotatoAddress);
 
+			Results = hotPotatoServer.Host.Services.GetService<IResultCollector>().Results;
+			Client = new HotPotatoClient(hotPotatoServer.CreateClient());
+
+			//Omit this block if you're using this as a template and don't need to use access tokens
 			IConfiguration configuration = hotPotatoServer.Host.Services.GetService<IConfiguration>();
 			if (!string.IsNullOrWhiteSpace(configuration["SpecToken"]))
 			{
 				SpecTokenExists = true;
 			}
-
-			Results = hotPotatoServer.Host.Services.GetService<IResultCollector>().Results;
-			Client = new HotPotatoClient(hotPotatoServer.CreateClient());
 		}
 
 		public void Dispose()

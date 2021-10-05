@@ -37,6 +37,7 @@ namespace HotPotato.TestServ.Test
 		{
 			client = fixture.Client;
 			results = fixture.Results;
+			//Omit this line if you're using this as a template and don't need to use access tokens
 			specTokenExists = fixture.SpecTokenExists;
 		}
 
@@ -50,6 +51,7 @@ namespace HotPotato.TestServ.Test
 		[InlineData("http://localhost:3232/order/4", "GET", 200)]
 		public async Task HotPotato_Should_Process_RawPotato_HappyPaths(string path, string methodString, int expectedStatusCode, bool hasRequestBody = false)
 		{
+			//Omit this line if you're using this as a template and don't need to use access tokens
 			Skip.IfNot(specTokenExists, TestConstants.MissingSpecToken);
 
 			HttpMethod method = new HttpMethod(methodString);
@@ -66,9 +68,9 @@ namespace HotPotato.TestServ.Test
 
 				Result result = results.ElementAt(0);
 
+				Assert.True(result.State == State.Pass, result.ToString());
 				Assert.Equal(methodString, result.Method, ignoreCase: true);
 				Assert.Equal(pathUri.AbsolutePath, result.Path);
-				Assert.Equal(State.Pass, result.State);
 				Assert.Equal(expectedStatusCode, result.StatusCode);
 			}
 		}
@@ -94,11 +96,11 @@ namespace HotPotato.TestServ.Test
 
 				if (path.Contains("expected_fail"))
 				{
-					Assert.Equal(State.Fail, result.State);
+					Assert.True(result.State == State.Fail, result.ToString());
 				}
 				else
 				{
-					Assert.Equal(State.Pass, result.State);
+					Assert.True(result.State == State.Pass, result.ToString());
 				}
 			}
 		}
