@@ -239,27 +239,6 @@ paths:
             application/problem+json:
               schema:
                 $ref: '#/components/schemas/Problem-Detail'
-  /order-cycles:
-    get:
-      summary: |-
-        Gets a list of order cycles.
-      description: |-
-        Gets a list of cycles the user has rights to access in a client.
-      operationId: GetLifeCycles
-      tags:
-        - Cycles
-      parameters:
-        - $ref: '../common-items/parameters.yaml#/components/parameters/Accept-Language'
-      responses:
-        200:
-          description: OK
-          headers:
-            Content-Language:
-              $ref: '../common-items/headers.yaml#/components/headers/Content-Language'
-          content:
-            application/json:
-              schema:
-                $ref: 'models/LifeCycleCollectionModel.yaml#/LifeCycleCollectionModel'
 
 #### Not in Spec paths ####
 
