@@ -36,10 +36,10 @@ namespace HotPotato.E2E.Test
 			specTokenExists = fixture.SpecTokenExists;
 		}
 
-		[Fact]
+		[SkippableFact]
 		public async Task HotPotato_Should_Return_OK_And_A_String()
 		{
-			Assert.True(specTokenExists, TestConstants.MissingSpecToken);
+			Skip.IfNot(specTokenExists, TestConstants.MissingSpecToken);
 
 			var servicePro = host.Services;
 
@@ -77,10 +77,10 @@ namespace HotPotato.E2E.Test
 			}
 		}
 
-		[Fact]
+		[SkippableFact]
 		public async Task HotPotato_Should_Return_OK_And_A_JSON_Object()
 		{
-			Assert.True(specTokenExists, TestConstants.MissingSpecToken);
+			Skip.IfNot(specTokenExists, TestConstants.MissingSpecToken);
 
 			var servicePro = host.Services;
 
@@ -126,10 +126,10 @@ namespace HotPotato.E2E.Test
 			}
 		}
 
-		[Fact]
+		[SkippableFact]
 		public async Task HotPotato_Should_Return_404_Error()
 		{
-			Assert.True(specTokenExists, TestConstants.MissingSpecToken);
+			Skip.IfNot(specTokenExists, TestConstants.MissingSpecToken);
 
 			var servicePro = host.Services;
 
@@ -163,10 +163,10 @@ namespace HotPotato.E2E.Test
 			}
 		}
 
-		[Fact]
+		[SkippableFact]
 		public async Task HotPotato_Should_Return_500_Error()
 		{
-			Assert.True(specTokenExists, TestConstants.MissingSpecToken);
+			Skip.IfNot(specTokenExists, TestConstants.MissingSpecToken);
 
 			var servicePro = host.Services;
 

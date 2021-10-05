@@ -39,10 +39,10 @@ namespace HotPotato.E2E.Test
 			specTokenExists = fixture.SpecTokenExists;
 		}
 
-		[Fact]
+		[SkippableFact]
 		public async Task HotPotato_CookiesEndpoint_Should_Delete_Cookies()
 		{
-			Assert.True(specTokenExists, TestConstants.MissingSpecToken);
+			Skip.IfNot(specTokenExists, TestConstants.MissingSpecToken);
 
 			var servicePro = host.Services;
 

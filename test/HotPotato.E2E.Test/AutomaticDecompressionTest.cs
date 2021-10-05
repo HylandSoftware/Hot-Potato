@@ -46,10 +46,10 @@ namespace HotPotato.E2E.Test
 			specTokenExists = fixture.SpecTokenExists;
 		}
 
-		[Fact]
+		[SkippableFact]
 		public async Task HotPotato_ShouldAutomaticallyDecompressGZip()
 		{
-			Assert.True(specTokenExists, TestConstants.MissingSpecToken);
+			Skip.IfNot(specTokenExists, TestConstants.MissingSpecToken);
 
 			var servicePro = host.Services;
 
@@ -82,10 +82,10 @@ namespace HotPotato.E2E.Test
 			}
 		}
 
-		[Fact]
+		[SkippableFact]
 		public async Task HotPotato_ShouldAutomaticallyDecompressDeflate()
 		{
-			Assert.True(specTokenExists, TestConstants.MissingSpecToken);
+			Skip.IfNot(specTokenExists, TestConstants.MissingSpecToken);
 
 			var servicePro = host.Services;
 
