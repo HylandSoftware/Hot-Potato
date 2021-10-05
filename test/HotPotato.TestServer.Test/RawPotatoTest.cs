@@ -40,7 +40,7 @@ namespace HotPotato.TestServ.Test
 			specTokenExists = fixture.SpecTokenExists;
 		}
 
-		[Theory]
+		[SkippableTheory]
 		[InlineData("http://localhost:3232", "GET", 200)]
 		[InlineData("http://localhost:3232/order", "GET", 200)]
 		[InlineData("http://localhost:3232/order", "POST", 201, true)]
@@ -50,7 +50,7 @@ namespace HotPotato.TestServ.Test
 		[InlineData("http://localhost:3232/order/4", "GET", 200)]
 		public async Task HotPotato_Should_Process_RawPotato_HappyPaths(string path, string methodString, int expectedStatusCode, bool hasRequestBody = false)
 		{
-			Assert.True(specTokenExists, TestConstants.MissingSpecToken);
+			Skip.IfNot(specTokenExists, TestConstants.MissingSpecToken);
 
 			HttpMethod method = new HttpMethod(methodString);
 			Uri pathUri = new Uri(path);
@@ -73,7 +73,7 @@ namespace HotPotato.TestServ.Test
 			}
 		}
 
-		[Theory]
+		[SkippableTheory]
 		[InlineData("http://localhost:3232", "GET")]
 		[InlineData("http://localhost:3232/order", "GET")]
 		[InlineData("http://localhost:3232/expected_fail", "GET")]
@@ -81,7 +81,7 @@ namespace HotPotato.TestServ.Test
 		[InlineData("http://localhost:3232/order/4", "GET")]
 		public async Task One_Fail_Result_Should_Not_Fail_The_Whole_Set(string path, string methodString)
 		{
-			Assert.True(specTokenExists, TestConstants.MissingSpecToken);
+			Skip.IfNot(specTokenExists, TestConstants.MissingSpecToken);
 
 			HttpMethod method = new HttpMethod(methodString);
 			Uri pathUri = new Uri(path);
