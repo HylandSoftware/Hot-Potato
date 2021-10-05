@@ -63,14 +63,7 @@ namespace HotPotato.OpenApi.Validators
 					//The validation strategy should now only create one passing result for both body and header
 					Result result = results.ElementAt(0);
 
-					try
-					{
-						Assert.True(result.State == State.Pass, result.ToString());
-					}
-					finally
-					{
-						results.Clear();
-					}
+					Assert.True(result.State == State.Pass, result.ToString());
 
 				}
 			}
