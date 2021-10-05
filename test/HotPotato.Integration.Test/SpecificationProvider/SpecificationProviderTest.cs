@@ -22,16 +22,5 @@ namespace HotPotato.OpenApi.SpecificationProvider
 
 			Assert.Equal(result.DocumentPath, specPath);
 		}
-
-		[Fact]
-		public void ISpecificationProvider_GetSpecDocument_ThrowsInvalidOperationWithInvalidLocation()
-		{
-			ServiceProvider provider = GetServiceProvider(string.Empty);
-
-			ISpecificationProvider subject = provider.GetService<ISpecificationProvider>();
-
-			Action result = () => subject.GetSpecDocument();
-			Assert.Throws<InvalidOperationException>(result);
-		}
 	}
 }
