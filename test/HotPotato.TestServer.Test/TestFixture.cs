@@ -18,6 +18,7 @@ namespace HotPotato.TestServ.Test
 	{
 		public HotPotatoClient Client { get; }
 		public List<Result> Results { get; }
+		public bool SpecTokenExists { get; }
 
 		//TestServer won't actually listen on an address, but it needs a BaseAddress to be used by the HttpRequest constructors
 		//It can be set to any address as long as it is a valid uri
@@ -72,6 +73,13 @@ namespace HotPotato.TestServ.Test
 
 			Results = hotPotatoServer.Host.Services.GetService<IResultCollector>().Results;
 			Client = new HotPotatoClient(hotPotatoServer.CreateClient());
+
+			//Omit this block if you're using this as a template and don't need to use access tokens
+			IConfiguration configuration = hotPotatoServer.Host.Services.GetService<IConfiguration>();
+			if (!string.IsNullOrWhiteSpace(configuration["SpecToken"]))
+			{
+				SpecTokenExists = true;
+			}
 		}
 
 		public void Dispose()

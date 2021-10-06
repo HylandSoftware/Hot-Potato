@@ -16,7 +16,15 @@ namespace HotPotato
 		public static string SpecPath(string subPath, string file)
 		{
 			string path = Path.Combine(Environment.CurrentDirectory, subPath, file);
-			return path.Replace('/', Path.DirectorySeparatorChar).Replace('\\', Path.DirectorySeparatorChar);
+			path = path.Replace('/', Path.DirectorySeparatorChar).Replace('\\', Path.DirectorySeparatorChar);
+			if (File.Exists(path))
+			{
+				return path;
+			}
+			else
+			{
+				return "";
+			}
 		}
 
 		public static ServiceProvider GetServiceProvider(string specLocation)

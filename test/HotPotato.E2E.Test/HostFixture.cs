@@ -1,5 +1,6 @@
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using HotPotato.AspNetCore.Host;
@@ -13,14 +14,16 @@ namespace HotPotato.E2E.Test
 	/// </summary>
 	public class HostFixture : IDisposable
 	{
-		public IWebHost host { get; }
+		public IWebHost Host { get; }
+		public bool SpecTokenExists { get; }
 
 		public HostFixture()
 		{
-			host = new WebHostBuilder()
+			Host = new WebHostBuilder()
 				.ConfigureAppConfiguration((hostingContext, config) =>
 				{
 					config.SetBasePath(hostingContext.HostingEnvironment.ContentRootPath);
+					//this uses the appsetting.json from the HotPotato.AspNetCore.Host project
 					config.AddJsonFile("appsettings.json", optional: true);
 					config.AddEnvironmentVariables();
 					config.AddUserSecrets<HostFixture>();
@@ -42,12 +45,18 @@ namespace HotPotato.E2E.Test
 				.UseStartup<Startup>()
 			.Build();
 
-			host.Start();
+			IConfiguration configuration = Host.Services.GetService<IConfiguration>();
+			if (!string.IsNullOrWhiteSpace(configuration["SpecToken"]))
+			{
+				SpecTokenExists = true;
+			}
+
+			Host.Start();
 		}
 
 		public void Dispose()
 		{
-			host.Dispose();
+			Host.Dispose();
 			GC.SuppressFinalize(this);
 		}
 	}

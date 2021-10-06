@@ -10,16 +10,16 @@ namespace HotPotato.OpenApi.Validators
 {
 	public class SpecPathValTest
 	{
-		[Fact]
+		[SkippableFact]
 		public void PathValidator_GeneratesSpecPathWithParam()
 		{
 			string specPath = SpecPath("specs/keyword/", "specification.yaml");
+			Skip.If(string.IsNullOrEmpty(specPath), TestConstants.InternalUseOnlyMessage);
+
 			ServiceProvider provider = GetServiceProvider(specPath);
 
 			ISpecificationProvider specPro = provider.GetService<ISpecificationProvider>();
 			OpenApiDocument swagDoc = specPro.GetSpecDocument();
-
-			ResultCollector resColl = new ResultCollector();
 
 			PathValidator subject = new PathValidator("http://api.docs.hyland.io/keyword/keyword-type-groups/48732/keyword-types");
 
@@ -27,18 +27,18 @@ namespace HotPotato.OpenApi.Validators
 			Assert.Equal("get", subject.Result.Keys.ElementAt(0).ToLower());
 		}
 
-		[Fact]
+		[SkippableFact]
 		public void PathValidator_GeneratesSpecPathWithoutParam()
 		{
-			string specPath = SpecPath("specs/workflow/", "specification.yaml");
+			string specPath = SpecPath("specs/onbase-workflow/", "specification.yaml");
+			Skip.If(string.IsNullOrEmpty(specPath), TestConstants.InternalUseOnlyMessage);
+
 			ServiceProvider provider = GetServiceProvider(specPath);
 
 			ISpecificationProvider specPro = provider.GetService<ISpecificationProvider>();
 			OpenApiDocument swagDoc = specPro.GetSpecDocument();
 
-			ResultCollector resColl = new ResultCollector();
-
-			PathValidator subject = new PathValidator("https://api.hyland.com/workflow/life-cycles");
+			PathValidator subject = new PathValidator("https://api.hyland.com/onbase-workflow/life-cycles");
 
 			Assert.True(subject.Validate(swagDoc));
 			Assert.Equal("get", subject.Result.Keys.ElementAt(0).ToLower());

@@ -107,11 +107,31 @@ namespace HotPotato.Http.Default
 				}
 			};
 
-			yield return new object[] { "specs/workflow/", HttpMethod.Get,
-				HttpStatusCode.OK, "https://api.hyland.com/workflow/life-cycles/48/", "application/json", new {
+			yield return new object[] { "specs/onbase-workflow/", HttpMethod.Get,
+				HttpStatusCode.OK, "https://api.hyland.com/onbase-workflow/life-cycles/48/", "application/json", new {
 					id = "string",
 					name = "string",
 					smallIconId = "string"
+				}
+			};
+
+			yield return new object[] { "specs/onbase-workflow/", HttpMethod.Get,
+				HttpStatusCode.OK, "https://api.hyland.com/onbase-workflow/life-cycles/", "application/json", new {
+					items = new[]
+					{
+						new
+						{
+							id = "testing",
+							name = "multiple",
+							smallIconId = "items"
+						},
+						new
+						{
+							id = "to see if a $ref to an external collection yaml",
+							name = "with another external $ref to a yaml for its single entity",
+							smallIconId = "can be loaded correctly"
+						}
+					}
 				}
 			};
 		}

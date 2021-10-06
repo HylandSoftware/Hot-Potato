@@ -9,26 +9,18 @@ namespace HotPotato.OpenApi.SpecificationProvider
 {
 	public class SpecificationProviderTest
 	{
-		[Fact]
+		[SkippableFact]
 		public void ISpecificationProvider_GetSpecDocument_ReturnsDocumentFromPath()
 		{
-			ServiceProvider provider = GetServiceProvider(SpecPath("specs/keyword/", "specification.yaml"));
+			string specPath = SpecPath("specs/keyword/", "specification.yaml");
+			Skip.If(string.IsNullOrEmpty(specPath), TestConstants.InternalUseOnlyMessage);
+
+			ServiceProvider provider = GetServiceProvider(specPath);
 
 			ISpecificationProvider subject = provider.GetService<ISpecificationProvider>();
 			OpenApiDocument result = subject.GetSpecDocument();
 
-			Assert.Equal(result.DocumentPath, SpecPath("specs/keyword/", "specification.yaml"));
-		}
-
-		[Fact]
-		public void ISpecificationProvider_GetSpecDocument_ThrowsInvalidOperationWithInvalidLocation()
-		{
-			ServiceProvider provider = GetServiceProvider(string.Empty);
-
-			ISpecificationProvider subject = provider.GetService<ISpecificationProvider>();
-
-			Action result = () => subject.GetSpecDocument();
-			Assert.Throws<InvalidOperationException>(result);
+			Assert.Equal(result.DocumentPath, specPath);
 		}
 	}
 }

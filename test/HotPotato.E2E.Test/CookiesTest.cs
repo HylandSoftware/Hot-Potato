@@ -18,6 +18,7 @@ namespace HotPotato.E2E.Test
 	public class CookiesTest
 	{
 		private IWebHost host;
+		private bool specTokenExists;
 
 		private const string ApiLocation = "http://localhost:5000";
 		private const string Endpoint = "/endpoint";
@@ -34,12 +35,15 @@ namespace HotPotato.E2E.Test
 
 		public CookiesTest(HostFixture fixture)
 		{
-			host = fixture.host;
+			host = fixture.Host;
+			specTokenExists = fixture.SpecTokenExists;
 		}
 
-		[Fact]
+		[SkippableFact]
 		public async Task HotPotato_CookiesEndpoint_Should_Delete_Cookies()
 		{
+			Skip.IfNot(specTokenExists, TestConstants.MissingSpecToken);
+
 			var servicePro = host.Services;
 
 			//Setting up mock server to hit

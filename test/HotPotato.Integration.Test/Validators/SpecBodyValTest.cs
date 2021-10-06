@@ -25,11 +25,13 @@ namespace HotPotato.OpenApi.Validators
 
 	public class SpecBodyValTest
 	{
-		[Theory]
+		[SkippableTheory]
 		[ClassData(typeof(SpecBodyValidTestData))]
 		public async Task BodyValidator_CreatesValidResult(string specSubPath, HttpMethod reqMethod, HttpStatusCode statusCode, string endpointURI, string contentType, object bodyJson)
 		{
 			string specPath = SpecPath(specSubPath, "specification.yaml");
+			Skip.If(string.IsNullOrEmpty(specPath), TestConstants.InternalUseOnlyMessage);
+
 			ServiceProvider provider = GetServiceProvider(specPath);
 
 			string bodyString = JsonConvert.SerializeObject(bodyJson);
@@ -37,6 +39,9 @@ namespace HotPotato.OpenApi.Validators
 			using (HttpResponseMessage testRespMsg = new HttpResponseMessage(statusCode))
 			{
 				testRespMsg.Content = new StringContent(bodyString, Encoding.UTF8, contentType);
+				//Content-Language header now needs to be set for workflow spec -
+				//it also doubles up as a good test for external ref handling
+				testRespMsg.Content.Headers.Add("Content-Language", "en-US");
 				var testResponse = await testRespMsg.ToClientResponseAsync();
 
 				using (HotPotatoRequest testRequest = new HotPotatoRequest(reqMethod, new Uri(endpointURI)))
@@ -53,19 +58,19 @@ namespace HotPotato.OpenApi.Validators
 					List<Result> results = collector.Results;
 					Result result = results.ElementAt(0);
 
-					Assert.Equal(State.Pass, result.State);
-
+					Assert.True(result.State == State.Pass, result.ToString());
 				}
 			}
 		}
 
-		[Theory]
+		[SkippableTheory]
 		[ClassData(typeof(SpecBodyInvalidTestData))]
-		public async Task BodyValidator_CreatesInvalidResult(string specSubPath, HttpMethod reqMethod, HttpStatusCode statusCode, 
+		public async Task BodyValidator_CreatesInvalidResult(string specSubPath, HttpMethod reqMethod, HttpStatusCode statusCode,
 			string endpointURI, string contentType, object bodyJson, ValidationErrorKind expectedKind1, ValidationErrorKind expectedKind2)
 		{
-
 			string specPath = SpecPath(specSubPath, "specification.yaml");
+			Skip.If(string.IsNullOrEmpty(specPath), TestConstants.InternalUseOnlyMessage);
+
 			ServiceProvider provider = GetServiceProvider(specPath);
 
 			string bodyString = JsonConvert.SerializeObject(bodyJson);
@@ -98,11 +103,13 @@ namespace HotPotato.OpenApi.Validators
 
 		}
 
-		[Theory]
+		[SkippableTheory]
 		[ClassData(typeof(CustomSpecTestData))]
 		public async Task BodyValidator_CreatesValidResultWithDiffTypes(string specSubPath, HttpMethod reqMethod, HttpStatusCode statusCode, string endpointURI, string contentType, string bodyString)
 		{
 			string specPath = SpecPath(specSubPath, "specification.yaml");
+			Skip.If(string.IsNullOrEmpty(specPath), TestConstants.InternalUseOnlyMessage);
+
 			ServiceProvider provider = GetServiceProvider(specPath);
 
 			using (HttpResponseMessage testRespMsg = new HttpResponseMessage(statusCode))
@@ -124,18 +131,19 @@ namespace HotPotato.OpenApi.Validators
 					List<Result> results = collector.Results;
 					Result result = results.ElementAt(0);
 
-					Assert.Equal(State.Pass, result.State);
-
+					Assert.True(result.State == State.Pass, result.ToString());
 				}
 			}
 		}
 
-		[Theory]
+		[SkippableTheory]
 		[ClassData(typeof(CustomSpecNegTestData))]
-		public async Task BodyValidator_CreatesInvalidResultWithDiffTypes(string specSubPath, HttpMethod reqMethod, 
+		public async Task BodyValidator_CreatesInvalidResultWithDiffTypes(string specSubPath, HttpMethod reqMethod,
 			HttpStatusCode statusCode, string endpointURI, string contentType, string bodyString, ValidationErrorKind errorKind)
 		{
 			string specPath = SpecPath(specSubPath, "specification.yaml");
+			Skip.If(string.IsNullOrEmpty(specPath), TestConstants.InternalUseOnlyMessage);
+
 			ServiceProvider provider = GetServiceProvider(specPath);
 
 			using (HttpResponseMessage testRespMsg = new HttpResponseMessage(statusCode))

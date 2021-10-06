@@ -13,5 +13,10 @@ namespace HotPotato.OpenApi.Models
 			Method = method;
 			StatusCode = statusCode;
 		}
+
+		public override string ToString()
+		{
+			return JsonConvert.SerializeObject(this);
+		}
 	}
 }
