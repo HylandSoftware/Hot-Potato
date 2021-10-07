@@ -1,6 +1,6 @@
 # Hot Potato Proxy
 
-[![Build Status](https://github.com/HylandSoftware/Hot-Potato/workflows/hot-potato-ci/badge.svg)]
+![Build Status](https://github.com/HylandSoftware/Hot-Potato/workflows/hot-potato-ci/badge.svg)
 
 The Hot Potato is an ASP.NET Core reverse proxy that will validate an API's conformance to an OpenAPI spec.
 
