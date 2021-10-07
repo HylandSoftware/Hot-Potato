@@ -7,44 +7,28 @@ The Hot Potato is an ASP.NET Core reverse proxy that will validate an API's conf
 
 ## Setup
 
-To use the complete tool you will need to download the `HotPotato.AspNetCore.Host` NuGet package from https://proget.onbase.net/feeds/NuGet/HotPotato.AspNetCore.Host/. Since Hot Potato is a dotnet global tool you can easily download it from Powershell or Command Prompt.
+To use the complete tool you will need to download the `HotPotato.AspNetCore.Host` NuGet package from https://www.nuget.org/packages/HotPotato.AspNetCore.Host/. Since Hot Potato is a dotnet global tool you can easily download it from Powershell or Command Prompt.
 
 ### Install
 To install Hot Potato use the following command:
 ```sh
-dotnet tool install -g hotpotato.aspnetcore.host --add-source https://proget.onbase.net/nuget/NuGet/
+dotnet tool install -g hotpotato.aspnetcore.host
 ```
 There are other options that can be utilized when downloading a dotnet tool. A complete list of options can be found here: https://docs.microsoft.com/en-us/dotnet/core/tools/dotnet-tool-install
 
 If the install is successful you will see a message like this:  
 ```sh
 You can invoke the tool using the following command: HotPotato
-Tool 'hotpotato.aspnetcore.host' (version '0.1.29') was successfully installed.
+Tool 'hotpotato.aspnetcore.host' (version '2.0.0') was successfully installed.
 ```
 ### Start Hot Potato
 
 You can now start the tool by using the command `HotPotato`. Add the arguments for your testing situation and you can utilize `HotPotato` from the command line.
 ```sh
-HotPotato --RemoteEndpoint http://hyland.io/my/api --SpecLocation http://hyland.io/my/spec.json
+HotPotato --RemoteEndpoint http://server.io/my/endpoint --SpecLocation http://server.io/my/specification.yaml
 ```
 
-### Docker
-
-Hot Potato can also be started in a Jenkins build through Docker. In a pipeline stage, you can create a network through Docker, pull our image from [Harbor](https://hcr.io/harbor/projects/118/repositories/automated-testing%2Fhot-potato/tags/latest), then start Hot Potato in that network.
-
-A good example can be found in the [Jenkinsfile](https://bitbucket.hyland.com/projects/IBPA-CV/repos/cv-conformance-tests/browse/Jenkinsfile) for the CV Conformance Tests:
-
-```groovy
-stage('HotPotato'){			
-	steps {
-		sh 'docker network create hp'
-		sh 'docker pull hcr.io/automated-testing/hot-potato:latest'
-		sh 'docker run --rm -d --network hp --name Conformance -p 3232:3232 -e HttpClientSettings__IgnoreClientHttpsCertificateValidationErrors=true -e REMOTE_ENDPOINT=https://$Host/$ApiRoot -e SPEC_LOCATION=$ApiSpec hcr.io/automated-testing/hot-potato'                
-        }			
-	}
-```
-
-We ran into persisent SSL certificate validation issues when running in Docker, so setting the environment variable `HttpClientSettings__IgnoreClientHttpsCertificateValidationErrors` to `true` as shown above is necessary to run tests successfully.
+We have also also provided an environment variable named `HttpClientSettings__IgnoreClientHttpsCertificateValidationErrors` that can be set to `true` in the case of of persistent SSL certificate validation issues. 
 
 <a name="results"></a>
 ## Results
@@ -99,9 +83,10 @@ In test:
 ```csharp
 Result result = results.ElementAt(0);
 
+//We overrode the ToString() on the Result objects to output the json string of a result in a failed assert
+Assert.True(result.State == State.Pass, result.ToString());
 Assert.Equal(methodString, result.Method, ignoreCase: true);
 Assert.Equal(pathUri.AbsolutePath, result.Path);
-Assert.Equal(State.Pass, result.State);
 Assert.Equal(expectedStatusCode, result.StatusCode);
 
 results.Clear();
@@ -137,7 +122,7 @@ The proxy is broken down into a number of components to allow flexibility for de
 
 This is an ASP.NET Core host configured to use the Hot Potato Middleware. It is stood up as a separate server that listens by default on port `3232`. There is an `appsettings.json` to allow the developer to set the remote endpoint to forward requests to and the location of the OpenAPI specification to validate conformance. These values can also be passed into the command line via the following command:
 
-`hotpotato --RemoteEndpoint http://hyland.io/my/api --SpecLocation http://hyland.io/my/spec.json`
+`hotpotato --RemoteEndpoint http://server.io/my/endpoint --SpecLocation http://server.io/my/specification.yaml`
 
 ### HotPotato.Core
 
@@ -178,9 +163,6 @@ var apiBuilder = new WebHostBuilder()
 apiServer = new TestServer(apiBuilder);
 apiServer.BaseAddress = new Uri(TestServerAddress);
 
-//versions below 1.1.0
-Core.Http.Default.HttpClient apiClient = new Core.Http.Default.HttpClient(apiServer.CreateClient());
-//1.1.0+
 HotPotatoClient apiClient = new HotPotatoClient(apiServer.CreateClient());
 ```
 
@@ -220,9 +202,6 @@ These services are `IProxy`, `ISpecificationProivder`, `IResultCollector`, and `
 We set the fixture's public members of Results to the List<Result> member of the IResultCollector and Client to the client created with the Hot Potato TestServer:
 ```csharp
 Results = hotPotatoServer.Host.Services.GetService<IResultCollector>().Results;
-//versions below 1.1.0
-Client = new Core.Http.Default.HttpClient(hotPotatoServer.CreateClient());
-//1.1.0+
 Client = new HotPotatoClient(hotPotatoServer.CreateClient());
 ```
 
@@ -237,7 +216,7 @@ Assert.Equal(State.Pass, result.State);
 
 Make sure to call `results.Clear()` in a `Dispose()` method in XUnit or a `[Teardown]` method in NUnit. Another option is to call `results.Clear` in the `finally` block of a try-finally statement containing the test fixture. 
 
-The full example test can be found at [RawPotatoTest.cs](https://bitbucket.hyland.com/projects/TATO/repos/hot-potato/browse/test/HotPotato.TestServer.Test/RawPotatoTest.cs).
+The full example test can be found at [RawPotatoTest.cs](https://github.com/HylandSoftware/Hot-Potato/blob/master/test/HotPotato.TestServer.Test/RawPotatoTest.cs).
 
 #### Using Middleware/TestServer with Startups in separate test projects
 
@@ -260,7 +239,7 @@ End-to-End tests using Hot Potato can be run with Postman both locally and throu
 
 To use Postman locally, you must have instances of both the Hot Potato server and your API server running.
 
-For our test project, we provided our own sample Hot Potato API, which can be found [here](https://bitbucket.hyland.com/projects/TATO/repos/hot-potato/browse/test/HotPotato.Api).
+For our test project, we provided our own sample Hot Potato API, which can be found [here](https://github.com/HylandSoftware/Hot-Potato/tree/master/test/HotPotato.Api).
 
 Once your System Under Test is ready, you may start writing Postman requests with the base address of localhost:3232.
 To check the results of these requests, you can query the results endpoint as shown in the [Results](#results) section above.
@@ -275,7 +254,7 @@ If you are not familiar with creating collections and writing tests in Postman, 
 
 Tests will usually check for critical information such as if the correct status code and body are being returned correctly in the response.
 
-Examples can be found in our HappyPath collection [here](https://bitbucket.hyland.com/projects/TATO/repos/hot-potato/browse/test/HappyPathTests.postman_collection.json).
+Examples can be found in our HappyPath collection [here](https://github.com/HylandSoftware/Hot-Potato/blob/master/test/HappyPathTests.postman_collection.json).
 
 **Check that the response contains the correct status code and expected body**
 ```javascript
@@ -299,33 +278,3 @@ pm.test(\"Results should not contain Fail\", function () {
 ```
 
 Make sure to send a DELETE request at the end of your collection so that the results from collection do not carry over to the next.
-
-### Running Postman tests in a in a pipeline
-Once your collection and its tests are finished, you can export it as a json file. For our project, we exported our collections to the root \test folder. 
-
-More information about exporting collections can be found [here](https://learning.getpostman.com/docs/postman/collections/data-formats/)
-
-Now that the collection is in a directory, it can be used by the ```newman run``` command in Jenkins.
-We do so in our "Run-E2E-Tests" stage in our [Jenkinsfile](https://bitbucket.hyland.com/projects/TATO/repos/hot-potato/browse/Jenkinsfile), where we start Hot Potato and our sample API.
-
-```groovy
-stage("Run-E2E-Tests") {
-    steps {
-        container("builder") {
-            sh 'dotnet $WORKSPACE/src/HotPotato.AspNetCore.Host/bin/Release/netcoreapp3.1/HotPotato.AspNetCore.Host.dll &'
-            sh 'dotnet $WORKSPACE/test/HotPotato.Api/bin/Release/netcoreapp3.1/HotPotato.Api.dll &'
-        }
-        container("newman") {
-            sh 'newman run $WORKSPACE/test/HappyPathTests.postman_collection.json'
-			sh 'newman run $WORKSPACE/test/Non-ConformantTests.postman_collection.json'
-            sh 'newman run $WORKSPACE/test/NotInSpecTests.postman_collection.json'
-        }
-    }
-}
-```
-
-## Known Issues
-
-As of version 1.0.13, Hot Potato can handle multi-file specs, but unfortunately still cannot handle some edge cases involving schemas in a subdirectory having external references to other schemas in subdirectories. A [pull request](https://github.com/RicoSuter/NJsonSchema/pull/1356) has been submitted to [NJsonSchema](https://github.com/RicoSuter/NJsonSchema) that would solve these edge cases.
-
-A workaround for this issue is using the tool [swagger-merger](https://www.npmjs.com/package/swagger-merger) to combine multi-file specs into a single file.
