@@ -5,7 +5,7 @@
 
     <PackageVersion></PackageVersion>
     <Title>HotPotato.Extensions</Title>
-    <Authors>Test Automation Team | GRP-AutomatedTesting@.hyland.com</Authors>
+    <Authors>Hyland Test Automation Team</Authors>
     <Description>HotPotato.Extensions contains an extension method for setting up HotPotato on a given TestServer.</Description>
     <RepositoryUrl>https://github.com/HylandSoftware/Hot-Potato</RepositoryUrl>
     <Configurations>Debug;Release;Docker</Configurations>

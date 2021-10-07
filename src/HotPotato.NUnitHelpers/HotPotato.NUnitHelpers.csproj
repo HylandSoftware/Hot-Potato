@@ -5,7 +5,7 @@
 
     <PackageVersion></PackageVersion>
     <Title>HotPotato.NUnitHelpers</Title>
-    <Authors>Test Automation Team | GRP-AutomatedTesting@.hyland.com</Authors>
+    <Authors>Hyland Test Automation Team</Authors>
     <Description>HotPotato.NUnitHelpers extends upon NUnit's Is class for easy Assertions in HotPotato tests. In the event of a Fail result, NUnit will print the results of the HotPotato run for easy troubleshooting.</Description>
     <RepositoryUrl>https://github.com/HylandSoftware/Hot-Potato</RepositoryUrl>
     <Configurations>Debug;Release;Docker</Configurations>

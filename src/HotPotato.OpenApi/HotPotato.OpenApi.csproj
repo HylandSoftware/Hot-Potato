@@ -9,7 +9,7 @@
     <StartupObject />
     <PackageVersion></PackageVersion>
     <Title>HotPotato.OpenApi</Title>
-    <Authors>Test Automation Team | GRP-AutomatedTesting@.hyland.com</Authors>
+    <Authors>Hyland Test Automation Team</Authors>
     <Description>HotPotato.OpenApi contains all of the OpenAPI functionality including the processor implementation that validates an HTTP request/response pair against a spec, a result collection, logic to find paths, and so on. Currently, we are using the packages NSwag, NJsonSchema, and NJsonSchema.Yaml to consume a spec and to validate the contained schemas.</Description>
     <RepositoryUrl>https://github.com/HylandSoftware/Hot-Potato</RepositoryUrl>
     <Configurations>Debug;Release;Docker</Configurations>
