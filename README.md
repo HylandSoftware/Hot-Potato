@@ -24,16 +24,16 @@ Tool 'hotpotato.aspnetcore.host' (version '2.0.0') was successfully installed.
 
 You can now start the tool by using the command `HotPotato`. Add the arguments for your testing situation and you can utilize `HotPotato` from the command line.
 ```sh
-HotPotato --RemoteEndpoint http://server.io/my/endpoint --SpecLocation http://server.io/my/specification.yaml
+HotPotato --RemoteEndpoint http://potato.io/my/endpoint --SpecLocation http://potato.io/my/specification.yaml
 ```
-
-### Specs with Token Validation
-
-In the case of something like accessing a raw file in a private repo on Github, a token is needed to access a specification. For cases like this, we have included a `SpecToken` environment variable that can be used as a secret. If you're running Hot Potato locally via Visual Studio, an easy way of setting the secret can be found here: [Manage User Secrets](https://docs.microsoft.com/en-us/aspnet/core/security/app-secrets?view=aspnetcore-5.0&tabs=windows#json-structure-flattening-in-visual-studio).
 
 ### SSL Validation Issues
 
 We have also also provided an environment variable named `HttpClientSettings__IgnoreClientHttpsCertificateValidationErrors` that can be set to `true` in the case of of persistent SSL certificate validation issues. 
+
+### Specs with Token Validation
+
+In the case of something like accessing a raw file in a private repo on Github, a token is needed to access a specification. For cases like this, we have included a `SpecToken` environment variable that can be used as a secret. If you're running Hot Potato locally via Visual Studio, an easy way of setting the secret can be found here: [Manage User Secrets](https://docs.microsoft.com/en-us/aspnet/core/security/app-secrets?view=aspnetcore-5.0&tabs=windows#json-structure-flattening-in-visual-studio).
 
 <a name="results"></a>
 ## Results
@@ -127,7 +127,7 @@ The proxy is broken down into a number of components to allow flexibility for de
 
 This is an ASP.NET Core host configured to use the Hot Potato Middleware. It is stood up as a separate server that listens by default on port `3232`. There is an `appsettings.json` to allow the developer to set the remote endpoint to forward requests to and the location of the OpenAPI specification to validate conformance. These values can also be passed into the command line via the following command:
 
-`hotpotato --RemoteEndpoint http://server.io/my/endpoint --SpecLocation http://server.io/my/specification.yaml`
+`hotpotato --RemoteEndpoint http://potato.io/my/endpoint --SpecLocation http://potato.io/my/specification.yaml`
 
 ### HotPotato.Core
 
