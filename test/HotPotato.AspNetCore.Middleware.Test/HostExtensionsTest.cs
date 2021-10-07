@@ -16,7 +16,7 @@ namespace HotPotato.AspNetCore.Middleware
 {
 	public class HostExtensionsTest
 	{
-		private const string SpecLocation = "https://bitbucket.hyland.com/projects/TATO/repos/hot-potato/raw/test/RawPotatoSpec.yaml";
+		private const string SpecLocation = "https://russian.blue.potato.com/projects/TATO/repos/hot-potato/raw/test/RawPotatoSpec.yaml";
 		private const string ApiServerAddress = "http://localhost:5000";
 
 		[Fact]

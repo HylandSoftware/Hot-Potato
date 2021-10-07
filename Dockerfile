@@ -16,7 +16,7 @@ FROM mcr.microsoft.com/dotnet/aspnet:5.0 as runtime
 
 LABEL maintainer "Test Automation Team <grp-automatedtesting@hyland.com>"
 
-ENV SPEC_LOCATION "https://bitbucket.hyland.com/projects/TATO/repos/hot-potato/raw/test/RawPotatoSpec.yaml"
+ENV SPEC_LOCATION "https://raw.githubusercontent.com/HylandSoftware/Hot-Potato/master/test/RawPotatoSpec.yaml"
 ENV REMOTE_ENDPOINT "http://localhost:9000"
 
 COPY --from=build /app/publish /opt/hotpotato/
