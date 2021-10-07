@@ -27,6 +27,12 @@ You can now start the tool by using the command `HotPotato`. Add the arguments f
 HotPotato --RemoteEndpoint http://server.io/my/endpoint --SpecLocation http://server.io/my/specification.yaml
 ```
 
+### Specs with Token Validation
+
+In the case of something like accessing a raw file in a private repo on Github, a token is needed to access a specification. For cases like this, we have included a `SpecToken` environment variable that can be used as a secret. If you're running Hot Potato locally via Visual Studio, an easy way of setting the secret can be found here: [Manage User Secrets](https://docs.microsoft.com/en-us/aspnet/core/security/app-secrets?view=aspnetcore-5.0&tabs=windows#json-structure-flattening-in-visual-studio).
+
+### SSL Validation Issues
+
 We have also also provided an environment variable named `HttpClientSettings__IgnoreClientHttpsCertificateValidationErrors` that can be set to `true` in the case of of persistent SSL certificate validation issues. 
 
 <a name="results"></a>
