@@ -1,4 +1,4 @@
-name: Hot Potato CI
+name: hot-potato-ci
 
 on:
   push
