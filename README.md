@@ -1,7 +1,6 @@
 # Hot Potato Proxy
 
-[![Build Status](https://autotest.jenkins.hylandqa.net/job/Prod%20Bitbucket/job/hot-potato/job/master/badge/icon)](https://autotest.jenkins.hylandqa.net/job/Prod%20Bitbucket/job/hot-potato/job/master/) 
-[![Coverage](http://shields.hyland.io/jenkins/c/https/autotest.jenkins.hylandqa.net/job/Prod%20Bitbucket/job/hot-potato/job/master.svg)](https://autotest.jenkins.hylandqa.net/job/Prod%20Bitbucket/job/hot-potato/job/master/lastSuccessfulBuild/cobertura/)
+[![Build Status](https://github.com/HylandSoftware/Hot-Potato/workflows/ci.yml/badge.svg)]
 
 The Hot Potato is an ASP.NET Core reverse proxy that will validate an API's conformance to an OpenAPI spec.
 
@@ -141,7 +140,7 @@ The main factor in setting up a test suite to use the isolated middleware is tha
 
 #### Using the Middleware with TestServer
 
-In our example [test fixture](https://bitbucket.hyland.com/projects/TATO/repos/hot-potato/browse/test/HotPotato.TestServer.Test/TestFixture.cs), we use two instances of TestServer: one to create the client representing the API Under Test, and one that consumes this client to create a new client housing the Hot Potato proxy.
+In our example [test fixture](https://github.com/HylandSoftware/Hot-Potato/blob/master/test/HotPotato.TestServer.Test/TestFixture.cs), we use two instances of TestServer: one to create the client representing the API Under Test, and one that consumes this client to create a new client housing the Hot Potato proxy.
 
 First, we define a TestFixture class to use a generic Startup reference type:
  ```csharp
@@ -263,7 +262,7 @@ pm.test(\"LandingPage returns 200 OK\", function () {
 })
 
 pm.test(\"LandingPage returns expected body \", function () {
-	pm.response.to.have.body(\"https://bitbucket.hyland.com/projects/TATO/repos/hot-potato/browse\")
+	pm.response.to.have.body(\"https://github.com/HylandSoftware/Hot-Potato\")
 })
 ```
 
