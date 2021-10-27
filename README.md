@@ -24,7 +24,7 @@ Tool 'hotpotato.aspnetcore.host' (version '2.0.0') was successfully installed.
 
 You can now start the tool by using the command `HotPotato`. Add the arguments for your testing situation and you can utilize `HotPotato` from the command line.
 ```sh
-HotPotato --RemoteEndpoint http://potato.io/my/endpoint --SpecLocation http://potato.io/my/specification.yaml
+HotPotato --RemoteEndpoint http://example.com/my/endpoint --SpecLocation http://example.com/my/specification.yaml
 ```
 
 ### SSL Validation Issues
@@ -127,7 +127,7 @@ The proxy is broken down into a number of components to allow flexibility for de
 
 This is an ASP.NET Core host configured to use the Hot Potato Middleware. It is stood up as a separate server that listens by default on port `3232`. There is an `appsettings.json` to allow the developer to set the remote endpoint to forward requests to and the location of the OpenAPI specification to validate conformance. These values can also be passed into the command line via the following command:
 
-`hotpotato --RemoteEndpoint http://potato.io/my/endpoint --SpecLocation http://potato.io/my/specification.yaml`
+`hotpotato --RemoteEndpoint http://example.com/my/endpoint --SpecLocation http://example.com/my/specification.yaml`
 
 ### HotPotato.Core
 
