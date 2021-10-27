@@ -75,9 +75,9 @@ docker build --tag hot-potato:4.8 --build-arg IMAGE_VERSION=4.8 .
 Now to test, you may pass the API's REMOTE_ENDPOINT and SPEC_LOCATION through the command line. Connecting Docker with your localhost requires some nontrivial network setup, so we recommend using an external API, like so:
 
 ```sh
-docker run --rm -d --network hp --name Conformance -p 3232:3232 -e HttpClientSettings__IgnoreClientHttpsCertificateValidationErrors=true -e 
-REMOTE_ENDPOINT=https://indikatorer-api.naturvardsverket.se/ -e 
-SPEC_LOCATION=https://raw.githubusercontent.com/greentechdev/greentechdev.github.io/master/environmental_indicators_api.yaml hot-potato:4.8
+docker network create hp
+
+docker run --rm -d --network hp --name Conformance -p 3232:3232 -e HttpClientSettings__IgnoreClientHttpsCertificateValidationErrors=true -e REMOTE_ENDPOINT=https://indikatorer-api.naturvardsverket.se/ -e SPEC_LOCATION=https://raw.githubusercontent.com/greentechdev/greentechdev.github.io/master/environmental_indicators_api.yaml hot-potato:4.8
 ```
 
 ## Pull requests
