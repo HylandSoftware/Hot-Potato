@@ -34,11 +34,11 @@ To run tests locally against an external remote endpoint, you will need to provi
 
 ```diff
 {
-  "RemoteEndpoint": "https://nvpub.vic-metria.nu/naturvardsregistret/v2/rest",
+  "RemoteEndpoint": "https://indikatorer-api.naturvardsverket.se/",
   "HttpClientSettings": {
     "IgnoreClientHttpsCertificateValidationErrors": "false"
   },
-  "SpecLocation": "https://raw.githubusercontent.com/greentechdev/greentechdev.github.io/master/nvr_api.yaml",
+  "SpecLocation": "https://raw.githubusercontent.com/greentechdev/greentechdev.github.io/master/environmental_indicators_api.yaml",
   "ForwardProxy": {
     "Enabled": "false",
     "ProxyAddress": "http://localhost:8888",
@@ -62,7 +62,7 @@ To run tests locally against an external remote endpoint, you will need to provi
 }
 ```
 
-Once the API that needs to be tested is configured, you'll want to append the endpoints (e.g localhost:3232/omrade/skyddstyper) through something like Postman.
+Once the API that needs to be tested is configured, you'll want to append the endpoints (e.g localhost:3232/omrade/api/v1/indicators/) through something like Postman.
 
 Noted: As with any sort of Hot Potato testing, you'll be replacing the host name with localhost:3232.
 
@@ -76,8 +76,8 @@ Now to test, you may pass the API's REMOTE_ENDPOINT and SPEC_LOCATION through th
 
 ```sh
 docker run --rm -d --network hp --name Conformance -p 3232:3232 -e HttpClientSettings__IgnoreClientHttpsCertificateValidationErrors=true -e 
-REMOTE_ENDPOINT=https://nvpub.vic-metria.nu/naturvardsregistret/v2/rest -e 
-SPEC_LOCATION=https://raw.githubusercontent.com/greentechdev/greentechdev.github.io/master/nvr_api.yaml hot-potato:4.8
+REMOTE_ENDPOINT=https://indikatorer-api.naturvardsverket.se/ -e 
+SPEC_LOCATION=https://raw.githubusercontent.com/greentechdev/greentechdev.github.io/master/environmental_indicators_api.yaml hot-potato:4.8
 ```
 
 ## Pull requests
