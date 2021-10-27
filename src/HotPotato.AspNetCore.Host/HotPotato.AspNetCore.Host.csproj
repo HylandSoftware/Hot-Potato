@@ -9,6 +9,8 @@
     <PackageVersion></PackageVersion>
     <Title>HotPotato.AspNetCore.Host</Title>
     <Authors>Hyland Test Automation Team</Authors>
+    <Copyright />
+    <Company />
     <Description>
       This is an ASP.NETCore host configured to use the HotPotato Middleware. It is stood up as a separate server that listens by default on port 3232. There is an appsettings.json to allow the developer to set the remote endpoing to forward requests to and the specification location of the OpenAPI spec to validate conformance. These values can also be passed into the command line via the following command
 
