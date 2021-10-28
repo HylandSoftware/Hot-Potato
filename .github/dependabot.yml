@@ -1,0 +1,9 @@
+version: 2
+updates:
+  - package-ecosystem: "nuget"
+    directory: "/"
+    schedule:
+      interval: "weekly"
+      day: "sunday"
+      time: "21:00"
+      timezone: "America/Detroit"

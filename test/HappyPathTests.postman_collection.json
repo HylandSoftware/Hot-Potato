@@ -18,7 +18,7 @@
 							"});",
 							"",
 							"pm.test(\"LandingPage returns expected body \", function () {",
-							"    pm.response.to.have.body(\"https://bitbucket.hyland.com/projects/TATO/repos/hot-potato/browse\");",
+							"    pm.response.to.have.body(\"https://github.com/HylandSoftware/Hot-Potato\");",
 							"});",
 							"",
 							""
