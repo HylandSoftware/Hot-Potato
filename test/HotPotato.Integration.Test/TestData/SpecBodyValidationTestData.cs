@@ -188,7 +188,7 @@ namespace HotPotato.Http.Default
 					id = "string",
 					name = "string",
 					smallIconId = "string"
-				}
+				}, ValidationErrorKind.PropertyNotInSpec, null
 			};
 		}
 		IEnumerator IEnumerable.GetEnumerator() => GetEnumerator();
