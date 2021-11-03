@@ -109,10 +109,11 @@ namespace HotPotato.Http.Default
 				HttpStatusCode.OK, "https://api.hyland.com/onbase-workflow/life-cycles/48/", "application/json", new {
 					id = "string",
 					name = "string",
-					smallIconId = "string"
+					smallImageID = "string"
 				}
 			};
 
+			//good use case for property testing in a JArray
 			yield return new object[] { "specs/onbase-workflow/", HttpMethod.Get,
 				HttpStatusCode.OK, "https://api.hyland.com/onbase-workflow/life-cycles/", "application/json", new {
 					items = new[]
