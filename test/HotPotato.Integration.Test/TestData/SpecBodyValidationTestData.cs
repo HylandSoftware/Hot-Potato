@@ -140,29 +140,44 @@ namespace HotPotato.Http.Default
 	{
 		public IEnumerator<object[]> GetEnumerator()
 		{
-			yield return new object[] { "specs/rdds/messagestorageservice/", HttpMethod.Delete,
-				HttpStatusCode.NotFound, "https://api.hyland.com/ibpaf/rdds/messages/78", "application/problem+json", new {
-					type = "https://example.net/validation_error",
-					title = false,
-					status = "not an int",
-					detail = "message was not found for the given messageId, hence nothing will be deleted",
-					instance = "https://example.net/example-resource"
-				}, ValidationErrorKind.StringExpected, ValidationErrorKind.IntegerExpected
-			};
+			//yield return new object[] { "specs/rdds/messagestorageservice/", HttpMethod.Delete,
+			//	HttpStatusCode.NotFound, "https://api.hyland.com/ibpaf/rdds/messages/78", "application/problem+json", new {
+			//		type = "https://example.net/validation_error",
+			//		title = false,
+			//		status = "not an int",
+			//		detail = "message was not found for the given messageId, hence nothing will be deleted",
+			//		instance = "https://example.net/example-resource"
+			//	}, ValidationErrorKind.StringExpected, ValidationErrorKind.IntegerExpected
+			//};
 
-			yield return new object[] { "specs/ccm/", HttpMethod.Get,
-				HttpStatusCode.OK, "https://api.hyland.com/sms/messages/41", "application/json", new {
-					id = "SM4262411b90e5464b98a4f66a49c57a97",
-					created = "2019-01-04T15:08=09Z",
-					modified = "2019-01-04T15:08:09Z",
-					sent = "2019-01-04T15:08:09Z",
-					accountId = "AC0db966d80e9f1662da09c61287f8bba1",
-					from = "+5622089048",
-					to = "+15622089096",
-					body = "Test",
-					status = "accepted",
-					direction = "inbound",
-				}, ValidationErrorKind.DateTimeExpected, ValidationErrorKind.IntegerExpected
+			//yield return new object[] { "specs/ccm/", HttpMethod.Get,
+			//	HttpStatusCode.OK, "https://api.hyland.com/sms/messages/41", "application/json", new {
+			//		id = "SM4262411b90e5464b98a4f66a49c57a97",
+			//		created = "2019-01-04T15:08=09Z",
+			//		modified = "2019-01-04T15:08:09Z",
+			//		sent = "2019-01-04T15:08:09Z",
+			//		accountId = "AC0db966d80e9f1662da09c61287f8bba1",
+			//		from = "+5622089048",
+			//		to = "+15622089096",
+			//		body = "Test",
+			//		status = "accepted",
+			//		direction = "inbound",
+			//	}, ValidationErrorKind.DateTimeExpected, ValidationErrorKind.IntegerExpected
+			//};
+
+			yield return new object[] {"specs/cv/", HttpMethod.Options,
+				HttpStatusCode.BadRequest, "https://api.hyland.com/combined-viewer/combined-view-types/42/search-keyword-types", "application/problem+json", new {
+						items = new[] {
+							new {
+								id = "onetype",
+								name = "anothertype"
+							},
+							new {
+								id = "anothertype",
+								name = "anothertype"
+							}
+						}
+				}, ValidationErrorKind.PropertyNotInSpec, null
 			};
 		}
 		IEnumerator IEnumerable.GetEnumerator() => GetEnumerator();
