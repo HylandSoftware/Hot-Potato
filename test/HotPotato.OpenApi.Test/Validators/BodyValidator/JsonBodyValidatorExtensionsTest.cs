@@ -1,5 +1,6 @@
 using System;
 using HotPotato.OpenApi.Models;
+using Moq;
 using NJsonSchema;
 using System.Collections.Generic;
 using Xunit;
@@ -18,6 +19,18 @@ namespace HotPotato.OpenApi.Validators
 			JsonSchema subject = JsonSchema.FromJsonAsync(AValidSchema).Result;
 
 			List<ValidationError> results = subject.ValidateUndefinedProperties(AValidBody);
+
+			Assert.Empty(results);
+		}
+
+		[Fact]
+		public void ValidateUndefinedProperties_ReturnsEmptyList_WithNullActualSchema()
+		{
+			JsonSchema nullSchema = null;
+			Mock<JsonSchema> subject = new Mock<JsonSchema>();
+			subject.SetupGet(x => x.ActualSchema).Returns(nullSchema);
+
+			List<ValidationError> results = subject.Object.ValidateUndefinedProperties(AValidBody);
 
 			Assert.Empty(results);
 		}
