@@ -53,6 +53,19 @@ namespace HotPotato.OpenApi.Validators
 			Assert.Equal(ValidationErrorKind.PropertyNotInSpec, result.Errors[0].Kind);
 		}
 
+		[Fact]
+		public void JsonBodyValidator_ReturnsFalseWithUndocumentedPropertyAndBlankSchema()
+		{
+			JsonSchema schema = new JsonSchema();
+			JsonBodyValidator subject = new JsonBodyValidator(ABodyWithAnUnexpectedProperty);
+
+			InvalidResult result = (InvalidResult)subject.Validate(schema);
+
+			Assert.False(result.Valid);
+			Assert.Equal(Reason.InvalidBody, result.Reason);
+			Assert.Equal(ValidationErrorKind.PropertyNotInSpec, result.Errors[0].Kind);
+		}
+
 		//the cases for null body and null schema will now be addressed by the ContentValidator
 
 		[Fact]
