@@ -1,5 +1,6 @@
 using HotPotato.OpenApi.Filters;
 using HotPotato.OpenApi.Models;
+using Newtonsoft.Json;
 using NJsonSchema;
 using System.Collections.Generic;
 

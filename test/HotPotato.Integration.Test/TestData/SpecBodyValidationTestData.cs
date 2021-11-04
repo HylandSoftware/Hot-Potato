@@ -41,12 +41,12 @@ namespace HotPotato.Http.Default
 			};
 
 			yield return new object[] {"specs/cv/", HttpMethod.Options,
-				HttpStatusCode.BadRequest, "https://api.hyland.com/combined-viewer/combined-view-types/42/search-keyword-types", "application/problem+json", new {
-				type = "https://www.example.net/bad-request/",
-				title = "Bad Request",
-				status = 400,
-				detail = "The method 'OPTIONS' is not allowed.",
-				instance = "https://api.hyland.com/combined-viewer/combined-view-types/{combinedViewTypeId}/search-keyword-types"
+					HttpStatusCode.BadRequest, "https://api.hyland.com/combined-viewer/combined-view-types/42/search-keyword-types", "application/problem+json", new {
+					type = "https://www.example.net/bad-request/",
+					title = "Bad Request",
+					status = 400,
+					detail = "The method 'OPTIONS' is not allowed.",
+					instance = "https://api.hyland.com/combined-viewer/combined-view-types/{combinedViewTypeId}/search-keyword-types"
 				}
 			};
 
