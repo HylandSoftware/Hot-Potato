@@ -4,7 +4,7 @@ using System.Collections.Generic;
 
 namespace HotPotato.OpenApi.Validators
 {
-	public static class JsonBodyValidatorExtensions
+	internal static class JsonBodyValidatorExtensions
 	{
 		public static List<ValidationError> ValidateUndefinedProperties(this JsonSchema schema, string bodyString)
 		{
@@ -16,11 +16,14 @@ namespace HotPotato.OpenApi.Validators
 				JEnumerable<JToken> childTokens = bodyToken.Children();
 				var schemaProperties = schema?.ActualSchema?.ActualProperties;
 
-				foreach (JToken childToken in childTokens)
+				if (schemaProperties != null)
 				{
-					if (!schemaProperties.ContainsKey(childToken.Path))
+					foreach (JToken childToken in childTokens)
 					{
-						validationErrors.Add(new ValidationError($"Property not found in spec: {childToken.Path}", ValidationErrorKind.PropertyNotInSpec, childToken.Path, 0, 0));
+						if (!schemaProperties.ContainsKey(childToken.Path))
+						{
+							validationErrors.Add(new ValidationError($"Property not found in spec: {childToken.Path}", ValidationErrorKind.PropertyNotInSpec, childToken.Path, 0, 0));
+						}
 					}
 				}
 			}
