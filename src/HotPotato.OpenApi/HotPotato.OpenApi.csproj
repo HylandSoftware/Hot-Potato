@@ -1,4 +1,4 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
     <OutputType>Library</OutputType>
@@ -19,7 +19,7 @@
 
   <ItemGroup>
     <PackageReference Include="Microsoft.NETCore.DotNetHostPolicy" Version="5.0.4" />
-    <PackageReference Include="Namotion.Reflection" Version="2.0.3" />
+    <PackageReference Include="Namotion.Reflection" Version="2.0.5" />
     <PackageReference Include="Newtonsoft.Json" Version="11.0.2" />
     <PackageReference Include="NJsonSchema" Version="10.5.2" />
     <PackageReference Include="NJsonSchema.Yaml" Version="10.5.2" />
