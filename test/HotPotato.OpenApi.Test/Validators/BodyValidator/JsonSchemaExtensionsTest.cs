@@ -7,7 +7,7 @@ using Xunit;
 
 namespace HotPotato.OpenApi.Validators
 {
-	public class JsonBodyValidatorExtensionsTest
+	public class JsonSchemaExtensionsTest
 	{
 		private const string AValidBody = "{'foo': 1}";
 		private const string AValidSchema = @"{'properties':{'foo':{'type':'integer'}}}";

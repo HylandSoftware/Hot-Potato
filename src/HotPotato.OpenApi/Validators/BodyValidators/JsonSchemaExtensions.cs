@@ -4,7 +4,7 @@ using System.Collections.Generic;
 
 namespace HotPotato.OpenApi.Validators
 {
-	internal static class JsonBodyValidatorExtensions
+	internal static class JsonSchemaExtensions
 	{
 		public static List<ValidationError> ValidateUndefinedProperties(this JsonSchema schema, string bodyString)
 		{
