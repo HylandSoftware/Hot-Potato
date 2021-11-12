@@ -39,20 +39,17 @@ namespace HotPotato.Http.Default
 					direction = "inbound",
 				}
 			};
+
 			yield return new object[] {"specs/cv/", HttpMethod.Options,
-				HttpStatusCode.BadRequest, "https://api.hyland.com/combined-viewer/combined-view-types/42/search-keyword-types", "application/problem+json", new {
-					items = new[]{
-						new {
-							id = "onetype",
-							name = "anothertype"
-						},
-						new {
-							id = "anothertype",
-							name = "anothertype"
-						}
-					}
+					HttpStatusCode.BadRequest, "https://api.hyland.com/combined-viewer/combined-view-types/42/search-keyword-types", "application/problem+json", new {
+					type = "https://www.example.net/bad-request/",
+					title = "Bad Request",
+					status = 400,
+					detail = "The method 'OPTIONS' is not allowed.",
+					instance = "https://api.hyland.com/combined-viewer/combined-view-types/{combinedViewTypeId}/search-keyword-types"
 				}
 			};
+
 			yield return new object[] { "specs/deficiencies/", HttpMethod.Get,
 				HttpStatusCode.OK, "http://api.docs.hyland.io/deficiencies/deficiencies", "application/json", new {
 					items = new[] {
@@ -75,6 +72,7 @@ namespace HotPotato.Http.Default
 					}
 				}
 			};
+
 			yield return new object[] { "specs/document/", HttpMethod.Put,
 				HttpStatusCode.BadRequest, "http://api.docs.hyland.io/document/documents/27/keywords", "application/problem+json", new {
 					type = "https://example.net/validation_error",
@@ -111,10 +109,11 @@ namespace HotPotato.Http.Default
 				HttpStatusCode.OK, "https://api.hyland.com/onbase-workflow/life-cycles/48/", "application/json", new {
 					id = "string",
 					name = "string",
-					smallIconId = "string"
+					smallImageID = "string"
 				}
 			};
 
+			//good use case for property testing in a JArray
 			yield return new object[] { "specs/onbase-workflow/", HttpMethod.Get,
 				HttpStatusCode.OK, "https://api.hyland.com/onbase-workflow/life-cycles/", "application/json", new {
 					items = new[]
@@ -153,18 +152,43 @@ namespace HotPotato.Http.Default
 			};
 
 			yield return new object[] { "specs/ccm/", HttpMethod.Get,
-			HttpStatusCode.OK, "https://api.hyland.com/sms/messages/41", "application/json", new {
-				id = "SM4262411b90e5464b98a4f66a49c57a97",
-				created = "2019-01-04T15:08=09Z",
-				modified = "2019-01-04T15:08:09Z",
-				sent = "2019-01-04T15:08:09Z",
-				accountId = "AC0db966d80e9f1662da09c61287f8bba1",
-				from = "+5622089048",
-				to = "+15622089096",
-				body = "Test",
-				status = "accepted",
-				direction = "inbound",
+				HttpStatusCode.OK, "https://api.hyland.com/sms/messages/41", "application/json", new {
+					id = "SM4262411b90e5464b98a4f66a49c57a97",
+					created = "2019-01-04T15:08=09Z",
+					modified = "2019-01-04T15:08:09Z",
+					sent = "2019-01-04T15:08:09Z",
+					accountId = "AC0db966d80e9f1662da09c61287f8bba1",
+					from = "+5622089048",
+					to = "+15622089096",
+					body = "Test",
+					status = "accepted",
+					direction = "inbound",
 				}, ValidationErrorKind.DateTimeExpected, ValidationErrorKind.IntegerExpected
+			};
+
+			//case for property validation: a completely different response was marked as valid because of no required properties
+			yield return new object[] {"specs/cv/", HttpMethod.Options,
+				HttpStatusCode.BadRequest, "https://api.hyland.com/combined-viewer/combined-view-types/42/search-keyword-types", "application/problem+json", new {
+						items = new[] {
+							new {
+								id = "onetype",
+								name = "anothertype"
+							},
+							new {
+								id = "anothertype",
+								name = "anothertype"
+							}
+						}
+				}, ValidationErrorKind.PropertyNotInSpec, null
+			};
+
+			//case for property validation: smallIconId was changed to smallImageID 
+			yield return new object[] { "specs/onbase-workflow/", HttpMethod.Get,
+				HttpStatusCode.OK, "https://api.hyland.com/onbase-workflow/life-cycles/48/", "application/json", new {
+					id = "string",
+					name = "string",
+					smallIconId = "string"
+				}, ValidationErrorKind.PropertyNotInSpec, null
 			};
 		}
 		IEnumerator IEnumerable.GetEnumerator() => GetEnumerator();

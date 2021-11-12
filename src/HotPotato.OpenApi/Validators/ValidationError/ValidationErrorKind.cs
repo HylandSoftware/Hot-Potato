@@ -191,6 +191,10 @@ namespace HotPotato.OpenApi.Validators
 		/// <summary>
 		/// A uuid is expected
 		/// </summary>
-		UuidExpected
+		UuidExpected,
+		/// <summary>
+		/// Property in response is not documented in the spec
+		/// </summary>
+		PropertyNotInSpec
 	}
 }

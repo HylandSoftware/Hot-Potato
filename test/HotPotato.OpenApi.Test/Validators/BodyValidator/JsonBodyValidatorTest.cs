@@ -6,9 +6,11 @@ namespace HotPotato.OpenApi.Validators
 {
 	public class JsonBodyValidatorTest
 	{
-		private const string AValidBody = "{'foo': '1'}";
+		private const string AValidBody = "{'foo': 1}";
+		private const string AValidSchema = @"{'properties':{'foo':{'type':'integer'}}}";
+
 		private const string AnInvalidBody = "{'foo': 'abc'}";
-		private const string AValidSchema = @"{'type': 'integer'}";
+		private const string ABodyWithAnUnexpectedProperty = "{'bar': 2}";
 
 		private const string AValidNullableBody = "{'foo': null}";
 		//nullable in yaml converts to x-nullable in json
@@ -17,7 +19,7 @@ namespace HotPotato.OpenApi.Validators
 		[Fact]
 		public void JsonBodyValidator_ReturnsTrueWithValid()
 		{
-			JsonSchema schema = JsonSchema.CreateAnySchema();
+			JsonSchema schema = JsonSchema.FromJsonAsync(AValidSchema).Result;
 			JsonBodyValidator subject = new JsonBodyValidator(AValidBody);
 
 			IValidationResult result = subject.Validate(schema);
@@ -36,6 +38,32 @@ namespace HotPotato.OpenApi.Validators
 			Assert.False(result.Valid);
 			Assert.Equal(Reason.InvalidBody, result.Reason);
 			Assert.Equal(ValidationErrorKind.IntegerExpected, result.Errors[0].Kind);
+		}
+
+		[Fact]
+		public void JsonBodyValidator_ReturnsFalseWithUndocumentedProperty()
+		{
+			JsonSchema schema = JsonSchema.FromJsonAsync(AValidSchema).Result;
+			JsonBodyValidator subject = new JsonBodyValidator(ABodyWithAnUnexpectedProperty);
+
+			InvalidResult result = (InvalidResult)subject.Validate(schema);
+
+			Assert.False(result.Valid);
+			Assert.Equal(Reason.InvalidBody, result.Reason);
+			Assert.Equal(ValidationErrorKind.PropertyNotInSpec, result.Errors[0].Kind);
+		}
+
+		[Fact]
+		public void JsonBodyValidator_ReturnsFalseWithUndocumentedPropertyAndBlankSchema()
+		{
+			JsonSchema schema = new JsonSchema();
+			JsonBodyValidator subject = new JsonBodyValidator(ABodyWithAnUnexpectedProperty);
+
+			InvalidResult result = (InvalidResult)subject.Validate(schema);
+
+			Assert.False(result.Valid);
+			Assert.Equal(Reason.InvalidBody, result.Reason);
+			Assert.Equal(ValidationErrorKind.PropertyNotInSpec, result.Errors[0].Kind);
 		}
 
 		//the cases for null body and null schema will now be addressed by the ContentValidator

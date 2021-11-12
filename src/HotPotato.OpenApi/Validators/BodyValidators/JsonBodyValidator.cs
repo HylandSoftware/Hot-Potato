@@ -17,6 +17,9 @@ namespace HotPotato.OpenApi.Validators
 		{
 			ICollection<NJsonSchema.Validation.ValidationError> errors = schema.Validate(BodyString);
 			List<ValidationError> errList = errors.ToValidationErrorList();
+
+			errList.AddRange(schema.ValidateUndefinedProperties(BodyString));
+
 			List<IValidationErrorFilter> filters = FilterFactory.CreateApplicableFilters(schema, BodyString);
 			foreach (IValidationErrorFilter filter in filters)
 			{
