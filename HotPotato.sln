@@ -43,7 +43,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "HotPotato.TestServ.Test", "
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "HotPotato.Extensions", "src\HotPotato.Extensions\HotPotato.Extensions.csproj", "{FFEDDFCF-DE15-48DD-A7D5-E7375B9B2DAA}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HotPotato.NUnitHelpers", "src\HotPotato.NUnitHelpers\HotPotato.NUnitHelpers.csproj", "{DB886999-5A93-4BE8-9AEE-A1FDAB136F6C}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "HotPotato.NUnitHelpers", "src\HotPotato.NUnitHelpers\HotPotato.NUnitHelpers.csproj", "{DB886999-5A93-4BE8-9AEE-A1FDAB136F6C}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HotPotato.Benchmark.Test", "test\HotPotato.Benchmark.Test\HotPotato.Benchmark.Test.csproj", "{3AEFBAB9-D575-4876-8FA7-F89D4A14B4BE}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -123,6 +125,12 @@ Global
 		{DB886999-5A93-4BE8-9AEE-A1FDAB136F6C}.Docker|Any CPU.Build.0 = Debug|Any CPU
 		{DB886999-5A93-4BE8-9AEE-A1FDAB136F6C}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{DB886999-5A93-4BE8-9AEE-A1FDAB136F6C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{3AEFBAB9-D575-4876-8FA7-F89D4A14B4BE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{3AEFBAB9-D575-4876-8FA7-F89D4A14B4BE}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{3AEFBAB9-D575-4876-8FA7-F89D4A14B4BE}.Docker|Any CPU.ActiveCfg = Debug|Any CPU
+		{3AEFBAB9-D575-4876-8FA7-F89D4A14B4BE}.Docker|Any CPU.Build.0 = Debug|Any CPU
+		{3AEFBAB9-D575-4876-8FA7-F89D4A14B4BE}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{3AEFBAB9-D575-4876-8FA7-F89D4A14B4BE}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -135,6 +143,7 @@ Global
 		{9F37DBB8-2971-4155-BCBD-D82DB5C8D1DC} = {18D73CFF-6ECA-4A0C-8A6A-97F84BC3E1C8}
 		{573BE9CC-36D6-40C9-A005-2DAB411861BA} = {18D73CFF-6ECA-4A0C-8A6A-97F84BC3E1C8}
 		{06E2B4CF-A84A-4E9A-91F8-F2794F5B7B8A} = {18D73CFF-6ECA-4A0C-8A6A-97F84BC3E1C8}
+		{3AEFBAB9-D575-4876-8FA7-F89D4A14B4BE} = {18D73CFF-6ECA-4A0C-8A6A-97F84BC3E1C8}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {2836D304-9C78-41F8-9A22-517D86241D2C}
