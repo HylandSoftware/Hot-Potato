@@ -19,6 +19,7 @@ namespace HotPotato.OpenApi.Validators
 
 				if (schemaProperties != null)
 				{
+					//responses should always come back with lowercase properties, but I still wanted to add this and the childToken.Path.ToLower() just in case
 					List<string> schemaPropertyKeys = schemaProperties.Keys.Select(x => x.ToLower()).ToList();
 					foreach (JToken childToken in childTokens)
 					{
