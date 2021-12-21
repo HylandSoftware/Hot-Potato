@@ -48,7 +48,7 @@ namespace HotPotato.Benchmark.Test
 			RunMode = RunMode.Throughput,
 			TestMode = TestMode.Test)]
 		[CounterThroughputAssertion("Iterations", MustBe.GreaterThan, 500000)]
-		public void PathMatcher_Match()
+		public void PathMatcher_Match_Benchmark()
 		{
 			PathMatcher.Match(AValidPath, ValidPaths);
 			_counter.Increment();

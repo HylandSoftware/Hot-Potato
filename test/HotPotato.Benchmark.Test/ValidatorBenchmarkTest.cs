@@ -64,7 +64,7 @@ namespace HotPotato.Benchmark.Test
 			RunMode = RunMode.Throughput,
 			TestMode = TestMode.Test)]
 		[CounterThroughputAssertion("Iterations", MustBe.GreaterThan, 10000)]
-		public void ValidationStrategy_Validate()
+		public void ValidationStrategy_Validate_Benchmark()
 		{
 			validationStrategy.Validate();
 			_counter.Increment();
