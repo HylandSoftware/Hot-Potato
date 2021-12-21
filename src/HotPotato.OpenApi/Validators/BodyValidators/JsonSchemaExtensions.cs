@@ -17,7 +17,7 @@ namespace HotPotato.OpenApi.Validators
 				JEnumerable<JToken> childTokens = bodyToken.Children();
 				var schemaProperties = schema?.ActualSchema?.ActualProperties;
 
-				if (schemaProperties != null && schemaProperties.Count > 0)
+				if (schemaProperties != null)
 				{
 					List<string> schemaPropertyKeys = schemaProperties.Keys.Select(x => x.ToLower()).ToList();
 					foreach (JToken childToken in childTokens)
