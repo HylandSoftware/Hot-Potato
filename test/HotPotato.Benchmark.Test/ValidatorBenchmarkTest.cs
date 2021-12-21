@@ -54,7 +54,7 @@ namespace HotPotato.Benchmark.Test
 		}
 
 		/// <summary>
-		/// Ensure that we can validate at least 30,000 times per second.
+		/// Ensure that we can validate at least 10,000 times per second.
 		/// </summary>
 		[NBenchFact]
 		[PerfBenchmark(
