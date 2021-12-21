@@ -1,0 +1,81 @@
+openapi: '3.0.1'
+info:
+  version: 1.0.0
+  title: Raw Potato Test API
+paths:
+  /:
+    get:
+      summary: landing page of this API
+      description: >-
+        The landing page provides links to the API definition, the Conformance
+        statements and the metadata about the feature data in this dataset.
+      operationId: getLandingPage
+      tags:
+        - Capabilities
+      responses:
+        '200':
+          description: links to the API capabilities
+          content:
+            text/plain:
+              schema:
+                type: string
+  /order:
+    post:
+      summary: Add a new order
+      requestBody:
+      description: Creating a new order with all properties
+      required: true
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Order'
+      responses:
+        '201':
+          description: Order created successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Order'
+    
+components:
+  schemas:
+    Order:
+      required:
+        - id
+        - price
+        - items
+      properties:
+        id:
+          type: integer
+        price:
+          type: number
+          nullable: true
+        items:
+          type:
+            schema:
+              $ref: '#/components/schemas/ItemsList'
+    OrderList:
+      type: array
+      items:
+        type:
+          schema:
+            $ref: '#/components/schemas/Order'
+    Item:
+      required:
+        - itemId
+        - name
+        - price
+      properties:
+        itemId:
+          type: integer
+        name:
+          type: string
+        price:
+          type: number
+          nullable: true
+    ItemsList:
+      type: array
+      items:
+        type:
+          schema:
+            $ref: '#/components/schemas/Item'
