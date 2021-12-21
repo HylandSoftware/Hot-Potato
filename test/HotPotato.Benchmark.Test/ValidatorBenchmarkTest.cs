@@ -30,7 +30,7 @@ namespace HotPotato.Benchmark.Test
 		{
 			ResultCollector resultCollector = new ResultCollector();
 
-			string specPath = Path.Combine(Environment.CurrentDirectory, "spec.yaml");
+			string specPath = Path.Combine(Environment.CurrentDirectory, "PerfSpec.yaml");
 			OpenApiDocument spec = OpenApiYamlDocument.FromFileAsync(specPath).Result;
 			Mock<ISpecificationProvider> mockSpecPro = new Mock<ISpecificationProvider>();
 			mockSpecPro.Setup(x => x.GetSpecDocument()).Returns(spec);

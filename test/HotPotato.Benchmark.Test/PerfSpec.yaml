@@ -1,24 +1,8 @@
 openapi: '3.0.1'
 info:
   version: 1.0.0
-  title: Raw Potato Test API
+  title: Truncated Raw Potato Spec for Performance Testing
 paths:
-  /:
-    get:
-      summary: landing page of this API
-      description: >-
-        The landing page provides links to the API definition, the Conformance
-        statements and the metadata about the feature data in this dataset.
-      operationId: getLandingPage
-      tags:
-        - Capabilities
-      responses:
-        '200':
-          description: links to the API capabilities
-          content:
-            text/plain:
-              schema:
-                type: string
   /order:
     post:
       summary: Add a new order
@@ -54,12 +38,6 @@ components:
           type:
             schema:
               $ref: '#/components/schemas/ItemsList'
-    OrderList:
-      type: array
-      items:
-        type:
-          schema:
-            $ref: '#/components/schemas/Order'
     Item:
       required:
         - itemId
