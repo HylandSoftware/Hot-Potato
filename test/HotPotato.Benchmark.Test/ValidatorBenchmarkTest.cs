@@ -3,6 +3,7 @@ using HotPotato.Core.Http;
 using HotPotato.OpenApi.Results;
 using HotPotato.OpenApi.Validators;
 using HotPotato.OpenApi.SpecificationProvider;
+using HotPotato.Test.Api.Models;
 using Moq;
 using NBench;
 using Newtonsoft.Json;
@@ -23,35 +24,22 @@ namespace HotPotato.Benchmark.Test
 	public class ValidatorBenchmarkTest
 	{
 		private Counter _counter;
-		private OpenApiDocument spec;
-		private OpenApiPathItem path;
-		private OpenApiOperation method;
-		private OpenApiResponse response;
-
-		private const string AValidPath = "/foo/bar";
-		private readonly List<string> ValidPaths = new List<string>
-			{
-				"/a/b/c",
-				"/a/b",
-				"/foo/bar",
-				"/d/c"
-			};
+		private IValidationStrategy validationStrategy;
 
 		public ValidatorBenchmarkTest(ITestOutputHelper output)
 		{
 			ResultCollector resultCollector = new ResultCollector();
 
 			string specPath = Path.Combine(Environment.CurrentDirectory, "spec.yaml");
-			spec = OpenApiYamlDocument.FromFileAsync(specPath).Result;
-
-			Mock<SpecificationProvider> mockSpecPro = new Mock<SpecificationProvider>();
+			OpenApiDocument spec = OpenApiYamlDocument.FromFileAsync(specPath).Result;
+			Mock<ISpecificationProvider> mockSpecPro = new Mock<ISpecificationProvider>();
 			mockSpecPro.Setup(x => x.GetSpecDocument()).Returns(spec);
 
-			IValidationStrategy val = new ValidationBuilder(resultCollector, mockSpecPro.Object)
+			validationStrategy = new ValidationBuilder(resultCollector, mockSpecPro.Object)
 				.WithPath("/order")
 				.WithMethod(HttpMethod.Post)
 				.WithStatusCode(HttpStatusCode.Created)
-				.WithBody("", new HttpContentType("application/json"))
+				.WithBody("{\"id\":5,\"price\":10.0,\"items\":[]}", new HttpContentType("application/json"))
 				.Build();
 
 			Trace.Listeners.Clear();
@@ -65,19 +53,20 @@ namespace HotPotato.Benchmark.Test
 		}
 
 		/// <summary>
-		/// Ensure that we can serialise at least 200 times per second (5ms).
+		/// Ensure that we can validate at least 30,000 times per second.
 		/// </summary>
 		[NBenchFact]
 		[PerfBenchmark(
-			Description = "Ensure serialization doesn't take too long",
+			Description = "Ensure validation doesn't take too long",
 			NumberOfIterations = 3,
 			RunTimeMilliseconds = 1000,
 			RunMode = RunMode.Throughput,
 			TestMode = TestMode.Test)]
-		[CounterThroughputAssertion("Iterations", MustBe.GreaterThan, 200)]
-		public void PathMatcher_Match()
+		[CounterThroughputAssertion("Iterations", MustBe.GreaterThan, 30000)]
+		public void ValidationStrategy_Validate()
 		{
-
+			validationStrategy.Validate();
+			_counter.Increment();
 		}
 	}
 }
