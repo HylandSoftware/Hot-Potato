@@ -9,7 +9,6 @@ namespace HotPotato.OpenApi.Validators
 		private const string AValidEndpoint = "https://api.hyland.com/workflow/life-cycles";
 		[Theory]
 		[InlineData("/workflow/life-cycles")]
-		[InlineData("/workflow/life-cycles/")]
 		public void PathValidator_GeneratesPathItem(string path)
 		{
 			OpenApiDocument swagDoc = new OpenApiDocument();

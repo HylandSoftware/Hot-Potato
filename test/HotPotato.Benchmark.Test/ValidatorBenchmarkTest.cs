@@ -1,9 +1,7 @@
-using HotPotato.OpenApi.Matchers;
 using HotPotato.Core.Http;
 using HotPotato.OpenApi.Results;
 using HotPotato.OpenApi.Validators;
 using HotPotato.OpenApi.SpecificationProvider;
-using HotPotato.Test.Api.Models;
 using Moq;
 using NBench;
 using Newtonsoft.Json;
@@ -21,6 +19,8 @@ using Xunit.Abstractions;
 
 namespace HotPotato.Benchmark.Test
 {
+	//xUnit thinks that the PerfSetup should be a theory, so the warning needs to be disabled
+	#pragma warning disable xUnit1013
 	public class ValidatorBenchmarkTest
 	{
 		private Counter _counter;
@@ -31,6 +31,7 @@ namespace HotPotato.Benchmark.Test
 			ResultCollector resultCollector = new ResultCollector();
 
 			string specPath = Path.Combine(Environment.CurrentDirectory, "PerfSpec.yaml");
+			//stub this out on SpecificationProvider
 			OpenApiDocument spec = OpenApiYamlDocument.FromFileAsync(specPath).Result;
 			Mock<ISpecificationProvider> mockSpecPro = new Mock<ISpecificationProvider>();
 			mockSpecPro.Setup(x => x.GetSpecDocument()).Returns(spec);
@@ -62,7 +63,7 @@ namespace HotPotato.Benchmark.Test
 			RunTimeMilliseconds = 1000,
 			RunMode = RunMode.Throughput,
 			TestMode = TestMode.Test)]
-		[CounterThroughputAssertion("Iterations", MustBe.GreaterThan, 30000)]
+		[CounterThroughputAssertion("Iterations", MustBe.GreaterThan, 10000)]
 		public void ValidationStrategy_Validate()
 		{
 			validationStrategy.Validate();
