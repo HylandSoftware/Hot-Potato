@@ -1,7 +1,7 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFramework>netcoreapp3.1</TargetFramework>
+    <TargetFramework>net5.0</TargetFramework>
 
     <IsPackable>false</IsPackable>
   </PropertyGroup>
@@ -25,13 +25,12 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\src\HotPotato.Core\HotPotato.Core.csproj" />
     <ProjectReference Include="..\HotPotato.Api\HotPotato.Test.Api.csproj" />
     <ProjectReference Include="..\HotPotato.OpenApi.Test\HotPotato.OpenApi.Test.csproj" />
   </ItemGroup>
 
   <ItemGroup>
-    <None Update="spec.yaml">
+    <None Update="PerfSpec.yaml">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
   </ItemGroup>
