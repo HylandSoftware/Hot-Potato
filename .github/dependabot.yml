@@ -7,3 +7,5 @@ updates:
       day: "sunday"
       time: "21:00"
       timezone: "America/Detroit"
+    # only allow critical security update PRs
+    open-pull-requests-limit: 0

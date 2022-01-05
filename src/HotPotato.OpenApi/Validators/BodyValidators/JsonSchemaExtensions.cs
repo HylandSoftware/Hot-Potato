@@ -1,6 +1,7 @@
 using Newtonsoft.Json.Linq;
 using NJsonSchema;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace HotPotato.OpenApi.Validators
 {
@@ -18,9 +19,11 @@ namespace HotPotato.OpenApi.Validators
 
 				if (schemaProperties != null)
 				{
+					//responses should always come back with lowercase properties, but I still wanted to add this and the childToken.Path.ToLower() just in case
+					List<string> schemaPropertyKeys = schemaProperties.Keys.Select(x => x.ToLower()).ToList();
 					foreach (JToken childToken in childTokens)
 					{
-						if (!schemaProperties.ContainsKey(childToken.Path))
+						if (!schemaPropertyKeys.Contains(childToken.Path.ToLower()))
 						{
 							validationErrors.Add(new ValidationError($"Property not found in spec: {childToken.Path}", ValidationErrorKind.PropertyNotInSpec, childToken.Path, 0, 0));
 						}
