@@ -62,7 +62,7 @@ namespace HotPotato.OpenApi.Validators
 			{
 				if (kvp.Key.Contains(";"))
 				{
-					returnDict.Add(kvp.Key.Split(";")[0], kvp.Value);
+					returnDict.Add(kvp.Key.Split(';')[0], kvp.Value);
 				}
 				else
 				{

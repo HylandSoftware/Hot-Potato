@@ -138,7 +138,7 @@ namespace HotPotato.Core.Http
 					{
 						//Sanitize here since System.Net.Http was throwing a format exception
 						//when sending POST/PUT requests with payloads through TestServer
-						@this.ContentType = @this.ContentType.Split(";")[0];
+						@this.ContentType = @this.ContentType.Split(';')[0];
 					}
 					request.SetContent(stream.ToArray(), @this.ContentType);
 				}
@@ -173,7 +173,7 @@ namespace HotPotato.Core.Http
 
 			if (@this.Content.Length > 0)
 			{
-				await response.Body.WriteAsync(@this.Content);
+				await response.Body.WriteAsync(@this.Content, 0, 0);
 			}
 		}
 
