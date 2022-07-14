@@ -173,7 +173,7 @@ namespace HotPotato.Core.Http
 
 			if (@this.Content.Length > 0)
 			{
-				await response.Body.WriteAsync(@this.Content, 0, 0);
+				await response.Body.WriteAsync(@this.Content, 0, @this.Content.Length);
 			}
 		}
 
