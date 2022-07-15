@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio Version 16
-VisualStudioVersion = 16.0.30523.141
+# Visual Studio Version 17
+VisualStudioVersion = 17.2.32616.157
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tests", "Tests", "{18D73CFF-6ECA-4A0C-8A6A-97F84BC3E1C8}"
 	ProjectSection(SolutionItems) = preProject
@@ -45,7 +45,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "HotPotato.Extensions", "src
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "HotPotato.NUnitHelpers", "src\HotPotato.NUnitHelpers\HotPotato.NUnitHelpers.csproj", "{DB886999-5A93-4BE8-9AEE-A1FDAB136F6C}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HotPotato.Benchmark.Test", "test\HotPotato.Benchmark.Test\HotPotato.Benchmark.Test.csproj", "{3AEFBAB9-D575-4876-8FA7-F89D4A14B4BE}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "HotPotato.Benchmark.Test", "test\HotPotato.Benchmark.Test\HotPotato.Benchmark.Test.csproj", "{3AEFBAB9-D575-4876-8FA7-F89D4A14B4BE}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HotPotato.NetFramework.Test", "test\HotPotato.NetFramework.Test\HotPotato.NetFramework.Test.csproj", "{7C9EFC5A-86CF-40C6-A33E-F7EA578A1992}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -131,6 +133,12 @@ Global
 		{3AEFBAB9-D575-4876-8FA7-F89D4A14B4BE}.Docker|Any CPU.Build.0 = Debug|Any CPU
 		{3AEFBAB9-D575-4876-8FA7-F89D4A14B4BE}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{3AEFBAB9-D575-4876-8FA7-F89D4A14B4BE}.Release|Any CPU.Build.0 = Release|Any CPU
+		{7C9EFC5A-86CF-40C6-A33E-F7EA578A1992}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7C9EFC5A-86CF-40C6-A33E-F7EA578A1992}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7C9EFC5A-86CF-40C6-A33E-F7EA578A1992}.Docker|Any CPU.ActiveCfg = Debug|Any CPU
+		{7C9EFC5A-86CF-40C6-A33E-F7EA578A1992}.Docker|Any CPU.Build.0 = Debug|Any CPU
+		{7C9EFC5A-86CF-40C6-A33E-F7EA578A1992}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7C9EFC5A-86CF-40C6-A33E-F7EA578A1992}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -144,6 +152,7 @@ Global
 		{573BE9CC-36D6-40C9-A005-2DAB411861BA} = {18D73CFF-6ECA-4A0C-8A6A-97F84BC3E1C8}
 		{06E2B4CF-A84A-4E9A-91F8-F2794F5B7B8A} = {18D73CFF-6ECA-4A0C-8A6A-97F84BC3E1C8}
 		{3AEFBAB9-D575-4876-8FA7-F89D4A14B4BE} = {18D73CFF-6ECA-4A0C-8A6A-97F84BC3E1C8}
+		{7C9EFC5A-86CF-40C6-A33E-F7EA578A1992} = {18D73CFF-6ECA-4A0C-8A6A-97F84BC3E1C8}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {2836D304-9C78-41F8-9A22-517D86241D2C}
