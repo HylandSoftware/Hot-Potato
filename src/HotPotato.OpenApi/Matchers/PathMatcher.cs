@@ -49,7 +49,7 @@ namespace HotPotato.OpenApi.Matchers
 
 				if (match)
 				{
-					string matchedPath = $"/{string.Join('/', pathStack)}";
+					string matchedPath = $"/{string.Join("/", pathStack)}";
 					return matchedPath;
 				}
 			}
@@ -58,7 +58,7 @@ namespace HotPotato.OpenApi.Matchers
 
 		private static bool isParam(string s)
 		{
-			return s.StartsWith('{') && s.EndsWith('}');
+			return s.StartsWith("{") && s.EndsWith("}");
 		}
 
 		/// <summary>

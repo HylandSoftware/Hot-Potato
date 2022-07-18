@@ -36,13 +36,13 @@ namespace HotPotato.OpenApi.SpecificationProvider
 		public OpenApiDocument GetSpecDocument()
 		{
 			Task<OpenApiDocument> swagTask;
-			if (Path.IsPathFullyQualified(SpecLocation))
-			{
-				swagTask = FromFileAsync(SpecLocation);
-			}
-			else if (Uri.IsWellFormedUriString(SpecLocation, UriKind.Absolute))
+			if (Uri.IsWellFormedUriString(SpecLocation, UriKind.Absolute))
 			{
 				swagTask = FromUrlAsyncWithClient(SpecLocation);
+			}
+			else if (File.Exists(SpecLocation))
+			{
+				swagTask = FromFileAsync(SpecLocation);
 			}
 			else
 			{
