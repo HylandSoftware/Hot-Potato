@@ -10,6 +10,10 @@ We invite all Hylanders and others from the open-source community to contribute 
 * Focusing on what is best for the community
 * Showing empathy towards other community members
 
+## Visual Studio Version
+
+Make sure you have Visual Studio 2022 or higher installed. This is recommended for now, but will be mandatory as we migrate to .NET 6.0.
+
 ## Testing
 
 We expect all pull requests to have some amount of automated testing. Moreso, this repository uses a trunk based branching model, so it is imperative that all changes be appropriately and completely tested before merging into master. Any pull request without automated tests may be declined immediately.
