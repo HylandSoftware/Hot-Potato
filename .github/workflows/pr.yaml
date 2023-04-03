@@ -1,20 +1,20 @@
-name: "Expand Teams"
+# name: "Expand Teams"
 
-on:
-  pull_request:
-    types: [opened, ready_for_review]
+# on:
+#   pull_request:
+#     types: [opened, ready_for_review]
 
-jobs:
-  assign-reviewers:
-    runs-on: ubuntu-latest
-    steps:
-    - uses: actions/checkout@v2
-      with:
-        repository: HylandSoftware/expand-teams-action
-        ref: v1
-        path: ./.github/actions/expand-teams-action
-        token: ${{ secrets.EXPAND_TEAMS_PAT }}
-    - name: Expand Teams to Individual Reviewers
-      uses: ./.github/actions/expand-teams-action
-      with:
-        token: ${{ secrets.EXPAND_TEAMS_PAT_TMC }}
+# jobs:
+#   assign-reviewers:
+#     runs-on: ubuntu-latest
+#     steps:
+#     - uses: actions/checkout@v2
+#       with:
+#         repository: HylandSoftware/expand-teams-action
+#         ref: v1
+#         path: ./.github/actions/expand-teams-action
+#         token: ${{ secrets.EXPAND_TEAMS_PAT }}
+#     - name: Expand Teams to Individual Reviewers
+#       uses: ./.github/actions/expand-teams-action
+#       with:
+#         token: ${{ secrets.EXPAND_TEAMS_PAT_TMC }}
