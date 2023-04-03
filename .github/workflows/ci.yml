@@ -16,7 +16,7 @@ jobs:
       uses: actions/checkout@v2
       with:
         fetch-depth: 0
-        token: ${{ secrets.EXPAND_TEAMS_PAT }}
+        # token: ${{ secrets.EXPAND_TEAMS_PAT }}
         submodules: true
 
     - name: Install GitVersion
@@ -91,10 +91,12 @@ jobs:
         reporters: cli
 
     - name: Deploy
-      if: ${{ success() && env.isMaster == 'true' }}
+      # if: ${{ success() && env.isMaster == 'true' }}
       run: |
         dotnet pack -p:PackageVersion=${{ env. GitVersion_NuGetVersionV2 }} -c Release --no-build --no-restore --output $GITHUB_WORKSPACE/nuget
-        dotnet nuget push $GITHUB_WORKSPACE/nuget/**/*.nupkg -k ${{ secrets.GITHUB_TOKEN }} -s https://nuget.pkg.github.com/HylandSoftware/index.json --skip-duplicate
+        dotnet nuget push $GITHUB_WORKSPACE/nuget/**/*.nupkg -k ${{ secrets.NUGET_PUSH }} -s https://api.nuget.org/v3/index.json --skip-duplicate
+
+    # dotnet nuget push $GITHUB_WORKSPACE/nuget/**/*.nupkg -k ${{ secrets.GITHUB_TOKEN }} -s https://nuget.pkg.github.com/HylandSoftware/index.json --skip-duplicate
 
     # - name: Push Images
     #   #if: env.isMaster == 'true'
