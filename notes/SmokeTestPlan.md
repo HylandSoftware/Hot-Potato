@@ -15,7 +15,7 @@
 | Scenario         | Description     | Example Location |
 |--------------|-----------|------------|
 | MissingPath | Send a request with a path not defined in the spec | GET /missingpath |
-| MissingMethod | Send a request with a path defined in the spec, but with a method not listed underneath the defined path | 	GET /missingmethod |
+| MissingMethod | Send a request with a path defined in the spec, but with a method not listed underneath the defined path | GET /missingmethod |
 | MissingStatusCode | Manipulate what status code will be returned to not be found in the spec, or create a path in the spec that doesn't expect a common status code like 200 | GET /missingcode |
 
 ## Non-conformant - API defines endpoints, but not conformant to spec
