@@ -9,7 +9,7 @@
     <Copyright />
     <Company />
     <Description>HotPotato.NUnitHelpers extends upon NUnit's Is class for easy Assertions in HotPotato tests. In the event of a Fail result, NUnit will print the results of the HotPotato run for easy troubleshooting.</Description>
-    <RepositoryUrl>https://github.com/HylandSoftware/Hot-Potato</RepositoryUrl>
+    <RepositoryUrl>https://github.com/davidmbillie/Hot-Potato</RepositoryUrl>
     <Configurations>Debug;Release;Docker</Configurations>
   </PropertyGroup>
 
