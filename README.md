@@ -8,7 +8,7 @@ The Hot Potato is an ASP.NET Core reverse proxy that will validate an API's conf
 
 To use the complete tool you will need to download the `HotPotato.AspNetCore.Host` NuGet package from https://www.nuget.org/packages/HotPotato.AspNetCore.Host/. Since Hot Potato is a dotnet global tool you can easily download it from Powershell or Command Prompt. The most common way of utilizing this tool can be found in the [Postman](#postman) section below.
 
-If you have an automated API testing project with a mock server you would like to conformance test, you also have the option of installing the `HotPotato.AspNetCore.Middleware` NuGet package from https://www.nuget.org/packages/HotPotato.AspNetCore.Middleware/. More information about writing tests using the Hot Potato tests with a mock server can be found below in the [Middleware](#middleware) section below.
+If you have an automated API testing project with a mock server you would like to conformance test, you also have the option of installing the `HotPotato.AspNetCore.Middleware` NuGet package from https://www.nuget.org/packages/HotPotato.AspNetCore.Middleware/. More information about writing conformance tests with a mock server can be found below in the [Middleware](#middleware) section.
 
 ### Install .NET Tool
 
