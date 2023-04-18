@@ -6,9 +6,12 @@ The Hot Potato is an ASP.NET Core reverse proxy that will validate an API's conf
 
 ## Setup
 
-To use the complete tool you will need to download the `HotPotato.AspNetCore.Host` NuGet package from https://www.nuget.org/packages/HotPotato.AspNetCore.Host/. Since Hot Potato is a dotnet global tool you can easily download it from Powershell or Command Prompt.
+To use the complete tool you will need to download the `HotPotato.AspNetCore.Host` NuGet package from https://www.nuget.org/packages/HotPotato.AspNetCore.Host/. Since Hot Potato is a dotnet global tool you can easily download it from Powershell or Command Prompt. The most common way of utilizing this tool can be found in the [Postman](#postman) section below.
 
-### Install
+If you have an automated API testing project with a mock server you would like to conformance test, you also have the option of installing the `HotPotato.AspNetCore.Middleware` NuGet package from https://www.nuget.org/packages/HotPotato.AspNetCore.Middleware/. More information about writing conformance tests with a mock server can be found below in the [Middleware](#middleware) section.
+
+### Install .NET Tool
+
 To install Hot Potato use the following command:
 ```sh
 dotnet tool install -g hotpotato.aspnetcore.host
@@ -74,30 +77,6 @@ __Fail Result__
     }
 ]
 ```
-
-### Accessing results via ResultCollector
-
-When writing tests using a fixture to set up a mock server (such as TestServer), you can expose a public List<Result> member obtained from the IResultCollector service in the fixture to validate each Result instead of having to pull from the /results endpoint.
-
-In the test fixture constructor:
-```csharp
-Results = hotPotatoServer.Host.Services.GetService<IResultCollector>().Results;
-```
-
-In test:
-```csharp
-Result result = results.ElementAt(0);
-
-//We overrode the ToString() on the Result objects to output the json string of a result in a failed assert
-Assert.True(result.State == State.Pass, result.ToString());
-Assert.Equal(methodString, result.Method, ignoreCase: true);
-Assert.Equal(pathUri.AbsolutePath, result.Path);
-Assert.Equal(expectedStatusCode, result.StatusCode);
-
-results.Clear();
-```
-
-More information about writing tests using TestServer can be found below in the [Middleware](#middleware) section.
 
 ### Custom Result Headers
 
@@ -238,6 +217,7 @@ public override void ConfigureServices(IServiceCollection services)
 }
 ```
 
+<a name="postman"></a>
 ## Testing with Postman
 
 End-to-End tests using Hot Potato can be run with Postman both locally and through a pipeline also using Newman.
