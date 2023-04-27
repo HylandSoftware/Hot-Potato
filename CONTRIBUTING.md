@@ -1,6 +1,6 @@
 # Contributing
 
-We invite all Hylanders and others from the open-source community to contribute to our repositories. We ask that any change be discussed via a [GitHub Issue](https://github.com/HylandSoftware/Hot-Potato/issues). When preparing a contribution to our repository, please consider the following contribution guidelines.
+We invite anyone interested in API conformance testing in the open-source community to contribute to our repositories. We ask that any change be discussed via a [GitHub Issue](https://github.com/davidmbillie/Hot-Potato/issues). When preparing a contribution to our repository, please consider the following contribution guidelines.
 
 ## Code of Conduct
 

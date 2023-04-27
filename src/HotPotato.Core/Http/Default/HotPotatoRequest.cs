@@ -24,7 +24,12 @@ namespace HotPotato.Core.Http.Default
 		public HttpHeaders CustomHeaders { get; }
 		public MediaTypeHeaderValue ContentType { get; private set; }
 		public HttpContent Content => this.requestContent.Content;
-        
+
+		/// <summary>
+		/// Hot Potato's wrapper around HttpRequestMessage
+		/// </summary>
+		/// <param name="uri">For relative paths, you may use the built-in UriKind enum like
+		/// new Uri("ARelativeUrl", UriKind.Relative)</param>
 		public HotPotatoRequest(Uri uri)
 			: this(HttpMethod.Get, uri)
 		{
@@ -39,6 +44,11 @@ namespace HotPotato.Core.Http.Default
 			}
 		}
 
+		/// <summary>
+		/// Hot Potato's wrapper around HttpRequestMessage
+		/// </summary>
+		/// <param name="uri">For relative paths, you may use the built-in UriKind enum like
+		/// new Uri("ARelativeUrl", UriKind.Relative)</param>
 		public HotPotatoRequest(HttpMethod method, Uri uri)
 		{
 			this.Method = method;

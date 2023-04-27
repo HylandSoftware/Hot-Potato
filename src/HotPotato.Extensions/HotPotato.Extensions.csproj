@@ -9,7 +9,7 @@
     <Copyright />
     <Company />
     <Description>HotPotato.Extensions contains an extension method for setting up HotPotato on a given TestServer.</Description>
-    <RepositoryUrl>https://github.com/HylandSoftware/Hot-Potato</RepositoryUrl>
+    <RepositoryUrl>https://github.com/davidmbillie/Hot-Potato</RepositoryUrl>
     <Configurations>Debug;Release;Docker</Configurations>
   </PropertyGroup>
 

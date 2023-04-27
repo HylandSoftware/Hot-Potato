@@ -16,7 +16,7 @@
 
       hotpotato --RemoteEndpoint http://example.com/my/api --SpecLocation http://example.com/my/spec.json
     </Description>
-    <RepositoryUrl>https://github.com/HylandSoftware/Hot-Potato</RepositoryUrl>
+    <RepositoryUrl>https://github.com/davidmbillie/Hot-Potato</RepositoryUrl>
     <Configurations>Debug;Release;Docker</Configurations>
     <UserSecretsId>f08ecae4-7c64-4d97-9cbe-ea1f8fbd4dcc</UserSecretsId>
   </PropertyGroup>
